@@ -10,7 +10,7 @@
     <div id="kt_app_content_container" class="container-fluid mt-2">
         <div class="card">
             <div class="card-body">
-                PRUEBA LAYOUT
+                LAYOUT CAMANCHACA
             </div>
 
         </div>
