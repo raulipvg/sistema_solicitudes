@@ -34145,9 +34145,9 @@ textarea.form-control-lg {
     --bs-scrolltop-box-shadow: var(
     --bs-box-shadow);
     --bs-scrolltop-bg-color: var(
-    --bs-primary);
+    --bs-gray-700);
     --bs-scrolltop-bg-color-hover: var(
-    --bs-primary);
+    --bs-dark);
     --bs-scrolltop-icon-color: var(
     --bs-primary-inverse);
     --bs-scrolltop-icon-color-hover: var(
@@ -41169,7 +41169,7 @@ textarea.form-control-lg {
 }
 
 .btn-check:active+.btn.btn-active-color-primary .svg-icon,.btn-check:active+.btn.btn-active-color-primary i,.btn-check:checked+.btn.btn-active-color-primary .svg-icon,.btn-check:checked+.btn.btn-active-color-primary i,.btn.btn-active-color-primary.active .svg-icon,.btn.btn-active-color-primary.active i,.btn.btn-active-color-primary.show .svg-icon,.btn.btn-active-color-primary.show i,.btn.btn-active-color-primary:active:not(.btn-active) .svg-icon,.btn.btn-active-color-primary:active:not(.btn-active) i,.btn.btn-active-color-primary:focus:not(.btn-active) .svg-icon,.btn.btn-active-color-primary:focus:not(.btn-active) i,.btn.btn-active-color-primary:hover:not(.btn-active) .svg-icon,.btn.btn-active-color-primary:hover:not(.btn-active) i,.show>.btn.btn-active-color-primary .svg-icon,.show>.btn.btn-active-color-primary i {
-    color: var(--bs-text-primary)
+    color: var(--bs-text-danger);
 }
 
 .btn-check:active+.btn.btn-active-color-primary.dropdown-toggle:after,.btn-check:checked+.btn.btn-active-color-primary.dropdown-toggle:after,.btn.btn-active-color-primary.active.dropdown-toggle:after,.btn.btn-active-color-primary.show.dropdown-toggle:after,.btn.btn-active-color-primary:active:not(.btn-active).dropdown-toggle:after,.btn.btn-active-color-primary:focus:not(.btn-active).dropdown-toggle:after,.btn.btn-active-color-primary:hover:not(.btn-active).dropdown-toggle:after,.show>.btn.btn-active-color-primary.dropdown-toggle:after {

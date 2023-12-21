@@ -12,7 +12,7 @@
 
 @section('main-content')
 <!--begin::Toolbar-->
-<div class="toolbar py-2" id="kt_toolbar">
+<div class="toolbar p-3" id="kt_toolbar">
     <!--begin::Container-->
     <div id="kt_toolbar_container" class="container-fluid d-flex align-items-center">
         <!--begin::Page title-->
