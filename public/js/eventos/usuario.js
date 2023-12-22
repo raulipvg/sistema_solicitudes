@@ -192,8 +192,6 @@ $(document).ready(function() {
     //const target = document.querySelector("#div-bloquear");
     //const blockUI = new KTBlockUI(target)
 
-    
-
      // Evento al presionar el Boton de Registrar
     $("#AddBtn").on("click", function (e) {
         //Inicializacion
@@ -838,8 +836,6 @@ $(document).ready(function() {
         });
 
     });
-
-
 
 
 });
