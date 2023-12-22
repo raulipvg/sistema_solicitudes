@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\UsuarioGrupoController;
 use App\Http\Controllers\EstadoSolicitudController;
+use App\Http\Controllers\AtributoController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +61,14 @@ Route::group(['prefix' => '/estadosolicitud'], function () {
     Route::post('/ver', [EstadoSolicitudController::class, 'VerId'])->name('VerEstado');
     Route::post('/editar', [EstadoSolicitudController::class, 'Editar'])->name('EditarEstado');
     Route::post('/editarEstado', [EstadoSolicitudController::class, 'CambiarEstado'])->name('CambiarEstadoEstado');
+});
+
+Route::group(['prefix' => '/atributo'], function () {
+    Route::get('/', [AtributoController::class, 'Index'])->name('EstadoSolAtributo');
+    Route::post('/registrar', [AtributoController::class, 'Guardar'])->name('GuardarAtributo');
+    Route::post('/ver', [AtributoController::class, 'VerId'])->name('VerAtributo');
+    Route::post('/editar', [AtributoController::class, 'Editar'])->name('EditarAtributo');
+    Route::post('/editarEstado', [AtributoController::class, 'CambiarEstado'])->name('CambiarEstadoAtributo');
 });
 
 Route::get('/test', function () {

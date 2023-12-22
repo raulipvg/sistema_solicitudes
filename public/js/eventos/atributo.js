@@ -24,6 +24,16 @@ $(document).ready(function() {
                             }
                         }
                     },
+                    'ValorReferencia': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Requerido'
+                            },
+                            digits: {
+                                message: 'Digitos'
+                            }
+                        }
+                    },
                     'Enabled': {
                         validators: {
                             notEmpty: {
@@ -56,7 +66,7 @@ $(document).ready(function() {
         //console.log("AddBtn")
         e.preventDefault();
         e.stopPropagation();
-        $("#modal-titulo").empty().html("Registrar Estado");
+        $("#modal-titulo").empty().html("Registrar Atributo");
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
         //$('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
@@ -100,7 +110,7 @@ $(document).ready(function() {
 
                         $.ajax({
                             type: 'POST',
-                            url: GuardarEstado,
+                            url: GuardarAtributo,
                             data: { 
                                     _token: csrfToken,    
                                     data: data 
@@ -146,11 +156,11 @@ $(document).ready(function() {
     });
 
     //Evento al presionar el Boton Editar
-    $("#tabla-estado tbody").on("click",'.editar', function (e) {
+    $("#tabla-atributo tbody").on("click",'.editar', function (e) {
         e.preventDefault();
         e.stopPropagation();
         //Inicializacion
-        $("#modal-titulo").empty().html("Editar Estado");
+        $("#modal-titulo").empty().html("Editar Atributo");
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
 
@@ -166,7 +176,7 @@ $(document).ready(function() {
         bloquear();
         $.ajax({
             type: 'POST',
-            url: VerEstado,
+            url: VerAtributo,
             data: {
                 _token: csrfToken,
                 data: id},
@@ -184,6 +194,7 @@ $(document).ready(function() {
                     
                     $("#IdInput").val(data.Id);
                     $("#NombreInput").val(data.Nombre);
+                    $("#ValorReferenciaInput").val(data.ValorReferencia);
                     $('#EstadoIdInput').val(data.Enabled).trigger("change");
                 }else{
                     Swal.fire({
@@ -245,7 +256,7 @@ $(document).ready(function() {
 
                             $.ajax({
                                 type: 'POST',
-                                url: EditarEstado,
+                                url: EditarAtributo,
                                 data: {
                                     _token: csrfToken,
                                     data: data},
@@ -283,9 +294,90 @@ $(document).ready(function() {
                 });
             }
     });
+
     
-    // Evento al Boton que cambia el estado del "Estado"
-    $("#tabla-estado tbody").on("click", '.estado-estado', function (e) {
+    //Evento al presionar el Boton VER
+    $("#tabla-usuario tbody").on("click",'.ver', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        $("#modal-titulo").empty().html("Ver Atributo");
+        $("input").val('').prop("disabled",true);
+        $('.form-select').val("").trigger("change").prop("disabled",true);
+        $("#AddSubmit").hide();
+        $("#EditSubmit").hide();
+        $("#IdInput").prop("disabled",false);
+        $("#AlertaError").hide();
+
+        validator.resetForm();
+        actualizarValidSelect2();
+
+        let id = Number($(this).attr("info"));
+        bloquear();
+        $.ajax({
+            type: 'POST',
+            url: VerUsuario,
+            data: {
+                _token: csrfToken,
+                data: id},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function() {
+                KTApp.showPageLoading();
+            },
+            success: function (data) {
+                //console.log(data);
+                if(data){
+                    data=data.data;
+        
+                    $("#IdInput").val(data.Id);
+                    $("#NombreInput").val(data.Nombre);
+                    $("#ValorReferenciaInput").val(data.ValorReferencia);
+                    $('#EstadoIdInput').val(data.Enabled).trigger("change");
+                }else{
+                    Swal.fire({
+                            text: "Error de Carga",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+                     $(".btn-cerrar").on("click", function () {
+                            //console.log("Error");
+                            $('#registrar').modal('toggle');
+                     });
+                }
+            },
+            error: function () {
+                //blockUI.release();
+                Swal.fire({
+                            text: "Error de Carga",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+                $(".btn-cerrar").on("click", function () {
+                        console.log("Error");
+                        $('#registrar').modal('toggle');
+                });
+            },
+            complete: function(){
+                KTApp.hidePageLoading();
+                loadingEl.remove();
+            }
+        });
+
+
+    });
+    
+    
+    // Evento al Boton que cambia el estado del "Atributo"
+    $("#tabla-atributo tbody").on("click", '.estado-atributo', function (e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -294,7 +386,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: CambiarEstado,
+            url: CambiarEstadoAtributo,
             data: {
                 _token: csrfToken,
                 data: userId},
@@ -343,6 +435,5 @@ $(document).ready(function() {
         });
 
     });
-
 
 });
