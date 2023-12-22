@@ -4,6 +4,7 @@ use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\UsuarioGrupoController;
+use App\Http\Controllers\EstadoSolicitudController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +53,14 @@ Route::group(['prefix' => '/grupo'], function () {
     //Route::post('/asignar',[AccesoComunidadController::class, 'AsignarGrupo'])->name('AsignarGrupo');
 });
 
+
+Route::group(['prefix' => '/estadosolicitud'], function () {
+    Route::get('/', [EstadoSolicitudController::class, 'Index'])->name('EstadoSolicitud');
+    Route::post('/registrar', [EstadoSolicitudController::class, 'Guardar'])->name('GuardarEstado');
+    Route::post('/ver', [EstadoSolicitudController::class, 'VerId'])->name('VerEstado');
+    Route::post('/editar', [EstadoSolicitudController::class, 'Editar'])->name('EditarEstado');
+    Route::post('/editarEstado', [EstadoSolicitudController::class, 'CambiarEstado'])->name('CambiarEstadoEstado');
+});
 
 Route::get('/test', function () {
     try {
