@@ -6,6 +6,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\UsuarioGrupoController;
 use App\Http\Controllers\EstadoSolicitudController;
 use App\Http\Controllers\AtributoController;
+use App\Http\Controllers\MovimientoController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -64,11 +65,19 @@ Route::group(['prefix' => '/estadosolicitud'], function () {
 });
 
 Route::group(['prefix' => '/atributo'], function () {
-    Route::get('/', [AtributoController::class, 'Index'])->name('EstadoSolAtributo');
+    Route::get('/', [AtributoController::class, 'Index'])->name('Atributo');
     Route::post('/registrar', [AtributoController::class, 'Guardar'])->name('GuardarAtributo');
     Route::post('/ver', [AtributoController::class, 'VerId'])->name('VerAtributo');
     Route::post('/editar', [AtributoController::class, 'Editar'])->name('EditarAtributo');
     Route::post('/editarEstado', [AtributoController::class, 'CambiarEstado'])->name('CambiarEstadoAtributo');
+});
+
+Route::group(['prefix' => '/movimiento'], function () {
+    Route::get('/', [MovimientoController::class, 'Index'])->name('Movimiento');
+    Route::post('/registrar', [MovimientoController::class, 'Guardar'])->name('GuardarMovimiento');
+    Route::post('/ver', [MovimientoController::class, 'VerId'])->name('VerMovimiento');
+    Route::post('/editar', [MovimientoController::class, 'Editar'])->name('EditarMovimiento');
+    Route::post('/editarEstado', [MovimientoController::class, 'CambiarEstado'])->name('CambiarEstadoMovimiento');
 });
 
 Route::get('/test', function () {
