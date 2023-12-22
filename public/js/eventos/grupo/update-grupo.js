@@ -7,19 +7,35 @@ var KTUsersUpdatePermissions = (function () {
         init: function () {
             (() => {
                 var o = FormValidation.formValidation(e, {
-                    fields: { role_name: { validators: { notEmpty: { message: "Role name is required" } } } },
-                    plugins: { trigger: new FormValidation.plugins.Trigger(), bootstrap: new FormValidation.plugins.Bootstrap5({ rowSelector: ".fv-row", eleInvalidClass: "", eleValidClass: "" }) },
+                    fields: { role_name: { 
+                        validators: { 
+                            notEmpty: {
+                                 message: "El Nombre del Grupo es requerido" 
+                                } 
+                            } 
+                        } 
+                    },
+                    plugins: { 
+                        trigger: new FormValidation.plugins.Trigger(), 
+                        bootstrap: new FormValidation.plugins.Bootstrap5({ 
+                            rowSelector: ".fv-row", 
+                            eleInvalidClass: "", 
+                            eleValidClass: "" 
+                        }) },
                 });
                 t.querySelector('[data-kt-roles-modal-action="close"]').addEventListener("click", (t) => {
                     t.preventDefault(),
                         Swal.fire({
-                            text: "Are you sure you would like to close?",
+                            text: "¿Estás seguro de cerrar?",
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, close it!",
-                            cancelButtonText: "No, return",
-                            customClass: { confirmButton: "btn btn-primary", cancelButton: "btn btn-active-light" },
+                            confirmButtonText: "Si",
+                            cancelButtonText: "No",
+                            customClass: { 
+                                confirmButton: "btn btn-dark", 
+                                cancelButton: "btn btn-active-light" 
+                            },
                         }).then(function (t) {
                             t.value && n.hide();
                         });
@@ -27,18 +43,28 @@ var KTUsersUpdatePermissions = (function () {
                     t.querySelector('[data-kt-roles-modal-action="cancel"]').addEventListener("click", (t) => {
                         t.preventDefault(),
                             Swal.fire({
-                                text: "Are you sure you would like to cancel?",
+                                text: "¿Estás seguro de cancelar?",
                                 icon: "warning",
                                 showCancelButton: !0,
                                 buttonsStyling: !1,
-                                confirmButtonText: "Yes, cancel it!",
-                                cancelButtonText: "No, return",
-                                customClass: { confirmButton: "btn btn-primary", cancelButton: "btn btn-active-light" },
+                                confirmButtonText: "Si",
+                                cancelButtonText: "No",
+                                customClass: { 
+                                    confirmButton: "btn btn-dark", 
+                                    cancelButton: "btn btn-active-light" 
+                                },
                             }).then(function (t) {
                                 t.value
                                     ? (e.reset(), n.hide())
                                     : "cancel" === t.dismiss &&
-                                      Swal.fire({ text: "Your form has not been cancelled!.", icon: "error", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn btn-primary" } });
+                                      Swal.fire({ 
+                                        text: "¡Tu formulario no ha sido cancelado!", 
+                                        icon: "error", 
+                                        buttonsStyling: !1, 
+                                        confirmButtonText: "OK", 
+                                        customClass: { 
+                                            confirmButton: "btn btn-dark" } 
+                                        });
                             });
                     });
                 const i = t.querySelector('[data-kt-roles-modal-action="submit"]');
@@ -53,18 +79,27 @@ var KTUsersUpdatePermissions = (function () {
                                           setTimeout(function () {
                                               i.removeAttribute("data-kt-indicator"),
                                                   (i.disabled = !1),
-                                                  Swal.fire({ text: "Form has been successfully submitted!", icon: "success", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn btn-primary" } }).then(
+                                                  Swal.fire({ 
+                                                    text: "¡El formulario ha sido enviado exitosamente!", 
+                                                    icon: "success", 
+                                                    buttonsStyling: !1, 
+                                                    confirmButtonText: "OK", 
+                                                    customClass: { 
+                                                        confirmButton: "btn btn-dark" 
+                                                    } }).then(
                                                       function (t) {
                                                           t.isConfirmed && n.hide();
                                                       }
                                                   );
                                           }, 2e3))
                                         : Swal.fire({
-                                              text: "Sorry, looks like there are some errors detected, please try again.",
+                                              text: "Lo siento, parece que se han detectado algunos errores. Por favor, inténtalo de nuevo.",
                                               icon: "error",
                                               buttonsStyling: !1,
-                                              confirmButtonText: "Ok, got it!",
-                                              customClass: { confirmButton: "btn btn-primary" },
+                                              confirmButtonText: "OK",
+                                              customClass: { 
+                                                confirmButton: "btn btn-dark" 
+                                            },
                                           });
                             });
                 });

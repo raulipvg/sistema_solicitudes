@@ -1,7 +1,7 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 function format(data) {
     // `d` is the original data object for the row
-    
+    /*
     var html=
     '<div class="d-flex justify-content-center">'+
         '<div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">'+
@@ -78,7 +78,59 @@ function format(data) {
                 '</div>'+
                 '</div>';
 
-                
+    */
+   
+        var html=
+                '<div class="d-flex justify-content-center">'+
+                    '<div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">'+
+                        '<table id="services_table" class="table table-row-dashed">'+
+                            '<thead class="services-info">'+
+                                '<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">'+
+                                    '<th class="col-4 p-0 ps-3">Grupo</th>'+
+                                    '<th class="col-4 p-0 ps-3">Fecha</th>'+
+                                    '<th class="col-4 p-0 ps-2 text-center">ESTADO'+
+                                        '<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Asignar Grupo">'+ 
+                                            '<button type="button" data-info="1" class="registrar-acceso btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-acceso">'+
+                                                '<i class="ki-outline ki-plus-square fs-2"></i>'+
+                                            '</button>'+
+                                        '</span>'+
+                                    '</th>'+
+                                '</tr>'+
+                            '</thead>'+
+                            '<tbody class="fw-bold text-gray-600">'+
+                                '<tr>'+
+                                    '<td class="text-gray-700 text-capitalize">Grupo 1</td>'+
+                                    '<td>01-01-2024</td>'+
+                                    '<td class="text-center p-0">'+
+                                        '<div class="btn-group btn-group-sm" role="group">'+
+                                            '<button class="btn btn-sm btn-light-success editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-100px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="1" title="Desvincular del Grupo">'+
+                                                '<span class="indicator-label">HABILITADO</span>'+
+                                                '<span class="indicator-progress">'+
+                                                    '<span class="spinner-border spinner-border-sm align-middle"></span>'+
+                                                '</span>'+
+                                            '</button>'+
+                                        '</div>'+
+                                    '</td>'+
+                                '</tr>'+
+                                '<tr>'+
+                                    '<td class="text-gray-700 text-capitalize">Grupo 2</td>'+
+                                    '<td>01-01-2024</td>'+
+                                    '<td class="text-center p-0">'+
+                                        '<div class="btn-group btn-group-sm" role="group">'+
+                                            '<button class="btn btn-sm btn-light-success editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-100px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="1" title="Desvincular del Grupo">'+
+                                                '<span class="indicator-label">HABILITADO</span>'+
+                                                '<span class="indicator-progress">'+
+                                                    '<span class="spinner-border spinner-border-sm align-middle"></span>'+
+                                                '</span>'+
+                                            '</button>'+
+                                        '</div>'+
+                                    '</td>'+
+                                '</tr>'+
+                            '</tbody>'+
+                        '</table>'+
+                    '</div>'+
+                '</div>';
+
     return html;
     
 }

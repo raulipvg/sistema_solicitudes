@@ -70,13 +70,13 @@
 
                     
                     <tr class="center-2">
-                        <td>4534</td>
-                        <td class="text-capitalize">dsfsdf</td>
-                        <td>sdfdsf</td>
-                        <td>sdfsdf</td>
+                        <td>1</td>
+                        <td>Jose Martinez</td>
+                        <td class="text-capitalize">jmartinez</td>
+                        <td>mail@mail.cl</td>
                         <td data-search="Enabled">
                             <button class="btn btn-sm btn-light-success estado-usuario fs-7 text-uppercase estado justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Usuario">
-                                <span class="indicator-label">Activo</span>
+                                <span class="indicator-label">ACTIVO</span>
                                 <span class="indicator-progress">
                                     <span class="spinner-border spinner-border-sm align-middle"></span>
                                 </span>
@@ -89,7 +89,7 @@
                             </div>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Acceso">
+                            <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Grupos Asociados">
                                 <i class="ki-duotone ki-plus fs-3 m-0 toggle-off"></i>
                                 <i class="ki-duotone ki-minus fs-3 m-0 toggle-on"></i>
                                 <span class="indicator-label"></span>
@@ -101,10 +101,10 @@
                     </tr>
 
                     <tr class="center-2">
-                        <td>4534</td>
-                        <td class="text-capitalize">dsfsdf</td>
-                        <td>sdfdsf</td>
-                        <td>sdfsdf</td>
+                        <td>2</td>
+                        <td class="text-capitalize">nombre apellido</td>
+                        <td>nombre</td>
+                        <td>mail2@mail.cl</td>
                         <td data-search="Disabled">
                             <button class="btn btn-light-warning fs-7 estado-usuario text-uppercase estado justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Usuario">
                                 <span class="indicator-label">Inactivo</span>
@@ -120,7 +120,7 @@
                             </div>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Acceso">
+                            <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Grupos Asociados">
                                 <i class="ki-duotone ki-plus fs-3 m-0 toggle-off"></i>
                                 <i class="ki-duotone ki-minus fs-3 m-0 toggle-on"></i>
                                 <span class="indicator-label"></span>
@@ -258,7 +258,7 @@
     <div class="modal-dialog mt-20">
         <div class="modal-content" id="div-bloquear2">
             <div class="modal-header bg-light p-2 ps-5">
-                <h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Acceso</h2>
+                <h2 id="modal-titulo" class="modal-title text-uppercase">Asignar Grupo</h2>
 
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -283,7 +283,7 @@
                                 <select id="ComunidadIdInput2" name="ComunidadId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
                                 </select>
-                                <label for="ComunidadIdInput2" class="form-label">Comunidad</label>
+                                <label for="ComunidadIdInput2" class="form-label">Grupo</label>
                             </div>
                             <input hidden type="number" id="UsuarioIdInput" name="UsuarioId" />
                         </div>
@@ -292,7 +292,7 @@
                 <div class="modal-footer bg-light p-2">
                     <button type="button" class="btn btn-light-dark" data-bs-dismiss="modal">Cerrar</button>
                     <button id="AddSubmit-acceso" type="submit" class="btn btn-success">
-                        <div class="indicator-label">Registrar</div>
+                        <div class="indicator-label">Asignar</div>
                         <div class="indicator-progress">Espere...
                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                         </div>
@@ -315,10 +315,11 @@
         const EditarUsuario = "{{ route('EditarUsuario') }}";
         const CambiarEstado = "{{ route('CambiarEstadoUsuario') }}";
 
-        const VerAcceso =  "{{ route('VerAcceso') }}";
-        const EditarAcceso = "";
-        const GuardarAcceso = "";
-        const ComunidadSinAcceso = "";
+        const VerAcceso =  "{{ route('VerUsuarioGrupo') }}";
+        const VerGrupos =  "{{ route('VerGrupos') }}";
+        const GuardarUsuarioGrupo = "{{ route('GuardarUsuarioGrupo') }}";
+        const DeleteUsuarioGrupo = "{{ route('DeleteUsuarioGrupo')}}";
+       
 
 
         //const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');

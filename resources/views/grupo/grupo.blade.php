@@ -301,18 +301,18 @@
 															<div class="fv-row mb-10">
 																<!--begin::Label-->
 																<label class="fs-5 fw-bold form-label mb-2">
-																	<span class="required">Nombre Grupo</span>
+																	<span class="required">Nombre del Grupo</span>
 																</label>
 																<!--end::Label-->
 																<!--begin::Input-->
-																<input class="form-control form-control-solid" placeholder="Enter a role name" name="role_name" value="Developer" />
+																<input class="form-control form-control-solid" placeholder="Enter a role name" name="role_name" value="Administrador" />
 																<!--end::Input-->
 															</div>
 															<!--end::Input group-->
 															<!--begin::Permissions-->
 															<div class="fv-row">
 																<!--begin::Label-->
-																<label class="fs-5 fw-bold form-label mb-2">Privilegios grupo</label>
+																<label class="fs-5 fw-bold form-label mb-2">Privilegios del Grupo</label>
 																<!--end::Label-->
 																<!--begin::Table wrapper-->
 																<div class="table-responsive">
@@ -450,20 +450,20 @@
 																					<div class="d-flex">
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
-																							<input class="form-check-input" type="checkbox" value="" name="reporting_read" />
-																							<span class="form-check-label">Read</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_read" />
+																							<span class="form-check-label">Leer</span>
 																						</label>
 																						<!--end::Checkbox-->
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-custom form-check-solid me-5 me-lg-20">
-																							<input class="form-check-input" type="checkbox" value="" name="reporting_write" />
-																							<span class="form-check-label">Write</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_write" />
+																							<span class="form-check-label">Escribir</span>
 																						</label>
 																						<!--end::Checkbox-->
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-custom form-check-solid">
-																							<input class="form-check-input" type="checkbox" value="" name="reporting_create" />
-																							<span class="form-check-label">Create</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_create" />
+																							<span class="form-check-label">Guardar</span>
 																						</label>
 																						<!--end::Checkbox-->
 																					</div>
@@ -475,7 +475,7 @@
 																			<!--begin::Table row-->
 																			<tr>
 																				<!--begin::Label-->
-																				<td class="text-gray-800">Payroll</td>
+																				<td class="text-gray-800">Privilegio 5</td>
 																				<!--end::Label-->
 																				<!--begin::Input group-->
 																				<td>
@@ -483,20 +483,20 @@
 																					<div class="d-flex">
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
-																							<input class="form-check-input" type="checkbox" value="" name="payroll_read" />
-																							<span class="form-check-label">Read</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_read" />
+																							<span class="form-check-label">Leer</span>
 																						</label>
 																						<!--end::Checkbox-->
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-custom form-check-solid me-5 me-lg-20">
-																							<input class="form-check-input" type="checkbox" value="" name="payroll_write" />
-																							<span class="form-check-label">Write</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_write" />
+																							<span class="form-check-label">Escribir</span>
 																						</label>
 																						<!--end::Checkbox-->
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-custom form-check-solid">
-																							<input class="form-check-input" type="checkbox" value="" name="payroll_create" />
-																							<span class="form-check-label">Create</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_create" />
+																							<span class="form-check-label">Guardar</span>
 																						</label>
 																						<!--end::Checkbox-->
 																					</div>
@@ -508,7 +508,7 @@
 																			<!--begin::Table row-->
 																			<tr>
 																				<!--begin::Label-->
-																				<td class="text-gray-800">Disputes Management</td>
+																				<td class="text-gray-800">Privilegio 6</td>
 																				<!--end::Label-->
 																				<!--begin::Input group-->
 																				<td>
@@ -516,20 +516,20 @@
 																					<div class="d-flex">
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
-																							<input class="form-check-input" type="checkbox" value="" name="disputes_management_read" />
-																							<span class="form-check-label">Read</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_read" />
+																							<span class="form-check-label">Leer</span>
 																						</label>
 																						<!--end::Checkbox-->
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-custom form-check-solid me-5 me-lg-20">
-																							<input class="form-check-input" type="checkbox" value="" name="disputes_management_write" />
-																							<span class="form-check-label">Write</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_write" />
+																							<span class="form-check-label">Escribir</span>
 																						</label>
 																						<!--end::Checkbox-->
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-custom form-check-solid">
-																							<input class="form-check-input" type="checkbox" value="" name="disputes_management_create" />
-																							<span class="form-check-label">Create</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_create" />
+																							<span class="form-check-label">Guardar</span>
 																						</label>
 																						<!--end::Checkbox-->
 																					</div>
@@ -541,7 +541,7 @@
 																			<!--begin::Table row-->
 																			<tr>
 																				<!--begin::Label-->
-																				<td class="text-gray-800">API Controls</td>
+																				<td class="text-gray-800">Privilegio 7</td>
 																				<!--end::Label-->
 																				<!--begin::Input group-->
 																				<td>
@@ -549,20 +549,20 @@
 																					<div class="d-flex">
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
-																							<input class="form-check-input" type="checkbox" value="" name="api_controls_read" />
-																							<span class="form-check-label">Read</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_read" />
+																							<span class="form-check-label">Leer</span>
 																						</label>
 																						<!--end::Checkbox-->
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-custom form-check-solid me-5 me-lg-20">
-																							<input class="form-check-input" type="checkbox" value="" name="api_controls_write" />
-																							<span class="form-check-label">Write</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_write" />
+																							<span class="form-check-label">Escribir</span>
 																						</label>
 																						<!--end::Checkbox-->
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-custom form-check-solid">
-																							<input class="form-check-input" type="checkbox" value="" name="api_controls_create" />
-																							<span class="form-check-label">Create</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_create" />
+																							<span class="form-check-label">Guardar</span>
 																						</label>
 																						<!--end::Checkbox-->
 																					</div>
@@ -574,7 +574,7 @@
 																			<!--begin::Table row-->
 																			<tr>
 																				<!--begin::Label-->
-																				<td class="text-gray-800">Database Management</td>
+																				<td class="text-gray-800">Privilegio 7</td>
 																				<!--end::Label-->
 																				<!--begin::Input group-->
 																				<td>
@@ -582,20 +582,20 @@
 																					<div class="d-flex">
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
-																							<input class="form-check-input" type="checkbox" value="" name="database_management_read" />
-																							<span class="form-check-label">Read</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_read" />
+																							<span class="form-check-label">Leer</span>
 																						</label>
 																						<!--end::Checkbox-->
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-custom form-check-solid me-5 me-lg-20">
-																							<input class="form-check-input" type="checkbox" value="" name="database_management_write" />
-																							<span class="form-check-label">Write</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_write" />
+																							<span class="form-check-label">Escribir</span>
 																						</label>
 																						<!--end::Checkbox-->
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-custom form-check-solid">
-																							<input class="form-check-input" type="checkbox" value="" name="database_management_create" />
-																							<span class="form-check-label">Create</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_create" />
+																							<span class="form-check-label">Guardar</span>
 																						</label>
 																						<!--end::Checkbox-->
 																					</div>
@@ -607,7 +607,7 @@
 																			<!--begin::Table row-->
 																			<tr>
 																				<!--begin::Label-->
-																				<td class="text-gray-800">Repository Management</td>
+																				<td class="text-gray-800">Privilegio 8</td>
 																				<!--end::Label-->
 																				<!--begin::Input group-->
 																				<td>
@@ -615,20 +615,20 @@
 																					<div class="d-flex">
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
-																							<input class="form-check-input" type="checkbox" value="" name="repository_management_read" />
-																							<span class="form-check-label">Read</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_read" />
+																							<span class="form-check-label">Leer</span>
 																						</label>
 																						<!--end::Checkbox-->
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-custom form-check-solid me-5 me-lg-20">
-																							<input class="form-check-input" type="checkbox" value="" name="repository_management_write" />
-																							<span class="form-check-label">Write</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_write" />
+																							<span class="form-check-label">Escribir</span>
 																						</label>
 																						<!--end::Checkbox-->
 																						<!--begin::Checkbox-->
 																						<label class="form-check form-check-custom form-check-solid">
-																							<input class="form-check-input" type="checkbox" value="" name="repository_management_create" />
-																							<span class="form-check-label">Create</span>
+																							<input class="form-check-input" type="checkbox" value="" name="user_management_create" />
+																							<span class="form-check-label">Guardar</span>
 																						</label>
 																						<!--end::Checkbox-->
 																					</div>
@@ -649,10 +649,10 @@
 														<!--end::Scroll-->
 														<!--begin::Actions-->
 														<div class="text-center pt-15">
-															<button type="reset" class="btn btn-light me-3" data-kt-roles-modal-action="cancel">Discard</button>
-															<button type="submit" class="btn btn-primary" data-kt-roles-modal-action="submit">
-																<span class="indicator-label">Submit</span>
-																<span class="indicator-progress">Please wait... 
+															<button type="reset" class="btn btn-light me-3" data-kt-roles-modal-action="cancel">Cancelar</button>
+															<button type="submit" class="btn btn-dark" data-kt-roles-modal-action="submit">
+																<span class="indicator-label">Actualizar</span>
+																<span class="indicator-progress">Espere... 
 																<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
 															</button>
 														</div>

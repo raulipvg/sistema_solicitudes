@@ -580,76 +580,10 @@ $(document).ready(function() {
 
     });
     
-    //Evento al presionar el Boton de cambiar estado en la subtabla 
-    $("#tabla-usuario tbody").on("click", '.editar-acceso', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        //console.log("click")
-        var accesoId =$(this).attr("info");
-        var btn = $(this);
-        //console.log(accesoId)
-        btn.attr("data-kt-indicator", "on");
-        $.ajax({
-            type: 'POST',
-            url: EditarAcceso,
-            data: {
-                _token: csrfToken,
-                data: accesoId},
-            //content: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-                //console.log(data.errors);
-                if(data.success){
-                    btn.removeAttr("data-kt-indicator");
-                    if(btn.hasClass('btn-light-success')){
-                        btn.removeClass('btn-light-success').addClass('btn-light-warning');
-                        btn.find("span.indicator-label").first().text('Inactivo')
-                    }else{
-                        btn.removeClass('btn-light-warning').addClass('btn-light-success');
-                        btn.find("span.indicator-label").first().text('Activo')
-                    }   
-                }else{
-                    btn.removeAttr("data-kt-indicator");
-                    Swal.fire({
-                        text: "Error",
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "OK",
-                        customClass: {
-                            confirmButton: "btn btn-danger btn-cerrar"
-                        }
-                    });
-                }
-            },
-            error: function () {
-                //alert('Error');
-                btn.removeAttr("data-kt-indicator");
-                Swal.fire({
-                    text: "Error",
-                    icon: "error",
-                    buttonsStyling: false,
-                    confirmButtonText: "OK",
-                    customClass: {
-                        confirmButton: "btn btn-danger btn-cerrar"
-                    }
-                });
-            }
-        });
-
-    });
-
-
-
-    let clickFlag = true;
-    // Add event listener for opening and closing details
+    //EVENTO DEL BOTON + DE LA TABLA Y CREA SUBTABLA
     miTabla.on('click', 'td.dt-control', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        if(!clickFlag ){
-            //console.log('blokiao')
-            return;
-        }
-        clickFlag=false;
 
         var tr = e.target.closest('tr');
         var row = miTabla.row(tr);
@@ -661,6 +595,7 @@ $(document).ready(function() {
             // This row is already open - close it
             boton.removeClass('active')
             row.child.hide();
+            return;
         }
         else {
             // Open this row             
@@ -679,17 +614,11 @@ $(document).ready(function() {
                     boton.attr("data-kt-indicator", "on");
                 },
                 success: function (data) {
-                    if(data.success){
-                    
+                    if(data.success){             
                         data = data.data;
-                        //row.child(format(data)).show();
+                        row.child(format(data)).show();
                         $(".editar-acceso").tooltip();
                         $(".dar-acceso").tooltip();
-                    }else{
-                        //console.log(data.message)
-                        html = '<ul><li style="">'+data.message+'</li></ul>';
-                        $("#AlertaError").append(html);
-                        $("#AlertaError").show();
                     }
                 },
                 error: function () {
@@ -716,10 +645,8 @@ $(document).ready(function() {
         
     });
 
-
     const target2 = document.querySelector("#div-bloquear2");
     const blockUI2 = new KTBlockUI(target2);
-
     //Evento al presion el boton de Registrar ACCESO en la subtabla
     $("#tabla-usuario tbody").on("click",'.registrar-acceso', function(e) {
         //console.log('click')
@@ -731,43 +658,44 @@ $(document).ready(function() {
         actualizarValidSelect2();
         //console.log($(this).attr("data-info"))
         $("#UsuarioIdInput").val($(this).attr("data-info"));
-        var userId= $(this).attr("data-info")
-        blockUI2.block();
+        var userId= $(this).attr("data-info");
+        
         $.ajax({
             type: 'POST',
-            url: ComunidadSinAcceso,
+            url: VerGrupos,
             data: {
                 _token: csrfToken,
                 data: userId},
             //content: "application/json; charset=utf-8",
             dataType: "json",
+            beforeSend: function() {
+                blockUI2.block();
+            },
             success: function (data) {
-                //console.log(data);
-                blockUI2.release();
-                if(data.success){
-                    //console.log(data.data);               
+                if(data.success){             
                     data = data.data;
                     var select = $('#ComunidadIdInput2');
                     select.empty();
                     // Agrega las opciones al select
                     var option = new Option('', '');
                     select.append(option);      
-                    for (const comunidad in data) {
+                    /*for (const comunidad in data) {
                             var option = new Option(data[comunidad].Nombre, data[comunidad].Id);
                             select.append(option);                        
-                    }
+                    }*/
+                    var option = new Option('Grupo 1', 1);
+                    select.append(option);
+                    var option = new Option('Grupo 2', 2);
+                    select.append(option);        
+
                 }else{
                     //console.log(data.message)
                     html = '<ul><li style="">'+data.message+'</li></ul>';
                     $("#AlertaError2").append(html);
-
                     $("#AlertaError2").show();
-                   //console.log("error");
                 }
             },
             error: function () {
-                //alert('Error');
-                blockUI2.release();
                 Swal.fire({
                     text: "Error",
                     icon: "error",
@@ -777,6 +705,9 @@ $(document).ready(function() {
                         confirmButton: "btn btn-danger btn-cerrar"
                     }
                 });
+            },
+            complete: function(){
+                blockUI2.release();
             }
         });
 
@@ -792,74 +723,43 @@ $(document).ready(function() {
         // Prevent default button action
         e.preventDefault();
         e.stopPropagation();
-        console.log('guardar')
+        //console.log('guardar')
         $("#AlertaError2").hide();
-        $("#AlertaError2").empty();
-        
+        $("#AlertaError2").empty();      
         // Validate form before submit
         if (validator2) {
             validator2.validate().then(function (status) {
                  actualizarValidSelect2();
-
-                //console.log('validated!');
-                //status
                 if (status == 'Valid') {
                     // Show loading indication                       
                         let form1= $("#Formulario-Acceso");
                         var fd = form1.serialize();
-                        const pairs = fd.split('&');
-
-                        const keyValueObject = {};
-                       
-                        for (let i = 0; i < pairs.length; i++) {
-                            const pair = pairs[i].split('=');
-                            const key = decodeURIComponent(pair[0]);
-                            const value = decodeURIComponent(pair[1]);
-                            keyValueObject[key] = value;
-                        }
-
-                        submitButton.setAttribute('data-kt-indicator', 'on');
-                        // Disable button to avoid multiple click
-                        submitButton.disabled = true;     
-                        // Remove loading indication
-                        //submitButton.removeAttribute('data-kt-indicator');
-                        // Enable button
-                        //submitButton.disabled = true;
-                        blockUI2.block();
+                        var data = formMap(fd);
                         $.ajax({
                             type: 'POST',
-                            url: GuardarAcceso,
+                            url: GuardarUsuarioGrupo,
                             data: { 
                                     _token: csrfToken,    
-                                    data: keyValueObject 
-                                },
+                                    data: data 
+                            },
                             dataType: "json",
                             //content: "application/json; charset=utf-8",
                             beforeSend: function() {
-                                
+                                bloquear();
+                                KTApp.showPageLoading();
                             },
                             success: function (data) {
-                                //console.log(data.errors);
-                                blockUI2.release();
                                 if(data.success){
                                     //console.log("exito");
                                      location.reload();
                                 }else{
                                     //console.log(data.error);
-                                        html = '<ul><li style="">'+data.message+'</li></ul>';
-                                       $("#AlertaError2").append(html);
-
-                                    
+                                    html = '<ul><li style="">'+data.message+'</li></ul>';
+                                    $("#AlertaError2").append(html);                                    
                                     $("#AlertaError2").show();
-                                    
-                                   //console.log("error");
                                 }
                             },
                             error: function (e) {
-                                //console.log(e)
-                                //alert('Error');
-                                blockUI2.release();
-
                                 Swal.fire({
                                     text: "Error",
                                     icon: "error",
@@ -869,15 +769,76 @@ $(document).ready(function() {
                                         confirmButton: "btn btn-danger btn-cerrar"
                                     }
                                 });
+                            },
+                            complete: function(){
+                                KTApp.hidePageLoading();
+                                loadingEl.remove();
                             }
                         });
-                    // form.submit(); // Submit form
-                    submitButton.removeAttribute('data-kt-indicator');
-                    submitButton.disabled = false;
                 }
             });
         }
     });
+
+    //Evento al presionar el Boton de cambiar estado en la subtabla 
+    $("#tabla-usuario tbody").on("click", '.editar-acceso', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        //console.log("click")
+        var accesoId =$(this).attr("info");
+        var btn = $(this);
+        //console.log(accesoId)
+        btn.attr("data-kt-indicator", "on");
+        $.ajax({
+            type: 'POST',
+            url: DeleteUsuarioGrupo,
+            data: {
+                _token: csrfToken,
+                data: accesoId
+            },
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function() {
+                bloquear();
+                KTApp.showPageLoading();
+            },
+            success: function (data) {
+                //console.log(data.errors);
+                if(data.success){
+                    const fila = btn.closest('tr');
+                    fila.remove(); 
+                }else{
+                    Swal.fire({
+                        text: "Error",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            },
+            complete: function(){
+                btn.removeAttr("data-kt-indicator");
+                KTApp.hidePageLoading();
+                loadingEl.remove();
+            }
+        });
+
+    });
+
 
 
 

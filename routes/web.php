@@ -31,10 +31,15 @@ Route::group(['prefix' => '/usuario'], function () {
 });
 
 
-Route::group(['prefix' => '/acceso'], function () {
+Route::group(['prefix' => '/usuariogrupo'], function () {
+    Route::post('/ver', [UsuarioGrupoController::class, 'Ver'])->name('VerUsuarioGrupo');
+    Route::post('/vergrupos', [UsuarioGrupoController::class, 'VerGrupo'])->name('VerGrupos');
+    Route::post('/registrar', [UsuarioGrupoController::class, 'Registrar'])->name('GuardarUsuarioGrupo');
+    Route::post('/eliminar', [UsuarioGrupoController::class, 'Eliminar'])->name('DeleteUsuarioGrupo');
+
     //Route::get('/', [UserController::class, 'Index'])->name('Usuario');
     //Route::post('/registrar', [AccesoComunidadController::class, 'Guardar'])->name('RegistrarAcceso');
-    Route::post('/ver', [UsuarioGrupoController::class, 'Ver'])->name('VerAcceso');
+    
     //Route::post('/editar', [AccesoComunidadController::class, 'Editar'])->name('EditarAcceso');
     //Route::post('/comunidadsinacceso',[AccesoComunidadController::class, 'getComunidadSinAcceso'])->name('ComunidadSinAcceso');
 });
@@ -44,8 +49,9 @@ Route::group(['prefix' => '/grupo'], function () {
     //Route::post('/registrar', [AccesoComunidadController::class, 'Guardar'])->name('RegistrarAcceso');
     //Route::post('/ver', [UsuarioGrupoController::class, 'Ver'])->name('VerAcceso');
     //Route::post('/editar', [AccesoComunidadController::class, 'Editar'])->name('EditarAcceso');
-    //Route::post('/comunidadsinacceso',[AccesoComunidadController::class, 'getComunidadSinAcceso'])->name('ComunidadSinAcceso');
+    //Route::post('/asignar',[AccesoComunidadController::class, 'AsignarGrupo'])->name('AsignarGrupo');
 });
+
 
 Route::get('/test', function () {
     try {
