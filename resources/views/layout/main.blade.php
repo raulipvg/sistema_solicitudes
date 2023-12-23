@@ -46,8 +46,8 @@
 						<div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
 							<!--begin::Logo image-->
 							<a href="{{ route('Home') }}">
-								<img alt="Logo" src="img/logos/logo-cc-web.png" class="h-50px app-sidebar-logo-default" />
-								<img alt="Logo" src="img/logos/logo-cc-web-small.png" class="h-40px app-sidebar-logo-minimize" />
+								<img alt="Logo" src="{{ asset('img/logos/logo-cc-web.png') }}" class="h-50px app-sidebar-logo-default" />
+								<img alt="Logo" src="{{ asset('img/logos/logo-cc-web-small.png') }}" class="h-40px app-sidebar-logo-minimize" />
 							</a>
 							<!--end::Logo image-->
 							<!--begin::Sidebar toggle-->

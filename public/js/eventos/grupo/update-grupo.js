@@ -117,5 +117,18 @@ var KTUsersUpdatePermissions = (function () {
     };
 })();
 KTUtil.onDOMContentLoaded(function () {
+
+     //Evento al presionar el Boton Editar Grupo
+     $("#contenedor").on("click",'.editar-grupo', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('prueba')
+    });
+
     KTUsersUpdatePermissions.init();
+
+
+
+
+
 });

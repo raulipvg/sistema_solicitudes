@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class UsuarioController extends Controller
 {
@@ -11,7 +12,10 @@ class UsuarioController extends Controller
      */
     public function Index()
     {
-        return View('usuario.usuario');
+        $titulo= "Usuarios";
+        return view('usuario.usuario')->with([
+                        'titulo'=> $titulo
+                    ]);
     }
 
     /**
