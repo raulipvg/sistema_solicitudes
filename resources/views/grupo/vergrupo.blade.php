@@ -21,7 +21,7 @@
         <div class="flex-column flex-lg-row-auto w-100 w-lg-200px w-xl-300px mb-10">
             <div class="mx-5">
             <!--begin::Card-->
-            @include('grupo.tarjetagrupo', ['datosgrupo'=> $datosgrupo])
+            @include('grupo.componente.tarjetagrupo', ['datosgrupo'=> $datosgrupo])
             <!--end::Card-->
             </div>       
         </div>
@@ -38,7 +38,7 @@
                         </button>
                     </div>
                     <!--begin::Tabla Usuario-->
-                    @include('usuario.tablaUsuario')
+                    @include('usuario.componente.tablaUsuario')
                     <!--end::Tabla Usuario-->
                 </div>
             </div>
@@ -49,16 +49,16 @@
 <!--end::Content-->
 
  <!--begin::Modal - Update role-->
- @include('grupo.modalEditarGrupo')
+ @include('grupo.componente.modalEditarGrupo')
  <!--end::Modal - Update role-->
 
 <!--begin::modal - Registrar Usuario-->
-@include('usuario.modalRegistrarUsuario')
+@include('usuario.componente.modalRegistrarUsuario')
 <!--end::modal-->
 
 
 <!--begin::modal -  Asignar Grupo-->
-@include('usuario.modalAsignarGrupo')
+@include('usuario.componente.modalAsignarGrupo')
 <!--end::modal-->
 
 @endsection

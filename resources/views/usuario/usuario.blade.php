@@ -27,7 +27,7 @@
                 </button>
             </div>
             <!--begin::Tabla Usuario-->
-            @include('usuario.tablaUsuario')
+            @include('usuario.componente.tablaUsuario')
             <!--end::Tabla Usuario-->
         </div>
     </div>
@@ -36,11 +36,11 @@
 <!--end::Content-->
 
 <!--begin::modal - Registrar Usuario-->
-@include('usuario.modalRegistrarUsuario')
+@include('usuario.componente.modalRegistrarUsuario')
 <!--end::modal-->
 
 <!--begin::modal -  Asignar Grupo-->
-@include('usuario.modalAsignarGrupo')
+@include('usuario.componente.modalAsignarGrupo')
 <!--end::modal-->
 
 @endsection

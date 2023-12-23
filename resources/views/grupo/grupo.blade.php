@@ -19,7 +19,7 @@
 			<!--begin::Col-->
 			<div class="col-md-4">
 				<!--begin::Card-->
-				@include('grupo.tarjetagrupo', ['datosgrupo'=> $dato])
+				@include('grupo.componente.tarjetagrupo', ['datosgrupo'=> $dato])
 				<!--end::Card-->
 			</div>
 			<!--end::Col-->
@@ -32,7 +32,7 @@
 <!--end::Content-->
 
 <!--begin::Modal - Update role-->
-@include('grupo.modalEditarGrupo')
+@include('grupo.componente.modalEditarGrupo')
 <!--end::Modal - Update role-->
 
 @endsection
