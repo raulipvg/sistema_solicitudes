@@ -20,23 +20,23 @@
     <div class="card mx-5">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-1">
-                <h3 class="card-title text-uppercase">Usuarios</h3>
+                <h3 class="card-title text-uppercase">Areas</h3>
 
                 <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                     Registrar
                 </button>
             </div>
-            <!--begin::Tabla Usuario-->
-            @include('usuario.tablaUsuario')
-            <!--end::Tabla Usuario-->
+            <!--begin::Tabla Area-->
+            @include('area.componente.tablaArea')
+            <!--end::Tabla Area-->
         </div>
     </div>
     
 </div>
 <!--end::Content-->
 
-<!--begin::modal - Registrar Usuario-->
-@include('usuario.modalRegistrarUsuario')
+<!--begin::modal - Registrar Area-->
+@include('area.componente.modalRegistarArea')
 <!--end::modal-->
 
 <!--begin::modal -  Asignar Grupo-->
@@ -47,25 +47,24 @@
 
 @push('Script')
     <script>
-        const GuardarUsuario = "{{ route('GuardarUsuario') }}";
-        const VerUsuario = "{{ route('VerUsuario') }}";
-        const EditarUsuario = "{{ route('EditarUsuario') }}";
-        const CambiarEstado = "{{ route('CambiarEstadoUsuario') }}";
+        const GuardarArea = "{{ route('GuardarArea') }}";
+        const VerArea = "{{ route('VerArea') }}";;
+        const EditarArea = "{{ route('EditarArea') }}";;
+        const CambiarEstadoArea = "{{ route('CambiarEstadoArea') }}";;
 
-        const VerAcceso =  "{{ route('VerUsuarioGrupo') }}";
-        const VerGrupos =  "{{ route('VerGrupoPorUsuario') }}";
-        const GuardarUsuarioGrupo = "{{ route('GuardarUsuarioGrupo') }}";
-        const DeleteUsuarioGrupo = "{{ route('DeleteUsuarioGrupo')}}";
+        const VerFlujos =  "{{ route('VerFlujos') }}";
+        const EliminarFlujo = "{{ route('EliminarFlujo') }}";
         //const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     </script>
     <!--begin::Datatables y Configuracion de la Tabla-->
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/language/language_es.js?id=2') }}"></script>
-    <script src="{{ asset('js/datatables/contenido/usuario.js?id=2') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/area.js?id=2') }}"></script>
     <!--end::Datatables y Configuracion de la Tabla-->
+
     <!--begin::Eventos de la pagina-->
     <script src="{{ asset('js/global/main.js?id=3') }}"></script>
-    <script src="{{ asset('js/eventos/usuario.js?id=3') }}"></script>
+    <script src="{{ asset('js/eventos/area/area.js?id=3') }}"></script>
     
     <!--end::Eventos de la pagina-->
 

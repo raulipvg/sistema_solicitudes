@@ -1,14 +1,17 @@
 <?php
 
+use App\Http\Controllers\AreaController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\UsuarioGrupoController;
 use App\Http\Controllers\EstadoSolicitudController;
 use App\Http\Controllers\AtributoController;
+use App\Http\Controllers\FlujoController;
 use App\Http\Controllers\MovimientoController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Monolog\Handler\RotatingFileHandler;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +83,20 @@ Route::group(['prefix' => '/movimiento'], function () {
     Route::post('/editar', [MovimientoController::class, 'Editar'])->name('EditarMovimiento');
     Route::post('/editarEstado', [MovimientoController::class, 'CambiarEstado'])->name('CambiarEstadoMovimiento');
 });
+
+Route::group(['prefix'=> '/area'], function () {
+    Route::get('/', [AreaController::class,'Index'])->name('Area');
+    Route::post('/registrar', [AreaController::class, 'Guardar'])->name('GuardarArea');
+    Route::post('/ver', [AreaController::class, 'VerId'])->name('VerArea');
+    Route::post('/editar', [AreaController::class, 'Editar'])->name('EditarArea');
+    Route::post('/cambiarestado', [AreaController::class, 'CambiarEstado'])->name('CambiarEstadoArea');
+    Route::post('/verflujos', [AreaController::class, 'VerFlujos'])->name('VerFlujos');
+});
+
+Route::group(['prefix'=> '/flujo'], function () {
+    Route::post('/eliminar', [FlujoController::class, 'Eliminar'])->name('EliminarFlujo');
+});
+
 
 Route::get('/test', function () {
     try {

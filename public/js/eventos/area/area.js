@@ -1,36 +1,12 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
-    const form = document.getElementById('Formulario1');
+    const form = document.getElementById('FormularioArea');
     $("#AlertaError").hide();
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     const validator = FormValidation.formValidation(
             form,
             {
                 fields: {
-                    'Username': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            stringLength: {
-                                min: 4,
-                                max: 25,
-                                message: 'Entre 4 y 25 caracteres'
-                            }
-                        }
-                    },
-                    'Password': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            stringLength: {
-                                min: 8,
-                                max: 100,
-                                message: 'Entre 8 y 50 caracteres'
-                            }
-                        }
-                    },
                     'Nombre': {
                         validators: {
                             notEmpty: {
@@ -47,7 +23,7 @@ $(document).ready(function() {
                             }
                         }
                     },
-                    'Apellido': {
+                    'Descripcion': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
@@ -55,83 +31,13 @@ $(document).ready(function() {
                             stringLength: {
                                 min: 3,
                                 max: 20,
-                                message: 'Entre 3 y 20 caracteres'
+                                message: 'Entre 3 y 100 caracteres'
                             },
                             regexp: {
-                                regexp: /^[a-zñáéíóú\s]+$/i,
-                                message: 'Solo letras de la A-Z '
+                                regexp: /^[a-z0-9ñáéíóú\s]+$/i,
+                                message: 'Solo caracteres de la A-Z y 0-9'
                             }
                         }
-                    },
-                    'Rut': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            stringLength: {
-                                min: 9,
-                                max: 10,
-                                message: 'Entre 9 y 10 caracteres'
-                            },
-                            callback: {
-                                message: 'Rut Invalido',
-                                callback: function(input) {
-
-                                    const rutCompleto = $('#RutInput').val();
-
-
-                                    if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) return false;
-
-                                    var tmp = rutCompleto.split('-');
-                                    var digv = tmp[1];
-                                    var rut = tmp[0];
-                                    if (digv == 'K') digv = 'k';
-                                    return (dv(rut) == digv);
-
-                                    function dv(T) {
-                                        var M = 0, S = 1;
-                                        for (; T; T = Math.floor(T / 10))
-                                            S = (S + T % 10 * (9 - M++ % 6)) % 11;
-                                        return S ? S - 1 : 'k';
-                                    }
-                                }
-                            }
-                            
-                        }
-                    },
-                    'Email': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            emailAddress: {
-                                message: 'Email inválido'
-                            }
-                        }
-                    },     
-                    'CentroCostoId': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            digits: {
-                                message: 'Digitos'
-                            },
-                            callback: {
-                                message: 'Validación de CentroCostoId',
-                                callback: function(input) {
-                                  const $this = $(this);
-                                  const $nextElement = $this.next().children().children();
-                      
-                                  const isValid = $this.hasClass("is-valid");
-                                  $nextElement.toggleClass("is-valid", isValid);
-                                  $nextElement.toggleClass("is-invalid", !isValid);
-                      
-                                  return true; // Indicar éxito de validación
-                                }
-                              }
-                        },
-                        
                     },
                     'Enabled': {
                         validators: {
@@ -156,45 +62,13 @@ $(document).ready(function() {
             }
     );
 
-    const form2 = document.getElementById('Formulario-Acceso');
-        // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
-    const validator2 = FormValidation.formValidation(
-            form2,
-            {
-                fields: {   
-                    'ComunidadId': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            digits: {
-                                message: 'Digitos'
-                            }
-                        }
-                    }
-                },
-
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    bootstrap: new FormValidation.plugins.Bootstrap5({
-                        rowSelector: '.fv-row',
-                        eleInvalidClass: 'is-invalid',
-                        eleValidClass: 'is-valid'
-                    })
-                }
-            }
-    );
-
-    //const target = document.querySelector("#div-bloquear");
-    //const blockUI = new KTBlockUI(target)
-
      // Evento al presionar el Boton de Registrar
     $("#AddBtn").on("click", function (e) {
         //Inicializacion
         //console.log("AddBtn")
         e.preventDefault();
         e.stopPropagation();
-        $("#modal-titulo").empty().html("Registrar Usuario");
+        $("#modal-titulo").empty().html("Registrar Area");
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
         //$('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
@@ -227,7 +101,7 @@ $(document).ready(function() {
                 //status
                 if (status == 'Valid') {
                     // Show loading indication                       
-                        let form1= $("#Formulario1");
+                        let form1= $("#FormularioArea");
                         var fd = form1.serialize();
                         var data = formMap(fd);
 
@@ -238,7 +112,7 @@ $(document).ready(function() {
 
                         $.ajax({
                             type: 'POST',
-                            url: GuardarUsuario,
+                            url: GuardarArea,
                             data: { 
                                     _token: csrfToken,    
                                     data: data 
@@ -255,8 +129,8 @@ $(document).ready(function() {
                                 }else{
                                     //console.log(data.error);
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
-                                       $("#AlertaError").append(html);                                    
-                                    $("#AlertaError").show();
+                                        $("#AlertaError").append(html);                                    
+                                        $("#AlertaError").show();
                                 }
                             },
                             error: function (e) {
@@ -284,11 +158,11 @@ $(document).ready(function() {
     });
 
     //Evento al presionar el Boton Editar
-    $("#tabla-usuario tbody").on("click",'.editar', function (e) {
+    $("#tabla-area tbody").on("click",'.editar', function (e) {
         e.preventDefault();
         e.stopPropagation();
         //Inicializacion
-        $("#modal-titulo").empty().html("Editar Usuario");
+        $("#modal-titulo").empty().html("Editar Area");
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
 
@@ -304,7 +178,7 @@ $(document).ready(function() {
         bloquear();
         $.ajax({
             type: 'POST',
-            url: VerUsuario,
+            url: VerArea,
             data: {
                 _token: csrfToken,
                 data: id},
@@ -321,15 +195,8 @@ $(document).ready(function() {
                     data=data.data;
                     
                     $("#IdInput").val(data.Id);
-                    $("#UsernameInput").val(data.Username);
-                    $("#PasswordInput").val("********");
-
                     $("#NombreInput").val(data.Nombre);
-                    $("#ApellidoInput").val(data.Apellido);
-                    $("#RutInput").val(data.Rut);
-                    $("#CorreoInput").val(data.Email);
-                  
-                    $('#CentroCostoInput').val(data.CentroCostoId).trigger("change");
+                    $("#DescripcionInput").val(data.Descripcion);                
                     $('#EstadoIdInput').val(data.Enabled).trigger("change");
                 }else{
                     Swal.fire({
@@ -384,14 +251,14 @@ $(document).ready(function() {
                     actualizarValidSelect2();
                     //status
                     if (status == 'Valid') {
-                            let form1= $("#Formulario1");
+                            let form1= $("#FormularioArea");
                             var fd = form1.serialize();
                             var data= formMap(fd);
                             bloquear();
 
                             $.ajax({
                                 type: 'POST',
-                                url: EditarUsuario,
+                                url: EditarArea,
                                 data: {
                                     _token: csrfToken,
                                     data: data},
@@ -431,11 +298,11 @@ $(document).ready(function() {
     });
 
     //Evento al presionar el Boton VER
-    $("#tabla-usuario tbody").on("click",'.ver', function (e) {
+    $("#tabla-area tbody").on("click",'.ver', function (e) {
         e.preventDefault();
         e.stopPropagation();
 
-        $("#modal-titulo").empty().html("Ver Usuario");
+        $("#modal-titulo").empty().html("Ver Area");
         $("input").val('').prop("disabled",true);
         $('.form-select').val("").trigger("change").prop("disabled",true);
         $("#AddSubmit").hide();
@@ -450,10 +317,11 @@ $(document).ready(function() {
         bloquear();
         $.ajax({
             type: 'POST',
-            url: VerUsuario,
+            url: VerArea,
             data: {
                 _token: csrfToken,
-                data: id},
+                data: id
+            },
             //content: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function() {
@@ -465,13 +333,8 @@ $(document).ready(function() {
                     data=data.data;
         
                     $("#IdInput").val(data.Id);
-                    $("#UsernameInput").val(data.Username);
-                    $("#PasswordInput").val("********");
                     $("#NombreInput").val(data.Nombre);
-                    $("#ApellidoInput").val(data.Apellido);
-                    $("#RutInput").val(data.Rut);
-                    $("#CorreoInput").val(data.Email);
-                    $('#CentroCostoInput').val(data.CentroCostoId).trigger("change");
+                    $("#DescripcionInput").val(data.Descripcion);           
                     $('#EstadoIdInput').val(data.Enabled).trigger("change");
                 }else{
                     Swal.fire({
@@ -514,8 +377,8 @@ $(document).ready(function() {
 
     });
     
-    // Evento al Boton que cambia el estado del usuario
-    $("#tabla-usuario tbody").on("click", '.estado-usuario', function (e) {
+    // Evento al Boton que cambia el estado del area
+    $("#tabla-area tbody").on("click", '.estado-area', function (e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -524,10 +387,11 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: CambiarEstado,
+            url: CambiarEstadoArea,
             data: {
                 _token: csrfToken,
-                data: userId},
+                data: userId
+            },
             //content: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function() {
@@ -595,7 +459,7 @@ $(document).ready(function() {
             // Open this row             
             $.ajax({
                 type: 'POST',
-                url: VerAcceso,
+                url: VerFlujos,
                 data: {
                     _token: csrfToken,
                     data: userId},
@@ -611,8 +475,7 @@ $(document).ready(function() {
                     if(data.success){             
                         data = data.data;
                         row.child(format(data)).show();
-                        $(".editar-acceso").tooltip();
-                        $(".dar-acceso").tooltip();
+                        $(".editar-flujo").tooltip();
                     }
                 },
                 error: function () {
@@ -639,143 +502,8 @@ $(document).ready(function() {
         
     });
 
-    const target2 = document.querySelector("#div-bloquear2");
-    const blockUI2 = new KTBlockUI(target2);
-    //Evento al presion el boton de Registrar ACCESO en la subtabla
-    $("#tabla-usuario tbody").on("click",'.registrar-acceso', function(e) {
-        //console.log('click')
-        e.preventDefault();
-        e.stopPropagation();
-        $('.form-select').val("").trigger("change").prop("disabled",false);
-        $("#AlertaError2").hide();
-        validator2.resetForm();
-        actualizarValidSelect2();
-        //console.log($(this).attr("data-info"))
-        $("#UsuarioIdInput").val($(this).attr("data-info"));
-        var userId= $(this).attr("data-info");
-        
-        $.ajax({
-            type: 'POST',
-            url: VerGrupos,
-            data: {
-                _token: csrfToken,
-                data: userId},
-            //content: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend: function() {
-                blockUI2.block();
-            },
-            success: function (data) {
-                if(data.success){             
-                    data = data.data;
-                    var select = $('#ComunidadIdInput2');
-                    select.empty();
-                    // Agrega las opciones al select
-                    var option = new Option('', '');
-                    select.append(option);      
-                    /*for (const comunidad in data) {
-                            var option = new Option(data[comunidad].Nombre, data[comunidad].Id);
-                            select.append(option);                        
-                    }*/
-                    var option = new Option('Grupo 1', 1);
-                    select.append(option);
-                    var option = new Option('Grupo 2', 2);
-                    select.append(option);        
-
-                }else{
-                    //console.log(data.message)
-                    html = '<ul><li style="">'+data.message+'</li></ul>';
-                    $("#AlertaError2").append(html);
-                    $("#AlertaError2").show();
-                }
-            },
-            error: function () {
-                Swal.fire({
-                    text: "Error",
-                    icon: "error",
-                    buttonsStyling: false,
-                    confirmButtonText: "OK",
-                    customClass: {
-                        confirmButton: "btn btn-danger btn-cerrar"
-                    }
-                });
-            },
-            complete: function(){
-                blockUI2.release();
-            }
-        });
-
-        
-
-
-
-    });
-    
-    //Evento al presionar el Boton Submit del modal de Registrar NUEVO ACCESO
-    const submitButton2 = document.getElementById('AddSubmit-acceso');
-    submitButton2.addEventListener('click', function (e) {
-        // Prevent default button action
-        e.preventDefault();
-        e.stopPropagation();
-        //console.log('guardar')
-        $("#AlertaError2").hide();
-        $("#AlertaError2").empty();      
-        // Validate form before submit
-        if (validator2) {
-            validator2.validate().then(function (status) {
-                 actualizarValidSelect2();
-                if (status == 'Valid') {
-                    // Show loading indication                       
-                        let form1= $("#Formulario-Acceso");
-                        var fd = form1.serialize();
-                        var data = formMap(fd);
-                        $.ajax({
-                            type: 'POST',
-                            url: GuardarUsuarioGrupo,
-                            data: { 
-                                    _token: csrfToken,    
-                                    data: data 
-                            },
-                            dataType: "json",
-                            //content: "application/json; charset=utf-8",
-                            beforeSend: function() {
-                                bloquear();
-                                KTApp.showPageLoading();
-                            },
-                            success: function (data) {
-                                if(data.success){
-                                    //console.log("exito");
-                                     location.reload();
-                                }else{
-                                    //console.log(data.error);
-                                    html = '<ul><li style="">'+data.message+'</li></ul>';
-                                    $("#AlertaError2").append(html);                                    
-                                    $("#AlertaError2").show();
-                                }
-                            },
-                            error: function (e) {
-                                Swal.fire({
-                                    text: "Error",
-                                    icon: "error",
-                                    buttonsStyling: false,
-                                    confirmButtonText: "OK",
-                                    customClass: {
-                                        confirmButton: "btn btn-danger btn-cerrar"
-                                    }
-                                });
-                            },
-                            complete: function(){
-                                KTApp.hidePageLoading();
-                                loadingEl.remove();
-                            }
-                        });
-                }
-            });
-        }
-    });
-
     //Evento al presionar el Boton de cambiar estado en la subtabla 
-    $("#tabla-usuario tbody").on("click", '.editar-acceso', function(e){
+    $("#tabla-area tbody").on("click", '.editar-flujo', function(e){
         e.preventDefault();
         e.stopPropagation();
         //console.log("click")
@@ -785,7 +513,7 @@ $(document).ready(function() {
         btn.attr("data-kt-indicator", "on");
         $.ajax({
             type: 'POST',
-            url: DeleteUsuarioGrupo,
+            url: EliminarFlujo,
             data: {
                 _token: csrfToken,
                 data: accesoId
