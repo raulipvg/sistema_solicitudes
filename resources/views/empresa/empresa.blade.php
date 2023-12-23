@@ -6,6 +6,9 @@
 .w-115px{
    width: 115px!important; 
 }
+.h-input{
+    min-height: 57.55px!important;
+}
 </style>
 @endpush
 
@@ -20,51 +23,52 @@
     <div class="card mx-5">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-1">
-                <h3 class="card-title text-uppercase">Areas</h3>
-
+                <h3 class="card-title text-uppercase">Empresa</h3>
                 <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                     Registrar
                 </button>
             </div>
-            <!--begin::Tabla Area-->
-            @include('area.componente.tablaArea')
-            <!--end::Tabla Area-->
+            <!--begin::Tabla Empresa-->
+            @include('empresa.componente.tablaEmpresa')
+            <!--end::Tabla Empresa-->
         </div>
     </div>
     
 </div>
 <!--end::Content-->
 
-<!--begin::modal - Registrar Area-->
-@include('area.componente.modalRegistarArea')
-<!--end::modal-->
+<!--begin::modal - Registrar Empresa-->
+@include('empresa.componente.modalRegistrarEmpresa')
+<!--end::modal - Registrar Empresa-->
 
-<!--begin::modal -  Asignar Grupo-->
-@include('usuario.componente.modalAsignarGrupo')
+<!--begin::modal - Asignar Centro de Costo-->
+@include('empresa.componente.modalRegistrarCentroCosto')
 <!--end::modal-->
 
 @endsection
 
 @push('Script')
     <script>
-        const GuardarArea = "{{ route('GuardarArea') }}";
-        const VerArea = "{{ route('VerArea') }}";;
-        const EditarArea = "{{ route('EditarArea') }}";;
-        const CambiarEstadoArea = "{{ route('CambiarEstadoArea') }}";;
+        const GuardarEmpresa = "{{ route('GuardarEmpresa') }}";
+        const VerEmpresa = "{{ route('VerEmpresa') }}";
+        const EditarEmpresa = "{{ route('EditarEmpresa') }}";
+        const CambiarEstadoEmpresa = "{{ route('CambiarEstadoUsuario') }}";
+        const VerCentroCosto =  "{{ route('VerCentroCosto') }}";
 
-        const VerFlujos =  "{{ route('VerFlujos') }}";
-        const EliminarFlujo = "{{ route('EliminarFlujo') }}";
+       
+        const GuardarCentroCosto = "{{ route('GuardarCentroCosto') }}";
+        const DeleteUsuarioGrupo = "{{ route('CambiarEstadoCentroCosto')}}";
+        
         //const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     </script>
     <!--begin::Datatables y Configuracion de la Tabla-->
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/language/language_es.js?id=2') }}"></script>
-    <script src="{{ asset('js/datatables/contenido/area.js?id=2') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/empresa.js?id=2') }}"></script>
     <!--end::Datatables y Configuracion de la Tabla-->
-
     <!--begin::Eventos de la pagina-->
     <script src="{{ asset('js/global/main.js?id=3') }}"></script>
-    <script src="{{ asset('js/eventos/area/area.js?id=3') }}"></script>
+    <script src="{{ asset('js/eventos/empresa/empresa.js?id=3') }}"></script>
     
     <!--end::Eventos de la pagina-->
 

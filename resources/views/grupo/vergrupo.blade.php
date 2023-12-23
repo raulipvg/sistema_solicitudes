@@ -1,7 +1,7 @@
 @extends('layout.main')
 
 @push('css')
-<link href='{{ asset('css/datatables/datatables.bundle.css?id=2') }}' rel='stylesheet' type="text/css" />
+<link href="{{ asset('css/datatables/datatables.bundle.css?id=2') }}" rel='stylesheet' type="text/css" />
 <style>
 .w-115px{
    width: 115px!important; 

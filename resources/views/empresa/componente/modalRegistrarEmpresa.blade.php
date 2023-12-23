@@ -2,7 +2,7 @@
     <div class="modal-dialog mt-20">
         <div class="modal-content" id="div-bloquear">
             <div class="modal-header bg-light p-2 ps-5">
-                <h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Usuario</h2>
+                <h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Empresa</h2>
 
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -17,25 +17,9 @@
                 </div>
                 <!--end::Close-->
             </div>
-            <form id="Formulario1" action="" method="post">
+            <form id="FormularioEmpresa" action="" method="post">
                 <div class="modal-body">
                     <div id="AlertaError" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <input type="text" class="form-control" placeholder="Ingrese el username" id="UsernameInput" name="Username" />
-                                <label for="UsernameInput" class="form-label">Username</label>
-                                <input hidden type="number" id="IdInput" name="Id" />
-
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <input type="password" class="form-control" autocomplete="off" placeholder="Ingrese la password" id="PasswordInput" name="Password" />
-                                <label for="PasswordInput" class="form-label">Password</label>
-                            </div>
-                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-2">
@@ -46,33 +30,16 @@
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="text" class="form-control" placeholder="Ingrese el apellido" id="ApellidoInput" name="Apellido" />
-                                <label for="ApellidoInput" class="form-label">Apellido</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
                                 <input type="text" class="form-control" placeholder="Ingrese el RUT" id="RutInput" name="Rut" />
                                 <label for="RUTInput" class="form-label">RUT</label>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <input type="email" class="form-control" placeholder="Ingrese el email" id="CorreoInput" name="Email" />
-                                <label for="CorreoInput" class="form-label">Email</label>
-                            </div>
-                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <select id="CentroCostoInput" name="CentroCostoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
-                                    <option></option>
-                                    <option value="1">Centro de Costo</option>
-                                </select>
-                                <label for="CentroCostoInput" class="form-label">Centro de Costo</label>
+                                <input type="email" class="form-control h-input" placeholder="Ingrese el apellido" id="CorreoInput" name="Email" />
+                                <label for="CorreoInput" class="form-label">Email</label>
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
@@ -85,7 +52,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-footer bg-light p-2">
                     <button type="button" class="btn btn-light-dark" data-bs-dismiss="modal">Cerrar</button>

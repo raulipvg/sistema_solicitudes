@@ -1,7 +1,7 @@
 @extends('layout.main')
 
 @push('css')
-<link href='{{ asset('css/datatables/datatables.bundle.css?id=2') }}' rel='stylesheet' type="text/css" />
+<link href="{{ asset('css/datatables/datatables.bundle.css?id=2') }}" rel='stylesheet' type="text/css" />
 <style>
 .w-115px{
    width: 115px!important; 
@@ -37,11 +37,11 @@
 
 <!--begin::modal - Registrar Usuario-->
 @include('usuario.componente.modalRegistrarUsuario')
-<!--end::modal-->
+<!--end::modal - Registrar Usuario-->
 
-<!--begin::modal -  Asignar Grupo-->
+<!--begin::modal -Asignar Grupo-->
 @include('usuario.componente.modalAsignarGrupo')
-<!--end::modal-->
+<!--end::modal - Asignar Grupo-->
 
 @endsection
 

@@ -1,53 +1,13 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
-    const form = document.getElementById('Formulario1');
+    const form = document.getElementById('FormularioEmpresa');
     $("#AlertaError").hide();
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     const validator = FormValidation.formValidation(
             form,
             {
                 fields: {
-                    'Username': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            stringLength: {
-                                min: 4,
-                                max: 25,
-                                message: 'Entre 4 y 25 caracteres'
-                            }
-                        }
-                    },
-                    'Password': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            stringLength: {
-                                min: 8,
-                                max: 100,
-                                message: 'Entre 8 y 50 caracteres'
-                            }
-                        }
-                    },
                     'Nombre': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            stringLength: {
-                                min: 3,
-                                max: 20,
-                                message: 'Entre 3 y 20 caracteres'
-                            },
-                            regexp: {
-                                regexp: /^[a-zñáéíóú\s]+$/i,
-                                message: 'Solo letras de la A-Z '
-                            }
-                        }
-                    },
-                    'Apellido': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
@@ -74,7 +34,7 @@ $(document).ready(function() {
                                 message: 'Entre 9 y 10 caracteres'
                             },
                             callback: {
-                                message: 'Rut Invalido',
+                                message: 'Rut Inválido',
                                 callback: function(input) {
                                     var rutCompleto = input.value;
                                     if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) return false;
@@ -109,16 +69,6 @@ $(document).ready(function() {
                                 message: 'Formato inválido'
                             }
                         }
-                    },     
-                    'CentroCostoId': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            digits: {
-                                message: 'Digitos'
-                            }
-                        }            
                     },
                     'Enabled': {
                         validators: {
@@ -130,8 +80,7 @@ $(document).ready(function() {
                             }
                         }
                     }
-                },
-                plugins: {
+                },plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
                     bootstrap: new FormValidation.plugins.Bootstrap5({
                         rowSelector: '.fv-row',
@@ -142,13 +91,29 @@ $(document).ready(function() {
             }
     );
 
-    const form2 = document.getElementById('Formulario-Acceso');
+    const form2 = document.getElementById('Formulario-CC');
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     const validator2 = FormValidation.formValidation(
             form2,
             {
                 fields: {   
-                    'ComunidadId': {
+                    'Nombre': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Requerido'
+                            },
+                            stringLength: {
+                                min: 3,
+                                max: 20,
+                                message: 'Entre 3 y 20 caracteres'
+                            },
+                            regexp: {
+                                regexp: /^[a-zñáéíóú\s]+$/i,
+                                message: 'Solo letras de la A-Z '
+                            }
+                        }
+                    },
+                    'Enabled': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
@@ -173,12 +138,12 @@ $(document).ready(function() {
     //const target = document.querySelector("#div-bloquear");
     //const blockUI = new KTBlockUI(target)
 
-     // Evento al presionar el Boton de Registrar
+     // Evento al presionar el Boton de Registrar Empresa
     $("#AddBtn").on("click", function (e) {
         //Inicializacion
         e.preventDefault();
         e.stopPropagation();
-        $("#modal-titulo").empty().html("Registrar Usuario");
+        $("#modal-titulo").empty().html("Registrar Empresa");
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
         //$('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
@@ -198,10 +163,8 @@ $(document).ready(function() {
         // Prevent default button action
         e.preventDefault();
         e.stopPropagation();
-
         $("#AlertaError").hide();
-        $("#AlertaError").empty();
-        
+        $("#AlertaError").empty();  
         // Validate form before submit
         if (validator) {
             validator.validate().then(function (status) {
@@ -210,12 +173,13 @@ $(document).ready(function() {
                 //status
                 if (status == 'Valid') {
                     // Show loading indication                       
-                        let form1= $("#Formulario1");
+                        let form1= $("#FormularioEmpresa");
                         var fd = form1.serialize();
                         var data = formMap(fd);
+                        
                         $.ajax({
                             type: 'POST',
-                            url: GuardarUsuario,
+                            url: GuardarEmpresa,
                             data: { 
                                     _token: csrfToken,    
                                     data: data 
@@ -258,20 +222,20 @@ $(document).ready(function() {
                                 submitButton.disabled = false;
                             }
                         });
+                    
                 }
             });
         }
     });
 
     //Evento al presionar el Boton Editar
-    $("#tabla-usuario tbody").on("click",'.editar', function (e) {
+    $("#tabla-empresa tbody").on("click",'.editar', function (e) {
         e.preventDefault();
         e.stopPropagation();
         //Inicializacion
-        $("#modal-titulo").empty().html("Editar Usuario");
+        $("#modal-titulo").empty().html("Editar Empresa");
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
-
         $("#AddSubmit").hide();
         $("#EditSubmit").show();
         $("#IdInput").prop("disabled",false);
@@ -284,7 +248,7 @@ $(document).ready(function() {
         
         $.ajax({
             type: 'POST',
-            url: VerUsuario,
+            url: VerEmpresa,
             data: {
                 _token: csrfToken,
                 data: id},
@@ -295,22 +259,12 @@ $(document).ready(function() {
                 KTApp.showPageLoading();
             },
             success: function (data) {
-                //console.log(data);
-                //blockUI.release();
-                if(data.success){
-                    
+                if(data.success){ 
                     data=data.data;
-                    
                     $("#IdInput").val(data.Id);
-                    $("#UsernameInput").val(data.Username);
-                    $("#PasswordInput").val("********");
-
                     $("#NombreInput").val(data.Nombre);
-                    $("#ApellidoInput").val(data.Apellido);
                     $("#RutInput").val(data.Rut);
                     $("#CorreoInput").val(data.Email);
-                  
-                    $('#CentroCostoInput').val(data.CentroCostoId).trigger("change");
                     $('#EstadoIdInput').val(data.Enabled).trigger("change");
                 }else{
                     Swal.fire({
@@ -337,8 +291,7 @@ $(document).ready(function() {
                                 confirmButton: "btn btn-danger btn-cerrar"
                             }
                         });
-
-                     $(".btn-cerrar").on("click", function () {
+                    $(".btn-cerrar").on("click", function () {
                             //console.log("Error");
                             $('#registrar').modal('toggle');
                      });
@@ -354,7 +307,6 @@ $(document).ready(function() {
     // Manejador al presionar el submit de Editar
     const submitEditButton = document.getElementById('EditSubmit');
     submitEditButton.addEventListener('click', function (e) {
-            
             e.preventDefault();
             e.stopPropagation();
             $("#AlertaError").hide();
@@ -365,20 +317,20 @@ $(document).ready(function() {
                     actualizarValidSelect2();
                     //status
                     if (status == 'Valid') {
-                            let form1= $("#Formulario1");
+                            let form1= $("#FormularioEmpresa");
                             var fd = form1.serialize();
                             var data= formMap(fd);
-                            
+                            bloquear();
+
                             $.ajax({
                                 type: 'POST',
-                                url: EditarUsuario,
+                                url: EditarEmpresa,
                                 data: {
                                     _token: csrfToken,
                                     data: data},
                                 //content: "application/json; charset=utf-8",
                                 dataType: "json",
                                 beforeSend: function() {
-                                    bloquear();
                                     KTApp.showPageLoading();
                                 },
                                 success: function (data) {                                    
@@ -412,11 +364,11 @@ $(document).ready(function() {
     });
 
     //Evento al presionar el Boton VER
-    $("#tabla-usuario tbody").on("click",'.ver', function (e) {
+    $("#tabla-empresa tbody").on("click",'.ver', function (e) {
         e.preventDefault();
         e.stopPropagation();
 
-        $("#modal-titulo").empty().html("Ver Usuario");
+        $("#modal-titulo").empty().html("Ver Empresa");
         $("input").val('').prop("disabled",true);
         $('.form-select').val("").trigger("change").prop("disabled",true);
         $("#AddSubmit").hide();
@@ -426,11 +378,12 @@ $(document).ready(function() {
 
         validator.resetForm();
         actualizarValidSelect2();
+
         let id = Number($(this).attr("info"));
         
         $.ajax({
             type: 'POST',
-            url: VerUsuario,
+            url: VerEmpresa,
             data: {
                 _token: csrfToken,
                 data: id
@@ -447,13 +400,9 @@ $(document).ready(function() {
                     data=data.data;
         
                     $("#IdInput").val(data.Id);
-                    $("#UsernameInput").val(data.Username);
-                    $("#PasswordInput").val("********");
                     $("#NombreInput").val(data.Nombre);
-                    $("#ApellidoInput").val(data.Apellido);
                     $("#RutInput").val(data.Rut);
                     $("#CorreoInput").val(data.Email);
-                    $('#CentroCostoInput').val(data.CentroCostoId).trigger("change");
                     $('#EstadoIdInput').val(data.Enabled).trigger("change");
                 }else{
                     Swal.fire({
@@ -492,20 +441,19 @@ $(document).ready(function() {
                 loadingEl.remove();
             }
         });
-
-
     });
     
-    // Evento al Boton que cambia el estado del usuario
-    $("#tabla-usuario tbody").on("click", '.estado-usuario', function (e) {
+    // Evento al Boton que cambia el estado de la empresa
+    $("#tabla-empresa tbody").on("click", '.estado-empresa', function (e) {
         e.preventDefault();
         e.stopPropagation();
+
         var userId =  $(this).closest('td').next().find('a.ver').attr('info');
         var btn = $(this);
 
         $.ajax({
             type: 'POST',
-            url: CambiarEstado,
+            url: CambiarEstadoEmpresa,
             data: {
                 _token: csrfToken,
                 data: userId
@@ -577,11 +525,10 @@ $(document).ready(function() {
             // Open this row             
             $.ajax({
                 type: 'POST',
-                url: VerAcceso,
+                url: VerCentroCosto,
                 data: {
                     _token: csrfToken,
-                    data: userId
-                },
+                    data: userId},
                 //content: "application/json; charset=utf-8",
                 dataType: "json",
                 beforeSend: function() {
@@ -624,78 +571,24 @@ $(document).ready(function() {
 
     const target2 = document.querySelector("#div-bloquear2");
     const blockUI2 = new KTBlockUI(target2);
-    //Evento al presion el boton de Registrar ACCESO en la subtabla
-    $("#tabla-usuario tbody").on("click",'.registrar-acceso', function(e) {
+    //Evento al presion el boton de Registrar CC en la subtabla
+    $("#tabla-empresa tbody").on("click",'.registrar-cc', function(e) {
         //console.log('click')
         e.preventDefault();
         e.stopPropagation();
+        $('#NombreInput2').val('');
         $('.form-select').val("").trigger("change").prop("disabled",false);
         $("#AlertaError2").hide();
+
         validator2.resetForm();
         actualizarValidSelect2();
         //console.log($(this).attr("data-info"))
-        $("#UsuarioIdInput").val($(this).attr("data-info"));
-        var userId= $(this).attr("data-info");
-        
-        $.ajax({
-            type: 'POST',
-            url: VerGrupos,
-            data: {
-                _token: csrfToken,
-                data: userId},
-            //content: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend: function() {
-                blockUI2.block();
-            },
-            success: function (data) {
-                if(data.success){             
-                    data = data.data;
-                    var select = $('#ComunidadIdInput2');
-                    select.empty();
-                    // Agrega las opciones al select
-                    var option = new Option('', '');
-                    select.append(option);      
-                    /*for (const comunidad in data) {
-                            var option = new Option(data[comunidad].Nombre, data[comunidad].Id);
-                            select.append(option);                        
-                    }*/
-                    var option = new Option('Grupo 1', 1);
-                    select.append(option);
-                    var option = new Option('Grupo 2', 2);
-                    select.append(option);        
-
-                }else{
-                    //console.log(data.message)
-                    html = '<ul><li style="">'+data.message+'</li></ul>';
-                    $("#AlertaError2").append(html);
-                    $("#AlertaError2").show();
-                }
-            },
-            error: function () {
-                Swal.fire({
-                    text: "Error",
-                    icon: "error",
-                    buttonsStyling: false,
-                    confirmButtonText: "OK",
-                    customClass: {
-                        confirmButton: "btn btn-danger btn-cerrar"
-                    }
-                });
-            },
-            complete: function(){
-                blockUI2.release();
-            }
-        });
-
-        
-
-
-
+        $("#EmpresaIdInput").val($(this).attr("data-info"));
+        var EmpresaIdInput= $(this).attr("data-info");
     });
     
-    //Evento al presionar el Boton Submit del modal de Registrar NUEVO ACCESO
-    const submitButton2 = document.getElementById('AddSubmit-acceso');
+    //Evento al presionar el Boton Submit del modal de Registrar NUEVO Centro de Costo
+    const submitButton2 = document.getElementById('AddSubmit-cc');
     submitButton2.addEventListener('click', function (e) {
         // Prevent default button action
         e.preventDefault();
@@ -709,12 +602,12 @@ $(document).ready(function() {
                  actualizarValidSelect2();
                 if (status == 'Valid') {
                     // Show loading indication                       
-                        let form1= $("#Formulario-Acceso");
+                        let form1= $("#Formulario-CC");
                         var fd = form1.serialize();
                         var data = formMap(fd);
                         $.ajax({
                             type: 'POST',
-                            url: GuardarUsuarioGrupo,
+                            url: GuardarCentroCosto,
                             data: { 
                                     _token: csrfToken,    
                                     data: data 
@@ -758,14 +651,14 @@ $(document).ready(function() {
     });
 
     //Evento al presionar el Boton de cambiar estado en la subtabla 
-    $("#tabla-usuario tbody").on("click", '.editar-acceso', function(e){
+    $("#tabla-empresa tbody").on("click", '.editar-acceso', function(e){
         e.preventDefault();
         e.stopPropagation();
         //console.log("click")
         var accesoId =$(this).attr("info");
         var btn = $(this);
         //console.log(accesoId)
-        btn.attr("data-kt-indicator", "on");
+        
         $.ajax({
             type: 'POST',
             url: DeleteUsuarioGrupo,
@@ -776,6 +669,7 @@ $(document).ready(function() {
             //content: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function() {
+                btn.attr("data-kt-indicator", "on");
                 bloquear();
                 KTApp.showPageLoading();
             },

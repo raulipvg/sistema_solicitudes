@@ -1,14 +1,17 @@
 <?php
 
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\UsuarioGrupoController;
 use App\Http\Controllers\EstadoSolicitudController;
 use App\Http\Controllers\AtributoController;
+use App\Http\Controllers\CentroCostoController;
 use App\Http\Controllers\FlujoController;
 use App\Http\Controllers\MovimientoController;
+use App\Models\CentroDeCosto;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Monolog\Handler\RotatingFileHandler;
@@ -91,6 +94,20 @@ Route::group(['prefix'=> '/area'], function () {
     Route::post('/editar', [AreaController::class, 'Editar'])->name('EditarArea');
     Route::post('/cambiarestado', [AreaController::class, 'CambiarEstado'])->name('CambiarEstadoArea');
     Route::post('/verflujos', [AreaController::class, 'VerFlujos'])->name('VerFlujos');
+});
+
+Route::group(['prefix'=> '/empresa'], function () {
+    Route::get('/', [EmpresaController::class,'Index'])->name('Empresa');
+    Route::post('/registrar', [EmpresaController::class, 'Guardar'])->name('GuardarEmpresa');
+    Route::post('/ver', [EmpresaController::class, 'VerId'])->name('VerEmpresa');
+    Route::post('/editar', [EmpresaController::class, 'Editar'])->name('EditarEmpresa');
+    Route::post('/cambiarestado', [EmpresaController::class, 'CambiarEstado'])->name('CambiarEstadoEmpresa');
+    Route::post('/vercentrocosto', [EmpresaController::class, 'VerCentroCosto'])->name('VerCentroCosto');
+});
+
+Route::group(['prefix'=> '/centrocosto'], function () {
+    Route::post('/registrar', [CentroCostoController::class,'Guardar'])->name('GuardarCentroCosto');
+    Route::post('/cambiarestado', [CentroCostoController::class, 'CambiarEstado'])->name('CambiarEstadoCentroCosto');
 });
 
 Route::group(['prefix'=> '/flujo'], function () {

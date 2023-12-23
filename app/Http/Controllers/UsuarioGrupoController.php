@@ -12,6 +12,7 @@ class UsuarioGrupoController extends Controller
     }
     public function Ver(Request $request)
     {
+        $request = $request->input('data');
         return response()->json([
             'success' => true,
             'data' => 1,
@@ -19,6 +20,7 @@ class UsuarioGrupoController extends Controller
     }
     public function VerGrupo(Request $request)
     {
+        $request = $request->input('data');
         return response()->json([
             'success' => true,
             'data' => 1,
@@ -26,6 +28,7 @@ class UsuarioGrupoController extends Controller
     }
     public function Registrar(Request $request)
     {
+        $request = $request->input('data');
         return response()->json([
             'success' => true,
             'data' => 1,
@@ -33,6 +36,7 @@ class UsuarioGrupoController extends Controller
     }
     public function Eliminar(Request $request)
     {
+        $request = $request->input('data');
         return response()->json([
             'success' => true,
             'data' => 1,
