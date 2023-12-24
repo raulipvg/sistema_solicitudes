@@ -32,17 +32,24 @@ class AreaController extends Controller
         try{
             $area = new Area();
             $area->validate($request);
-            $area->fill($request);            
+            $area->fill($request);
+            
+            DB::beginTransaction();
+
             $area->save(); 
+
+            DB::commit(); 
             
             return response()->json([
                 'success' => true,
-                'message' => 'Area Guardada']);
+                'message' => 'Area Guardada'
+            ]);
         }catch(Exception $e){
-                
+            DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()]);
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -54,15 +61,23 @@ class AreaController extends Controller
         $request = $request->input('data');
 
         try{
-
             $area= Area::find($request);
+
+            if (!$area) {
+                throw new Exception('Area no encontrada');
+            }
+
             return response()->json([
                 'success' => true,
-                'data' => $area ]);
+                'data' => $area
+            ]);
+
         }catch(Exception $e){
+
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()]);
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -73,6 +88,7 @@ class AreaController extends Controller
     public function Editar(Request $request)
     {
         $request = $request->input('data');
+
         $request['Nombre'] = strtolower($request['Nombre']);
         $request['Descripcion'] = strtolower($request['Descripcion']);
 
@@ -80,18 +96,27 @@ class AreaController extends Controller
             $area = new Area();
             $area->validate($request);
 
+            DB::beginTransaction();
+
             $areaEdit = Area::find($request['Id']);
+            if (!$areaEdit) {
+                throw new Exception('Area no encontrada');
+            }
+
             $areaEdit->fill($request);
             $areaEdit->save();
 
+            DB::commit();
             return response()->json([
                 'success' => true,
-                'message' => 'Area Editada']);
+                'message' => 'Area actualizada correctamente'
+            ]);
         }catch(Exception $e){
-                
+            DB::rollBack();  
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()]);
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -104,20 +129,27 @@ class AreaController extends Controller
 
         try{
             $areaEdit = Area::find($request);
+
+            if (!$areaEdit) {
+                throw new Exception('Area no encontrada');
+            }
             DB::beginTransaction();
             $areaEdit->update([
                    'Enabled' => ($areaEdit['Enabled'] == 1)? 0: 1 
             ]);
+            $areaEdit->save();
             DB::commit();
             
             return response()->json([
                 'success' => true,
-                'message' => 'Estado del Area cambiado']);
+                'message' => 'Estado del Area cambiado'
+            ]);
         }catch(Exception $e){
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()]);
+                'message' => $e->getMessage()
+            ]);
         }
     }
 

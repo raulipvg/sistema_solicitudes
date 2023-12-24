@@ -13,7 +13,7 @@ class EmpresaController extends Controller
     public function Index()
     {
         
-        $titulo= "Empresa";
+        $titulo= "Empresas";
         $empresas= Empresa::all();
         return view('empresa.empresa')->with([
                         'titulo'=> $titulo,
