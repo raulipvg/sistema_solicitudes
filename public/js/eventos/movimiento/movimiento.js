@@ -1,6 +1,6 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
-    const form = document.getElementById('Formulario1');
+    const form = document.getElementById('FormularioMovimiento');
     $("#AlertaError").hide();
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     const validator = FormValidation.formValidation(
@@ -119,7 +119,7 @@ $(document).ready(function() {
                 //status
                 if (status == 'Valid') {
                     // Show loading indication                       
-                        let form1= $("#Formulario1");
+                        let form1= $("#FormularioMovimiento");
                         var fd = form1.serialize();
                         var data = formMap(fd);
 
@@ -130,7 +130,7 @@ $(document).ready(function() {
 
                         $.ajax({
                             type: 'POST',
-                            url: GuardarAtributo,
+                            url: GuardarMovimiento,
                             data: { 
                                     _token: csrfToken,    
                                     data: data 
@@ -196,13 +196,14 @@ $(document).ready(function() {
         bloquear();
         $.ajax({
             type: 'POST',
-            url: VerAtributo,
+            url: VerMovimiento,
             data: {
                 _token: csrfToken,
                 data: id},
             //content: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function() {
+                bloquear();
                 KTApp.showPageLoading();
             },
             success: function (data) {
@@ -269,14 +270,14 @@ $(document).ready(function() {
                     actualizarValidSelect2();
                     //status
                     if (status == 'Valid') {
-                            let form1= $("#Formulario1");
+                            let form1= $("#FormularioMovimiento");
                             var fd = form1.serialize();
                             var data= formMap(fd);
                             bloquear();
 
                             $.ajax({
                                 type: 'POST',
-                                url: EditarAtributo,
+                                url: EditarMovimiento,
                                 data: {
                                     _token: csrfToken,
                                     data: data},
@@ -333,16 +334,16 @@ $(document).ready(function() {
         actualizarValidSelect2();
 
         let id = Number($(this).attr("info"));
-        bloquear();
         $.ajax({
             type: 'POST',
-            url: VerUsuario,
+            url: VerMovimiento,
             data: {
                 _token: csrfToken,
                 data: id},
             //content: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function() {
+                bloquear();
                 KTApp.showPageLoading();
             },
             success: function (data) {
@@ -406,7 +407,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: CambiarEstadoAtributo,
+            url: CambiarEstadoMovimiento,
             data: {
                 _token: csrfToken,
                 data: userId},

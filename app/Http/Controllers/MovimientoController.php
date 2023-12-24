@@ -8,7 +8,10 @@ class MovimientoController extends Controller
 {
     public function Index()
     {
-        return View('movimiento.movimiento');
+        $titulo= "Movimiento";
+        return view('movimiento.movimiento')->with([
+                        'titulo'=>$titulo
+                    ]);
     }
 
     /**
