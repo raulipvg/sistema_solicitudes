@@ -9,6 +9,9 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class Usuario
@@ -33,13 +36,13 @@ class Usuario extends Model
 {
 	protected $table = 'usuario';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
+	public $incrementing = true;
+	public $timestamps = true;
 
 	protected $casts = [
 		'Id' => 'int',
 		'GoogleId' => 'int',
-		'Enabled' => 'int',
-		'PersonaId' => 'int'
+		'Enabled' => 'int'
 	];
 
 	protected $fillable = [
@@ -47,13 +50,12 @@ class Usuario extends Model
 		'Password',
 		'Email',
 		'GoogleId',
-		'Enabled',
-		'PersonaId'
+		'Enabled'
 	];
 
 	public function persona()
 	{
-		return $this->belongsTo(Persona::class, 'PersonaId');
+		return $this->hasOne(Persona::class, 'UsuarioId');
 	}
 
 	public function historial_solicituds()
@@ -67,4 +69,54 @@ class Usuario extends Model
 					->withPivot('Id', 'Enabled')
 					->withTimestamps();
 	}
+
+	public function validate(array $data)
+    {
+        $id = isset($data['Id']) ? $data['Id'] : null;
+
+        $rules = [
+            'Username' => [
+                'required',
+                'string',
+                'max:255',
+				Rule::unique('usuario','Username')->ignore($id, 'Id'),
+            ],
+			'Password' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+			'Email' => [
+                'required',
+                'email',
+                'max:50',
+                Rule::unique('usuario','Email')->ignore($id, 'Id')
+            ],
+			'GoogleId' => 'string|numeric',
+            'Enabled' => 'required|min:0|max:1'
+        ];
+        $messages = [
+            'Username.unique' => 'El Username ya está en uso.',
+            'Email.unique' => 'El Email ya está en uso.',
+            '*' => 'Hubo un problema con el campo :attribute.'
+            // Agrega más mensajes personalizados aquí según tus necesidades
+        ];
+
+        $validator = Validator::make($data, $rules, $messages);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $databaseErrors = $errors->getMessages();
+
+            foreach ($databaseErrors as $fieldErrors) {
+                foreach ($fieldErrors as $fieldError) {
+                    if (strpos($fieldError, 'database') !== false) {
+                        //Problema de BD
+                        $messages['*'] = 'Error';
+                        break 2; // Salir de los bucles si se encuentra un error de la base de datos
+                    }
+                }
+            }
+            throw new ValidationException($validator);
+        }
+    }
 }

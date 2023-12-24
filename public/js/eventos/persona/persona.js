@@ -295,6 +295,7 @@ $(document).ready(function() {
             success: function (data) {
                 if(data.success){ 
                     data=data.data;
+                     console.log(data)
                     $("#IdInput").val(data.Id);
                     $("#NombreInput").val(data.Nombre);
                     $("#ApellidoInput").val(data.Apellido);
@@ -622,7 +623,7 @@ $(document).ready(function() {
                                complete: function(){
                                    KTApp.hidePageLoading();
                                    loadingEl.remove();
-                                   submitAccesoButtonn.removeAttribute('data-kt-indicator');
+                                   submitAccesoButton.removeAttribute('data-kt-indicator');
                                    submitAccesoButton.disabled = false;
                                }
                            });
