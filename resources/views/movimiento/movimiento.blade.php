@@ -48,7 +48,7 @@
     <div class="card mx-5">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-1">
-                <h3 class="card-title text-uppercase">Atributos</h3>
+                <h3 class="card-title text-uppercase">Movimiento</h3>
                 <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                     Registrar
                 </button>

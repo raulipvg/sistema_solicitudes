@@ -32,7 +32,7 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/', [HomeController::class, 'Index'])->name('Home');
 });
 
-Route::group(['prefix' => '/usuario'], function () {
+Route::group(['prefix' => '/usuario'], function () { //LISTO
     Route::get('/', [UsuarioController::class, 'Index'])->name('Usuario');
     Route::post('/registrar', [UsuarioController::class, 'Guardar'])->name('GuardarUsuario');
     Route::post('/ver', [UsuarioController::class, 'VerId'])->name('VerUsuario');
@@ -41,7 +41,7 @@ Route::group(['prefix' => '/usuario'], function () {
 });
 
 
-Route::group(['prefix' => '/usuariogrupo'], function () {
+Route::group(['prefix' => '/usuariogrupo'], function () { //
     Route::post('/ver', [UsuarioGrupoController::class, 'Ver'])->name('VerUsuarioGrupo');
     Route::post('/vergrupos', [UsuarioGrupoController::class, 'VerGrupo'])->name('VerGrupoPorUsuario');
     Route::post('/registrar', [UsuarioGrupoController::class, 'Registrar'])->name('GuardarUsuarioGrupo');
