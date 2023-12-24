@@ -8,7 +8,10 @@ class AtributoController extends Controller
 {
     public function Index()
     {
-        return View('atributo.atributo');
+        $titulo = 'Atributo';
+        return View('atributo.atributo')->with([
+            'titulo'=>$titulo
+        ]);
     }
 
     /**

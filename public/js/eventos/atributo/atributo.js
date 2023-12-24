@@ -1,6 +1,6 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
-    const form = document.getElementById('Formulario1');
+    const form = document.getElementById('FormularioAtributo');
     $("#AlertaError").hide();
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     const validator = FormValidation.formValidation(
@@ -99,7 +99,7 @@ $(document).ready(function() {
                 //status
                 if (status == 'Valid') {
                     // Show loading indication                       
-                        let form1= $("#Formulario1");
+                        let form1= $("#FormularioAtributo");
                         var fd = form1.serialize();
                         var data = formMap(fd);
 
@@ -249,7 +249,7 @@ $(document).ready(function() {
                     actualizarValidSelect2();
                     //status
                     if (status == 'Valid') {
-                            let form1= $("#Formulario1");
+                            let form1= $("#FormularioAtributo");
                             var fd = form1.serialize();
                             var data= formMap(fd);
                             bloquear();
@@ -295,87 +295,6 @@ $(document).ready(function() {
             }
     });
 
-    
-    //Evento al presionar el Boton VER
-    $("#tabla-usuario tbody").on("click",'.ver', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        $("#modal-titulo").empty().html("Ver Atributo");
-        $("input").val('').prop("disabled",true);
-        $('.form-select').val("").trigger("change").prop("disabled",true);
-        $("#AddSubmit").hide();
-        $("#EditSubmit").hide();
-        $("#IdInput").prop("disabled",false);
-        $("#AlertaError").hide();
-
-        validator.resetForm();
-        actualizarValidSelect2();
-
-        let id = Number($(this).attr("info"));
-        bloquear();
-        $.ajax({
-            type: 'POST',
-            url: VerUsuario,
-            data: {
-                _token: csrfToken,
-                data: id},
-            //content: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend: function() {
-                KTApp.showPageLoading();
-            },
-            success: function (data) {
-                //console.log(data);
-                if(data){
-                    data=data.data;
-        
-                    $("#IdInput").val(data.Id);
-                    $("#NombreInput").val(data.Nombre);
-                    $("#ValorReferenciaInput").val(data.ValorReferencia);
-                    $('#EstadoIdInput').val(data.Enabled).trigger("change");
-                }else{
-                    Swal.fire({
-                            text: "Error de Carga",
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "OK",
-                            customClass: {
-                                confirmButton: "btn btn-danger btn-cerrar"
-                            }
-                        });
-                     $(".btn-cerrar").on("click", function () {
-                            //console.log("Error");
-                            $('#registrar').modal('toggle');
-                     });
-                }
-            },
-            error: function () {
-                //blockUI.release();
-                Swal.fire({
-                            text: "Error de Carga",
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "OK",
-                            customClass: {
-                                confirmButton: "btn btn-danger btn-cerrar"
-                            }
-                        });
-                $(".btn-cerrar").on("click", function () {
-                        console.log("Error");
-                        $('#registrar').modal('toggle');
-                });
-            },
-            complete: function(){
-                KTApp.hidePageLoading();
-                loadingEl.remove();
-            }
-        });
-
-
-    });
-    
-    
     // Evento al Boton que cambia el estado del "Atributo"
     $("#tabla-atributo tbody").on("click", '.estado-atributo', function (e) {
         e.preventDefault();
