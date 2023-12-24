@@ -58,23 +58,10 @@ class Area extends Model
             $id = null;
         }
 
-
         $rules = [
-            'Nombre' => 'required|string|max:50',
-            'RUT' => [
-                'required',
-                'string',
-                'max:50',
-                Rule::unique('Comunidad','RUT')->ignore($id, 'Id'),
-            ],
-            'Correo' => 'required|email|max:50',
-            'NumeroCuenta' => 'required|numeric',
-            'TipoCuenta' => 'required|string',
-            'Banco' => 'required|string',
-            'CantPropiedades' => 'required|numeric',
-            'FechaRegistro' => 'required|date',
-            'Enabled' => 'required|min:1|max:2',
-            'TipoComunidadId' => 'required',
+            'Nombre' => 'required|string|max:255',
+            'Descripcion' => 'required|string|max:255',
+            'Enabled' => 'required|min:0|max:1'
         ];
 
         $validator = Validator::make($data, $rules);

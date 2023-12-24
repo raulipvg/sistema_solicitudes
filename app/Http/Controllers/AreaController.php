@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AreaController extends Controller
 {
     public function Index()
     {
         $titulo= "Areas";
+        $areas = Area::all();
+
         return view('area.area')->with([
-                        'titulo'=> $titulo
+                        'titulo'=> $titulo,
+                        'areas'=> $areas
                     ]);
     
     }
@@ -20,9 +26,24 @@ class AreaController extends Controller
     public function Guardar(Request $request)
     {
         $request = $request->input('data');
-        return response()->json([
-            'success' => true,
-            'message' => 'Modelo recibido y procesado']);
+        $request['Nombre'] = strtolower($request['Nombre']);
+        $request['Descripcion'] = strtolower($request['Descripcion']);
+
+        try{
+            $area = new Area();
+            $area->validate($request);
+            $area->fill($request);            
+            $area->save(); 
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Area Guardada']);
+        }catch(Exception $e){
+                
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -31,10 +52,18 @@ class AreaController extends Controller
     public function VerId(Request $request)
     {
         $request = $request->input('data');
-        return response()->json([
-            'success' => true,
-            'data' => 1,
-            'message' => 'Modelo recibido y procesado']);
+
+        try{
+
+            $area= Area::find($request);
+            return response()->json([
+                'success' => true,
+                'data' => $area ]);
+        }catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
     }
 
 
@@ -44,9 +73,26 @@ class AreaController extends Controller
     public function Editar(Request $request)
     {
         $request = $request->input('data');
-        return response()->json([
-            'success' => true,
-            'message' => 'Modelo recibido y procesado']);
+        $request['Nombre'] = strtolower($request['Nombre']);
+        $request['Descripcion'] = strtolower($request['Descripcion']);
+
+         try{
+            $area = new Area();
+            $area->validate($request);
+
+            $areaEdit = Area::find($request['Id']);
+            $areaEdit->fill($request);
+            $areaEdit->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Area Editada']);
+        }catch(Exception $e){
+                
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -54,16 +100,34 @@ class AreaController extends Controller
      */
     public function CambiarEstado(Request $request)
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Modelo recibido y procesado']);
+        $request = $request->input('data');
+        // Accede a los atributos del modelo
+
+        try{
+            $areaEdit = Area::find($request);
+            DB::beginTransaction();
+            $areaEdit->update([
+                   'Enabled' => ($areaEdit['Enabled'] == 1)? 0: 1 
+            ]);
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Estado del Area cambiado']);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()]);
+        }
     }
 
     public function VerFlujos(Request $request)
     {
+        //POR HACER::CUANDO ESTEN LISTOS LOS FLUJOS
         return response()->json([
             'success' => true,
-            'message' => 'Modelo recibido y procesado']);
+            'message' => 'Ver FLujos asociados al Area']);
     }
 
 }

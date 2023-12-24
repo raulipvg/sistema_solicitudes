@@ -27,7 +27,7 @@
                 </button>
             </div>
             <!--begin::Tabla Area-->
-            @include('area.componente.tablaArea')
+            @include('area.componente.tablaArea', ['areas' => $areas])
             <!--end::Tabla Area-->
         </div>
     </div>
