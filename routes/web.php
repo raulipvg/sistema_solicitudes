@@ -11,6 +11,7 @@ use App\Http\Controllers\AtributoController;
 use App\Http\Controllers\CentroCostoController;
 use App\Http\Controllers\FlujoController;
 use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\PersonaController;
 use App\Models\CentroDeCosto;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -96,6 +97,10 @@ Route::group(['prefix'=> '/area'], function () {
     Route::post('/verflujos', [AreaController::class, 'VerFlujos'])->name('VerFlujos');
 });
 
+Route::group(['prefix'=> '/flujo'], function () {
+    Route::post('/eliminar', [FlujoController::class, 'Eliminar'])->name('EliminarFlujo');
+});
+
 Route::group(['prefix'=> '/empresa'], function () {
     Route::get('/', [EmpresaController::class,'Index'])->name('Empresa');
     Route::post('/registrar', [EmpresaController::class, 'Guardar'])->name('GuardarEmpresa');
@@ -110,8 +115,14 @@ Route::group(['prefix'=> '/centrocosto'], function () {
     Route::post('/cambiarestado', [CentroCostoController::class, 'CambiarEstado'])->name('CambiarEstadoCentroCosto');
 });
 
-Route::group(['prefix'=> '/flujo'], function () {
-    Route::post('/eliminar', [FlujoController::class, 'Eliminar'])->name('EliminarFlujo');
+Route::group(['prefix'=> '/persona'], function () {
+    Route::get('/', [PersonaController::class,'Index'])->name('Persona');
+    Route::post('/registrar', [PersonaController::class, 'Guardar'])->name('GuardarPersona');
+    Route::post('/ver', [PersonaController::class, 'VerId'])->name('VerPersona');
+    Route::post('/editar', [PersonaController::class, 'Editar'])->name('EditarPersona');
+    Route::post('/cambiarestado', [PersonaController::class, 'CambiarEstado'])->name('CambiarEstadoPersona');
+    Route::post('/daracceso', [PersonaController::class, 'DarAcceso'])->name('DarAccesoPersona');
+
 });
 
 

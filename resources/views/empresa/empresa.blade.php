@@ -49,27 +49,26 @@
 
 @push('Script')
     <script>
+        /* BEGIN::RUTAS */
         const GuardarEmpresa = "{{ route('GuardarEmpresa') }}";
         const VerEmpresa = "{{ route('VerEmpresa') }}";
         const EditarEmpresa = "{{ route('EditarEmpresa') }}";
         const CambiarEstadoEmpresa = "{{ route('CambiarEstadoUsuario') }}";
-        const VerCentroCosto =  "{{ route('VerCentroCosto') }}";
-
-       
+        const VerCentroCosto =  "{{ route('VerCentroCosto') }}";  
         const GuardarCentroCosto = "{{ route('GuardarCentroCosto') }}";
         const DeleteUsuarioGrupo = "{{ route('CambiarEstadoCentroCosto')}}";
-        
-        //const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        /* END:RUTAS */
     </script>
+
     <!--begin::Datatables y Configuracion de la Tabla-->
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/language/language_es.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/contenido/empresa.js?id=2') }}"></script>
     <!--end::Datatables y Configuracion de la Tabla-->
+
     <!--begin::Eventos de la pagina-->
     <script src="{{ asset('js/global/main.js?id=3') }}"></script>
     <script src="{{ asset('js/eventos/empresa/empresa.js?id=3') }}"></script>
-    
     <!--end::Eventos de la pagina-->
 
 @endpush

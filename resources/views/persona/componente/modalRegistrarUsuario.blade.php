@@ -1,8 +1,8 @@
-<div class="modal fade" tabindex="-1" id="registrar" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+<div class="modal fade" tabindex="-1" id="registrar-acceso-sistema" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog mt-20">
-        <div class="modal-content" id="div-bloquear">
+        <div class="modal-content" id="div-bloquear2">
             <div class="modal-header bg-light p-2 ps-5">
-                <h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Empresa</h2>
+                <h2 id="modal-titulo-acceso" class="modal-title text-uppercase">Registrar Usuario</h2>
 
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -17,53 +17,48 @@
                 </div>
                 <!--end::Close-->
             </div>
-            <form id="FormularioEmpresa" action="" method="post">
+            <form id="FormularioAccesoSistema" action="" method="post">
                 <div class="modal-body">
-                    <div id="AlertaError" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
+                    <div id="AlertaError2" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="text" class="form-control" placeholder="Ingrese el nombre" id="NombreInput" name="Nombre" />
-                                <label for="NombreInput" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" placeholder="Ingrese el username" id="UsernameInput" name="Username" autocomplete="off" />
+                                <label for="UsernameInput" class="form-label">Username</label>
                             </div>
-                            <input hidden type="number" id="IdInput" name="Id" />
+                            <input hidden type="number" id="PersonaIdInput" name="PersonaId" />
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="text" class="form-control" placeholder="Ingrese el RUT" id="RutInput" name="Rut" />
-                                <label for="RutInput" class="form-label">RUT</label>
+                                <input type="password" class="form-control" autocomplete="off" placeholder="Ingrese la password" id="PasswordInput" name="Password" />
+                                <label for="PasswordInput" class="form-label">Password</label>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="email" class="form-control h-input" autocomplete="off" placeholder="Ingrese el apellido" id="CorreoInput" name="Email" />
+                                <input type="email" class="form-control h-input" placeholder="Ingrese el email" id="CorreoInput" name="Email" autocomplete="off" />
                                 <label for="CorreoInput" class="form-label">Email</label>
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <select id="EstadoIdInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                <select id="EstadoIdInput3" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
                                     <option value="1">Habilitado</option>
+                                    <option value="1">Deshabilitado</option>
                                 </select>
-                                <label for="EstadoIdInput" class="form-label">Estado</label>
+                                <label for="EstadoIdInput3" class="form-label">Estado</label>
                             </div>
                         </div>
-                    </div>
+                    </div>                
                 </div>
                 <div class="modal-footer bg-light p-2">
                     <button type="button" class="btn btn-light-dark" data-bs-dismiss="modal">Cerrar</button>
-                    <button id="AddSubmit" type="submit" class="btn btn-success">
-                        <div class="indicator-label">Registrar</div>
-                        <div class="indicator-progress">Espere...
-                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                        </div>
-                    </button>
-                    <button id="EditSubmit" type="submit" class="btn btn-success">
-                        <div class="indicator-label">Actualizar</div>
+                    <button id="AddSubmit-acceso-sistema" type="submit" class="btn btn-success">
+                        <div class="indicator-label">Registrar Usuario</div>
                         <div class="indicator-progress">Espere...
                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                         </div>
