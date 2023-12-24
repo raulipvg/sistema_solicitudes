@@ -15,7 +15,7 @@
 
 @section('main-content')
 <!--begin::Toolbar-->
-@include('layout.toolbar', ['titulo' => $titulo])
+@include('layout.toolbar')
 <!--end::Toolbar-->
 <!--begin::Content-->
 <div class="d-flex flex-column flex-column-fluid">
@@ -53,7 +53,7 @@
         const GuardarEmpresa = "{{ route('GuardarEmpresa') }}";
         const VerEmpresa = "{{ route('VerEmpresa') }}";
         const EditarEmpresa = "{{ route('EditarEmpresa') }}";
-        const CambiarEstadoEmpresa = "{{ route('CambiarEstadoUsuario') }}";
+        const CambiarEstadoEmpresa = "{{ route('CambiarEstadoEmpresa') }}";
         const VerCentroCosto =  "{{ route('VerCentroCosto') }}";  
         const GuardarCentroCosto = "{{ route('GuardarCentroCosto') }}";
         const DeleteUsuarioGrupo = "{{ route('CambiarEstadoCentroCosto')}}";

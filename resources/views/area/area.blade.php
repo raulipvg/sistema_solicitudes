@@ -12,7 +12,7 @@
 
 @section('main-content')
 <!--begin::Toolbar-->
-@include('layout.toolbar', ['titulo' => $titulo])
+@include('layout.toolbar')
 <!--end::Toolbar-->
 <!--begin::Content-->
 <div class="d-flex flex-column flex-column-fluid">
@@ -27,7 +27,7 @@
                 </button>
             </div>
             <!--begin::Tabla Area-->
-            @include('area.componente.tablaArea', ['areas' => $areas])
+            @include('area.componente.tablaArea')
             <!--end::Tabla Area-->
         </div>
     </div>

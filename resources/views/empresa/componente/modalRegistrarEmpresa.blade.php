@@ -48,6 +48,7 @@
                                 <select id="EstadoIdInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
                                     <option value="1">Habilitado</option>
+                                    <option value="0">Deshabilitado</option>
                                 </select>
                                 <label for="EstadoIdInput" class="form-label">Estado</label>
                             </div>

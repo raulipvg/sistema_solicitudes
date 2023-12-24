@@ -22,22 +22,14 @@
                     <div id="AlertaError2" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-2">
+                        <div class="col mb-2">
                             <div class="form-floating fv-row">
                                 <input type="text" class="form-control h-input" placeholder="Ingrese el nombre" id="NombreInput2" name="Nombre" />
                                 <label for="NombreInput2" class="form-label">Nombre</label>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-floating fv-row">
-                                <select id="EstadoIdInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
-                                    <option></option>
-                                    <option value="1">Habilitado</option>
-                                </select>
-                                <label for="EstadoIdInput" class="form-label">Estado</label>
-                            </div>
-                            <input hidden type="number" id="EmpresaIdInput" name="EmpresaId" />
-                        </div>
+                        <input hidden type="number" id="EmpresaIdInput" name="EmpresaId" />
+                        
                     </div>                
                 </div>
                 <div class="modal-footer bg-light p-2">

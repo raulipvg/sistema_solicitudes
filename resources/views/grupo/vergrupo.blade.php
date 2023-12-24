@@ -56,7 +56,6 @@
 @include('usuario.componente.modalRegistrarUsuario')
 <!--end::modal-->
 
-
 <!--begin::modal -  Asignar Grupo-->
 @include('usuario.componente.modalAsignarGrupo')
 <!--end::modal-->

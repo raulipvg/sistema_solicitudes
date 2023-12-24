@@ -101,7 +101,6 @@ class AreaController extends Controller
     public function CambiarEstado(Request $request)
     {
         $request = $request->input('data');
-        // Accede a los atributos del modelo
 
         try{
             $areaEdit = Area::find($request);

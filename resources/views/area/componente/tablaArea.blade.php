@@ -15,7 +15,7 @@
                     @foreach ( $areas as $area )
                         <tr class="center-2">
                             <td>{{ $area->Id }}</td>
-                            <td>{{ $area->Nombre }}</td>
+                            <td class="text-capitalize">{{ $area->Nombre }}</td>
                             <td class="text-capitalize">{{ $area->Descripcion }}</td>
                             <td>{{\Carbon\Carbon::parse($area->created_at)->format('d-m-Y')}}</td>
                             @if ($area->Enabled == 1 )

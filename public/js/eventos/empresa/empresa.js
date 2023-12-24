@@ -18,8 +18,8 @@ $(document).ready(function() {
                                 message: 'Entre 3 y 20 caracteres'
                             },
                             regexp: {
-                                regexp: /^[a-zñáéíóú\s]+$/i,
-                                message: 'Solo letras de la A-Z '
+                                regexp: /^[a-z0-9ñáéíóú\s]+$/i,
+                                message: 'Solo letras y numeros'
                             }
                         }
                     },
@@ -105,21 +105,11 @@ $(document).ready(function() {
                             stringLength: {
                                 min: 3,
                                 max: 20,
-                                message: 'Entre 3 y 20 caracteres'
+                                message: 'Entre 3 y 150 caracteres'
                             },
                             regexp: {
-                                regexp: /^[a-zñáéíóú\s]+$/i,
-                                message: 'Solo letras de la A-Z '
-                            }
-                        }
-                    },
-                    'Enabled': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            digits: {
-                                message: 'Digitos'
+                                regexp: /^[a-z0-9ñáéíóú\s]+$/i,
+                                message: 'Solo letras y numeros'
                             }
                         }
                     }
@@ -538,14 +528,32 @@ $(document).ready(function() {
                     boton.attr("data-kt-indicator", "on");
                 },
                 success: function (data) {
-                    if(data.success){             
+                    if(data.success){    
+                        
+                        boton.children().eq(0).show();
+                        boton.addClass('active')
+                        empresa=data.empresa;         
                         data = data.data;
-                        row.child(format(data)).show();
+                        row.child(format(data,empresa)).show();
                         $(".editar-acceso").tooltip();
                         $(".dar-acceso").tooltip();
+                    }else{
+                        boton.children().eq(0).show();
+                        boton.removeClass('active');                        
+                        Swal.fire({
+                            text: "Error: "+ data.message,
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
                     }
                 },
                 error: function () {
+                    boton.children().eq(0).show();
+                    boton.removeClass('active');
                     Swal.fire({
                         text: "Error",
                         icon: "error",
@@ -560,8 +568,8 @@ $(document).ready(function() {
                     KTApp.hidePageLoading();
                     loadingEl.remove();
                     boton.removeAttr("data-kt-indicator");
-                    boton.children().eq(0).show();
-                    boton.addClass('active')
+                    //boton.children().eq(0).show();
+                    //boton.addClass('active')
                 }
             });
         }

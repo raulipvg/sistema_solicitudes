@@ -19,7 +19,7 @@ $(document).ready(function() {
                             },
                             regexp: {
                                 regexp: /^[a-z0-9ñáéíóú\s]+$/i,
-                                message: 'Solo  y numeros de la A-Z, 0-9 '
+                                message: 'Solo letras y numeros'
                             }
                         }
                     },
@@ -175,7 +175,7 @@ $(document).ready(function() {
         actualizarValidSelect2();
 
         let id = Number($(this).attr("info"));
-        bloquear();
+        
         $.ajax({
             type: 'POST',
             url: VerArea,
@@ -185,6 +185,7 @@ $(document).ready(function() {
             //content: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function() {
+                bloquear();
                 KTApp.showPageLoading();
             },
             success: function (data) {
@@ -314,7 +315,7 @@ $(document).ready(function() {
         actualizarValidSelect2();
 
         let id = Number($(this).attr("info"));
-        bloquear();
+        
         $.ajax({
             type: 'POST',
             url: VerArea,
@@ -325,6 +326,7 @@ $(document).ready(function() {
             //content: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function() {
+                bloquear();
                 KTApp.showPageLoading();
             },
             success: function (data) {
@@ -462,7 +464,8 @@ $(document).ready(function() {
                 url: VerFlujos,
                 data: {
                     _token: csrfToken,
-                    data: userId},
+                    data: userId
+                },
                 //content: "application/json; charset=utf-8",
                 dataType: "json",
                 beforeSend: function() {
