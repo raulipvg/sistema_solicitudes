@@ -7,12 +7,22 @@ var KTUsersUpdatePermissions = (function () {
         init: function () {
             (() => {
                 var o = FormValidation.formValidation(e, {
-                    fields: { role_name: { 
-                        validators: { 
-                            notEmpty: {
-                                 message: "El Nombre del Grupo es requerido" 
-                                } 
-                            } 
+                    fields: { 
+                        Nombre: { 
+                            validators: {
+                                notEmpty: {
+                                    message: 'Requerido'
+                                },
+                                stringLength: {
+                                    min: 3,
+                                    max: 20,
+                                    message: 'Entre 3 y 20 caracteres'
+                                },
+                                regexp: {
+                                    regexp: /^[a-z0-9ñáéíóú\s]+$/i,
+                                    message: 'Solo letras y numeros'
+                                }
+                             }
                         } 
                     },
                     plugins: { 

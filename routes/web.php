@@ -57,8 +57,8 @@ Route::group(['prefix' => '/usuariogrupo'], function () { //
 
 Route::group(['prefix' => '/grupo'], function () {
     Route::get('/', [GrupoController::class, 'Index'])->name('Grupo');
-    Route::get('/ver', [GrupoController::class, 'Ver'])->name('VerGrupo');
-    //Route::post('/registrar', [AccesoComunidadController::class, 'Guardar'])->name('RegistrarAcceso');
+    Route::get('/ver/{id}', [GrupoController::class, 'Ver'])->name('VerGrupo');
+    Route::post('/registrar', [GrupoController::class, 'Guardar'])->name('GuardarGrupo');
     //Route::post('/ver', [UsuarioGrupoController::class, 'Ver'])->name('VerAcceso');
     //Route::post('/editar', [AccesoComunidadController::class, 'Editar'])->name('EditarAcceso');
     //Route::post('/asignar',[AccesoComunidadController::class, 'AsignarGrupo'])->name('AsignarGrupo');

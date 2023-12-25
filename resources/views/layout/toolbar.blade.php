@@ -20,8 +20,12 @@
         </div>
         <!--end::Page title-->
         <!--begin::Action group-->
-        <div class="d-flex align-items-center flex-wrap">
-            
+        <div class="d-flex align-items-center flex-wrap">         
+             @if(isset($vista) && $vista == 1 )
+                    <button id="AddBtnGrupo" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrarGrupo">
+                        Registrar
+                    </button>
+             @endif
         </div>
         <!--end::Action group-->
     </div>

@@ -9,6 +9,9 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class Grupo
@@ -33,7 +36,8 @@ class Grupo extends Model
 {
 	protected $table = 'grupo';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
+	public $incrementing = true;
+	public $timestamps = true;
 
 	protected $casts = [
 		'Id' => 'int',
@@ -81,4 +85,29 @@ class Grupo extends Model
 					->withPivot('Id', 'Enabled')
 					->withTimestamps();
 	}
+
+	public function validate(array $data)
+    {
+        if(isset($data['Id'])){
+            $id = $data['Id'];
+        }else{
+            $id = null;
+        }
+
+        $rules = [
+            'Nombre' => [
+				'required',
+				'string',
+				'max:255',
+				Rule::unique('grupo','Nombre')->ignore($id, 'Id'),
+			],
+            'Descripcion' => 'required|string|max:255',
+            'Enabled' => 'required|min:0|max:1'
+        ];
+
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
 }

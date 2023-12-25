@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CentroDeCosto;
+use App\Models\Grupo;
+use App\Models\Usuario;
+use App\Models\UsuarioGrupo;
 use Doctrine\DBAL\Schema\View;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GrupoController extends Controller
 {
@@ -11,55 +17,80 @@ class GrupoController extends Controller
     {
         $titulo="Grupos";
 
-        $privilegios = ['Privilegio 1', 'Privilegio 2', 'Privilegio 3', 'Privilegio 4', 'Privilegio 5'];
-
-        $datosgrupo = [];
-
-        for ($i = 1; $i <= 5; $i++) {
-            $nombreGrupo = 'Grupo ' . $i;
-            $privilegiosGrupo = [];
-            // Asignar al menos 4 privilegios al grupo
-            for ($j = 0; $j < 4; $j++) {
-                $privilegiosGrupo[] = ['Nombre' => $privilegios[rand(0, 4)]];
-            }
-        
-            $datosgrupo[] = [
-                'Nombre' => $nombreGrupo,
-                'Privilegios' => $privilegiosGrupo,
-                'flag' => 2  //significa que es para la vista /grupo
-            ];
-        }
-        //$datosgrupo['flag']= 2; //significa que es para la vista /grupo
-        // Convertir el objeto $datosgrupo a JSON y luego decodificarlo nuevamente como objeto
-        $datosgrupo = json_decode(json_encode($datosgrupo), false);
-
+        //Contar Usuarios con Acceso al Grupo, que estén Habilitados para el grupo y
+        // Que el estado del usuario sea activo
+        $datosgrupo = Grupo::withCount([
+            'usuarios' => function ($query) {
+            $query->where('usuario_grupo.Enabled', 1);
+        }])->get();
 
         return View('grupo.grupo')->with([
             'titulo'=> $titulo,
-            'datosgrupo'=> $datosgrupo
+            'datosgrupo'=> $datosgrupo,
+            'flag'=> 2, //significa que es para la vista /grupo/
         ]);
     }
+    public function Guardar(Request $request)
+    {
+        $request = $request->input('data');
+        $request['Nombre'] = strtolower($request['Nombre']);
+        $request['Descripcion'] = strtolower($request['Descripcion']);
 
-    public function Ver(Request $request){
-        $titulo= 'Ver Grupo Administrador';
+        try{
+            $grupo = new Grupo();
+            $grupo->validate($request);
+            $grupo->fill($request);
+            
+            DB::beginTransaction();
 
-        $datosgrupo['Nombre']= 'Administrador';
-        $datosgrupo['Privilegios']= [
-            ['Nombre' => 'Privilegio 1'],
-            ['Nombre' => 'Privilegio 2'],
-            ['Nombre' => 'Privilegio 3'],
-            ['Nombre' => 'Privilegio 4'],
-            ['Nombre' => 'Privilegio 5'],
-        ];
-        $datosgrupo['flag']= 1; //significa que es para la vista /grupo/ver
+            $grupo->save(); 
 
-        // Convertir el objeto $datosgrupo a JSON y luego decodificarlo nuevamente como objeto
-        $datosgrupo = json_decode(json_encode($datosgrupo), false);
+            DB::commit(); 
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Area Guardada'
+            ],200);
 
-        return View('grupo.vergrupo')->with([
-            'titulo'=> $titulo,
-            'datosgrupo'=> $datosgrupo
-        ]);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function Ver($id){
+        
+        try{
+            $datosgrupo= Grupo::find($id); 
+            if (!$datosgrupo) {
+                return View('blank');
+            }
+            $centrocostos = CentroDeCosto::select('Id', 'Nombre')
+                            ->where('Enabled','=', 1)
+                            ->get();
+                            
+            $grupo = Grupo::find($id);
+            $titulo= 'Ver Grupo '.$grupo->Nombre;
+            if (!$grupo) {
+                // Manejo de error si el Grupo no se encuentra
+                // Puedes lanzar una excepción, redirigir, o realizar alguna otra acción según tu lógica
+            }
+        
+            $usuarios = $grupo->usuarios;
+
+            return View('grupo.vergrupo')->with([
+                'titulo'=> $titulo,
+                'datosgrupo'=> $datosgrupo,
+                'usuarios'=> $usuarios,
+                'centrocostos'=> $centrocostos,
+                'flag' => 1 //significa que es para la vista /grupo/ver
+            ]);
+        }catch(Exception $e){
+        
+        }
     }
 
     

@@ -7,7 +7,8 @@
 
 @section('main-content')
 <!--begin::Toolbar-->
-@include('layout.toolbar', ['titulo' => $titulo])
+@include('layout.toolbar', ['titulo' => $titulo,
+							'vista' => 1 ])
 <!--end::Toolbar-->
 <!--begin::Content-->
 <div class="flex-column-fluid">
@@ -19,7 +20,7 @@
 			<!--begin::Col-->
 			<div class="col-md-4">
 				<!--begin::Card-->
-				@include('grupo.componente.tarjetagrupo', ['datosgrupo'=> $dato])
+				@include('grupo.componente.tarjetagrupo', ['grupo'=> $dato])
 				<!--end::Card-->
 			</div>
 			<!--end::Col-->
@@ -31,6 +32,11 @@
 </div>
 <!--end::Content-->
 
+<!--begin::Modal - Registrar Grupo-->
+@include('grupo.componente.modalRegistrarGrupo')
+<!--end::Modal - Registrara Grupo-->
+
+
 <!--begin::Modal - Update role-->
 @include('grupo.componente.modalEditarGrupo')
 <!--end::Modal - Update role-->
@@ -39,8 +45,13 @@
 
 @push('Script')
     <script>
-        const Home = '{{ route("Home") }}'
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const GuardarGrupo = '{{ route("GuardarGrupo") }}'
     </script>
-    <script src="{{ asset('js/eventos/grupo/update-grupo.js?id=3') }}"></script>
+
+	<!--begin::Eventos de la pagina-->
+    <script src="{{ asset('js/global/main.js?id=3') }}"></script>
+    <script src="{{ asset('js/eventos/grupo/grupo.js?id=3') }}"></script>
+	<script src="{{ asset('js/eventos/grupo/update-grupo.js?id=3') }}"></script>
+    <!--end::Eventos de la pagina-->
+    
 @endpush

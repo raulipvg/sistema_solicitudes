@@ -85,7 +85,7 @@ class UsuarioController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
-            ],400);  
+            ]);  
         }
     }
 
@@ -178,7 +178,7 @@ class UsuarioController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
-            ],400);
+            ]);
         }
     }
 
@@ -187,6 +187,7 @@ class UsuarioController extends Controller
      */
     public function CambiarEstado(Request $request)
     {
+        //FALTA DESHABILITAR TODOS LOS ACCESOS EN USUARIO GRUPO
         $request = $request->input('data');
         
         try{

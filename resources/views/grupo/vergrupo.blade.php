@@ -21,7 +21,7 @@
         <div class="flex-column flex-lg-row-auto w-100 w-lg-200px w-xl-300px mb-10">
             <div class="mx-5">
             <!--begin::Card-->
-            @include('grupo.componente.tarjetagrupo', ['datosgrupo'=> $datosgrupo])
+            @include('grupo.componente.tarjetagrupo', ['grupo'=> $datosgrupo])
             <!--end::Card-->
             </div>       
         </div>
@@ -38,7 +38,7 @@
                         </button>
                     </div>
                     <!--begin::Tabla Usuario-->
-                    @include('usuario.componente.tablaUsuario')
+                      @include('usuario.componente.tablaUsuario')
                     <!--end::Tabla Usuario-->
                 </div>
             </div>
@@ -84,7 +84,7 @@
     <!--begin::Eventos de la pagina-->
     <script src="{{ asset('js/global/main.js?id=3') }}"></script>
     <script src="{{ asset('js/eventos/grupo/update-grupo.js?id=3') }}"></script>
-    <script src="{{ asset('js/eventos/usuario.js?id=3') }}"></script>
+    <script src="{{ asset('js/eventos/usuario/usuario.js?id=3') }}"></script>
     <!--end::Eventos de la pagina-->
 
 @endpush

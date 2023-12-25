@@ -32,7 +32,7 @@
 																</label>
 																<!--end::Label-->
 																<!--begin::Input-->
-																<input class="form-control form-control-solid" placeholder="Ingrese nombre del Grupo" name="role_name" value="Grupo 1" />
+																<input class="form-control form-control-solid" placeholder="Ingrese nombre del Grupo" name="Nombre" value="Grupo 1" />
 																<!--end::Input-->
 															</div>
 															<!--end::Input group-->
