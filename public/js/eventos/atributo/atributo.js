@@ -300,7 +300,7 @@ $(document).ready(function() {
         e.preventDefault();
         e.stopPropagation();
 
-        var userId =  $(this).closest('td').next().find('a.ver').attr('info');
+        var userId =  $(this).closest('td').next().find('a.editar').attr('info');
         var btn = $(this);
 
         $.ajax({
