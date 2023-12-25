@@ -19,12 +19,12 @@ $(document).ready(function() {
                                 message: 'Entre 3 y 20 caracteres'
                             },
                             regexp: {
-                                regexp: /^[a-zñáéíóú\s]+$/i,
-                                message: 'Solo letras de la A-Z '
+                                regexp: /^[a-zA-Z0-9ñáéíóú\s]+$/,
+                                message: 'Solo letras y números '
                             }
                         }
                     },
-                    'Grupo': {
+                    'GrupoId': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
@@ -34,17 +34,7 @@ $(document).ready(function() {
                             }
                         }
                     },
-                    'Flujo': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
-                            digits: {
-                                message: 'Digitos'
-                            }
-                        }
-                    },
-                    'Grupo': {
+                    'FlujoId': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
@@ -215,7 +205,8 @@ $(document).ready(function() {
                     
                     $("#IdInput").val(data.Id);
                     $("#NombreInput").val(data.Nombre);
-                    $("#ValorReferenciaInput").val(data.ValorReferencia);
+                    $('#GrupoIdInput').val(data.Enabled).trigger("change");
+                    $('#FlujoIdInput').val(data.Enabled).trigger("change");
                     $('#EstadoIdInput').val(data.Enabled).trigger("change");
                 }else{
                     Swal.fire({
@@ -353,7 +344,8 @@ $(document).ready(function() {
         
                     $("#IdInput").val(data.Id);
                     $("#NombreInput").val(data.Nombre);
-                    $("#ValorReferenciaInput").val(data.ValorReferencia);
+                    $('#GrupoIdInput').val(data.Enabled).trigger("change");
+                    $('#FlujoIdInput').val(data.Enabled).trigger("change");
                     $('#EstadoIdInput').val(data.Enabled).trigger("change");
                 }else{
                     Swal.fire({

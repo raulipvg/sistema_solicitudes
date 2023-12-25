@@ -35,22 +35,22 @@
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <select id="GrupoIdInput" name="Grupo" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar">
+                                <select id="GrupoIdInput" name="GrupoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar">
                                     <option></option>
-                                    <option value="0">Grupo 1</option>
-                                    <option value="1">Grupo 2</option>
-                                    <option value="2">Grupo 3</option>
+                                    @foreach($grupos as $grupo)
+                                    <option value="{{ $grupo->Id }}">{{ $grupo->Nombre }}</option>
+                                    @endforeach
                                 </select>
                                 <label for="GrupoIdInput" class="form-label">Grupo Autorizado</label>
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <select id="FlujoIdInput" name="Flujo" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar">
+                                <select id="FlujoIdInput" name="FlujoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar">
                                     <option></option>
-                                    <option value="0">Flujo 1</option>
-                                    <option value="1">Flujo 2</option>
-                                    <option value="2">Flujo 3</option>
+                                    @foreach($flujos as $flujo)
+                                    <option value="{{ $flujo->Id }}">{{ $flujo->Nombre }}</option>
+                                    @endforeach
                                 </select>
                                 <label for="FlujoIdInput" class="form-label">Flujo</label>
                             </div>

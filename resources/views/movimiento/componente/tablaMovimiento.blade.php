@@ -10,11 +10,13 @@
         </tr>
     </thead>
     <tbody>
+        @foreach($movimientos as $movimiento)
         <tr class="center-2">
-            <td>1</td>
-            <td class="text-capitalize">Pase EPI</td>
-            <td>Grupo 1</td>
-            <td>Flujo 1</td>
+            <td>{{ $movimiento->Id }}</td>
+            <td class="text-capitalize">{{ $movimiento->Nombre }}</td>
+            <td>{{ $movimiento->grupo->Nombre }}</td>
+            <td>{{ $movimiento->flujo->Nombre }}</td>
+            @if($movimiento->Enabled == 1)
             <td data-search="Enabled">
                 <button class="btn btn-sm btn-light-success estado-movimiento fs-7 text-uppercase estado justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Movimiento">
                 <span class="indicator-label">ACTIVO</span>
@@ -23,18 +25,7 @@
                 </span>
                 </button>
             </td>
-            <td class="text-center p-0">
-                <div class="btn-group btn-group-sm" role="group">
-                    <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="1">Ver</a>
-                    <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="1">Editar</a>
-                </div>
-            </td>
-        </tr>
-        <tr class="center-2">
-            <td>2</td>
-            <td class="text-capitalize">Pase Vuelo</td>
-            <td>Grupo 2</td>
-            <td>Flujo 2</td>
+            @else
             <td data-search="Disabled">
                 <button class="btn btn-light-warning fs-7 estado-movimiento text-uppercase estado justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Movimiento">
                     <span class="indicator-label">Inactivo</span>
@@ -43,12 +34,14 @@
                     </span>
                 </button>
             </td>
+            @endif
             <td class="text-center p-0">
                 <div class="btn-group btn-group-sm" role="group">
-                    <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="2">Ver</a>
-                    <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="2">Editar</a>
+                    <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $movimiento->Id }}">Ver</a>
+                    <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $movimiento->Id }}">Editar</a>
                 </div>
             </td>
         </tr>
+        @endforeach
     </tbody>
 </table>
