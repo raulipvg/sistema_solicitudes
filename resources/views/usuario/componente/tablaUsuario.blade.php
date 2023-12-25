@@ -15,8 +15,8 @@
                     @foreach ($usuarios as $usuario )
                     <tr class="center-2">
                         <td>{{$usuario->Id}}</td>
-                        <td>{{ $usuario->persona->Nombre}} {{ $usuario->persona->Apellido}}</td>
-                        <td class="text-capitalize">{{ $usuario->Username}}</td>
+                        <td class="text-capitalize">{{ $usuario->persona->Nombre}} {{ $usuario->persona->Apellido}}</td>
+                        <td>{{ $usuario->Username}}</td>
                         <td>{{ $usuario->Email }}</td>
                         @if ($usuario->Enabled == 1)
                             <td data-search="Enabled">

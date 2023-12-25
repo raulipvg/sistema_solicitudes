@@ -29,6 +29,25 @@ class UsuarioController extends Controller
                     ]);
     }
 
+    public function VerCC(Request $request){
+        
+        try{
+                $centrocostos = CentroDeCosto::select('Id', 'Nombre')
+                                ->where('Enabled','=', 1)
+                                ->get();
+
+                return response()->json([
+                                        'success' => true,
+                                        'option' => $centrocostos,
+                                        'message' => 'CC Entregado'
+                                    ],200);
+             }catch(Exception $e){
+                return response()->json([
+                                    'success' => false,
+                                    'message' => $e->getMessage()
+                                ],400);  
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -76,10 +95,39 @@ class UsuarioController extends Controller
     public function VerId(Request $request)
     {
         $request = $request->input('data');
-        return response()->json([
-            'success' => true,
-            'data' => 1,
-            'message' => 'Modelo recibido y procesado']);
+
+        try{
+            $usuario= Usuario::Select('usuario.Id','usuario.Username','usuario.Email','usuario.Enabled',
+                                   'persona.Nombre','persona.Apellido','persona.Rut','centro_de_costo.Nombre as NombreCC','persona.CentroCostoId')
+                                   ->where('usuario.Id', $request)
+                                   ->join('persona','persona.UsuarioId','=','usuario.Id')
+                                   ->join('centro_de_costo','centro_de_costo.Id','=','persona.CentroCostoId')
+                                   ->first();
+
+
+            if (!$usuario) {
+                throw new Exception('Usuario no encontrada');
+            }
+
+            $cc = CentroDeCosto::select('Id', 'Nombre', 'Enabled')
+                                ->where('Enabled', 1)
+                                ->orWhere('Id', $usuario->CentroCostoId)
+                                ->get();
+
+
+            return response()->json([
+                'success' => true,
+                'data' => $usuario,
+                'option' => $cc   
+            ],200);
+
+        }catch(Exception $e){
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ],400);
+        }
     }
 
 
@@ -89,9 +137,49 @@ class UsuarioController extends Controller
     public function Editar(Request $request)
     {
         $request = $request->input('data');
-        return response()->json([
-            'success' => true,
-            'message' => 'Modelo recibido y procesado']);
+        $request['Username'] = strtolower($request['Username']);
+        $request['Nombre'] = strtolower($request['Nombre']);
+        $request['Apellido'] = strtolower($request['Apellido']);
+        $request['Rut'] = strtolower($request['Rut']);
+        $request['Email'] = strtolower($request['Email']);
+
+        try{
+            $usuario = new Usuario();
+            $usuario->validate($request);
+
+            DB::beginTransaction();
+
+            $usuarioEdit = Usuario::find($request['Id']);
+            if (!$usuarioEdit) {
+                throw new Exception('Persona no encontrada');
+            }
+            //$userEdit->Username
+            $usuarioEdit->fill($request);
+            $usuarioEdit->save();
+
+            $personaEdit = Persona::where( 'UsuarioId', $request['Id'])->first();
+            if (!$personaEdit) {
+                throw new Exception('Persona no encontrada');
+            }
+            $persona= new Persona();
+            $request['Id']= $personaEdit->Id;
+            $persona->validate($request);
+
+            $personaEdit->fill($request);
+            $personaEdit->save();
+
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Persona actualizada correctamente'
+            ],201);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ],400);
+        }
     }
 
     /**
@@ -99,9 +187,34 @@ class UsuarioController extends Controller
      */
     public function CambiarEstado(Request $request)
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Modelo recibido y procesado']);
+        $request = $request->input('data');
+        
+        try{
+            $usuarioEdit = Usuario::find($request);
+
+            if (!$usuarioEdit) {
+                throw new Exception('Usuario no encontrado');
+            }
+            DB::beginTransaction();
+            $usuarioEdit->update([
+                   'Enabled' => ($usuarioEdit['Enabled'] == 1)? 0: 1 
+            ]);
+            $usuarioEdit->save();
+            
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Estado de la Usuario cambiado'
+            ],201);
+
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ],400);
+        }
     }
 
 

@@ -38,6 +38,7 @@ Route::group(['prefix' => '/usuario'], function () { //LISTO
     Route::post('/ver', [UsuarioController::class, 'VerId'])->name('VerUsuario');
     Route::post('/editar', [UsuarioController::class, 'Editar'])->name('EditarUsuario');
     Route::post('/cambiarestado', [UsuarioController::class, 'CambiarEstado'])->name('CambiarEstadoUsuario');
+    Route::post('/vercc', [UsuarioController::class, 'VerCC'])->name('VerCC');
 });
 
 

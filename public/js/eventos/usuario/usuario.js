@@ -185,6 +185,67 @@ $(document).ready(function() {
         $("#IdInput").prop("disabled",true);
         $("#AlertaError").hide();
 
+        $.ajax({
+            type: 'POST',
+            url: VerCC,
+            data: {
+                _token: csrfToken,
+                data: null},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function() {
+                bloquear();
+                KTApp.showPageLoading();
+            },
+            success: function (data) {
+                //console.log(data);
+                //blockUI.release();
+                if(data.success){
+                    dataselect=data.option;
+                    var select = $('#CentroCostoInput');
+                    select.empty();
+                    var option = new Option('','');
+                    select.append(option);
+                    for (const key in dataselect) {
+                        var option = new Option(dataselect[key].Nombre, dataselect[key].Id);
+                        select.append(option);                        
+                    }                    
+                }else{
+                    Swal.fire({
+                            text: "Error de Carga",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                    });
+                    $(".btn-cerrar").on("click", function () {
+                            $('#registrar').modal('toggle');
+                    });
+                }
+            },
+            error: function () {;
+                Swal.fire({
+                            text: "Error de Carga",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+                     $(".btn-cerrar").on("click", function () {
+                            //console.log("Error");
+                            $('#registrar').modal('toggle');
+                     });
+            },
+            complete: function(){
+                KTApp.hidePageLoading();
+                loadingEl.remove();
+            }
+        });
+
         validator.resetForm();
         actualizarValidSelect2();
     });
@@ -295,7 +356,8 @@ $(document).ready(function() {
                 //console.log(data);
                 //blockUI.release();
                 if(data.success){
-                    
+                    console.log(data)
+                    dataselect=data.option;
                     data=data.data;
                     
                     $("#IdInput").val(data.Id);
@@ -307,6 +369,12 @@ $(document).ready(function() {
                     $("#RutInput").val(data.Rut);
                     $("#CorreoInput").val(data.Email);
                   
+                    var select = $('#CentroCostoInput');
+                    select.empty();
+                    for (const key in dataselect) {
+                            var option = new Option(dataselect[key].Nombre, dataselect[key].Id);
+                            select.append(option);                        
+                    }                    
                     $('#CentroCostoInput').val(data.CentroCostoId).trigger("change");
                     $('#EstadoIdInput').val(data.Enabled).trigger("change");
                 }else{

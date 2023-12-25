@@ -52,6 +52,7 @@
         const VerUsuario = "{{ route('VerUsuario') }}";
         const EditarUsuario = "{{ route('EditarUsuario') }}";
         const CambiarEstado = "{{ route('CambiarEstadoUsuario') }}";
+        const VerCC= "{{ route('VerCC') }}"
 
         const VerAcceso =  "{{ route('VerUsuarioGrupo') }}";
         const VerGrupos =  "{{ route('VerGrupoPorUsuario') }}";
