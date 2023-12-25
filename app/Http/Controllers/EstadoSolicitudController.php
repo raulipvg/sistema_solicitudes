@@ -8,7 +8,10 @@ class EstadoSolicitudController extends Controller
 {
     public function Index()
     {
-        return View('estadosolicitud.estadosolicitud');
+        $titulo = 'Estados de Solicitud';
+        return View('estadosolicitud.estadosolicitud')->with([
+            'titulo'=>$titulo
+        ]);
     }
 
     /**

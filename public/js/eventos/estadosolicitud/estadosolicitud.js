@@ -1,6 +1,6 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
-    const form = document.getElementById('Formulario1');
+    const form = document.getElementById('FormularioEstadoSolicitud');
     $("#AlertaError").hide();
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     const validator = FormValidation.formValidation(
@@ -89,7 +89,7 @@ $(document).ready(function() {
                 //status
                 if (status == 'Valid') {
                     // Show loading indication                       
-                        let form1= $("#Formulario1");
+                        let form1= $("#FormularioEstadoSolicitud");
                         var fd = form1.serialize();
                         var data = formMap(fd);
 
@@ -238,7 +238,7 @@ $(document).ready(function() {
                     actualizarValidSelect2();
                     //status
                     if (status == 'Valid') {
-                            let form1= $("#Formulario1");
+                            let form1= $("#FormularioEstadoSolicitud");
                             var fd = form1.serialize();
                             var data= formMap(fd);
                             bloquear();
