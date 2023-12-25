@@ -47,15 +47,14 @@
         const EditarEstado = "{{ route('EditarEstado') }}";
         const CambiarEstado = "{{ route('CambiarEstadoEstado') }}";
 
-
-
-        //const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     </script>
+    
     <!--begin::Datatables y Configuracion de la Tabla-->
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/language/language_es.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/contenido/estadosolicitud.js?id=2') }}"></script>
     <!--end::Datatables y Configuracion de la Tabla-->
+
     <!--begin::Eventos de la pagina-->
     <script src="{{ asset('js/global/main.js?id=3') }}"></script>
     <script src="{{ asset('js/eventos/estadosolicitud/estadosolicitud.js') }}"></script>

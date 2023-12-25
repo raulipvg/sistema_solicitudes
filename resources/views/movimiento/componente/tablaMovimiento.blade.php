@@ -3,7 +3,7 @@
         <tr class="fw-bolder text-uppercase">
             <th scope="col">#</th>
             <th scope="col">Nombre</th>
-            <th scope="col">Grupo</th>
+            <th scope="col">Grupo Autorizado</th>
             <th scope="col">Flujo</th>
             <th scope="col">Estado</th>
             <th class="text-center" scope="col">Acción</th>

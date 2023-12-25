@@ -82,7 +82,7 @@ class Usuario extends Model
 				Rule::unique('usuario','Username')->ignore($id, 'Id'),
             ],
 			'Password' => [
-                'required',
+                'nullable',
                 'string',
                 'max:255'
             ],
@@ -92,7 +92,7 @@ class Usuario extends Model
                 'max:50',
                 Rule::unique('usuario','Email')->ignore($id, 'Id')
             ],
-			'GoogleId' => 'string|numeric',
+			'GoogleId' => 'nullable|string|numeric',
             'Enabled' => 'required|min:0|max:1'
         ];
         $messages = [

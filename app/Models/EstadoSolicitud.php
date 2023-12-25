@@ -54,7 +54,7 @@ class EstadoSolicitud extends Model
 	{
 		return $this->hasMany(OrdenFlujo::class, 'EstadoSolicitudId');
 	}
-
+	
 	public function validate(array $data){
 		$id = isset($data['Id']) ? $data['Id'] : null;
 
@@ -63,8 +63,7 @@ class EstadoSolicitud extends Model
 				'required',
 				'string',
 				'max:255',
-				Rule::unique('estado_solicitud','Nombre')->ignore($id, 'Id'),
-				
+				Rule::unique('estado_solicitud','Nombre')->ignore($id, 'Id'),	
 			],
 			'Enabled' => 'required|min:0|max:1'
 		];

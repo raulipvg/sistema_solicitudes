@@ -12,7 +12,6 @@ class EmpresaController extends Controller
 {
     public function Index()
     {
-        
         $titulo= "Empresas";
         $empresas= Empresa::all();
         return view('empresa.empresa')->with([

@@ -21,9 +21,6 @@ $(document).ready(function() {
                     },
                     'Password': {
                         validators: {
-                            notEmpty: {
-                                message: 'Requerido'
-                            },
                             stringLength: {
                                 min: 8,
                                 max: 100,

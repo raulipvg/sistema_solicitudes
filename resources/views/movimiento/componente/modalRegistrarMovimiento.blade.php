@@ -35,18 +35,18 @@
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <select id="GrupoIdInput" name="Grupo" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                <select id="GrupoIdInput" name="Grupo" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar">
                                     <option></option>
                                     <option value="0">Grupo 1</option>
                                     <option value="1">Grupo 2</option>
                                     <option value="2">Grupo 3</option>
                                 </select>
-                                <label for="GrupoIdInput" class="form-label">Grupo</label>
+                                <label for="GrupoIdInput" class="form-label">Grupo Autorizado</label>
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <select id="FlujoIdInput" name="Flujo" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                <select id="FlujoIdInput" name="Flujo" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar">
                                     <option></option>
                                     <option value="0">Flujo 1</option>
                                     <option value="1">Flujo 2</option>

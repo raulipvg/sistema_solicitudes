@@ -153,6 +153,7 @@ class PersonaController extends Controller
 
     public function DarAcceso(Request $request)
     {
+        //FALTA LO DE ENCRIPTAR PASSWORD
         $request = $request->input('data');
         
         $request['Username'] = strtolower($request['Username']);
