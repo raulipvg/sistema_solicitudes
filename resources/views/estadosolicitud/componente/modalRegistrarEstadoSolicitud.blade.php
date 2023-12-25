@@ -24,7 +24,7 @@
                     <div class="row">
                         <div class="col-md-12 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="text" class="form-control" placeholder="Ingrese el nombre del estado" id="NombreInput" name="Nombre" />
+                                <input type="text" class="form-control text-capitalize" placeholder="Ingrese el nombre del estado" id="NombreInput" name="Nombre" />
                                 <label for="NombreInput" class="form-label">Nombre:</label>
                                 <input hidden type="number" id="IdInput" name="Id" />
                             </div>
@@ -35,8 +35,8 @@
                             <div class="form-floating fv-row">
                                 <select id="EstadoIdInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
-                                    <option value="1">Habilitado</option>
-                                    <option value="0">Deshabilitado</option>
+                                    <option value="1">Activo</option>
+                                    <option value="0">Inactivo</option>
                                 </select>
                                 <label for="EstadoIdInput" class="form-label">Estado</label>
                             </div>

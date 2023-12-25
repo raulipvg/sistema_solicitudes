@@ -8,10 +8,13 @@
         </tr>
     </thead>
     <tbody>
+        @foreach($estadosSolicitud as $estadoSolicitud)
         <tr class="center-2">
-            <td>123</td>
-            <td class="text-capitalize">Estado1</td>
+            <td>{{ $estadoSolicitud->Id }}</td>
+            <td class="text-capitalize">{{ $estadoSolicitud->Nombre }}</td>
+            @if($estadoSolicitud->Enabled == 1 )
             <td data-search="Enabled">
+                
                 <button class="btn btn-sm btn-light-success estado-estado fs-7 text-uppercase estado justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Estado">
                     <span class="indicator-label">Activo</span>
                     <span class="indicator-progress">
@@ -19,15 +22,7 @@
                     </span>
                 </button>
             </td>
-            <td class="text-center p-0">
-                <div class="btn-group btn-group-sm" role="group">
-                    <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="1">Editar</a>
-                </div>
-            </td>
-        </tr>
-        <tr class="center-2">
-            <td>456</td>
-            <td class="text-capitalize">Estado2</td>
+            @else
             <td data-search="Disabled">
                 <button class="btn btn-light-warning fs-7 estado-estado text-uppercase estado justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Estado">
                 <span class="indicator-label">Inactivo</span>
@@ -36,11 +31,13 @@
                     </span>
                 </button>
             </td>
-           <td class="text-center p-0">
+            @endif
+            <td class="text-center p-0">
                 <div class="btn-group btn-group-sm" role="group">
-                    <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="2">Editar</a>
+                    <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $estadoSolicitud->Id }}">Editar</a>
                 </div>
             </td>
         </tr>
+        @endforeach
     </tbody>
 </table>
