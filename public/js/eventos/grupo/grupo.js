@@ -163,6 +163,7 @@ $(document).ready(function() {
         $('.form-select').val("").trigger("change").prop("disabled",false);
 
        // $("#AlertaError").hide();
+       // $("#AlertaError").hide();
 
         //validator.resetForm();
         //actualizarValidSelect2();
@@ -171,7 +172,7 @@ $(document).ready(function() {
         
         $.ajax({
             type: 'POST',
-            url: VerGrupoEdit,
+            url: VerGrupo,
             data: {
                 _token: csrfToken,
                 data: id
