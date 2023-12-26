@@ -12,6 +12,7 @@ use App\Http\Controllers\CentroCostoController;
 use App\Http\Controllers\FlujoController;
 use App\Http\Controllers\MovimientoController;
 use App\Http\Controllers\PersonaController;
+use App\Http\Controllers\LoginController;
 use App\Models\CentroDeCosto;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -134,4 +135,12 @@ Route::get('/test', function () {
     } catch (\Exception $e) {
         return "Error al conectar a la base de datos: " . $e->getMessage();
     }
+});
+
+Route::group(['prefix'=>'/login'], function(){
+    Route::get('/', [LoginController::class, 'Index'])->name('login');
+    Route::get('/camanchaca', [LoginController::class, 'Index'])->name('login.normal');
+    Route::get('/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
+    Route::get('/google/callback', [LoginController::class, 'handleGoogleCallback']);
+    Route::get('/logout', [LoginController::class, 'CerrarSesion'])->name('CerrarSesion');
 });

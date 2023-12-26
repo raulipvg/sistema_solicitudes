@@ -62,7 +62,7 @@
 										<!--end::Menu separator-->
 										<!--begin::Menu item-->
 										<div class="menu-item px-2">
-											<a href="#" class="menu-link px-5">Cerrar Sesión</a>
+											<a href="{{route('CerrarSesion')}}" class="menu-link px-5">Cerrar Sesión</a>
 										</div>
 										<!--end::Menu item-->
 									</div>

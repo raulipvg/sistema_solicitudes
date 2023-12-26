@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * Class Usuario
@@ -32,7 +33,7 @@ use Illuminate\Validation\ValidationException;
  *
  * @package App\Models
  */
-class Usuario extends Model
+class Usuario extends Authenticatable
 {
 	protected $table = 'usuario';
 	protected $primaryKey = 'Id';
@@ -41,7 +42,6 @@ class Usuario extends Model
 
 	protected $casts = [
 		'Id' => 'int',
-		'GoogleId' => 'int',
 		'Enabled' => 'int'
 	];
 
