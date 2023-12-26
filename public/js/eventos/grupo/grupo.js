@@ -1,3 +1,6 @@
+const t = document.getElementById("kt_modal_update_role");
+const n = new bootstrap.Modal(t);
+
 $(document).ready(function() {
     const form = document.getElementById('FormularioGrupo');
     $("#AlertaError").hide();
@@ -159,24 +162,22 @@ $(document).ready(function() {
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
 
-        $("#AddSubmit").hide();
-        $("#EditSubmit").show();
-        $("#IdInput").prop("disabled",false);
-        $("#AlertaError").hide();
+       // $("#AlertaError").hide();
 
-        validator.resetForm();
-        actualizarValidSelect2();
+        //validator.resetForm();
+        //actualizarValidSelect2();
 
-        let id = Number($(this).attr("info"));
+        let id = Number($(this).attr("data-info"));
         
         $.ajax({
             type: 'POST',
-            url: VerUsuario,
+            url: VerGrupoEdit,
             data: {
                 _token: csrfToken,
-                data: id},
+                data: id
+            },
             //content: "application/json; charset=utf-8",
-            dataType: "json",
+            dataType: "HTML",
             beforeSend: function() {
                 bloquear();
                 KTApp.showPageLoading();
@@ -184,42 +185,7 @@ $(document).ready(function() {
             success: function (data) {
                 //console.log(data);
                 //blockUI.release();
-                if(data.success){
-                    console.log(data)
-                    dataselect=data.option;
-                    data=data.data;
-                    
-                    $("#IdInput").val(data.Id);
-                    $("#UsernameInput").val(data.Username);
-                    $("#PasswordInput").val("********");
-
-                    $("#NombreInput").val(data.Nombre);
-                    $("#ApellidoInput").val(data.Apellido);
-                    $("#RutInput").val(data.Rut);
-                    $("#CorreoInput").val(data.Email);
-                  
-                    var select = $('#CentroCostoInput');
-                    select.empty();
-                    for (const key in dataselect) {
-                            var option = new Option(dataselect[key].Nombre, dataselect[key].Id);
-                            select.append(option);                        
-                    }                    
-                    $('#CentroCostoInput').val(data.CentroCostoId).trigger("change");
-                    $('#EstadoIdInput').val(data.Enabled).trigger("change");
-                }else{
-                    Swal.fire({
-                            text: "Error de Carga",
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "OK",
-                            customClass: {
-                                confirmButton: "btn btn-danger btn-cerrar"
-                            }
-                        });
-                    $(".btn-cerrar").on("click", function () {
-                            $('#registrar').modal('toggle');
-                    });
-                }
+                $("#modal-update").html(data);
             },
             error: function () {;
                 Swal.fire({
@@ -234,7 +200,7 @@ $(document).ready(function() {
 
                      $(".btn-cerrar").on("click", function () {
                             //console.log("Error");
-                            $('#registrar').modal('toggle');
+                            $('#kt_modal_update_role').modal('toggle');
                      });
             },
             complete: function(){
@@ -244,6 +210,6 @@ $(document).ready(function() {
         });
         
     });
-
+    
 
 });

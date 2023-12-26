@@ -3,7 +3,7 @@
 												<div class="card-header">
 													<!--begin::Card title-->
 													<div class="card-title">
-														<h2>{{ $grupo->Nombre }} </h2>
+														<h2 class="text-capitalize">{{ $grupo->Nombre }} </h2>
 													</div>
 													<!--end::Card title-->
 												</div>
@@ -16,9 +16,27 @@
 													<!--begin::Permissions-->
 													<div class="d-flex flex-column text-gray-600">
                                                         @foreach ($grupo->Privilegios as $privilegio )
-                                                            <div class="d-flex align-items-center py-2">
-                                                                <span class="bullet bg-dark me-3"></span>{{ $privilegio->Nombre}}
-                                                            </div>
+															@php
+																$aux= $privilegio->pivot->Ver+$privilegio->pivot->Registrar+$privilegio->pivot->Editar+$privilegio->pivot->Eliminar;
+																$text='';
+																if($privilegio->pivot->Ver == 1){
+																	$text='Ver ';
+																}
+																if($privilegio->pivot->Registrar == 1){
+																	$text= $text.' Registrar';
+																}
+																if($privilegio->pivot->Editar == 1){
+																	$text= $text.' Editar';
+																}
+																if($privilegio->pivot->Eliminar == 1){
+																	$text= $text.' Eliminar';
+																}																
+															@endphp
+															@if( $aux >0 )
+																<div class="d-flex align-items-center py-2">
+																	<span class="bullet bg-dark me-3"></span>{{ $privilegio->Nombre}} : {{$text}}
+																</div>
+															@endif
                                                         @endforeach
 													</div>
 													<!--end::Permissions-->

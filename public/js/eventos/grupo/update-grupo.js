@@ -1,10 +1,12 @@
-"use strict";
+
+//console.log(t)
+
 var KTUsersUpdatePermissions = (function () {
-    const t = document.getElementById("kt_modal_update_role"),
-        e = t.querySelector("#kt_modal_update_role_form"),
-        n = new bootstrap.Modal(t);
+    
+    e = t.querySelector("#kt_modal_update_role_form")
+       
     return {
-        init: function () {
+        init: function (t,n) {
             (() => {
                 var o = FormValidation.formValidation(e, {
                     fields: { 
@@ -28,9 +30,9 @@ var KTUsersUpdatePermissions = (function () {
                     plugins: { 
                         trigger: new FormValidation.plugins.Trigger(), 
                         bootstrap: new FormValidation.plugins.Bootstrap5({ 
-                            rowSelector: ".fv-row", 
-                            eleInvalidClass: "", 
-                            eleValidClass: "" 
+                            rowSelector: '.fv-row',
+                        eleInvalidClass: 'is-invalid',
+                        eleValidClass: 'is-valid'
                         }) },
                 });
                 t.querySelector('[data-kt-roles-modal-action="close"]').addEventListener("click", (t) => {
@@ -86,22 +88,8 @@ var KTUsersUpdatePermissions = (function () {
                                     "Valid" == t
                                         ? (i.setAttribute("data-kt-indicator", "on"),
                                           (i.disabled = !0),
-                                          setTimeout(function () {
-                                              i.removeAttribute("data-kt-indicator"),
-                                                  (i.disabled = !1),
-                                                  Swal.fire({ 
-                                                    text: "¡El formulario ha sido enviado exitosamente!", 
-                                                    icon: "success", 
-                                                    buttonsStyling: !1, 
-                                                    confirmButtonText: "OK", 
-                                                    customClass: { 
-                                                        confirmButton: "btn btn-dark" 
-                                                    } }).then(
-                                                      function (t) {
-                                                          t.isConfirmed && n.hide();
-                                                      }
-                                                  );
-                                          }, 2e3))
+                                          Editar() 
+                                          )
                                         : Swal.fire({
                                               text: "Lo siento, parece que se han detectado algunos errores. Por favor, inténtalo de nuevo.",
                                               icon: "error",
@@ -126,19 +114,97 @@ var KTUsersUpdatePermissions = (function () {
         },
     };
 })();
-KTUtil.onDOMContentLoaded(function () {
 
-     //Evento al presionar el Boton Editar Grupo
-     $("#contenedor").on("click",'.editar-grupo', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('prueba')
+
+KTUsersUpdatePermissions.init(t,n);
+
+function Editar(){
+    console.log("editamos");
+    let form1=document.getElementById('kt_modal_update_role_form');;
+    //var formulario = document.getElementById('kt_modal_update_role_form');
+    //var fd = form1.serializeArray()
+
+    //console.log(fd)
+
+    const formData = new FormData(form1);
+
+    const personas = [];
+    const persona = {};
+
+    formData.forEach((valor, clave) => {
+      const matches = clave.match(/Privilegio\[(\d+)\]\[(\w+)\]/);
+      if (matches && matches.length === 3) {
+        const [, indice, propiedad] = matches;
+        if (!persona[indice]) {
+          persona[indice] = {};
+        }
+        persona[indice][propiedad] = valor;
+      }
     });
 
-    KTUsersUpdatePermissions.init();
+    // Agregar los objetos Persona al array personas
+    for (const indice in persona) {
+      if (Object.hasOwnProperty.call(persona, indice)) {
+        personas.push(persona[indice]);
+      }
+    }
+    
+    
+    grupo={};
+    grupo.Nombre=$("#NombreGrupoInput").val();
+    grupo.Id= $("#IdGrupoInput").val();
+    grupo.GrupoPrivilegio = personas;
+
+    personas.Nombre= $("#NombreGrupoInput").val()
+    personas.Id =$("#IdGrupoInput").val()
+
+
+    //console.log(grupo);
+//console.log(EditarGrupoPrivilegio)
+    $.ajax({
+        type: 'POST',
+        url: EditarGrupoPrivilegio,
+        data: {
+            _token: csrfToken,
+            data: grupo
+        },
+        //content: "application/json; charset=utf-8",
+        dataType: "HTML",
+        beforeSend: function() {
+            bloquear();
+            KTApp.showPageLoading();
+        },
+        success: function (data) {
+            //console.log(data);
+            //blockUI.release();
+            //$("#modal-update").html(data);
+            location.reload();
+        },
+        error: function () {;
+            Swal.fire({
+                        text: "Error de Carga",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
+
+                 $(".btn-cerrar").on("click", function () {
+                        //console.log("Error");
+                        $('#kt_modal_update_role').modal('toggle');
+                 });
+        },
+        complete: function(){
+            KTApp.hidePageLoading();
+            loadingEl.remove();
+        }
+    });
+
+}
 
 
 
 
 
-});

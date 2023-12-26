@@ -18,7 +18,7 @@
 <div class="d-flex flex-column flex-column-fluid">
     <div class="d-flex flex-column flex-lg-row">
         <!--begin::Sidebar-->
-        <div class="flex-column flex-lg-row-auto w-100 w-lg-200px w-xl-300px mb-10">
+        <div id="contenedor" class="flex-column flex-lg-row-auto w-100 w-lg-200px w-xl-300px mb-10">
             <div class="mx-5">
             <!--begin::Card-->
             @include('grupo.componente.tarjetagrupo', ['grupo'=> $datosgrupo])
@@ -68,6 +68,7 @@
         const VerUsuario = "{{ route('VerUsuario') }}";
         const EditarUsuario = "{{ route('EditarUsuario') }}";
         const CambiarEstado = "{{ route('CambiarEstadoUsuario') }}";
+        const VerGrupoEdit = '{{ route("VerGrupoEdit") }}';
 
         const VerAcceso =  "{{ route('VerUsuarioGrupo') }}";
         const VerGrupos =  "{{ route('VerGrupoPorUsuario') }}";
@@ -83,8 +84,9 @@
 
     <!--begin::Eventos de la pagina-->
     <script src="{{ asset('js/global/main.js?id=3') }}"></script>
-    <script src="{{ asset('js/eventos/grupo/update-grupo.js?id=3') }}"></script>
     <script src="{{ asset('js/eventos/usuario/usuario.js?id=3') }}"></script>
+    <script src="{{ asset('js/eventos/grupo/tarjeta_grupo.js?id=3') }}"></script>
+
     <!--end::Eventos de la pagina-->
 
 @endpush

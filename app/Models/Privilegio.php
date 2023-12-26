@@ -28,7 +28,8 @@ class Privilegio extends Model
 {
 	protected $table = 'privilegio';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
+	public $incrementing = true;
+	public $timestamps = true;
 
 	protected $casts = [
 		'Id' => 'int',

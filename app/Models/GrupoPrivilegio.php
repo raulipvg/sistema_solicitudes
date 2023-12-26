@@ -27,17 +27,29 @@ class GrupoPrivilegio extends Model
 {
 	protected $table = 'grupo_privilegio';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
+	public $incrementing = true;
+	public $timestamps = true;
+
 
 	protected $casts = [
 		'Id' => 'int',
 		'GrupoId' => 'int',
-		'PrivilegioId' => 'int'
+		'PrivilegioId' => 'int',
+		'Enabled'=> 'int',
+		'Ver'=> 'int',
+		'Registrar'=> 'int',
+		'Editar'=> 'int',
+		'Eliminar' => 'int'		
 	];
 
 	protected $fillable = [
 		'GrupoId',
-		'PrivilegioId'
+		'PrivilegioId',
+		'Enabled',
+		'Ver',
+		'Registrar',
+		'Editar',
+		'Eliminar'
 	];
 
 	public function grupo()

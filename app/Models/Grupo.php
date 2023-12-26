@@ -58,7 +58,7 @@ class Grupo extends Model
 	public function privilegios()
 	{
 		return $this->belongsToMany(Privilegio::class, 'grupo_privilegio', 'GrupoId', 'PrivilegioId')
-					->withPivot('Id')
+					->withPivot('Id','Ver','Registrar', 'Editar', 'Eliminar')
 					->withTimestamps();
 	}
 
@@ -101,8 +101,8 @@ class Grupo extends Model
 				'max:255',
 				Rule::unique('grupo','Nombre')->ignore($id, 'Id'),
 			],
-            'Descripcion' => 'required|string|max:255',
-            'Enabled' => 'required|min:0|max:1'
+            'Descripcion' => 'string|max:255',
+            'Enabled' => 'min:0|max:1'
         ];
 
         $validator = Validator::make($data, $rules);

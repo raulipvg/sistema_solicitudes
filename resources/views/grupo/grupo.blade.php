@@ -1,4 +1,4 @@
-@extends('layout.main')
+ @extends('layout.main')
 
 @push('css')
 <link href='' rel='stylesheet' type="text/css"/>
@@ -34,7 +34,7 @@
 
 <!--begin::Modal - Registrar Grupo-->
 @include('grupo.componente.modalRegistrarGrupo')
-<!--end::Modal - Registrara Grupo-->
+<!--end::Modal - Registrar Grupo-->
 
 
 <!--begin::Modal - Update role-->
@@ -45,13 +45,15 @@
 
 @push('Script')
     <script>
-        const GuardarGrupo = '{{ route("GuardarGrupo") }}'
+        const GuardarGrupo = '{{ route("GuardarGrupo") }}';
+		const VerGrupoEdit = '{{ route("VerGrupoEdit") }}';
+		const EditarGrupoPrivilegio = '{{route("EditarGrupoPrivilegio")}}';
     </script>
 
 	<!--begin::Eventos de la pagina-->
     <script src="{{ asset('js/global/main.js?id=3') }}"></script>
     <script src="{{ asset('js/eventos/grupo/grupo.js?id=3') }}"></script>
-	<script src="{{ asset('js/eventos/grupo/update-grupo.js?id=3') }}"></script>
+
     <!--end::Eventos de la pagina-->
     
 @endpush
