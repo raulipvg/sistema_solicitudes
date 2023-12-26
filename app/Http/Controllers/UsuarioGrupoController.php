@@ -84,7 +84,7 @@ class UsuarioGrupoController extends Controller
             DB::commit(); 
             return response()->json([
                 'success' => true,
-                'message' => 'Empresa Guardada'
+                'message' => 'Nuevo Acceso Guardado'
             ]);
         }catch(Exception $e){  
             DB::rollBack();
