@@ -38,7 +38,6 @@
                                 <select id="GrupoIdInput" name="GrupoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar">
                                     <option></option>
                                     @foreach($grupos as $grupo)
-                                    @if($grupo->Enabled == 1)
                                     <option value="{{ $grupo->Id }}">{{ $grupo->Nombre }}</option>
                                     @endforeach
                                 </select>
@@ -50,7 +49,6 @@
                                 <select id="FlujoIdInput" name="FlujoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar">
                                     <option></option>
                                     @foreach($flujos as $flujo)
-                                    @if($flujo->Enabled == 1)
                                     <option value="{{ $flujo->Id }}">{{ $flujo->Nombre }}</option>
                                     @endforeach
                                 </select>
