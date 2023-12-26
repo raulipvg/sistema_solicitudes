@@ -24,7 +24,7 @@
                     <div class="row">
                         <div class="col-md-12 mb-2">
                             <div class="form-floating fv-row">
-                                <select id="ComunidadIdInput2" name="ComunidadId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                <select id="ComunidadIdInput2" name="GrupoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
                                 </select>
                                 <label for="ComunidadIdInput2" class="form-label">Grupo</label>

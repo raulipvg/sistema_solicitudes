@@ -1,18 +1,18 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
-function format(data) {
+function format(data,usuario) {
     // `d` is the original data object for the row
-    /*
+    
     var html=
     '<div class="d-flex justify-content-center">'+
         '<div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">'+
         '<table id="services_table" class="table table-row-dashed">'+
             '<thead class="services-info">'+
                '<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">'+
-                    '<th class="p-0 ps-3">Comundidad</th>'+
+                    '<th class="p-0 ps-3">Grupo</th>'+
                     '<th class="p-0 ps-3">Fecha</th>'+
                     '<th class="text-center col-3 p-0 ps-2">ESTADO'+
-                        '<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar Acceso">'+ 
-                        '<button type="button" data-info="'+data[0].UsuarioId+'" class="registrar-acceso btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-acceso">'+
+                        '<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Asignar un Grupo">'+ 
+                        '<button type="button" data-info="'+usuario+'" class="registrar-acceso btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-acceso">'+
                             '<i class="ki-outline ki-plus-square fs-2"></i>'+
                         '</button>'+
                         '</span>'+
@@ -21,12 +21,10 @@ function format(data) {
             '</thead>'+
             '<tbody class="fw-bold text-gray-600">';
 
-
-
     for(const elemento of data) {
        // console.log(elemento.Enabled);
         // Crear un objeto Date a partir de la cadena original
-        var fecha = new Date(elemento.FechaAcceso);
+        var fecha = new Date(elemento.created_at);
 
         // Obtener el día, mes y año
         var dia = fecha.getDate();
@@ -39,14 +37,11 @@ function format(data) {
        html = html +
                 '<tr>'+
                     '<td class="text-gray-700 text-capitalize">'+elemento.Nombre+'</td>'+
-                    '<td>'+fechaFormateada+'</td>';
-
-        if(elemento.Enabled == 1){
-            html = html +
+                    '<td>'+fechaFormateada+'</td>'+
                     '<td class="text-center p-0">'+
                         '<div class="btn-group btn-group-sm" role="group">'+
-                            '<button class="btn btn-sm btn-light-success editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="'+elemento.Id+'" title="Deshabilitar Acceso">'+
-                            '<span class="indicator-label">Activo</span>'+
+                            '<button class="btn btn-sm btn-light-success editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-100px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="'+elemento.Id+'" title="Desvincular del Grupo">'+
+                            '<span class="indicator-label">HABILITADO</span>'+
                             '<span class="indicator-progress">'+
                                 '<span class="spinner-border spinner-border-sm align-middle"></span>'+
                             '</span>'+
@@ -54,86 +49,16 @@ function format(data) {
                         '</div>'+
                     '</td>'+
                 '</tr>'
-
-        }else{
-            html = html +
-                    '<td class="text-center p-0">'+
-                        '<div class="btn-group btn-group-sm" role="group">'+
-                            '<button class="btn btn-sm btn-light-warning editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-65px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="'+elemento.Id+'" title="Habilitar Acceso">'+
-                            '<span class="indicator-label">Inactivo</span>'+
-                            '<span class="indicator-progress">'+
-                                '<span class="spinner-border spinner-border-sm align-middle"></span>'+
-                            '</span>'+
-                            '</button>';
-                         '</div>'+
-                    '</td>'+
-                '</tr>'
-
-        }
     }
-
        html=  html+        
                     '</tbody>'+
                 '</table>'+
                 '</div>'+
                 '</div>';
 
-    */
-   
-        var html=
-                '<div class="d-flex justify-content-center">'+
-                    '<div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">'+
-                        '<table id="services_table" class="table table-row-dashed">'+
-                            '<thead class="services-info">'+
-                                '<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">'+
-                                    '<th class="col-4 p-0 ps-3">Grupo</th>'+
-                                    '<th class="col-4 p-0 ps-3">Fecha</th>'+
-                                    '<th class="col-4 p-0 ps-2 text-center">ESTADO'+
-                                        '<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Asignar Grupo">'+ 
-                                            '<button type="button" data-info="1" class="registrar-acceso btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-acceso">'+
-                                                '<i class="ki-outline ki-plus-square fs-2"></i>'+
-                                            '</button>'+
-                                        '</span>'+
-                                    '</th>'+
-                                '</tr>'+
-                            '</thead>'+
-                            '<tbody class="fw-bold text-gray-600">'+
-                                '<tr>'+
-                                    '<td class="text-gray-700 text-capitalize">Grupo 1</td>'+
-                                    '<td>01-01-2024</td>'+
-                                    '<td class="text-center p-0">'+
-                                        '<div class="btn-group btn-group-sm" role="group">'+
-                                            '<button class="btn btn-sm btn-light-success editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-100px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="1" title="Desvincular del Grupo">'+
-                                                '<span class="indicator-label">HABILITADO</span>'+
-                                                '<span class="indicator-progress">'+
-                                                    '<span class="spinner-border spinner-border-sm align-middle"></span>'+
-                                                '</span>'+
-                                            '</button>'+
-                                        '</div>'+
-                                    '</td>'+
-                                '</tr>'+
-                                '<tr>'+
-                                    '<td class="text-gray-700 text-capitalize">Grupo 2</td>'+
-                                    '<td>01-01-2024</td>'+
-                                    '<td class="text-center p-0">'+
-                                        '<div class="btn-group btn-group-sm" role="group">'+
-                                            '<button class="btn btn-sm btn-light-success editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-100px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="1" title="Desvincular del Grupo">'+
-                                                '<span class="indicator-label">HABILITADO</span>'+
-                                                '<span class="indicator-progress">'+
-                                                    '<span class="spinner-border spinner-border-sm align-middle"></span>'+
-                                                '</span>'+
-                                            '</button>'+
-                                        '</div>'+
-                                    '</td>'+
-                                '</tr>'+
-                            '</tbody>'+
-                        '</table>'+
-                    '</div>'+
-                '</div>';
-
-    return html;
-    
+    return html;   
 }
+ 
  
 let miTabla = $('#tabla-usuario').DataTable({
             "language": languageConfig,

@@ -48,6 +48,7 @@
         const GuardarGrupo = '{{ route("GuardarGrupo") }}';
 		const VerGrupoEdit = '{{ route("VerGrupoEdit") }}';
 		const EditarGrupoPrivilegio = '{{route("EditarGrupoPrivilegio")}}';
+		const CambiarEstadoGrupo = '{{route("CambiarEstadoGrupo")}}';
     </script>
 
 	<!--begin::Eventos de la pagina-->
