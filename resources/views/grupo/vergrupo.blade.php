@@ -74,6 +74,9 @@
         const VerGrupos =  "{{ route('VerGrupoPorUsuario') }}";
         const GuardarUsuarioGrupo = "{{ route('GuardarUsuarioGrupo') }}";
         const DeleteUsuarioGrupo = "{{ route('DeleteUsuarioGrupo')}}";
+
+        const VerCC= "{{ route('VerCC') }}";
+        const EditarGrupoPrivilegio = '{{route("EditarGrupoPrivilegio")}}';
     </script>
 
     <!--begin::Datatables y Configuracion de la Tabla-->
