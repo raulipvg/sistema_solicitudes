@@ -532,8 +532,10 @@ $(document).ready(function() {
                         
                         boton.children().eq(0).show();
                         boton.addClass('active')
+
                         empresa=data.empresa;         
                         data = data.data;
+                        
                         row.child(format(data,empresa)).show();
                         $(".editar-acceso").tooltip();
                         $(".dar-acceso").tooltip();

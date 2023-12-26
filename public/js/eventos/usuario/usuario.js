@@ -145,7 +145,7 @@ $(document).ready(function() {
             form2,
             {
                 fields: {   
-                    'ComunidadId': {
+                    'GrupoId': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
@@ -656,14 +656,34 @@ $(document).ready(function() {
                     boton.attr("data-kt-indicator", "on");
                 },
                 success: function (data) {
-                    if(data.success){             
+                    //console.log(data)
+                    if(data.success){  
+                        boton.children().eq(0).show();
+                        boton.addClass('active')
+                        usuario= data.usuario;
                         data = data.data;
-                        row.child(format(data)).show();
+
+                        row.child(format(data,usuario)).show();
+
                         $(".editar-acceso").tooltip();
                         $(".dar-acceso").tooltip();
+                    }else{
+                        boton.children().eq(0).show();
+                        boton.removeClass('active');                        
+                        Swal.fire({
+                            text: "Error: "+ data.message,
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
                     }
                 },
                 error: function () {
+                    boton.children().eq(0).show();
+                    boton.removeClass('active');
                     Swal.fire({
                         text: "Error",
                         icon: "error",
@@ -678,8 +698,8 @@ $(document).ready(function() {
                     KTApp.hidePageLoading();
                     loadingEl.remove();
                     boton.removeAttr("data-kt-indicator");
-                    boton.children().eq(0).show();
-                    boton.addClass('active')
+                    //boton.children().eq(0).show();
+                    //boton.addClass('active')
                 }
             });
         }
@@ -714,22 +734,18 @@ $(document).ready(function() {
                 blockUI2.block();
             },
             success: function (data) {
-                if(data.success){             
+                if(data.success){   
+                    //console.log(data)          
                     data = data.data;
                     var select = $('#ComunidadIdInput2');
                     select.empty();
                     // Agrega las opciones al select
                     var option = new Option('', '');
                     select.append(option);      
-                    /*for (const comunidad in data) {
-                            var option = new Option(data[comunidad].Nombre, data[comunidad].Id);
+                    for (const key in data) {
+                            var option = new Option(data[key].Nombre, data[key].Id);
                             select.append(option);                        
-                    }*/
-                    var option = new Option('Grupo 1', 1);
-                    select.append(option);
-                    var option = new Option('Grupo 2', 2);
-                    select.append(option);        
-
+                    }       
                 }else{
                     //console.log(data.message)
                     html = '<ul><li style="">'+data.message+'</li></ul>';

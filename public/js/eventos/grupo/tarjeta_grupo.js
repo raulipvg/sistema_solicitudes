@@ -59,4 +59,65 @@ $("#contenedor").on("click",'.editar-grupo', function (e) {
     
 });
 
+// Evento al Boton que cambia el estado del usuario
+$("#contenedor").on("click", '.estado-grupo', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var grupoId =  $(this).attr('data-info');
+    var btn = $(this);
+    console.log(grupoId)
+    $.ajax({
+        type: 'POST',
+        url: CambiarEstadoGrupo,
+        data: {
+            _token: csrfToken,
+            data: grupoId
+        },
+        //content: "application/json; charset=utf-8",
+        dataType: "json",
+        beforeSend: function() {
+            btn.attr("data-kt-indicator", "on");
+            btn.prop("disabled",true);
+        },
+        success: function (data) {
+            if(data.success){
+                if(btn.hasClass('btn-light-success')){
+                    btn.removeClass('btn-light-success').addClass('btn-light-warning');
+                    btn.find("span.indicator-label").first().text('INACTIVO')
+                }else{
+                    btn.removeClass('btn-light-warning').addClass('btn-light-success');
+                    btn.find("span.indicator-label").first().text('ACTIVO')
+                }   
+            }else{
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            }      
+        },
+        error: function () {
+            Swal.fire({
+                text: "Error",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "OK",
+                customClass: {
+                    confirmButton: "btn btn-danger btn-cerrar"
+                }
+            });
+        },
+        complete: function(){
+            btn.removeAttr("data-kt-indicator");
+            btn.prop("disabled",false);
+        }
+    });
+
+});
+
+
 });

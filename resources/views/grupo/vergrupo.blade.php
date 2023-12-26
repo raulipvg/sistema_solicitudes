@@ -77,6 +77,8 @@
 
         const VerCC= "{{ route('VerCC') }}";
         const EditarGrupoPrivilegio = '{{route("EditarGrupoPrivilegio")}}';
+        const CambiarEstadoGrupo = '{{route("CambiarEstadoGrupo")}}';
+
     </script>
 
     <!--begin::Datatables y Configuracion de la Tabla-->

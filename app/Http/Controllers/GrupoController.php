@@ -156,7 +156,7 @@ class GrupoController extends Controller
 
             $grupoEdit = Grupo::find($request['Id']);
             if (!$grupoEdit) {
-                throw new Exception('Empresa no encontrada');
+                throw new Exception('Grupo no encontrado');
             }
             //$userEdit->Username
             $grupoEdit->fill($request);
@@ -164,25 +164,22 @@ class GrupoController extends Controller
 
             foreach($request['GrupoPrivilegio'] as $grupoPrivilegio ){
                 $grupoPrivilegioEdit = GrupoPrivilegio::find($grupoPrivilegio['Id']);
-                //$grupoPrivilegioEdit->fill($grupoPrivilegio);
-                //$grupoPrivilegioEdit->save();
-                
+                if (!$grupoPrivilegioEdit) {
+                    continue; // Opcional: Puede lanzar una excepción si se espera un GrupoPrivilegio específico.
+                }     
                 $grupoPrivilegioEdit->update([
                     'Ver' => (isset($grupoPrivilegio['Ver']))?1:0,
                     'Registrar' => (isset($grupoPrivilegio['Registrar']))?1:0,
                     'Editar' => (isset($grupoPrivilegio['Editar']))?1:0,
                     'Eliminar' => (isset($grupoPrivilegio['Eliminar']))?1:0
-             ]);
-             $grupoPrivilegioEdit->save();
-         
-            
+                ]);
+                //$grupoPrivilegioEdit->save();                 
             }
-
 
             DB::commit();
             return response()->json([
                 'success' => true,
-                'message' => 'Empresa actualizada correctamente'
+                'message' => 'Grupo actualizado correctamente'
             ]);
         }catch(Exception $e){
             DB::rollBack();
@@ -193,6 +190,37 @@ class GrupoController extends Controller
         }
 
 
+    }
+
+
+    public function CambiarEstado(Request $request)
+    {
+        $request = $request->input('data');
+
+        try{
+            $grupoEdit = Grupo::find($request);
+
+            if (!$grupoEdit) {
+                throw new Exception('Grupo no encontrado');
+            }
+            DB::beginTransaction();
+            $grupoEdit->update([
+                   'Enabled' => ($grupoEdit['Enabled'] == 1)? 0: 1 
+            ]);
+            $grupoEdit->save();
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Estado del Area cambiado'
+            ]);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
     
 }

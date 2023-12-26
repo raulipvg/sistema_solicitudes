@@ -62,6 +62,7 @@ Route::group(['prefix' => '/grupo'], function () {
     Route::post('/registrar', [GrupoController::class, 'Guardar'])->name('GuardarGrupo');
     Route::post('/veredit', [GrupoController::class, 'VerEdit'])->name('VerGrupoEdit');
     Route::post('/editargrupoprivilegio', [GrupoController::class, 'EditarGrupoPrivilegio'])->name('EditarGrupoPrivilegio');
+    Route::post('/cambiarestado', [GrupoController::class,'CambiarEstado'])->name('CambiarEstadoGrupo');
     //Route::post('/asignar',[AccesoComunidadController::class, 'AsignarGrupo'])->name('AsignarGrupo');
 });
 
