@@ -172,7 +172,7 @@ $(document).ready(function() {
         
         $.ajax({
             type: 'POST',
-            url: VerGrupo,
+            url: VerGrupoEdit,
             data: {
                 _token: csrfToken,
                 data: id
