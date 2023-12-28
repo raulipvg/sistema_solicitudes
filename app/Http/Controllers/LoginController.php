@@ -8,6 +8,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
 
+
 class LoginController extends Controller
 {
     public function Index(){

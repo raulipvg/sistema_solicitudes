@@ -95,9 +95,7 @@
 			</i>
 		</div>
 		<!--end::Scrolltop-->
-
 		<script>var hostUrl = "assets/";</script>
-
 		<!--begin::Global Javascript Bundle-->
 		<script src="{{ asset('js/plugins.bundle.js') }}"></script>
 		<script src="{{ asset('js/scripts.bundle.js') }}"></script>
