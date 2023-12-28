@@ -130,7 +130,7 @@ Route::group(['prefix'=> '/persona'], function () {
 
 Route::group(['prefix' => 'error'], function () {
     Route::get('/404', function () {return view('error.error404');})->name('Error404');
-    Route::get('/500', function () {return view('error.error500');})->name('Error404');
+    Route::get('/500', function () {return view('error.error500');})->name('Error500');
 });
 
 

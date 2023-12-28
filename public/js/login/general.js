@@ -138,4 +138,15 @@ var KTSigninGeneral = function() {
 } ();
 KTUtil.onDOMContentLoaded((function() {
     KTSigninGeneral.init()
+    if(mensaje){
+        Swal.fire({
+                text: mensaje,
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "Ok!",
+                customClass: {
+                    confirmButton: "btn btn-dark"
+                }
+            })
+    }
 }));

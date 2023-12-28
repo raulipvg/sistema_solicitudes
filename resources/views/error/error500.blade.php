@@ -28,7 +28,7 @@
 			<!--begin::Page bg image-->
 			<style>
                 body { 
-                    background-image: url('{{ asset('img/error/bg4-dark.jpg') }}') 
+                    background-image: url("{{ asset('img/error/bg4-dark.jpg') }}") 
                 }
             </style>
 			<!--end::Page bg image-->

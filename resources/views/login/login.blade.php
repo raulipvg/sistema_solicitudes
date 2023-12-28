@@ -29,7 +29,7 @@
 			<!--begin::Page bg image-->
             <style>
                 body { 
-                    background-image: url('{{ asset('img/error/bg4-dark.jpg') }}') 
+                    background-image: url("{{ asset('img/error/bg4-dark.jpg') }}") 
                 }
             </style>			<!--end::Page bg image-->
 			<!--begin::Authentication - Sign-in -->
@@ -132,9 +132,16 @@
 			</div>
 			<!--end::Authentication - Sign-in-->
 		</div>
-		<!--end::Root-->
+		<!--end::Root--> 
 		<!--begin::Javascript-->
-		<script>var hostUrl = "assets/";</script>
+		<script>
+            var hostUrl = "assets/";
+            var loginNormal = "{{ route('login.normal') }}";
+            
+            var mensaje = "{{$mensaje}}";
+            
+        </script>
+        
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
         <script src="{{ asset('js/plugins.bundle.js') }}"></script>
 		<script src="{{ asset('js/scripts.bundle.js') }}"></script>
