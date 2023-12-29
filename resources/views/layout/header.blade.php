@@ -30,7 +30,7 @@
 										<img src="{{ asset('img/avatars/blank.png') }}" class="rounded-3" alt="user" />
 									</div>
 									<!--begin::User account menu-->
-									<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-0 fs-6 w-275px" data-kt-menu="true">
+									<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-0 fs-6 w-300px" data-kt-menu="true">
 										<!--begin::Menu item-->
 										<div class="menu-item px-2">
 											<div class="menu-content d-flex align-items-center px-1">
@@ -41,7 +41,7 @@
 												<!--end::Avatar-->
 												<!--begin::Username-->
 												<div class="d-flex flex-column">
-													<div class="fw-bold d-flex align-items-center fs-5">@if( auth()->check() ) {{ auth()->user()->persona->Nombre }} {{auth()->user()->persona->Apellido}}@else Inicia sesión @endif
+													<div class="fw-bold d-flex align-items-center fs-5 text-capitalize ">@if( auth()->check() ) {{ auth()->user()->persona->Nombre }} {{auth()->user()->persona->Apellido}}@else Inicia sesión @endif
 													<span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2 text-uppercase ">@if( auth()->check() ) {{auth()->user()->grupos[0]->Nombre}} @else Grupo @endif</span></div>
 													<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">@if( auth()->check() ) {{ auth()->user()->Email }} @else correo@correo.com @endif</a>
 												</div>

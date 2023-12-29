@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
-
+use Exception;
 
 class LoginController extends Controller
 {
@@ -22,9 +22,30 @@ class LoginController extends Controller
     }
 
     //Iniciar sesión con usuario y contraseña
-    public function InicioNormal(){
+    public function InicioNormal(Request $request){
+        $request = $request->input();
+        $credenciales = [
+            'Username' => $request['Username'],
+            'password' => $request['Password']
+        ];
 
-    }
+        try{
+            if(Auth::attempt($credenciales)){
+                if(auth()->user()->Enabled == 0){
+                    throw new Exception('Error al iniciar sesión.'); 
+                }
+
+                return response()->json([
+                    'redirect' => (route('Usuario'))
+                ]);
+            }
+        }catch(Exception $e){
+            return response()->json([
+                'mensaje' => ($e->getMessage())
+            ]);
+        }
+
+}
 
     // Envía la solicitud a Google
     public function redirectToGoogle()
@@ -36,13 +57,13 @@ class LoginController extends Controller
     public function handleGoogleCallback()
     {
         
-        $googleUser = Socialite::driver('google')->user();
+        $googleUser = Socialite::driver('google')->stateless()->user();
         
-        /*        
-        $dominio =  $googleUser->user['hd'];
-
-        if ($dominio != 'camanchaca.cl') {
-            $mensaje = 'La cuenta de Google no pertenece a Camanchaca';
+        /*
+        // SI LA APP EN GOOGLE CLOUD ESTÁ CONFIGURADA COMO USO INTERNO, NO ES NECESARIO REALIZAR ESTA VERIFICACIÓN
+        // Para este punto, no buscará en la BD. La verificación siguiente también sirve para cubrir este caso.
+        if (!Str::endsWith($user->email, '@camanchaca.cl')) {
+            $mensaje = 'La cuenta de no está registrada en el sistema';
         
             return redirect()->intended(route('login'))
                 ->with([
@@ -51,17 +72,26 @@ class LoginController extends Controller
         }
         */
 
-        $usuarioLogear = Usuario::where('Email','=',$googleUser->getEmail())
-                                ->first();
+        
+        try{
 
-        if($usuarioLogear){
+            $usuarioLogear = Usuario::where('Email','=',$googleUser->getEmail())
+                                ->first();
+            if(!$usuarioLogear){
+                throw new Exception('Usuario no encontrado.'); 
+            }
+
+            if($usuarioLogear->Enabled == 0){
+                throw new Exception('Error al iniciar sesión.'); 
+            }
             Auth::login($usuarioLogear);
             return redirect()->intended(route('Usuario'));
+        }catch(Exception $e){
+            return redirect()->intended(route('login'))
+                ->with([
+                    'mensaje' => $e->getMessage(),
+                ]);
         }
-
-        
-
-        return redirect()->intended(route('login'));
     }
 
     //Cierra la sesión de Auth

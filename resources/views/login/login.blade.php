@@ -57,7 +57,7 @@
 						<!--begin::Wrapper-->
 						<div class="d-flex flex-center flex-column flex-column-fluid px-lg-10 pb-15 pb-lg-20">
 							<!--begin::Form-->
-							<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="index.html" action="#">
+							<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="{{ route('Home') }}" action="{{ route('login.normal') }}">
 								<!--begin::Heading-->
 								<div class="text-center mb-11">
 									<!--begin::Title-->
@@ -88,7 +88,7 @@
 								<!--begin::Input group=-->
 								<div class="fv-row mb-8">
 									<!--begin::Email-->
-									<input type="text" placeholder="Email" name="Email" autocomplete="off" class="form-control bg-transparent" />
+									<input type="text" placeholder="Usuario" name="Username" autocomplete="off" class="form-control bg-transparent" />
 									<!--end::Email-->
 								</div>
 								<!--end::Input group=-->
@@ -135,6 +135,7 @@
 		<!--end::Root--> 
 		<!--begin::Javascript-->
 		<script>
+			const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             var hostUrl = "assets/";
             var loginNormal = "{{ route('login.normal') }}";
             

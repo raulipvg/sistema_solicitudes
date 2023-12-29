@@ -145,7 +145,7 @@ Route::get('/test', function () {
 
 Route::group(['prefix'=>'/login'], function(){
     Route::get('/', [LoginController::class, 'Index'])->name('login');
-    Route::get('/camanchaca', [LoginController::class, 'Index'])->name('login.normal');
+    Route::post('/camanchaca', [LoginController::class, 'InicioNormal'])->name('login.normal');
     Route::get('/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
     Route::get('/google/callback', [LoginController::class, 'handleGoogleCallback']);
     Route::get('/logout', [LoginController::class, 'CerrarSesion'])->name('CerrarSesion');

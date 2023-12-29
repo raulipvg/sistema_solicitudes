@@ -71,6 +71,7 @@ class UsuarioController extends Controller
         $request['Apellido'] = strtolower($request['Apellido']);
         $request['Rut'] = strtolower($request['Rut']);
         $request['Email'] = strtolower($request['Email']);
+        $request['Password'] = bcrypt($request['Password']);
         
         try{
             $usuario = new Usuario();
@@ -154,6 +155,7 @@ class UsuarioController extends Controller
         $request['Apellido'] = strtolower($request['Apellido']);
         $request['Rut'] = strtolower($request['Rut']);
         $request['Email'] = strtolower($request['Email']);
+        $request['Password'] = bcrypt($request['Password']);
 
         try{
             $usuario = new Usuario();

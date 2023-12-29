@@ -53,6 +53,10 @@ class Usuario extends Authenticatable
 		'Enabled'
 	];
 
+    public function getAuthPassword()
+	{
+		return $this->Password;
+	}
 	public function persona()
 	{
 		return $this->hasOne(Persona::class, 'UsuarioId');

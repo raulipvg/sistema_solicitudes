@@ -7,18 +7,18 @@ var KTSigninGeneral = function() {
             e = document.querySelector("#kt_sign_in_submit"),
             r = FormValidation.formValidation(t, {
                 fields: {
-                    'Email': {
+                    'Username': {
                         validators: {
                             notEmpty: {
                                 message: 'Requerido'
-                            },
+                            },/*
                             emailAddress: {
                                 message: 'Email inválido'
                             },
                             regexp: {
                                 regexp: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                                 message: 'Formato inválido'
-                            }
+                            }*/
                         }
                     }, 
                     'Password': {
@@ -53,7 +53,7 @@ var KTSigninGeneral = function() {
             } (e.closest("form").getAttribute("action")) ? e.addEventListener("click", (function(i) { //URL VALIDA
                 i.preventDefault(),
                 r.validate().then((function(r) {
-                    "Valid" == r ? (e.setAttribute("data-kt-indicator", "on"), e.disabled = !0, setTimeout((function() {
+                    "Valid" == r ? (e.setAttribute("data-kt-indicator", "on"), e.disabled = !0, (function() {
                         e.removeAttribute("data-kt-indicator"),
                         e.disabled = !1,
                         Swal.fire({
@@ -66,13 +66,13 @@ var KTSigninGeneral = function() {
                             }
                         }).then((function(e) {
                             if (e.isConfirmed) {
-                                t.querySelector('[name="email"]').value = "",
+                                t.querySelector('[name="username"]').value = "",
                                 t.querySelector('[name="password"]').value = "";
                                 var r = t.getAttribute("data-kt-redirect-url");
                                 r && (location.href = r)
                             }
                         }))
-                    }), 2e3)) : Swal.fire({
+                    })) : Swal.fire({
                         text: "Lo siento, parece que se detectaron algunos errores, por favor inténtalo de nuevo.",
                         icon: "error",
                         buttonsStyling: !1,
@@ -85,7 +85,7 @@ var KTSigninGeneral = function() {
             })) : e.addEventListener("click", (function(i) {
                 i.preventDefault(),
                 r.validate().then((function(r) {
-                    "Valid" == r ? (e.setAttribute("data-kt-indicator", "on"), e.disabled = !0, axios.post(e.closest("form").getAttribute("action"), new FormData(t)).then((function(e) {
+                    "Valid" == r ? (e.setAttribute("data-kt-indicator", "on"), e.disabled = !0, axios.post(e.closest("form").getAttribute("action"), new FormData(t), csrfToken).then((function(e) {
                         if (e) {
                             t.reset(),
                             Swal.fire({
