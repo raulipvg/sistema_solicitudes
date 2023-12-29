@@ -36,8 +36,11 @@ class LoginController extends Controller
                 }
 
                 return response()->json([
-                    'redirect' => (route('Usuario'))
+                    'redirect' => (route('Home'))
                 ]);
+            }
+            else {
+                throw new Exception('Error al iniciar sesión.'); 
             }
         }catch(Exception $e){
             return response()->json([
@@ -50,7 +53,7 @@ class LoginController extends Controller
     // Envía la solicitud a Google
     public function redirectToGoogle()
     {
-        if(Auth::check()) redirect()->intended(route('Usuario'));
+        if(Auth::check()) redirect()->intended(route('Home'));
         return Socialite::driver('google')->redirect();
     }
     // Respuesta desde Google, iniciar sesión
@@ -85,7 +88,7 @@ class LoginController extends Controller
                 throw new Exception('Error al iniciar sesión.'); 
             }
             Auth::login($usuarioLogear);
-            return redirect()->intended(route('Usuario'));
+            return redirect()->intended(route('Home'));
         }catch(Exception $e){
             return redirect()->intended(route('login'))
                 ->with([

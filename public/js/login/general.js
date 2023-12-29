@@ -85,40 +85,25 @@ var KTSigninGeneral = function() {
             })) : e.addEventListener("click", (function(i) {
                 i.preventDefault(),
                 r.validate().then((function(r) {
-                    "Valid" == r ? (e.setAttribute("data-kt-indicator", "on"), e.disabled = !0, axios.post(e.closest("form").getAttribute("action"), new FormData(t), csrfToken).then((function(e) {
-                        if (e) {
-                            t.reset(),
+                    "Valid" == r ? (e.setAttribute("data-kt-indicator", "on"), e.disabled = !0, axios.post(e.closest("form").getAttribute("action"), new FormData(t), csrfToken).then((function(data) {
+                        console.log(data);
+                        if (data.data.mensaje) {
                             Swal.fire({
-                                text: "¡Has iniciado sesión correctamente!",
-                                icon: "success",
+                                text: data.data.mensaje,
+                                icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok",
                                 customClass: {
                                     confirmButton: "btn btn-dark"
                                 }
-                            });
-                            const e = t.getAttribute("data-kt-redirect-url");
-                            e && (location.href = e)
-                        } else Swal.fire({
-                            text: "Lo siento, el correo electrónico o la contraseña son incorrectos, por favor inténtalo de nuevo.",
-                            icon: "error",
-                            buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn btn-dark"
-                            }
-                        })
+                            })
+                        } else {
+                            t.reset()
+                            location.href = data.data.redirect
+                        }
                     })).
                     catch((function(t) {
-                        Swal.fire({
-                            text: "Lo siento, parece que se detectaron algunos errores, por favor inténtalo de nuevo.",
-                            icon: "error",
-                            buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn btn-dark"
-                            }
-                        })
+                        
                     })).then((() => {
                         e.removeAttribute("data-kt-indicator"),
                         e.disabled = !1
