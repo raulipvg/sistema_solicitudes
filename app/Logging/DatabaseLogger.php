@@ -19,4 +19,12 @@ class DatabaseLogger extends AbstractProcessingHandler
         $log->save();
     }
 
+    public function __invoke(array $config)
+    {
+        return new Logger(
+            $config['name'] ?? 'database',
+            [$this]
+        );
+    }
+
 }

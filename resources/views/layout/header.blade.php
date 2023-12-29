@@ -42,7 +42,7 @@
 												<!--begin::Username-->
 												<div class="d-flex flex-column">
 													<div class="fw-bold d-flex align-items-center fs-5 text-capitalize ">@if( auth()->check() ) {{ auth()->user()->persona->Nombre }} {{auth()->user()->persona->Apellido}}@else Inicia sesión @endif
-													<span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2 text-uppercase ">@if( auth()->check() ) {{auth()->user()->grupos[0]->Nombre}} @else Grupo @endif</span></div>
+													<span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2 text-uppercase "> Grupo</span></div>
 													<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">@if( auth()->check() ) {{ auth()->user()->Email }} @else correo@correo.com @endif</a>
 												</div>
 												<!--end::Username-->
