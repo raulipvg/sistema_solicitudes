@@ -22,8 +22,8 @@ class Log extends Model
 {
 	protected $table = 'logs';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
-	public $timestamps = false;
+	public $incrementing = true;
+	public $timestamps = true;
 
 	protected $casts = [
 		'Id' => 'int'

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 class LoginController extends Controller
@@ -34,7 +35,7 @@ class LoginController extends Controller
                 if(auth()->user()->Enabled == 0){
                     throw new Exception('Error al iniciar sesión.'); 
                 }
-
+                Log::channel('database')->info('Usuario '.auth()->user()->Username.' ha iniciado sesión por el método tradicional.');
                 return response()->json([
                     'redirect' => (route('Home'))
                 ]);
@@ -88,6 +89,7 @@ class LoginController extends Controller
                 throw new Exception('Error al iniciar sesión.'); 
             }
             Auth::login($usuarioLogear);
+            app('log')->info('Usuario inició sesión.');
             return redirect()->intended(route('Home'));
         }catch(Exception $e){
             return redirect()->intended(route('login'))
@@ -99,7 +101,12 @@ class LoginController extends Controller
 
     //Cierra la sesión de Auth
     public function CerrarSesion(){
-        Auth::logout();
+        if(auth()->check()){
+            $username = auth()->user()->Username;
+
+            Auth::logout();
+            Log::channel('database')->info('Usuario '.$username.' ha cerrado sesión.');
+        }
         return redirect()->intended(route('login'));
     }
 }
