@@ -41,3 +41,35 @@ var loadingEl = document.createElement("div");
         }
         return keyValueObject;
     }
+
+    function botonEstado(tooltip, className, estado){
+        var btn = '<button class="btn btn-sm '+className+' fs-7 text-uppercase justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="'+tooltip+'">'+
+                        '<span class="indicator-label">'+estado+'</span>'+
+                        '<span class="indicator-progress">'+
+                            '<span class="spinner-border spinner-border-sm align-middle"></span>'+
+                        '</span>'+
+                   '</button>';
+        return btn;
+    }
+
+    function botonAcciones(modal,id){
+        var btn ='<div class="btn-group btn-group-sm" role="group">'+
+                    '<a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#'+modal+'" info="'+id+'">Ver</a>'+
+                    '<a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#'+modal+'" info="'+id+'">Editar</a>'+
+                '</div>';
+        return btn;
+    }
+
+    function botonVerDetalle(tooltip){
+        var btn =   '<button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="'+tooltip+'">'+
+                        '<i class="ki-duotone ki-plus fs-3 m-0 toggle-off"></i>'+
+                        '<i class="ki-duotone ki-minus fs-3 m-0 toggle-on"></i>'+
+                        '<span class="indicator-label"></span>'+
+                        '<span class="indicator-progress">'+
+                            '<span class="spinner-border spinner-border-sm align-middle"></span>'+
+                        '</span>'+
+                    '</button>';
+        return btn;
+    }
+
+ 

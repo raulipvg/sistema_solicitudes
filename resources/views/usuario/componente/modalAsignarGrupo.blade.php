@@ -2,7 +2,7 @@
     <div class="modal-dialog mt-20">
         <div class="modal-content" id="div-bloquear2">
             <div class="modal-header bg-light p-2 ps-5">
-                <h2 id="modal-titulo" class="modal-title text-uppercase">Asignar Grupo</h2>
+                <h2 id="modal-titulo-asignar-grupo" class="modal-title text-uppercase">Asignar Grupo</h2>
 
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">

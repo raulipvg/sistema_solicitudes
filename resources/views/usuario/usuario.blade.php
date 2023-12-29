@@ -59,6 +59,8 @@
         const GuardarUsuarioGrupo = "{{ route('GuardarUsuarioGrupo') }}";
         const DeleteUsuarioGrupo = "{{ route('DeleteUsuarioGrupo')}}";
         /* END:RUTAS */
+
+        const data =  {!! $usuarios2 !!};
     </script>
 
     <!--begin::Datatables y Configuracion de la Tabla-->
@@ -68,8 +70,14 @@
     <!--end::Datatables y Configuracion de la Tabla-->
 
     <!--begin::Eventos de la pagina-->
-    <script src="{{ asset('js/global/main.js?id=3') }}"></script>
+    <script src="{{ asset('js/global/main.js?id=4') }}"></script>
+    <script>
+
+        
+
+    </script>
+
     <script src="{{ asset('js/eventos/usuario/usuario.js?id=3') }}"></script>
     <!--end::Eventos de la pagina-->
-
+    
 @endpush

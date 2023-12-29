@@ -665,8 +665,11 @@ $(document).ready(function() {
 
                         row.child(format(data,usuario)).show();
 
-                        $(".editar-acceso").tooltip();
-                        $(".dar-acceso").tooltip();
+                        var tbody = boton.closest('table').find('tbody');
+                        tbody.find('[data-bs-toggle="tooltip"]').tooltip();
+
+                        //$(".editar-acceso").tooltip();
+                        //$(".dar-acceso").tooltip();
                     }else{
                         boton.children().eq(0).show();
                         boton.removeClass('active');                        
@@ -709,6 +712,7 @@ $(document).ready(function() {
 
     const target2 = document.querySelector("#div-bloquear2");
     const blockUI2 = new KTBlockUI(target2);
+    var btnRegistrarAcceso;
     //Evento al presion el boton de Registrar ACCESO en la subtabla
     $("#tabla-usuario tbody").on("click",'.registrar-acceso', function(e) {
         //console.log('click')
@@ -721,6 +725,8 @@ $(document).ready(function() {
         //console.log($(this).attr("data-info"))
         $("#UsuarioIdInput").val($(this).attr("data-info"));
         var userId= $(this).attr("data-info");
+        $("#modal-titulo-asignar-grupo").empty();
+        btnRegistrarAcceso= $(this);
         
         $.ajax({
             type: 'POST',
@@ -735,7 +741,8 @@ $(document).ready(function() {
             },
             success: function (data) {
                 if(data.success){   
-                    //console.log(data)          
+                    console.log(data)
+                    $("#modal-titulo-asignar-grupo").html("Asignar Grupo: "+data.nombre);          
                     data = data.data;
                     var select = $('#ComunidadIdInput2');
                     select.empty();
@@ -809,7 +816,23 @@ $(document).ready(function() {
                             success: function (data) {
                                 if(data.success){
                                     //console.log("exito");
-                                     location.reload();
+                                    var tbody = btnRegistrarAcceso.closest('table').find('tbody');
+                                    //console.log(data.data)
+                                    data=data.data;
+                                    tbody.append(AgregarTR(data.Nombre, data.Id, data.created_at, "Desvincular del Grupo"));
+                                    tbody.find('[data-bs-toggle="tooltip"]').tooltip();
+                                    $('#registrar-acceso').modal('toggle');
+                                    Swal.fire({
+                                        text: "¡Grupo Asignado!",
+                                        icon: "success",
+                                        buttonsStyling: false,
+                                        confirmButtonText: "Ok",
+                                        customClass: {
+                                            confirmButton: "btn btn-success"
+                                        }
+                                    });
+
+                                    //location.reload();
                                 }else{
                                     //console.log(data.error);
                                     html = '<ul><li style="">'+data.message+'</li></ul>';

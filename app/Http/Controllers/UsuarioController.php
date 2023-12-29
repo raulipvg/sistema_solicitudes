@@ -19,12 +19,24 @@ class UsuarioController extends Controller
     {
         $titulo= "Usuarios";
         $usuarios = Usuario::all();
+
+        $usuarios2 = Usuario::select(
+                                'usuario.Id',
+                                'usuario.Username',
+                                'usuario.Email',
+                                'usuario.Enabled',
+                                DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto")
+                            )
+                            ->join('persona', 'persona.UsuarioId', '=', 'usuario.Id')
+                            ->get();
+
         $centrocostos = CentroDeCosto::select('Id', 'Nombre')
                             ->where('Enabled','=', 1)
                             ->get();
         return view('usuario.usuario')->with([
                         'titulo'=> $titulo,
                         'usuarios'=> $usuarios,
+                        'usuarios2'=> json_encode($usuarios2),
                         'centrocostos'=> $centrocostos
                     ]);
     }

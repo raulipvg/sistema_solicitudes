@@ -30,7 +30,7 @@ class UsuarioGrupo extends Model
 {
 	protected $table = 'usuario_grupo';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
+	public $incrementing = true;
 
 	protected $casts = [
 		'Id' => 'int',

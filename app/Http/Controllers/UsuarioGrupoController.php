@@ -66,7 +66,8 @@ class UsuarioGrupoController extends Controller
         return response()->json([
             'success' => true,
             'data' => $gruposNoAsociados,
-            'message' => 'Modelo recibido y procesado']);
+            'nombre' => $usuarioExiste->persona->Nombre.' '.$usuarioExiste->persona->Apellido, 
+            'message' => 'Modelo recibido y procesado'],200);
     }
     public function Registrar(Request $request)
     {
@@ -84,6 +85,11 @@ class UsuarioGrupoController extends Controller
             DB::commit(); 
             return response()->json([
                 'success' => true,
+                'data'=> [
+                    'Nombre'=> $acceso->grupo->Nombre,
+                    'Id'=> $acceso->Id,
+                    'created_at'=> $acceso->grupo->created_at,
+                ],
                 'message' => 'Nuevo Acceso Guardado'
             ]);
         }catch(Exception $e){  
