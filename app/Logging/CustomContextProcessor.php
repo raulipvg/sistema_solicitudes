@@ -10,7 +10,8 @@ class CustomContextProcessor implements ProcessorInterface
     public function process(LogRecord $record): LogRecord
     {
         $context = $record['context'];
-        $context['UsuarioId'] = auth()->user()->id ?? null;
+        $context['UsuarioId'] = auth()->user()->Id ?? null;
+        $context['Usuario'] = auth()->user()->Username ?? null;
         $context['IP'] = request()->ip();
         $context['Ruta'] = [
             'URL' => request()->fullUrl(),
