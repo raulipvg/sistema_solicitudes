@@ -38,7 +38,6 @@ class UsuarioController extends Controller
         Log::info('Ingreso vista usuario');
         return view('usuario.usuario')->with([
                         'titulo'=> $titulo,
-                        'usuarios'=> $usuarios,
                         'usuarios2'=> json_encode($usuarios2),
                         'centrocostos'=> $centrocostos
                     ]);
@@ -47,8 +46,9 @@ class UsuarioController extends Controller
     public function VerCC(Request $request){
         
         try{
-                $centrocostos = CentroDeCosto::select('Id', 'Nombre')
-                                ->where('Enabled','=', 1)
+                $centrocostos = CentroDeCosto::select('centro_de_costo.Id', 'centro_de_costo.Nombre as Centro', 'empresa.Nombre as Empresa')
+                                ->join('empresa','empresa.Id','=','centro_de_costo.EmpresaId')
+                                ->where('centro_de_costo.Enabled','=', 1)
                                 ->get();
 
                 return response()->json([
@@ -94,6 +94,13 @@ class UsuarioController extends Controller
             Log::info('Nuevo usuario: '.$usuario->Username);
             return response()->json([
                 'success' => true,
+                'usuario' =>[[
+                    'Id'=> $usuario->Id,
+                    'Username'=> $usuario->Username,
+                    'Email'=> $usuario->Email,
+                    'Enabled'=> $usuario->Enabled,
+                    'NombreCompleto'=> $persona->Nombre.' '.$persona->Apellido
+                ]],
                 'message' => 'Usuario y Persona Guardada'
             ],201);
         }catch(Exception $e){  
@@ -192,7 +199,14 @@ class UsuarioController extends Controller
             Log::info('Se modificó el usuario: '.$usuarioEdit->Username);
             return response()->json([
                 'success' => true,
-                'message' => 'Persona actualizada correctamente'
+                'usuario' =>[[
+                    'Id'=> $usuarioEdit->Id,
+                    'Username'=> $usuarioEdit->Username,
+                    'Email'=> $usuarioEdit->Email,
+                    'Enabled'=> $usuarioEdit->Enabled,
+                    'NombreCompleto'=> $personaEdit->Nombre.' '.$personaEdit->Apellido
+                ]],
+                'message' => 'Usuario actualizada correctamente'
             ],201);
         }catch(Exception $e){
             DB::rollBack();

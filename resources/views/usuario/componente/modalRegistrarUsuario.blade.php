@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-2">
+                        <div class="col mb-2">
                             <div class="form-floating fv-row">
                                 <select id="CentroCostoInput" name="CentroCostoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar">
                                     <option></option>
@@ -77,7 +77,9 @@
                                 <label for="CentroCostoInput" class="form-label">Centro de Costo</label>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-2">
+                    </div>
+                    <div class="row">
+                        <div class="col mb-2">
                             <div class="form-floating fv-row">
                                 <select id="EstadoIdInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>

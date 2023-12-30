@@ -127,9 +127,9 @@ let miTabla = $('#tabla-usuario').DataTable({
             //"scrollX": true
         });
 
-var cargarData= function(){
+const cargarData= function(){
     return {
-        init: function(){
+        init: function(data){
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
                             //console.log("Nombre:", data[persona].username);
@@ -153,7 +153,7 @@ var cargarData= function(){
                     $(rowNode).find('td:eq(5)').addClass('text-center p-0');          
                 }
             }
-            miTabla.draw();
+            miTabla.order([1, 'asc']).draw();
             $('[data-bs-toggle="tooltip"]').tooltip();
         }
     }
@@ -161,7 +161,7 @@ var cargarData= function(){
 }();
 
 KTUtil.onDOMContentLoaded((function() {
-    cargarData.init();
+    cargarData.init(data);
 }));
 
 

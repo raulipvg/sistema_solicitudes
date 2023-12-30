@@ -207,7 +207,8 @@ $(document).ready(function() {
                     var option = new Option('','');
                     select.append(option);
                     for (const key in dataselect) {
-                        var option = new Option(dataselect[key].Nombre, dataselect[key].Id);
+                        var textoCapitalizado = (dataselect[key].Empresa + ' - ' + dataselect[key].Centro).toUpperCase();
+                        var option = new Option(textoCapitalizado, dataselect[key].Id);
                         select.append(option);                        
                     }                    
                 }else{
@@ -288,12 +289,14 @@ $(document).ready(function() {
                             },
                             success: function (data) {
                                 if(data.success){
-                                    //console.log("exito");
-                                     location.reload();
+                                    //console.log(data);
+                                     //location.reload();
+                                    cargarData.init(data.usuario);
+                                    $('#registrar').modal('toggle');
                                 }else{
                                     //console.log(data.error);
-                                        html = '<ul><li style="">'+data.message+'</li></ul>';
-                                       $("#AlertaError").append(html);                                    
+                                    html = '<ul><li style="">'+data.message+'</li></ul>';
+                                    $("#AlertaError").append(html);                                    
                                     $("#AlertaError").show();
                                 }
                             },
@@ -322,6 +325,8 @@ $(document).ready(function() {
     });
 
     //Evento al presionar el Boton Editar
+    var tr;
+    var row;
     $("#tabla-usuario tbody").on("click",'.editar', function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -335,6 +340,8 @@ $(document).ready(function() {
         $("#IdInput").prop("disabled",false);
         $("#AlertaError").hide();
 
+        tr = e.target.closest('tr');
+        row = miTabla.row(tr);
         validator.resetForm();
         actualizarValidSelect2();
 
@@ -356,7 +363,7 @@ $(document).ready(function() {
                 //console.log(data);
                 //blockUI.release();
                 if(data.success){
-                    console.log(data)
+                    //console.log(data)
                     dataselect=data.option;
                     data=data.data;
                     
@@ -372,8 +379,8 @@ $(document).ready(function() {
                     var select = $('#CentroCostoInput');
                     select.empty();
                     for (const key in dataselect) {
-                            var option = new Option(dataselect[key].Nombre, dataselect[key].Id);
-                            select.append(option);                        
+                        var option = new Option(dataselect[key].Nombre, dataselect[key].Id);
+                        select.append(option);                        
                     }                    
                     $('#CentroCostoInput').val(data.CentroCostoId).trigger("change");
                     $('#EstadoIdInput').val(data.Enabled).trigger("change");
@@ -448,7 +455,11 @@ $(document).ready(function() {
                                 },
                                 success: function (data) {                                    
                                     if(data.success){
-                                         location.reload();
+                                        miTabla.row(row).remove();
+                                        cargarData.init(data.usuario);
+                                        $('#registrar').modal('toggle');
+                                        //console.log(row)
+                                        //location.reload();
                                     }else{
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
                                         $("#AlertaError").append(html);
