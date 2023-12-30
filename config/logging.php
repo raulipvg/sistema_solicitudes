@@ -4,6 +4,8 @@ use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
+use Monolog\Processor\ClosureContextProcessor;
+use App\Logging\CustomContextProcessor;
 
 return [
 
@@ -128,11 +130,15 @@ return [
         ],
 
         'database' => [
-            'driver' => 'custom',
+            'driver' => 'monolog',
             'table' => 'Logs', // Nombre de la tabla en la base de datos
-            'via' => App\Logging\DatabaseLogger::class,
+            'processors' => [
+                CustomContextProcessor::class,
+            ],
+            'handler' => App\Logging\DatabaseLogger::class,
             'connection' => null,
             'level' => 'debug',
+            
         ],
     ],
 

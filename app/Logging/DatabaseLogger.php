@@ -3,19 +3,21 @@
 namespace App\Logging;
 
 use Monolog\Logger;
+use Monolog\Level;
 use Monolog\Handler\AbstractProcessingHandler;
-use App\Models\Log; // Reemplaza 'Log' con el nombre del modelo si has creado uno
+use App\Models\Log;
 use Monolog\LogRecord;
 
 class DatabaseLogger extends AbstractProcessingHandler
 {
     protected function write(LogRecord $record): void
     {
+        $context['user_id'] = auth()->user()->id ?? null;
+        $context['route'] = request()->route()->uri;
         $log = new Log();
-        $log->Nivel = $record['level'];
+        $log->Nivel = Level::fromValue($record['level'])->getName();
         $log->Mensaje = $record['message'];
         $log->Contexto = json_encode($record['context']);
-        // Agrega otros campos según tu estructura de tabla
         $log->save();
     }
 
