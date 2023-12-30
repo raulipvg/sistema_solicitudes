@@ -165,8 +165,7 @@ $(document).ready(function() {
                     // Show loading indication                       
                         let form1= $("#FormularioEmpresa");
                         var fd = form1.serialize();
-                        var data = formMap(fd);
-                        
+                        var data = formMap(fd);                        
                         $.ajax({
                             type: 'POST',
                             url: GuardarEmpresa,
@@ -185,7 +184,9 @@ $(document).ready(function() {
                             success: function (data) {
                                 if(data.success){
                                     //console.log("exito");
-                                     location.reload();
+                                    cargarData.init(data.empresa);
+                                    $('#registrar').modal('toggle');
+                                    //location.reload();
                                 }else{
                                     //console.log(data.error);
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
@@ -218,6 +219,8 @@ $(document).ready(function() {
         }
     });
 
+    var tr;
+    var row;
     //Evento al presionar el Boton Editar
     $("#tabla-empresa tbody").on("click",'.editar', function (e) {
         e.preventDefault();
@@ -231,6 +234,8 @@ $(document).ready(function() {
         $("#IdInput").prop("disabled",false);
         $("#AlertaError").hide();
 
+        tr = e.target.closest('tr');
+        row = miTabla.row(tr);
         validator.resetForm();
         actualizarValidSelect2();
 
@@ -325,7 +330,10 @@ $(document).ready(function() {
                                 },
                                 success: function (data) {                                    
                                     if(data.success){
-                                         location.reload();
+                                        miTabla.row(row).remove();
+                                        cargarData.init(data.empresa);
+                                        $('#registrar').modal('toggle');
+                                        //location.reload();
                                     }else{
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
                                         $("#AlertaError").append(html);
@@ -422,7 +430,7 @@ $(document).ready(function() {
                             }
                         });
                 $(".btn-cerrar").on("click", function () {
-                        console.log("Error");
+                        //console.log("Error");
                         $('#registrar').modal('toggle');
                 });
             },
@@ -528,17 +536,16 @@ $(document).ready(function() {
                     boton.attr("data-kt-indicator", "on");
                 },
                 success: function (data) {
-                    if(data.success){    
-                        
+                    if(data.success){                            
                         boton.children().eq(0).show();
                         boton.addClass('active')
-
                         empresa=data.empresa;         
                         data = data.data;
                         
                         row.child(format(data,empresa)).show();
-                        $(".editar-acceso").tooltip();
-                        $(".dar-acceso").tooltip();
+
+                        var tbody = boton.closest('table').find('tbody');
+                        tbody.find('[data-bs-toggle="tooltip"]').tooltip();
                     }else{
                         boton.children().eq(0).show();
                         boton.removeClass('active');                        
@@ -581,6 +588,7 @@ $(document).ready(function() {
 
     const target2 = document.querySelector("#div-bloquear2");
     const blockUI2 = new KTBlockUI(target2);
+    var btnRegistrarAcceso;
     //Evento al presion el boton de Registrar CC en la subtabla
     $("#tabla-empresa tbody").on("click",'.registrar-cc', function(e) {
         //console.log('click')
@@ -594,7 +602,8 @@ $(document).ready(function() {
         actualizarValidSelect2();
         //console.log($(this).attr("data-info"))
         $("#EmpresaIdInput").val($(this).attr("data-info"));
-        var EmpresaIdInput= $(this).attr("data-info");
+        btnRegistrarAcceso= $(this);
+        //var EmpresaIdInput= $(this).attr("data-info");
     });
     
     //Evento al presionar el Boton Submit del modal de Registrar NUEVO Centro de Costo
@@ -631,7 +640,13 @@ $(document).ready(function() {
                             success: function (data) {
                                 if(data.success){
                                     //console.log("exito");
-                                     location.reload();
+                                    //location.reload();
+                                    var tbody = btnRegistrarAcceso.closest('table').find('tbody');
+                                    //console.log(data.data)
+                                    data=data.data;
+                                    tbody.append(AgregarTR(data.Nombre, data.Id, data.created_at, "Eliminar CC"));
+                                    tbody.find('[data-bs-toggle="tooltip"]').tooltip();
+                                    $('#registrar-cc').modal('toggle');
                                 }else{
                                     //console.log(data.error);
                                     html = '<ul><li style="">'+data.message+'</li></ul>';

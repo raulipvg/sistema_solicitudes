@@ -7,13 +7,24 @@ use App\Models\Empresa;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class EmpresaController extends Controller
 {
     public function Index()
     {
         $titulo= "Empresas";
-        $empresas= Empresa::all();
+        //$empresas= Empresa::all();
+
+        $empresas = Empresa::select(
+                                'empresa.Id',
+                                'empresa.Nombre',
+                                'empresa.Rut',
+                                'empresa.Email',
+                                'empresa.Enabled'
+                            )->get();
+        Log::info('Ingreso vista empresa');
+
         return view('empresa.empresa')->with([
                         'titulo'=> $titulo,
                         'empresas'=> $empresas                        
@@ -38,15 +49,22 @@ class EmpresaController extends Controller
             DB::beginTransaction();
 
             $empresa->save();
-
+            Log::info('Empresa Guardada Id: '. $empresa->Id);
             DB::commit(); 
             return response()->json([
                 'success' => true,
+                'empresa'=> [[
+                    'Id'=> $empresa->Id,
+                    'Nombre'=> $empresa->Nombre,
+                    'Rut'=> $empresa->Rut,
+                    'Email'=> $empresa->Email,
+                    'Enabled'=> $empresa->Enabled,
+                ]],
                 'message' => 'Empresa Guardada'
-            ]);
+            ],201);
         }catch(Exception $e){  
             DB::rollBack();
-            
+            Log::error('Error al Guardar Empresa: '.$empresa->Nombre, [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -86,6 +104,7 @@ class EmpresaController extends Controller
 
         $request['Nombre'] = strtolower($request['Nombre']);
         $request['Rut'] = strtolower($request['Rut']);
+        $request['Email'] = strtolower($request['Email']);
 
         try{
             $empresa = new Empresa();
@@ -104,6 +123,13 @@ class EmpresaController extends Controller
             DB::commit();
             return response()->json([
                 'success' => true,
+                'empresa'=> [[
+                    'Id'=> $empresaEdit->Id,
+                    'Nombre'=> $empresaEdit->Nombre,
+                    'Rut'=> $empresaEdit->Rut,
+                    'Email'=> $empresaEdit->Email,
+                    'Enabled'=> $empresaEdit->Enabled,
+                ]],
                 'message' => 'Empresa actualizada correctamente'
             ]);
         }catch(Exception $e){
@@ -178,4 +204,5 @@ class EmpresaController extends Controller
             ]);
         }
     }
+
 }

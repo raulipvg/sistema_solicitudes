@@ -34,7 +34,7 @@ class CentroDeCosto extends Model
 {
 	protected $table = 'centro_de_costo';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
+	public $incrementing = true;
 	public $timestamps = true;
 
 	protected $casts = [

@@ -34,6 +34,11 @@ class CentroCostoController extends Controller
             DB::commit(); 
             return response()->json([
                 'success' => true,
+                'data'=> [
+                    'Nombre'=> $centrocosto->Nombre,
+                    'Id'=> $centrocosto->Id,
+                    'created_at'=> $centrocosto->created_at,
+                ],
                 'message' => 'Centro de Costo Guardado'
             ]);
         }catch(Exception $e){  

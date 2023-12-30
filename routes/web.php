@@ -111,6 +111,7 @@ Route::group(['prefix'=> '/empresa'], function () {
     Route::post('/editar', [EmpresaController::class, 'Editar'])->name('EditarEmpresa');
     Route::post('/cambiarestado', [EmpresaController::class, 'CambiarEstado'])->name('CambiarEstadoEmpresa');
     Route::post('/vercentrocosto', [EmpresaController::class, 'VerCentroCosto'])->name('VerCentroCosto');
+    Route::post('/Vercentrocostoempresa', [EmpresaController::class, 'VerCentroCostoxEmpresa'])->name('VerCentroCostoxEmpresa');
 });
 
 Route::group(['prefix'=> '/centrocosto'], function () {

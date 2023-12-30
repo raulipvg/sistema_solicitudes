@@ -135,9 +135,9 @@ const cargarData= function(){
                             //console.log("Nombre:", data[persona].username);
                     var btnEstado;
                     if(data[key].Enabled == 1){
-                        btnEstado = botonEstado('Deshabilitar Usuario','btn-light-success estado-usuario','ACTIVO');
+                        btnEstado = botonEstado('Deshabilitar Usuario','btn-light-success estado-usuario  w-70px','ACTIVO');
                     }else{
-                        btnEstado = botonEstado('Habilitar Usuario','btn-light-warning estado-usuario','INACTIVO');
+                        btnEstado = botonEstado('Habilitar Usuario','btn-light-warning estado-usuario  w-70px','INACTIVO');
                     }
                     var rowNode =  miTabla.row.add( {
                                         "0": data[key].Id,

@@ -56,8 +56,10 @@
         const CambiarEstadoEmpresa = "{{ route('CambiarEstadoEmpresa') }}";
         const VerCentroCosto =  "{{ route('VerCentroCosto') }}";  
         const GuardarCentroCosto = "{{ route('GuardarCentroCosto') }}";
-        const DeleteUsuarioGrupo = "{{ route('CambiarEstadoCentroCosto')}}";
+        const DeleteUsuarioGrupo = "{{ route('CambiarEstadoCentroCosto') }}";
+        const VerCentroCostoxEmpresa = "{{ route('VerCentroCostoxEmpresa') }}"
         /* END:RUTAS */
+        const data =  {!! $empresas !!};
     </script>
 
     <!--begin::Datatables y Configuracion de la Tabla-->

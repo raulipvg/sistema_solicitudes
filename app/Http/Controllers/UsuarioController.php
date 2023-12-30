@@ -8,7 +8,6 @@ use App\Models\Usuario;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Log;
 
 
@@ -20,7 +19,7 @@ class UsuarioController extends Controller
     public function Index()
     {
         $titulo= "Usuarios";
-        $usuarios = Usuario::all();
+        //$usuarios = Usuario::all();
 
         $usuarios2 = Usuario::select(
                                 'usuario.Id',

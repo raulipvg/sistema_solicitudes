@@ -1,7 +1,5 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
-function format(data,empresa) {
-    // `d` is the original data object for the row
-    
+function format(data,usuario) {   
     var html=
     '<div class="d-flex justify-content-center">'+
         '<div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">'+
@@ -11,8 +9,8 @@ function format(data,empresa) {
                     '<th class="p-0 ps-3">Centro de Costo</th>'+
                     '<th class="p-0 ps-3">Fecha</th>'+
                     '<th class="text-center col-3 p-0 ps-2">ESTADO'+
-                        '<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Asignar un Centro de Costo">'+ 
-                        '<button type="button" data-info="'+empresa+'" class="registrar-cc btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-cc">'+
+                        '<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar un Centro de Costo">'+ 
+                        '<button type="button" data-info="'+usuario+'" class="registrar-cc btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-cc">'+
                             '<i class="ki-outline ki-plus-square fs-2"></i>'+
                         '</button>'+
                         '</span>'+
@@ -22,25 +20,29 @@ function format(data,empresa) {
             '<tbody class="fw-bold text-gray-600">';
 
     for(const elemento of data) {
-       // console.log(elemento.Enabled);
-        // Crear un objeto Date a partir de la cadena original
-        var fecha = new Date(elemento.created_at);
+        html = html + AgregarTR(elemento.Nombre, elemento.Id, elemento.created_at, "Eliminar CC");   
+    }
 
-        // Obtener el día, mes y año
-        var dia = fecha.getDate();
-        var mes = fecha.getMonth() + 1; // Nota: Los meses en JavaScript comienzan en 0
-        var anio = fecha.getFullYear();
+    html=  html+'</tbody></table></div></div>';
+    return html;   
+}
 
-        // Formatear la fecha como "DD-MM-YYYY"
-        var fechaFormateada = dia + "-" + (mes < 10 ? "0" : "") + mes + "-" + anio;
+function AgregarTR(nombre, id, fecha, titulo){
 
-       html = html +
-                '<tr>'+
-                    '<td class="text-gray-700 text-capitalize">'+elemento.Nombre+'</td>'+
+    var date = new Date(fecha);
+    // Obtener el día, mes y año
+    var dia = date.getDate();
+    var mes = date.getMonth() + 1; // Nota: Los meses en JavaScript comienzan en 0
+    var anio = date.getFullYear();
+    // Formatear la fecha como "DD-MM-YYYY"
+    var fechaFormateada = dia + "-" + (mes < 10 ? "0" : "") + mes + "-" + anio;
+
+    var html ='<tr>'+
+                    '<td class="text-gray-700 text-capitalize">'+nombre+'</td>'+
                     '<td>'+fechaFormateada+'</td>'+
                     '<td class="text-center p-0">'+
                         '<div class="btn-group btn-group-sm" role="group">'+
-                            '<button class="btn btn-sm btn-light-success editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-100px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="'+elemento.Id+'" title="Eliminar CC">'+
+                            '<button class="btn btn-sm btn-light-success editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-100px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="'+id+'" title="'+titulo+'">'+
                             '<span class="indicator-label">HABILITADO</span>'+
                             '<span class="indicator-progress">'+
                                 '<span class="spinner-border spinner-border-sm align-middle"></span>'+
@@ -48,15 +50,8 @@ function format(data,empresa) {
                             '</button>';
                         '</div>'+
                     '</td>'+
-                '</tr>'
-    }
-       html=  html+        
-                    '</tbody>'+
-                '</table>'+
-                '</div>'+
-                '</div>';
-
-    return html;   
+                '</tr>';
+    return html;
 }
  
 let miTabla = $('#tabla-empresa').DataTable({
@@ -131,4 +126,40 @@ let miTabla = $('#tabla-empresa').DataTable({
             }
             //"scrollX": true
         });
-    
+
+const cargarData= function(){
+            return {
+                init: function(data){
+                    for (const key in data) {
+                        if (data.hasOwnProperty(key)) {
+                                    //console.log("Nombre:", data[persona].username);
+                            var btnEstado;
+                            if(data[key].Enabled == 1){
+                                btnEstado = botonEstado('Deshabilitar Empresa','btn-light-success estado-empresa w-115px','HABILITADO');
+                            }else{
+                                btnEstado = botonEstado('Habilitar Empresa','btn-light-warning estado-empresa w-115px','DESHABILITADO');
+                            }
+                            var rowNode =  miTabla.row.add( {
+                                                "0": data[key].Id,
+                                                "1": data[key].Nombre,
+                                                "2": data[key].Rut,
+                                                "3": data[key].Email,
+                                                "4": btnEstado,
+                                                "5": botonAcciones('registrar',data[key].Id),
+                                                "6" :botonVerDetalle('Centros de Costos Asociados')
+                                            } ).node();
+                            $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
+                            $(rowNode).find('td:eq(3)').addClass('fw-bold text-gray-600');
+                            $(rowNode).find('td:eq(5)').addClass('text-center p-0');          
+                        }
+                    }
+                    miTabla.order([1, 'asc']).draw();
+                    $('[data-bs-toggle="tooltip"]').tooltip();
+                }
+            }
+        
+        }();
+
+KTUtil.onDOMContentLoaded((function() {
+    cargarData.init(data);
+}));

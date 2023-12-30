@@ -71,7 +71,6 @@
 
     <!--begin::Eventos de la pagina-->
     <script src="{{ asset('js/global/main.js?id=4') }}"></script>
-
     <script src="{{ asset('js/eventos/usuario/usuario.js?id=3') }}"></script>
     <!--end::Eventos de la pagina-->
     

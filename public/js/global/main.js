@@ -43,7 +43,7 @@ var loadingEl = document.createElement("div");
     }
 
     function botonEstado(tooltip, className, estado){
-        var btn = '<button class="btn btn-sm '+className+' fs-7 text-uppercase justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="'+tooltip+'">'+
+        var btn = '<button class="btn btn-sm '+className+' fs-7 text-uppercase justify-content-center p-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="'+tooltip+'">'+
                         '<span class="indicator-label">'+estado+'</span>'+
                         '<span class="indicator-progress">'+
                             '<span class="spinner-border spinner-border-sm align-middle"></span>'+

@@ -324,9 +324,10 @@ $(document).ready(function() {
         }
     });
 
-    //Evento al presionar el Boton Editar
+   
     var tr;
     var row;
+    //Evento al presionar el Boton Editar
     $("#tabla-usuario tbody").on("click",'.editar', function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -425,8 +426,7 @@ $(document).ready(function() {
 
     // Manejador al presionar el submit de Editar
     const submitEditButton = document.getElementById('EditSubmit');
-    submitEditButton.addEventListener('click', function (e) {
-            
+    submitEditButton.addEventListener('click', function (e) {      
             e.preventDefault();
             e.stopPropagation();
             $("#AlertaError").hide();
@@ -752,7 +752,7 @@ $(document).ready(function() {
             },
             success: function (data) {
                 if(data.success){   
-                    console.log(data)
+                    //console.log(data)
                     $("#modal-titulo-asignar-grupo").html("Asignar Grupo: "+data.nombre);          
                     data = data.data;
                     var select = $('#ComunidadIdInput2');
