@@ -9,6 +9,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Log;
+
 
 class UsuarioController extends Controller
 {
@@ -33,6 +35,7 @@ class UsuarioController extends Controller
         $centrocostos = CentroDeCosto::select('Id', 'Nombre')
                             ->where('Enabled','=', 1)
                             ->get();
+        Log::info('Ingreso vista usuario');
         return view('usuario.usuario')->with([
                         'titulo'=> $titulo,
                         'usuarios'=> $usuarios,
@@ -88,13 +91,15 @@ class UsuarioController extends Controller
             $persona->save();          
 
             DB::commit(); 
+            Log::info('Nuevo usuario: '.$usuario->Username);
             return response()->json([
                 'success' => true,
                 'message' => 'Usuario y Persona Guardada'
             ],201);
         }catch(Exception $e){  
             DB::rollBack();
-            
+
+            Log::error('Error al crear usuario: '.$usuario->Username, [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -127,6 +132,7 @@ class UsuarioController extends Controller
                                 ->orWhere('Id', $usuario->CentroCostoId)
                                 ->get();
 
+            Log::error('Acceso a información del usuario: '.$usuario->Username);
 
             return response()->json([
                 'success' => true,
@@ -135,7 +141,7 @@ class UsuarioController extends Controller
             ],200);
 
         }catch(Exception $e){
-
+            Log::error('Error al ver usuario: '.$usuario->Username, [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -158,8 +164,8 @@ class UsuarioController extends Controller
         $request['Password'] = bcrypt($request['Password']);
 
         try{
-            $usuario = new Usuario();
-            $usuario->validate($request);
+            $usuarioEdit = new Usuario();
+            $usuarioEdit->validate($request);
 
             DB::beginTransaction();
 
@@ -183,12 +189,14 @@ class UsuarioController extends Controller
             $personaEdit->save();
 
             DB::commit();
+            Log::info('Se modificó el usuario: '.$usuarioEdit->Username);
             return response()->json([
                 'success' => true,
                 'message' => 'Persona actualizada correctamente'
             ],201);
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al modificar usuario:'.$usuarioEdit->Username, [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -217,14 +225,15 @@ class UsuarioController extends Controller
             $usuarioEdit->save();
             
             DB::commit();
-            
+            Log::info('Se modificó el estado del usuario: '.$usuarioEdit->Username);
             return response()->json([
                 'success' => true,
                 'message' => 'Estado de la Usuario cambiado'
             ],201);
-
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al cambiar estado del usuario: '.$usuarioEdit->Username, [$e]);
+
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
