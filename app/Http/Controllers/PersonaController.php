@@ -15,10 +15,21 @@ class PersonaController extends Controller
     public function Index()
     {
         $titulo= "Personas";
-        $personas = Persona::all();
-        $centrocostos = CentroDeCosto::select('Id', 'Nombre')
-                            ->where('Enabled','=', 1)
-                            ->get();
+        //$personas = Persona::all();
+        $personas = Persona::select('persona.Id',
+                                    DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"),
+                                    'persona.Rut','centro_de_costo.Nombre AS NombreCC',
+                                    'empresa.Nombre as NombreEmpresa','persona.Enabled','persona.UsuarioId')
+                                    ->join('centro_de_costo','centro_de_costo.Id','=','persona.CentroCostoId')
+                                    ->join('empresa','empresa.Id','=','centro_de_costo.EmpresaId')
+                                    ->get();
+
+        
+
+        $centrocostos = CentroDeCosto::select('centro_de_costo.Id', DB::raw("CONCAT(empresa.Nombre, ' - ', centro_de_costo.Nombre) AS Nombre"))
+                            ->join('empresa','empresa.Id','=','centro_de_costo.EmpresaId')
+                            ->where('centro_de_costo.Enabled','=', 1)
+                            ->get();    
 
         return view('persona.persona')->with([
                         'titulo'=> $titulo,
@@ -49,8 +60,17 @@ class PersonaController extends Controller
             DB::commit(); 
             return response()->json([
                 'success' => true,
+                'persona' => [[
+                    'Id'=> $persona->Id,
+                    'NombreCompleto'=> $persona->Nombre.' '.$persona->Apellido,
+                    'Rut' => $persona->Rut,
+                    'Enabled' => $persona->Enabled,
+                    'NombreEmpresa'=> $persona->centro_de_costo->empresa->Nombre,
+                    'NombreCC'=> $persona->centro_de_costo->Nombre,
+
+                ]],
                 'message' => 'Persona Guardada'
-            ]);
+            ],201);
         }catch(Exception $e){  
             DB::rollBack();
             
@@ -72,9 +92,17 @@ class PersonaController extends Controller
                 throw new Exception('Persona no encontrada');
             }
 
+            $cc = CentroDeCosto::select('centro_de_costo.Id', 'centro_de_costo.Nombre as Centro', 'empresa.Nombre as Empresa')
+                                ->join('empresa','empresa.Id','=','centro_de_costo.EmpresaId')
+                                ->where('centro_de_costo.Enabled','=', 1)
+                                ->orWhere('centro_de_costo.Id', $persona->CentroCostoId)
+                                ->get();
+
+
             return response()->json([
                 'success' => true,
-                'data' => $persona 
+                'data' => $persona,
+                'option' => $cc 
             ],200);
 
         }catch(Exception $e){
@@ -108,6 +136,15 @@ class PersonaController extends Controller
             DB::commit();
             return response()->json([
                 'success' => true,
+                'persona' => [[
+                    'Id'=> $personaEdit->Id,
+                    'NombreCompleto'=> $personaEdit->Nombre.' '.$personaEdit->Apellido,
+                    'Rut' => $personaEdit->Rut,
+                    'Enabled' => $personaEdit->Enabled,
+                    'NombreEmpresa'=> $personaEdit->centro_de_costo->empresa->Nombre,
+                    'NombreCC'=> $personaEdit->centro_de_costo->Nombre,
+
+                ]],
                 'message' => 'Persona actualizada correctamente'
             ]);
         }catch(Exception $e){

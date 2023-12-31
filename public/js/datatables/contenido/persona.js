@@ -72,3 +72,41 @@ let miTabla = $('#tabla-persona').DataTable({
             //"scrollX": true
         });
     
+const cargarData= function(){
+    return {
+        init: function(data){
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                            //console.log("Nombre:", data[persona].username);
+                    var btnEstado;
+                    if(data[key].Enabled == 1){
+                        btnEstado = botonEstado('Deshabilitar Persona','btn-light-success estado-persona w-70px','ACTIVO');
+                    }else{
+                        btnEstado = botonEstado('Habilitar Persona','btn-light-warning estado-persona w-70px','INACTIVO');
+                    }
+                    var rowNode =  miTabla.row.add( {
+                                        "0": data[key].Id,
+                                        "1": data[key].NombreCompleto,
+                                        "2": data[key].Rut,
+                                        "3": data[key].NombreEmpresa,
+                                        "4": data[key].NombreCC,
+                                        "5": btnEstado,
+                                        "6": botonAcciones('registrar',data[key].Id),
+                                        "7": (data[key].UsuarioId == null)?botonModal('#registrar-acceso-sistema','Dar Acceso al Sistema',data[key].Id):null
+                                    } ).node();
+                    $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
+                    $(rowNode).find('td:eq(3)').addClass('text-capitalize fw-bold text-gray-600');
+                    $(rowNode).find('td:eq(4)').addClass('text-capitalize');
+                    $(rowNode).find('td:eq(6)').addClass('text-center p-0');          
+                }
+            }
+            miTabla.order([1, 'asc']).draw();
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        }
+    }
+
+}();
+
+KTUtil.onDOMContentLoaded((function() {
+    cargarData.init(data);
+}));

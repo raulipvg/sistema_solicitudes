@@ -84,4 +84,13 @@ var loadingEl = document.createElement("div");
         return btn;
     }
 
+    function botonModal(modal,tooltip,id){
+        var btn =   '<div data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="'+tooltip+'">'+
+                        '<a class="btn btn-sm btn-icon btn-light btn-active-light-primary h-25px w-25px dar-acceso" type="button" data-bs-toggle="modal" data-bs-target="'+modal+'" info="'+id+'">'+
+                            '<i class="ki-duotone ki-plus fs-3 m-0"></i>'+
+                        '</a>'+
+                    '</div>';
+        return btn;
+    }
+
  
