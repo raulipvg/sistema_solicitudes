@@ -72,9 +72,36 @@ let miTabla = $('#tabla-estado').DataTable({
             //"scrollX": true
 });
       
-$(document).ready(function() {
+const cargarData= function(){
+    return {
+        init: function(data){
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                            //console.log("Nombre:", data[persona].username);
+                    var btnEstado;
+                    if(data[key].Enabled == 1){
+                        btnEstado = botonEstado('Deshabilitar Estado','btn-light-success estado-estado  w-70px','ACTIVO');
+                    }else{
+                        btnEstado = botonEstado('Habilitar Estado','btn-light-warning estado-estado  w-70px','INACTIVO');
+                    }
+                    var rowNode =  miTabla.row.add( {
+                                        "0": data[key].Id,
+                                        "1": data[key].Nombre,
+                                        "2": btnEstado,
+                                        "3": botonAccion('registrar',data[key].Id)
+                                    } ).node();
+                    $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
+                    $(rowNode).find('td:eq(3)').addClass('text-center p-0');          
+                }
+            }
+            miTabla.order([1, 'asc']).draw();
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        }
+    }
 
+}();
 
-
-});
+KTUtil.onDOMContentLoaded((function() {
+    cargarData.init(data);
+}));
 

@@ -84,19 +84,13 @@ $(document).ready(function() {
         if (validator) {
             validator.validate().then(function (status) {
                  actualizarValidSelect2();
-
                 //console.log('validated!');
                 //status
                 if (status == 'Valid') {
                     // Show loading indication                       
                         let form1= $("#FormularioEstadoSolicitud");
                         var fd = form1.serialize();
-                        var data = formMap(fd);
-
-                        submitButton.setAttribute('data-kt-indicator', 'on');
-                        submitButton.disabled = true; 
-
-                        bloquear();
+                        var data = formMap(fd);                        
 
                         $.ajax({
                             type: 'POST',
@@ -108,16 +102,21 @@ $(document).ready(function() {
                             dataType: "json",
                             //content: "application/json; charset=utf-8",
                             beforeSend: function() {
+                                submitButton.setAttribute('data-kt-indicator', 'on');
+                                submitButton.disabled = true; 
+                                bloquear();
                                 KTApp.showPageLoading();
                             },
                             success: function (data) {
                                 if(data.success){
                                     //console.log("exito");
-                                     location.reload();
+                                    //location.reload();
+                                    cargarData.init(data.estadosSolicitud);
+                                    $('#registrar').modal('toggle');
                                 }else{
                                     //console.log(data.error);
-                                        html = '<ul><li style="">'+data.message+'</li></ul>';
-                                       $("#AlertaError").append(html);                                    
+                                    html = '<ul><li style="">'+data.message+'</li></ul>';
+                                    $("#AlertaError").append(html);                                    
                                     $("#AlertaError").show();
                                 }
                             },
@@ -145,6 +144,8 @@ $(document).ready(function() {
         }
     });
 
+    var tr;
+    var row;
     //Evento al presionar el Boton Editar
     $("#tabla-estado tbody").on("click",'.editar', function (e) {
         e.preventDefault();
@@ -159,11 +160,12 @@ $(document).ready(function() {
         $("#IdInput").prop("disabled",false);
         $("#AlertaError").hide();
 
+        tr = e.target.closest('tr');
+        row = miTabla.row(tr);
         validator.resetForm();
         actualizarValidSelect2();
 
         let id = Number($(this).attr("info"));
-        bloquear();
         $.ajax({
             type: 'POST',
             url: VerEstado,
@@ -173,13 +175,13 @@ $(document).ready(function() {
             //content: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function() {
+                bloquear();
                 KTApp.showPageLoading();
             },
             success: function (data) {
                 //console.log(data);
                 //blockUI.release();
-                if(data.success){
-                    
+                if(data.success){                    
                     data=data.data;
                     
                     $("#IdInput").val(data.Id);
@@ -196,7 +198,7 @@ $(document).ready(function() {
                             }
                         });
                     $(".btn-cerrar").on("click", function () {
-                            $('#registrar').modal('toggle');
+                        $('#registrar').modal('toggle');
                     });
                 }
             },
@@ -210,11 +212,10 @@ $(document).ready(function() {
                                 confirmButton: "btn btn-danger btn-cerrar"
                             }
                         });
-
-                     $(".btn-cerrar").on("click", function () {
+                $(".btn-cerrar").on("click", function () {
                             //console.log("Error");
-                            $('#registrar').modal('toggle');
-                     });
+                    $('#registrar').modal('toggle');
+                });
             },
             complete: function(){
                 KTApp.hidePageLoading();
@@ -227,7 +228,6 @@ $(document).ready(function() {
     // Manejador al presionar el submit de Editar
     const submitEditButton = document.getElementById('EditSubmit');
     submitEditButton.addEventListener('click', function (e) {
-            
             e.preventDefault();
             e.stopPropagation();
             $("#AlertaError").hide();
@@ -241,8 +241,7 @@ $(document).ready(function() {
                             let form1= $("#FormularioEstadoSolicitud");
                             var fd = form1.serialize();
                             var data= formMap(fd);
-                            bloquear();
-
+                            
                             $.ajax({
                                 type: 'POST',
                                 url: EditarEstado,
@@ -252,11 +251,15 @@ $(document).ready(function() {
                                 //content: "application/json; charset=utf-8",
                                 dataType: "json",
                                 beforeSend: function() {
+                                    bloquear();
                                     KTApp.showPageLoading();
                                 },
                                 success: function (data) {                                    
                                     if(data.success){
-                                         location.reload();
+                                        //location.reload();
+                                        miTabla.row(row).remove();
+                                        cargarData.init(data.estadosSolicitud);
+                                        $('#registrar').modal('toggle');
                                     }else{
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
                                         $("#AlertaError").append(html);

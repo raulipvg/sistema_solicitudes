@@ -41,12 +41,13 @@
 
 @push('Script')
     <script>
-
+        /* BEGIN::RUTAS */
         const GuardarEstado = "{{ route('GuardarEstado') }}";
         const VerEstado = "{{ route('VerEstado') }}";
         const EditarEstado = "{{ route('EditarEstado') }}";
         const CambiarEstado = "{{ route('CambiarEstadoEstado') }}";
-
+        /* END:RUTAS */
+        const data =  {!! $estadosSolicitud !!};
     </script>
     
     <!--begin::Datatables y Configuracion de la Tabla-->
@@ -58,7 +59,6 @@
     <!--begin::Eventos de la pagina-->
     <script src="{{ asset('js/global/main.js?id=3') }}"></script>
     <script src="{{ asset('js/eventos/estadosolicitud/estadosolicitud.js') }}"></script>
-    
     <!--end::Eventos de la pagina-->
 
 @endpush

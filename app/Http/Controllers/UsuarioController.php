@@ -87,10 +87,10 @@ class UsuarioController extends Controller
             $usuario->save();
             $request['UsuarioId']= $usuario->Id;
             $persona->fill($request);
-            $persona->save();          
+            $persona->save();
 
-            DB::commit(); 
             Log::info('Nuevo usuario: '.$usuario->Username);
+            DB::commit(); 
             return response()->json([
                 'success' => true,
                 'usuario' =>[[

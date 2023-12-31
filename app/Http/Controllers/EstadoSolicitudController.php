@@ -6,6 +6,7 @@ use App\Models\EstadoSolicitud;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 class EstadoSolicitudController extends Controller
@@ -13,7 +14,8 @@ class EstadoSolicitudController extends Controller
     public function Index()
     {
         $titulo = 'Estados de Solicitud';
-        $estadosSolicitud = EstadoSolicitud::all();
+        $estadosSolicitud = EstadoSolicitud::select('Id','Nombre','Enabled')->get();
+
         return View('estadosolicitud.estadosolicitud')->with([
             'titulo'=>$titulo,
             'estadosSolicitud'=>$estadosSolicitud
@@ -35,18 +37,22 @@ class EstadoSolicitudController extends Controller
             $estadoSolicitud->fill($request);
 
             DB::beginTransaction();
-
             $estadoSolicitud->save();
 
+            Log::info('Nuevo estado de solicitud: '.$estadoSolicitud->Id);
             DB::commit();
-
             return response()->json([
                 'success' => true,
+                'estadosSolicitud'=>[[
+                    'Id'=> $estadoSolicitud->Id,
+                    'Nombre'=> $estadoSolicitud->Nombre,
+                    'Enabled' => $estadoSolicitud->Enabled
+                ]],                
                 'message' => 'Estado de Solicitud Guardado'
-            ]);
+            ],201);
         }catch(Exception $e){
             DB::rollBack();
-            
+            Log::error('Error al crear un nuevo estado: '.$estadoSolicitud->Nombre, [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -99,17 +105,22 @@ class EstadoSolicitudController extends Controller
             if(!$estadoSolicitudEdit){
                 throw new Exception('Estado de Solicitud no encontrado');
             }
-
             $estadoSolicitudEdit->fill($request);
             $estadoSolicitudEdit->save();
-
+            Log::info('Se modificó el estado Id: '.$estadoSolicitudEdit->Id);
             DB::commit();
             return response()->json([
                 'success' => true,
+                'estadosSolicitud'=>[[
+                    'Id'=> $estadoSolicitudEdit->Id,
+                    'Nombre'=> $estadoSolicitudEdit->Nombre,
+                    'Enabled' => $estadoSolicitudEdit->Enabled
+                ]], 
                 'message' => 'Estado de Solicitud actualizado correctamente'
-            ]);
+            ],201);
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al modificar estado:'.$estadoSolicitudEdit->Id, [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
