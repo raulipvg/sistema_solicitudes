@@ -79,6 +79,7 @@
         const EditarGrupoPrivilegio = '{{route("EditarGrupoPrivilegio")}}';
         const CambiarEstadoGrupo = '{{route("CambiarEstadoGrupo")}}';
 
+        const data =  {!! $usuarios !!};
     </script>
 
     <!--begin::Datatables y Configuracion de la Tabla-->

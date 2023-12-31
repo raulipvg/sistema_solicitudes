@@ -86,7 +86,9 @@ class GrupoController extends Controller
                             ->where('Enabled','=', 1)
                             ->get();
                             
-            $grupo = Grupo::find($id);
+            $grupo = Grupo::select('Id','Nombre')
+                            ->where('Id','=',$id)
+                            ->first();
 
             $titulo= 'Ver Grupo '.$grupo->Nombre;
             if (!$grupo) {
@@ -94,7 +96,19 @@ class GrupoController extends Controller
                 // Puedes lanzar una excepción, redirigir, o realizar alguna otra acción según tu lógica
             }
         
-            $usuarios = $grupo->usuarios;
+            $usuarios = Usuario::select('usuario.Id',
+                                        'usuario.Username',
+                                        'usuario.Email',
+                                        'usuario.Enabled',
+                                        DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"))
+                                ->join('usuario_grupo','usuario_grupo.UsuarioId','=','usuario.Id')
+                                ->join('persona', 'persona.UsuarioId', '=', 'usuario.Id')
+                                ->where('usuario_grupo.Enabled','=', 1)
+                                ->where('usuario_grupo.GrupoId','=', $grupo->Id)
+                                ->distinct()
+                                ->get();
+            
+
 
             return View('grupo.vergrupo')->with([
                 'titulo'=> $titulo,
