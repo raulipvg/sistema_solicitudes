@@ -72,6 +72,13 @@ var loadingEl = document.createElement("div");
         return btn;
     }
 
+    function botonAccion(modal,id){
+        var btn ='<div class="btn-group btn-group-sm" role="group">'+
+                    '<a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#'+modal+'" info="'+id+'">Editar</a>'+
+                '</div>';
+        return btn;
+    }
+
     function botonVerDetalle(tooltip){
         var btn =   '<button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="'+tooltip+'">'+
                         '<i class="ki-duotone ki-plus fs-3 m-0 toggle-off"></i>'+

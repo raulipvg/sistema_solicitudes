@@ -45,8 +45,7 @@
         const EditarAtributo = "{{ route('EditarAtributo') }}";
         const CambiarEstadoAtributo = "{{ route('CambiarEstadoAtributo') }}";
 
-
-        //const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const data = {!! $atributos !!};
     </script>
     <!--begin::Datatables y Configuracion de la Tabla-->
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>

@@ -12,7 +12,10 @@ class AtributoController extends Controller
     public function Index()
     {
         $titulo = 'Atributo';
-        $atributos = Atributo::all();
+        //$atributos = Atributo::all();
+
+        $atributos = Atributo::select('Id','Nombre','ValorReferencia','Enabled')->get();
+
         return View('atributo.atributo')->with([
             'titulo'=>$titulo,
             'atributos' => $atributos
@@ -34,13 +37,17 @@ class AtributoController extends Controller
             $atributo->fill($request);
 
             DB::beginTransaction();
-
             $atributo->save();
 
             DB::commit();
-
             return response()->json([
                 'success' => true,
+                'atributo'=>[[
+                    'Id'=> $atributo->Id,
+                    'Nombre'=>$atributo->Nombre,
+                    'ValorReferencia'=>$atributo->ValorReferencia,
+                    'Enabled'=>$atributo->Enabled
+                ]],
                 'message' => 'Atributo guardado'
             ], 200);
         }catch(Exception $e){
@@ -111,6 +118,12 @@ class AtributoController extends Controller
 
             return response()->json([
                 'success' => true,
+                'atributo'=>[[
+                    'Id'=> $atributoEdit->Id,
+                    'Nombre'=>$atributoEdit->Nombre,
+                    'ValorReferencia'=>$atributoEdit->ValorReferencia,
+                    'Enabled'=>$atributoEdit->Enabled
+                ]],
                 'message' => 'Atributo actualizado correctamente'
             ]);
         }catch(Exception $e){

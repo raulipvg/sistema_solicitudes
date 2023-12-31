@@ -346,8 +346,7 @@ $(document).ready(function() {
         validator.resetForm();
         actualizarValidSelect2();
 
-        let id = Number($(this).attr("info"));
-        
+        let id = Number($(this).attr("info"));     
         $.ajax({
             type: 'POST',
             url: VerUsuario,
