@@ -138,7 +138,7 @@ class UsuarioController extends Controller
                                 ->orWhere('Id', $usuario->CentroCostoId)
                                 ->get();
 
-            Log::error('Acceso a información del usuario: '.$usuario->Username);
+            Log::info('Acceso a información del usuario: '.$usuario->Username);
 
             return response()->json([
                 'success' => true,
