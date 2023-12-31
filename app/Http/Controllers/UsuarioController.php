@@ -195,7 +195,7 @@ class UsuarioController extends Controller
             $personaEdit->save();
 
             DB::commit();
-            Log::info('Se modificó el usuario: '.$usuarioEdit->Username);
+            Log::info('Se modificó el usuario Id: '.$usuarioEdit->Id);
             return response()->json([
                 'success' => true,
                 'usuario' =>[[

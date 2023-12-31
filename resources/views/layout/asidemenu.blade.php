@@ -243,7 +243,7 @@
 														<span class="path3"></span>
 													</i>
 												</span>
-												<span class="menu-title">Sistema Solicitudes</span>
+												<span class="menu-title">Administracion General</span>
 												<span class="menu-arrow"></span>
 											</span>
 											<!--end:Menu link-->

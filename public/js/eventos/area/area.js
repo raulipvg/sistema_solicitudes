@@ -125,7 +125,9 @@ $(document).ready(function() {
                             success: function (data) {
                                 if(data.success){
                                     //console.log("exito");
-                                     location.reload();
+                                    //location.reload();
+                                    cargarData.init(data.area);
+                                    $('#registrar').modal('toggle');
                                 }else{
                                     //console.log(data.error);
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
@@ -157,6 +159,8 @@ $(document).ready(function() {
         }
     });
 
+    var tr;
+    var row;
     //Evento al presionar el Boton Editar
     $("#tabla-area tbody").on("click",'.editar', function (e) {
         e.preventDefault();
@@ -171,6 +175,8 @@ $(document).ready(function() {
         $("#IdInput").prop("disabled",false);
         $("#AlertaError").hide();
 
+        tr = e.target.closest('tr');
+        row = miTabla.row(tr);
         validator.resetForm();
         actualizarValidSelect2();
 
@@ -254,8 +260,7 @@ $(document).ready(function() {
                     if (status == 'Valid') {
                             let form1= $("#FormularioArea");
                             var fd = form1.serialize();
-                            var data= formMap(fd);
-                            bloquear();
+                            var data= formMap(fd);                            
 
                             $.ajax({
                                 type: 'POST',
@@ -266,11 +271,16 @@ $(document).ready(function() {
                                 //content: "application/json; charset=utf-8",
                                 dataType: "json",
                                 beforeSend: function() {
+                                    bloquear();
                                     KTApp.showPageLoading();
                                 },
                                 success: function (data) {                                    
                                     if(data.success){
-                                         location.reload();
+                                        //console.log(data)
+                                        miTabla.row(row).remove();
+                                        cargarData.init(data.area);
+                                        $('#registrar').modal('toggle');
+                                        //location.reload();
                                     }else{
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
                                         $("#AlertaError").append(html);
@@ -475,9 +485,11 @@ $(document).ready(function() {
                     boton.attr("data-kt-indicator", "on");
                 },
                 success: function (data) {
-                    if(data.success){             
+                    if(data.success){
+                        console.log(data)
+                        area=data.area;             
                         data = data.data;
-                        row.child(format(data)).show();
+                        row.child(format(data,area)).show();
                         $(".editar-flujo").tooltip();
                     }
                 },

@@ -41,6 +41,18 @@ var loadingEl = document.createElement("div");
         }
         return keyValueObject;
     }
+    
+    function formatearFecha(fecha){
+        var date = new Date(fecha);
+        // Obtener el día, mes y año
+        var dia = date.getDate();
+        var mes = date.getMonth() + 1; // Nota: Los meses en JavaScript comienzan en 0
+        var anio = date.getFullYear();
+        // Formatear la fecha como "DD-MM-YYYY"
+        var fechaFormateada = dia + "-" + (mes < 10 ? "0" : "") + mes + "-" + anio;
+    
+        return fechaFormateada;
+    }
 
     function botonEstado(tooltip, className, estado){
         var btn = '<button class="btn btn-sm '+className+' fs-7 text-uppercase justify-content-center p-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="'+tooltip+'">'+

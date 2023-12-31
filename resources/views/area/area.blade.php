@@ -54,7 +54,8 @@
 
         const VerFlujos =  "{{ route('VerFlujos') }}";
         const EliminarFlujo = "{{ route('EliminarFlujo') }}";
-        //const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        const data =  {!! $areas !!};
     </script>
     <!--begin::Datatables y Configuracion de la Tabla-->
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
