@@ -17,7 +17,10 @@ class DatabaseLogger extends AbstractProcessingHandler
         $log = new Log();
         $log->Nivel = Level::fromValue($record['level'])->getName();
         $log->Mensaje = $record['message'];
+        $log->Mensaje = (strlen($log->Mensaje) > 255) ? substr($log->Mensaje, 0, 255) : $log->Mensaje;
         $log->Contexto = json_encode($record['context']);
+        $log->Contexto = (strlen($log->Contexto) > 2000) ? substr($log->Contexto, 0, 2000) : $log->Contexto;
+
         $log->save();
     }
 

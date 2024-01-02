@@ -197,7 +197,7 @@
 														<span class="path3"></span>
 													</i>
 												</span>
-												<span class="menu-title">Administracion de Usuarios</span>
+												<span class="menu-title">Acceso</span>
 												<span class="menu-arrow"></span>
 											</span>
 											<!--end:Menu link-->
@@ -243,7 +243,7 @@
 														<span class="path3"></span>
 													</i>
 												</span>
-												<span class="menu-title">Administracion General</span>
+												<span class="menu-title">General</span>
 												<span class="menu-arrow"></span>
 											</span>
 											<!--end:Menu link-->

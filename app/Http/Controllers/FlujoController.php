@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\DB;
 
 class FlujoController extends Controller
 {
+    public function Index(){
+
+        return view('flujo.flujo')->with([
+            'titulo'=> 'Flujos',
+        ]);
+    }
     public function Eliminar(Request $request)
     {
         $request = $request->input('data');

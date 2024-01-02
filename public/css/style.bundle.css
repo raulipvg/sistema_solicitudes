@@ -39575,7 +39575,7 @@ textarea.form-control-lg {
     justify-content: space-between;
     align-items: stretch;
     flex-wrap: wrap;
-    min-height: 70px;
+    min-height: 40px;
     padding: 0 2.25rem;
     color: var(--bs-card-cap-color);
     background-color: var(--bs-card-cap-bg);
@@ -52776,8 +52776,9 @@ label.rating-label:hover~.rating-label>.svg-icon,label.rating-label:hover~.ratin
 }
 
 .bg-dark {
-    --bs-bg-rgb-color: var(--bs-dark-rgb);
-    background-color: var(--bs-dark)!important
+    --bs-bg-rgb-color: var(
+    --bs-dark-rgb);
+    background-color: #353A40!important;
 }
 
 .bg-dark-active {
@@ -57626,7 +57627,7 @@ router-outlet {
 }
 
 [data-kt-app-layout=dark-sidebar] .app-sidebar {
-    background-color: #0d0e12;
+    background-color: #000000;
     border-right: 0
 }
 
