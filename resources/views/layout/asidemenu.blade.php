@@ -312,11 +312,11 @@
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
-													<a class="menu-link" href="{{route('EstadoSolicitud') }}">
+													<a class="menu-link" href="{{route('EstadoFlujo') }}">
 														<span class="menu-bullet">
 															<span class="bullet bullet-dot"></span>
 														</span>
-														<span class="menu-title">Estado Solicitud</span>
+														<span class="menu-title">Estado Flujo</span>
 													</a>
 													<!--end:Menu link-->
 												</div>

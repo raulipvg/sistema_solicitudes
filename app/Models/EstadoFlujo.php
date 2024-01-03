@@ -18,20 +18,21 @@ use Illuminate\Validation\ValidationException;
  * 
  * @property int $Id
  * @property string $Nombre
+ * @property int $Enabled
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
  * 
  * @property Collection|HistorialSolicitud[] $historial_solicituds
- * @property Collection|Solicitud[] $solicitud
+ * @property Collection|OrdenFlujo[] $orden_flujos
  *
  * @package App\Models
  */
-class EstadoSolicitud extends Model
+class EstadoFlujo extends Model
 {
-	protected $table = 'estado_solicitud';
+	protected $table = 'estado_flujo';
 	protected $primaryKey = 'Id';
 	public $incrementing = true;
-	public $timestamps = false;
+	public $timestamps = true;
 
 
 	protected $casts = [
@@ -46,12 +47,12 @@ class EstadoSolicitud extends Model
 
 	public function historial_solicituds()
 	{
-		return $this->hasMany(HistorialSolicitud::class, 'EstadoSolicitudId');
+		return $this->hasMany(HistorialSolicitud::class, 'EstadoFlujo');
 	}
 
-	public function solicituds()
+	public function orden_flujos()
 	{
-		return $this->hasMany(Solicitud::class, 'SolicitudId');
+		return $this->hasMany(OrdenFlujo::class, 'EstadoFlujoId');
 	}
 	
 	public function validate(array $data){

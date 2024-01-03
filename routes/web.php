@@ -6,7 +6,7 @@ use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\UsuarioGrupoController;
-use App\Http\Controllers\EstadoSolicitudController;
+use App\Http\Controllers\EstadoFlujoController;
 use App\Http\Controllers\AtributoController;
 use App\Http\Controllers\CentroCostoController;
 use App\Http\Controllers\FlujoController;
@@ -33,7 +33,7 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/', [HomeController::class, 'Index'])->name('Home');
 });
 
-Route::group(['prefix' => '/usuario'], function () { //LISTO
+Route::group(['prefix' => '/usuario', 'middleware' => 'auth'], function () { //LISTO
     Route::get('/', [UsuarioController::class, 'Index'])->name('Usuario');
     Route::post('/registrar', [UsuarioController::class, 'Guardar'])->name('GuardarUsuario');
     Route::post('/ver', [UsuarioController::class, 'VerId'])->name('VerUsuario');
@@ -67,12 +67,12 @@ Route::group(['prefix' => '/grupo'], function () {
 });
 
 
-Route::group(['prefix' => '/estadosolicitud'], function () {
-    Route::get('/', [EstadoSolicitudController::class, 'Index'])->name('EstadoSolicitud');
-    Route::post('/registrar', [EstadoSolicitudController::class, 'Guardar'])->name('GuardarEstado');
-    Route::post('/ver', [EstadoSolicitudController::class, 'VerId'])->name('VerEstado');
-    Route::post('/editar', [EstadoSolicitudController::class, 'Editar'])->name('EditarEstado');
-    Route::post('/editarEstado', [EstadoSolicitudController::class, 'CambiarEstado'])->name('CambiarEstadoEstado');
+Route::group(['prefix' => '/estadoflujo'], function () {
+    Route::get('/', [EstadoFlujoController::class, 'Index'])->name('EstadoFlujo');
+    Route::post('/registrar', [EstadoFlujoController::class, 'Guardar'])->name('GuardarEstado');
+    Route::post('/ver', [EstadoFlujoController::class, 'VerId'])->name('VerEstado');
+    Route::post('/editar', [EstadoFlujoController::class, 'Editar'])->name('EditarEstado');
+    Route::post('/editarEstado', [EstadoFlujoController::class, 'CambiarEstado'])->name('CambiarEstadoEstado');
 });
 
 Route::group(['prefix' => '/atributo'], function () {

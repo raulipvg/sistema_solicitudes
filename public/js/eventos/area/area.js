@@ -30,7 +30,7 @@ $(document).ready(function() {
                             },
                             stringLength: {
                                 min: 3,
-                                max: 20,
+                                max: 100,
                                 message: 'Entre 3 y 100 caracteres'
                             },
                             regexp: {

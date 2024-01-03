@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EstadoSolicitud;
+use App\Models\EstadoFlujo;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 
-class EstadoSolicitudController extends Controller
+class EstadoFlujoController extends Controller
 {
     public function Index()
     {
-        $titulo = 'Estados de Solicitud';
-        $estadosSolicitud = EstadoSolicitud::select('Id','Nombre','Enabled')->get();
+        $titulo = 'Estados de Flujo';
+        $estadosFlujo = EstadoFlujo::select('Id','Nombre','Enabled')->get();
 
-        return View('estadosolicitud.estadosolicitud')->with([
+        return View('estadoflujo.estadoflujo')->with([
             'titulo'=>$titulo,
-            'estadosSolicitud'=>$estadosSolicitud
+            'estadosFlujo'=>$estadosFlujo
         ]);
     }
 
@@ -32,27 +32,27 @@ class EstadoSolicitudController extends Controller
         $request['Nombre'] = strtolower($request['Nombre']);
 
         try{
-            $estadoSolicitud = new EstadoSolicitud();
-            $estadoSolicitud->validate($request);
-            $estadoSolicitud->fill($request);
+            $estadoFlujo = new EstadoFlujo();
+            $estadoFlujo->validate($request);
+            $estadoFlujo->fill($request);
 
             DB::beginTransaction();
-            $estadoSolicitud->save();
+            $estadoFlujo->save();
 
-            Log::info('Nuevo estado de solicitud: '.$estadoSolicitud->Id);
+            Log::info('Nuevo estado de flujo: '.$estadoFlujo->Id);
             DB::commit();
             return response()->json([
                 'success' => true,
-                'estadosSolicitud'=>[[
-                    'Id'=> $estadoSolicitud->Id,
-                    'Nombre'=> $estadoSolicitud->Nombre,
-                    'Enabled' => $estadoSolicitud->Enabled
+                'estadosFlujo'=>[[
+                    'Id'=> $estadoFlujo->Id,
+                    'Nombre'=> $estadoFlujo->Nombre,
+                    'Enabled' => $estadoFlujo->Enabled
                 ]],                
-                'message' => 'Estado de Solicitud Guardado'
+                'message' => 'Estado de Flujo Guardado'
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al crear un nuevo estado: '.$estadoSolicitud->Nombre, [$e]);
+            Log::error('Error al crear un nuevo estado: '.$estadoFlujo->Nombre, [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -66,15 +66,15 @@ class EstadoSolicitudController extends Controller
         $request = $request->input('data');
 
         try{
-            $estadoSolicitud = EstadoSolicitud::find($request);
+            $estadoFlujo = EstadoFlujo::find($request);
 
-            if(!$estadoSolicitud){
-                throw new Exception ('Estado de solicitud no encontrado');
+            if(!$estadoFlujo){
+                throw new Exception ('Estado de flujo no encontrado');
             }
 
             return response()->json([
                 'success' => true,
-                'data' => $estadoSolicitud
+                'data' => $estadoFlujo
             ]);
         }catch(Exception $e){
             return response()->json([
@@ -95,32 +95,32 @@ class EstadoSolicitudController extends Controller
         $request['Nombre'] = strtolower($request['Nombre']);
 
         try{
-            $estadoSolicitud = new EstadoSolicitud();
-            $estadoSolicitud->validate($request);
+            $estadoFlujo = new EstadoFlujo();
+            $estadoFlujo->validate($request);
 
             DB::beginTransaction();
 
-            $estadoSolicitudEdit = EstadoSolicitud::find($request['Id']);
+            $estadoFlujoEdit = EstadoFlujo::find($request['Id']);
             
-            if(!$estadoSolicitudEdit){
-                throw new Exception('Estado de Solicitud no encontrado');
+            if(!$estadoFlujoEdit){
+                throw new Exception('Estado de Flujo no encontrado');
             }
-            $estadoSolicitudEdit->fill($request);
-            $estadoSolicitudEdit->save();
-            Log::info('Se modificó el estado Id: '.$estadoSolicitudEdit->Id);
+            $estadoFlujoEdit->fill($request);
+            $estadoFlujoEdit->save();
+            Log::info('Se modificó el estado Id: '.$estadoFlujoEdit->Id);
             DB::commit();
             return response()->json([
                 'success' => true,
-                'estadosSolicitud'=>[[
-                    'Id'=> $estadoSolicitudEdit->Id,
-                    'Nombre'=> $estadoSolicitudEdit->Nombre,
-                    'Enabled' => $estadoSolicitudEdit->Enabled
+                'estadosFlujo'=>[[
+                    'Id'=> $estadoFlujoEdit->Id,
+                    'Nombre'=> $estadoFlujoEdit->Nombre,
+                    'Enabled' => $estadoFlujoEdit->Enabled
                 ]], 
-                'message' => 'Estado de Solicitud actualizado correctamente'
+                'message' => 'Estado de Flujo actualizado correctamente'
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar estado:'.$estadoSolicitudEdit->Id, [$e]);
+            Log::error('Error al modificar estado:'.$estadoFlujoEdit->Id, [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -135,23 +135,23 @@ class EstadoSolicitudController extends Controller
     {
         $request = $request->input('data');
         try{
-            $estadoSolicitudEdit = EstadoSolicitud::find($request);
+            $estadoFlujoEdit = EstadoFlujo::find($request);
 
-            if(!$estadoSolicitudEdit){
-                throw new Exception('Estado de Solicitud no encontrado');
+            if(!$estadoFlujoEdit){
+                throw new Exception('Estado de Flujo no encontrado');
             }
             DB::beginTransaction();
 
-            $estadoSolicitudEdit->update([
-                'Enabled' => ($estadoSolicitudEdit['Enabled'] == 1)? 0 : 1
+            $estadoFlujoEdit->update([
+                'Enabled' => ($estadoFlujoEdit['Enabled'] == 1)? 0 : 1
             ]);
 
-            $estadoSolicitudEdit->save();
+            $estadoFlujoEdit->save();
             DB::commit();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Estado del Estado de Solicitud cambiado'
+                'message' => 'Estado del Estado de Flujo cambiado'
             ]);
         }catch(Exception $e){
             DB::rollBack();

@@ -104,7 +104,7 @@ $(document).ready(function() {
                             },
                             stringLength: {
                                 min: 3,
-                                max: 20,
+                                max: 150,
                                 message: 'Entre 3 y 150 caracteres'
                             },
                             regexp: {

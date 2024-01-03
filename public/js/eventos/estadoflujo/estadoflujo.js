@@ -1,6 +1,6 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
-    const form = document.getElementById('FormularioEstadoSolicitud');
+    const form = document.getElementById('FormularioEstadoFlujo');
     $("#AlertaError").hide();
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     const validator = FormValidation.formValidation(
@@ -88,7 +88,7 @@ $(document).ready(function() {
                 //status
                 if (status == 'Valid') {
                     // Show loading indication                       
-                        let form1= $("#FormularioEstadoSolicitud");
+                        let form1= $("#FormularioEstadoFlujo");
                         var fd = form1.serialize();
                         var data = formMap(fd);                        
 
@@ -111,7 +111,7 @@ $(document).ready(function() {
                                 if(data.success){
                                     //console.log("exito");
                                     //location.reload();
-                                    cargarData.init(data.estadosSolicitud);
+                                    cargarData.init(data.estadosFlujo);
                                     $('#registrar').modal('toggle');
                                 }else{
                                     //console.log(data.error);
@@ -238,7 +238,7 @@ $(document).ready(function() {
                     actualizarValidSelect2();
                     //status
                     if (status == 'Valid') {
-                            let form1= $("#FormularioEstadoSolicitud");
+                            let form1= $("#FormularioEstadoFlujo");
                             var fd = form1.serialize();
                             var data= formMap(fd);
                             
@@ -258,7 +258,7 @@ $(document).ready(function() {
                                     if(data.success){
                                         //location.reload();
                                         miTabla.row(row).remove();
-                                        cargarData.init(data.estadosSolicitud);
+                                        cargarData.init(data.estadosFlujo);
                                         $('#registrar').modal('toggle');
                                     }else{
                                         html = '<ul><li style="">'+data.message+'</li></ul>';

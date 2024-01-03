@@ -39,13 +39,13 @@
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="text" class="form-control" placeholder="Ingrese el nombre" id="NombreInput" name="Nombre" />
+                                <input type="text" class="form-control text-capitalize" placeholder="Ingrese el nombre" id="NombreInput" name="Nombre" />
                                 <label for="NombreInput" class="form-label">Nombre</label>
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="text" class="form-control" placeholder="Ingrese el apellido" id="ApellidoInput" name="Apellido" />
+                                <input type="text" class="form-control text-capitalize" placeholder="Ingrese el apellido" id="ApellidoInput" name="Apellido" />
                                 <label for="ApellidoInput" class="form-label">Apellido</label>
                             </div>
                         </div>

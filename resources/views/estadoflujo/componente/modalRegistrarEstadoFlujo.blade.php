@@ -17,7 +17,7 @@
                 </div>
                 <!--end::Close-->
             </div>
-            <form id="FormularioEstadoSolicitud" action="" method="post">
+            <form id="FormularioEstadoFlujo" action="" method="post">
                 <div class="modal-body">
                     <div id="AlertaError" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
                     </div>

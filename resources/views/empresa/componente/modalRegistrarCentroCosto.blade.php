@@ -24,7 +24,7 @@
                     <div class="row">
                         <div class="col mb-2">
                             <div class="form-floating fv-row">
-                                <input type="text" class="form-control h-input" placeholder="Ingrese el nombre" id="NombreInput2" name="Nombre" />
+                                <input type="text" class="form-control h-input text-capitalize" placeholder="Ingrese el nombre" id="NombreInput2" name="Nombre" />
                                 <label for="NombreInput2" class="form-label">Nombre</label>
                             </div>
                         </div>

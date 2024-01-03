@@ -15,36 +15,37 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $Id
  * @property string $Nombre
- * @property string $Descripcion
- * @property int $Enabled
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
+ * @property int $MovimientoId
  * 
  * @property Collection|Grupo[] $grupos
  *
  * @package App\Models
  */
-class Recurso extends Model
+class Operacion extends Model
 {
-	protected $table = 'recurso';
+	protected $table = 'operacion';
 	protected $primaryKey = 'Id';
 	public $incrementing = false;
 
 	protected $casts = [
 		'Id' => 'int',
-		'Enabled' => 'int'
 	];
 
 	protected $fillable = [
 		'Nombre',
-		'Descripcion',
-		'Enabled'
 	];
 
 	public function grupos()
 	{
-		return $this->belongsToMany(Grupo::class, 'grupo_recurso', 'PrivilegioId', 'GrupoId')
+		return $this->belongsToMany(Grupo::class, 'grupo_operacion', 'OperacionId', 'GrupoId')
 					->withPivot('Id')
 					->withTimestamps();
+	}
+
+	public function movimiento()
+	{
+		return $this->belongsTo(Movimiento::class, 'MovimientoId');
 	}
 }

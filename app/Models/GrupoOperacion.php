@@ -10,34 +10,34 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class GrupoRecurso
+ * Class GrupoOperacion
  * 
  * @property int $Id
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
  * @property int $GrupoId
- * @property int $PrivilegioId
+ * @property int $OperacionId
  * 
  * @property Grupo $grupo
- * @property Recurso $recurso
+ * @property Operacion $operacion
  *
  * @package App\Models
  */
-class GrupoRecurso extends Model
+class GrupoOperacion extends Model
 {
-	protected $table = 'grupo_recurso';
+	protected $table = 'grupo_operacion';
 	protected $primaryKey = 'Id';
 	public $incrementing = false;
 
 	protected $casts = [
 		'Id' => 'int',
 		'GrupoId' => 'int',
-		'PrivilegioId' => 'int'
+		'OperacionId' => 'int'
 	];
 
 	protected $fillable = [
 		'GrupoId',
-		'PrivilegioId'
+		'OperacionId'
 	];
 
 	public function grupo()
@@ -45,8 +45,8 @@ class GrupoRecurso extends Model
 		return $this->belongsTo(Grupo::class, 'GrupoId');
 	}
 
-	public function recurso()
+	public function operacion()
 	{
-		return $this->belongsTo(Recurso::class, 'PrivilegioId');
+		return $this->belongsTo(Operacion::class, 'OperacionId');
 	}
 }

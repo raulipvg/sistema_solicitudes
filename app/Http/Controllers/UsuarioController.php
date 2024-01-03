@@ -17,7 +17,13 @@ class UsuarioController extends Controller
      * Display a listing of the resource.
      */
     public function Index()
-    {
+    {/*
+        $permiso = false;
+        foreach(auth()->user()->grupos as $grupoUsuario){
+            if($grupoUsuario->privilegio->Id == 2){
+                $permiso = true;
+            }
+        }*/
         $titulo= "Usuarios";
         //$usuarios = Usuario::all();
 

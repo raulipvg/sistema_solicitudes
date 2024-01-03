@@ -17,13 +17,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $Nivel
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
- * @property int|null $AtrasId
- * @property int $FlujoId
  * @property int $EstadoSolicitudId
  * @property int $GrupoId
+ * @property int $Pivot
  * 
  * @property OrdenFlujo|null $orden_flujo
- * @property EstadoSolicitud $estado_solicitud
+ * @property EstadoFlujo $estado_flujo
  * @property Flujo $flujo
  * @property Grupo $grupo
  * @property Collection|OrdenFlujo[] $orden_flujos
@@ -34,33 +33,29 @@ class OrdenFlujo extends Model
 {
 	protected $table = 'orden_flujo';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
+	public $incrementing = true;
 
 	protected $casts = [
 		'Id' => 'int',
 		'Nivel' => 'int',
-		'AtrasId' => 'int',
 		'FlujoId' => 'int',
-		'EstadoSolicitudId' => 'int',
-		'GrupoId' => 'int'
+		'EstadoFlujoId' => 'int',
+		'GrupoId' => 'int',
+		'Pivot' => 'int'
 	];
 
 	protected $fillable = [
 		'Nivel',
-		'AtrasId',
 		'FlujoId',
-		'EstadoSolicitudId',
-		'GrupoId'
+		'EstadoFlujoId',
+		'GrupoId',
+		'Pivot'
 	];
 
-	public function orden_flujo()
-	{
-		return $this->belongsTo(OrdenFlujo::class, 'AtrasId');
-	}
 
-	public function estado_solicitud()
+	public function estado_flujo()
 	{
-		return $this->belongsTo(EstadoSolicitud::class, 'EstadoSolicitudId');
+		return $this->belongsTo(EstadoFlujo::class, 'EstadoFlujoId');
 	}
 
 	public function flujo()
@@ -73,8 +68,4 @@ class OrdenFlujo extends Model
 		return $this->belongsTo(Grupo::class, 'GrupoId');
 	}
 
-	public function orden_flujos()
-	{
-		return $this->hasMany(OrdenFlujo::class, 'AtrasId');
-	}
 }

@@ -20,20 +20,20 @@
     <div class="card mx-5">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-1">
-                <h3 class="card-title text-uppercase">Estados de Solicitud</h3>
+                <h3 class="card-title text-uppercase">Estados de Flujo</h3>
 
                 <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                     Registrar
                 </button>
             </div>
-            @include('estadosolicitud.componente.tablaEstadoSolicitud')
+            @include('estadoflujo.componente.tablaEstadoFlujo')
         </div>
     </div>
 </div>
 <!--end::Content-->
 
 <!--begin::modal-->
-@include('estadosolicitud.componente.modalRegistrarEstadoSolicitud')
+@include('estadoflujo.componente.modalRegistrarEstadoFlujo')
 <!--end::modal-->
 
 
@@ -47,18 +47,18 @@
         const EditarEstado = "{{ route('EditarEstado') }}";
         const CambiarEstado = "{{ route('CambiarEstadoEstado') }}";
         /* END:RUTAS */
-        const data =  {!! $estadosSolicitud !!};
+        const data =  {!! $estadosFlujo !!};
     </script>
     
     <!--begin::Datatables y Configuracion de la Tabla-->
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/language/language_es.js?id=2') }}"></script>
-    <script src="{{ asset('js/datatables/contenido/estadosolicitud.js?id=2') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/estadoflujo.js?id=2') }}"></script>
     <!--end::Datatables y Configuracion de la Tabla-->
 
     <!--begin::Eventos de la pagina-->
     <script src="{{ asset('js/global/main.js?id=3') }}"></script>
-    <script src="{{ asset('js/eventos/estadosolicitud/estadosolicitud.js') }}"></script>
+    <script src="{{ asset('js/eventos/estadoflujo/estadoflujo.js') }}"></script>
     <!--end::Eventos de la pagina-->
 
 @endpush
