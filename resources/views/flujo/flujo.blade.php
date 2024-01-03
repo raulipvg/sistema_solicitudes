@@ -47,126 +47,19 @@
                         <!--begin::Row-->
                         <div class="d-flex flew-row align-items-center draggable-zone min-h-100px" tabindex="0">
                             
-                            <div class="draggable mx-2" data-info="1">
+                        @foreach ( $estados as $estado )
+                            <div class="draggable mx-2" data-info="{{ $estado->Id }}">
                                 <div class="card draggable-handle bg-dark min-h-55px align-items-center">
                                     <div class="d-flex align-items-center card-body p-2">
                                         <div class="card-title d-flex flex-column m-0 flex-grow-1 align-self-center">
                                             <div class="d-flex text-center">
-                                                <span class="text-white fw-semibold fs-6">INICIADO</span>
+                                                <span class="text-white fw-semibold fs-6 text-uppercase">{{ $estado->Nombre }}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="draggable mx-2" data-info="2">
-                                <div class="card draggable-handle bg-dark min-h-55px align-items-center">
-                                    <div class="d-flex align-items-center card-body p-2">
-                                        <div class="card-title d-flex flex-column m-0 flex-grow-1 align-self-center">
-                                            <div class="d-flex text-center">
-                                                <span class="text-white fw-semibold fs-6">ETAPA 1</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="draggable mx-2" data-info="3">
-                                <div class="card draggable-handle bg-dark min-h-55px align-items-center">
-                                    <div class="d-flex align-items-center card-body p-2">
-                                        <div class="card-title d-flex flex-column m-0 flex-grow-1 align-self-center">
-                                            <div class="d-flex text-center">
-                                                <span class="text-white fw-semibold fs-6">ETAPA 1</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="draggable mx-2" data-info="4">
-                                <div class="card draggable-handle bg-dark min-h-55px align-items-center">
-                                    <div class="d-flex align-items-center card-body p-2">
-                                        <div class="card-title d-flex flex-column m-0 flex-grow-1 align-self-center">
-                                            <div class="d-flex text-center">
-                                                <span class="text-white fw-semibold fs-6">EN TRAMITEEEE</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="draggable mx-2" data-info="5">
-                                <div class="card draggable-handle bg-dark min-h-55px align-items-center">
-                                    <div class="d-flex align-items-center card-body p-2">
-                                        <div class="card-title d-flex flex-column m-0 flex-grow-1 align-self-center">
-                                            <div class="d-flex text-center">
-                                                <span class="text-white fw-semibold fs-6">ETAPA 1</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="draggable mx-2" data-info="6">
-                                <div class="card draggable-handle bg-dark min-h-55px align-items-center">
-                                    <div class="d-flex align-items-center card-body p-2">
-                                        <div class="card-title d-flex flex-column m-0 flex-grow-1 align-self-center">
-                                            <div class="d-flex text-center">
-                                                <span class="text-white fw-semibold fs-6">ETAPA 1</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="draggable mx-2" data-info="7">
-                                <div class="card draggable-handle bg-dark min-h-55px align-items-center">
-                                    <div class="d-flex align-items-center card-body p-2">
-                                        <div class="card-title d-flex flex-column m-0 flex-grow-1 align-self-center">
-                                            <div class="d-flex text-center">
-                                                <span class="text-white fw-semibold fs-6">EN TRAMITEEEE</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="draggable mx-2" data-info="8">
-                                <div class="card draggable-handle bg-dark min-h-55px align-items-center">
-                                    <div class="d-flex align-items-center card-body p-2">
-                                        <div class="card-title d-flex flex-column m-0 flex-grow-1 align-self-center">
-                                            <div class="d-flex text-center">
-                                                <span class="text-white fw-semibold fs-6">ETAPA 1</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="draggable mx-2" data-info="9">
-                                <div class="card draggable-handle bg-dark min-h-55px align-items-center">
-                                    <div class="d-flex align-items-center card-body p-2">
-                                        <div class="card-title d-flex flex-column m-0 flex-grow-1 align-self-center">
-                                            <div class="d-flex text-center">
-                                                <span class="text-white fw-semibold fs-6">ETAPA 1</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="draggable mx-2" data-info="10">
-                                <div class="card draggable-handle bg-dark min-h-55px align-items-center">
-                                    <div class="d-flex align-items-center card-body p-2">
-                                        <div class="card-title d-flex flex-column m-0 flex-grow-1 align-self-center">
-                                            <div class="d-flex text-center">
-                                                <span class="text-white fw-semibold fs-6">EN TRAMITEEEE</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        
+                        @endforeach
 
                         </div>
                         <!--end::Row-->
@@ -214,9 +107,9 @@
                     </div>
                     <!--end::Card body-->
                     <div class="card-footer bg-light">
-                        <form id="Formulario1" action="" >
+                        <form id="FormularioFlujo" action="" method="post" >
                             <div class="modal-body">
-                                <div id="AlertaError" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
+                                <div id="AlertaErrorFlujo" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-2">
@@ -230,8 +123,9 @@
                                         <div class="form-floating fv-row">
                                             <select id="AreaIdInput" name="AreaId" class="form-select" data-control="select2" data-placeholder="Seleccione Area" data-hide-search="false">
                                                 <option></option>
-                                                <option value="1">Area 1</option>                                   
-                                                <option value="2">Area 2</option>  
+                                                @foreach ( $areas as $area )
+                                                <option value="{{ $area->Id }}"> {{ $area->Nombre}}</option>                                   
+                                                @endforeach
                                             </select>
                                             <label for="AreaIdInput" class="form-label">Area</label>
                                         </div>
@@ -242,8 +136,9 @@
                                         <div class="form-floating fv-row">
                                             <select id="GrupoIdInput" name="GrupoId" class="form-select" data-control="select2" data-placeholder="Seleccione Grupo Encargado" data-hide-search="false">
                                                 <option></option>
-                                                <option value="1">Grupo 1</option>
-                                                <option value="2">Grupo 2</option>                                 
+                                                @foreach ( $grupos as $grupo )
+                                                    <option value="{{ $grupo->Id }}">{{ $grupo->Nombre}} </option>
+                                                @endforeach                               
                                             
                                             </select>
                                             <label for="CentroCostoInput" class="form-label">Grupo Encargado</label>
@@ -251,7 +146,7 @@
                                     </div>
                                     <div class="col-md-6 mb-2 tex-end d-flex  align-items-center justify-content-end">
                                         <div>
-                                        <button id="AddSubmitFlujo" type="button" class="btn btn-success">
+                                        <button id="AddSubmitFlujo" type="submit" class="btn btn-success">
                                             <div class="indicator-label">CREAR FLUJO</div>
                                             <div class="indicator-progress">Espere...
                                                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
@@ -278,7 +173,7 @@
 
 @push('Script')
     <script>
-       
+       const GuardarFlujo = "{{route('GuardarFlujo')}}";
     </script>
     <!--begin::Eventos de la pagina-->
     

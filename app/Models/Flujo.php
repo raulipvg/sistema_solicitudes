@@ -32,7 +32,8 @@ class Flujo extends Model
 {
 	protected $table = 'flujo';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
+	public $incrementing = true;
+	public $timestamps = true;
 
 	protected $casts = [
 		'Id' => 'int',

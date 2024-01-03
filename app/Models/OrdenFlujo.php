@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $EstadoSolicitudId
  * @property int $GrupoId
  * @property int $Pivot
+ * @property int $FlujoId
  * 
  * @property OrdenFlujo|null $orden_flujo
  * @property EstadoFlujo $estado_flujo
@@ -34,6 +35,7 @@ class OrdenFlujo extends Model
 	protected $table = 'orden_flujo';
 	protected $primaryKey = 'Id';
 	public $incrementing = true;
+	public $timestamps = true;
 
 	protected $casts = [
 		'Id' => 'int',

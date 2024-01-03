@@ -103,6 +103,7 @@ Route::group(['prefix'=> '/area'], function () {
 Route::group(['prefix'=> '/flujo'], function () {
     Route::get('/', [FlujoController::class,'Index'])->name('Flujo');
     Route::post('/eliminar', [FlujoController::class, 'Eliminar'])->name('EliminarFlujo');
+    Route::post('/registrar', [FlujoController::class, 'Guardar'])->name('GuardarFlujo');
 });
 
 Route::group(['prefix'=> '/empresa'], function () {
