@@ -193,18 +193,18 @@
                                                         
                                                     @foreach ( $estados as $estado )
                                                         <div class="draggable mx-2" data-info="{{ $estado->Id }}">
-                                                            <div class="card bg-dark min-h-75px align-items-center">
-                                                                <div class="card-header p-1 select-size" hidden>
-                                                                    <select name="Enabled" class="form-select form-select-sm form-select-solid" data-control="select2" data-placeholder="Seleccione" data-hide-search="false">
-                                                                        <option></option>
-                                                                        <option value="1">ACTIVO</option>
-                                                                        <option value="0">INACTIVO</option>
-                                                                    </select>
-
-                                                                </div>
-                                                                <div class="card-body draggable-handle ">
-                                                                <span class="text-white fw-semibold fs-6 text-uppercase">{{ $estado->Nombre }}</span>
-
+                                                            <div class="card bg-dark min-h-75px align-items-center align-self-center justify-content-center px-2">
+                                                                <div class="d-flex flex-column">
+                                                                    <div class="cardcito p-1" hidden>
+                                                                        <select name="Enabled" class="form-select form-select-sm form-select-solid" data-control="select2" data-placeholder="Seleccione" data-hide-search="false">
+                                                                            <option></option>
+                                                                            <option value="1">ACTIVO</option>
+                                                                            <option value="0">INACTIVO</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="draggable-handle min-h-40px d-flex align-items-center justify-content-center">
+                                                                        <span class="text-white fw-semibold fs-6 text-uppercase">{{ $estado->Nombre }}</span>
+                                                                    </div>
 
                                                                 </div>
                                                                 

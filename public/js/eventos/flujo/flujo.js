@@ -14,7 +14,7 @@ var KTDraggableMultiple = {
                     var newContainer = evt.newContainer; // Nuevo contenedor
                     if (oldContainer !== newContainer) {                        
                         //console.log('El elemento se movió a otro contenedor');
-                        var originalSource = evt.dragEvent.originalSource.querySelector('.card-header');
+                        var originalSource = evt.dragEvent.originalSource.querySelector('.cardcito');
                         //console.log(originalSource)
                         //var originalSource = oldContainer.querySelector('.card-header');
                         var nuevoContenedorId= newContainer.getAttribute('id');
