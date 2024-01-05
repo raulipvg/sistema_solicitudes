@@ -69,9 +69,6 @@
                             <div class="form-floating fv-row">
                                 <select id="CentroCostoInput" name="CentroCostoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar">
                                     <option></option>
-                                    @foreach ($centrocostos as $centro )
-                                        <option value="{{ $centro->Id}}">{{ $centro->Nombre}}</option>
-                                    @endforeach
                                     
                                 </select>
                                 <label for="CentroCostoInput" class="form-label">Centro de Costo</label>

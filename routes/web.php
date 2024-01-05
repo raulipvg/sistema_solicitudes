@@ -89,6 +89,7 @@ Route::group(['prefix' => '/movimiento'], function () {
     Route::post('/ver', [MovimientoController::class, 'VerId'])->name('VerMovimiento');
     Route::post('/editar', [MovimientoController::class, 'Editar'])->name('EditarMovimiento');
     Route::post('/editarEstado', [MovimientoController::class, 'CambiarEstado'])->name('CambiarEstadoMovimiento');
+    Route::post('/flujosGrupos', [MovimientoController::class, 'VerGruposFlujos'])->name('VerGruposFlujosMovimiento');
 });
 
 Route::group(['prefix'=> '/area'], function () {
@@ -129,6 +130,10 @@ Route::group(['prefix'=> '/persona'], function () {
     Route::post('/cambiarestado', [PersonaController::class, 'CambiarEstado'])->name('CambiarEstadoPersona');
     Route::post('/daracceso', [PersonaController::class, 'DarAcceso'])->name('DarAccesoPersona');
 
+});
+
+Route::group(['prefix'=> '/movimientoatributo'], function () {
+    Route::post('/registrar', [PersonaController::class, 'Guardar'])->name('GuardarMovimientoAtributo');
 });
 
 Route::group(['prefix' => 'error'], function () {

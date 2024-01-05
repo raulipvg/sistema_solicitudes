@@ -201,16 +201,9 @@ $(document).ready(function() {
                 //console.log(data);
                 //blockUI.release();
                 if(data.success){
-                    dataselect=data.option;
-                    var select = $('#CentroCostoInput');
-                    select.empty();
-                    var option = new Option('','');
-                    select.append(option);
-                    for (const key in dataselect) {
-                        var textoCapitalizado = (dataselect[key].Empresa + ' - ' + dataselect[key].Centro).toUpperCase();
-                        var option = new Option(textoCapitalizado, dataselect[key].Id);
-                        select.append(option);                        
-                    }                    
+
+                    llenarSelect2(data.option, $('#CentroCostoInput') );
+
                 }else{
                     Swal.fire({
                             text: "Error de Carga",
@@ -364,9 +357,12 @@ $(document).ready(function() {
                 //blockUI.release();
                 if(data.success){
                     //console.log(data)
-                    dataselect=data.option;
-                    data=data.data;
                     
+                    
+                    
+                    llenarSelect2(data.centrocostos, $('#CentroCostoInput') );
+
+                    data=data.data;
                     $("#IdInput").val(data.Id);
                     $("#UsernameInput").val(data.Username);
                     $("#PasswordInput").val("********");
@@ -375,15 +371,9 @@ $(document).ready(function() {
                     $("#ApellidoInput").val(data.Apellido);
                     $("#RutInput").val(data.Rut);
                     $("#CorreoInput").val(data.Email);
-                  
-                    var select = $('#CentroCostoInput');
-                    select.empty();
-                    for (const key in dataselect) {
-                        var option = new Option(dataselect[key].Nombre, dataselect[key].Id);
-                        select.append(option);                        
-                    }                    
                     $('#CentroCostoInput').val(data.CentroCostoId).trigger("change");
                     $('#EstadoIdInput').val(data.Enabled).trigger("change");
+
                 }else{
                     Swal.fire({
                             text: "Error de Carga",
@@ -519,6 +509,9 @@ $(document).ready(function() {
             success: function (data) {
                 //console.log(data);
                 if(data){
+
+                    llenarSelect2(data.centrocostos, $('#CentroCostoInput') );
+
                     data=data.data;
         
                     $("#IdInput").val(data.Id);

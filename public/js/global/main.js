@@ -100,4 +100,13 @@ var loadingEl = document.createElement("div");
         return btn;
     }
 
- 
+    function llenarSelect2(data,select){
+        select.empty();
+        var option = new Option('','');
+        select.append(option);
+        for (const key in data) {
+            var textoCapitalizado = (data[key].Nombre).toUpperCase();
+            var option = new Option(textoCapitalizado, data[key].Id);
+            select.append(option);                        
+        }
+    }
