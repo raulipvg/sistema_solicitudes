@@ -15,7 +15,17 @@ class MovimientoController extends Controller
     public function Index()
     {
         $titulo= "Movimiento";
-        $movimientos= Movimiento::all();
+        $movimientos= Movimiento::select(
+                                    'movimiento.Id',
+                                    'movimiento.Nombre',
+                                    'grupo.Nombre as Grupo' ,
+                                    'flujo.Nombre as Flujo',
+                                    'movimiento.Enabled as Enabled'
+                                )
+                                ->join('grupo','grupo.Id', '=', 'movimiento.GrupoId')
+                                ->join('flujo','flujo.Id','=','movimiento.FlujoId')
+                                ->get();
+        
         $flujos=Flujo::select('Id', 'Nombre')
                     ->where('Enabled','=',1)
                     ->get();
@@ -24,7 +34,7 @@ class MovimientoController extends Controller
                     ->get();
         return view('movimiento.movimiento')->with([
                         'titulo'=>$titulo,
-                        'movimientos'=>$movimientos,
+                        'movimientos'=>json_encode( $movimientos),
                         'flujos'=>$flujos,
                         'grupos'=>$grupos
                     ]);
@@ -51,7 +61,13 @@ class MovimientoController extends Controller
             DB::commit(); 
             return response()->json([
                 'success' => true,
-                'message' => 'Movimiento Guardado'
+                'movimiento' => [[
+                    'Id' => $movimiento->Id,
+                    'Nombre' => $movimiento->Nombre,
+                    'Grupo' => $movimiento->grupo->Nombre,
+                    'Flujo' => $movimiento->flujo->Nombre,
+                    'Enabled' => $movimiento->Enabled
+                ]]
             ]);
         }catch(Exception $e){  
             DB::rollBack();
@@ -77,9 +93,26 @@ class MovimientoController extends Controller
                 throw new Exception('Movimiento no encontrado');
             }
 
+            $flujos=Flujo::select('Id', 'Nombre')
+                    ->where('Enabled','=',1)
+                    ->orWhere('Id', '=', $movimiento->FlujoId)
+                    ->get();
+            $grupos=Grupo::select('Id', 'Nombre')
+                    ->where('Enabled','=',1)
+                    ->orWhere('Id', '=', $movimiento->GrupoId)
+                    ->get();
+
             return response()->json([
                 'success' => true,
-                'data' => $movimiento
+                'data' => [
+                    'Id' => $movimiento->Id,
+                    'Nombre' => $movimiento->Nombre,
+                    'GrupoId' => $movimiento->GrupoId,
+                    'FlujoId' => $movimiento->FlujoId,
+                    'Enabled' => $movimiento->Enabled,
+                    'grupos' => $grupos,
+                    'flujos' => $flujos
+                ]
             ]);
 
         }catch(Exception $e){
@@ -91,6 +124,28 @@ class MovimientoController extends Controller
         }
     }
 
+    public function VerGruposFlujos(){
+        
+        try{
+            $flujos=Flujo::select('Id', 'Nombre')
+                    ->where('Enabled','=',1)
+                    ->get();
+            $grupos=Grupo::select('Id', 'Nombre')
+                    ->where('Enabled','=',1)
+                    ->get();
+            return response()->json([
+                'success' => true,
+                'flujos' => $flujos,
+                'grupos' => $grupos
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage() 
+            ]);
+        }
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -98,7 +153,7 @@ class MovimientoController extends Controller
     public function Editar(Request $request)
     {
         $request = $request->input('data');
-        
+
         $request['Nombre'] = strtolower($request['Nombre']);
 
         try{
@@ -119,7 +174,13 @@ class MovimientoController extends Controller
             DB::commit();
             return response()->json([
                 'success' => true,
-                'message' => 'Movimiento actualizado correctamente'
+                'movimiento' => [[
+                    'Id' => $movimientoEdit->Id,
+                    'Nombre' => $movimientoEdit->Nombre,
+                    'Grupo' => $movimientoEdit->grupo->Nombre,
+                    'Flujo' => $movimientoEdit->flujo->Nombre,
+                    'Enabled' => $movimientoEdit->Enabled
+                ]]
             ]);
         }catch(Exception $e){
             DB::rollBack();

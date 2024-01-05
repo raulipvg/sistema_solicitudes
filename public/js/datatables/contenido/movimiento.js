@@ -71,9 +71,38 @@ let miTabla = $('#tabla-movimiento').DataTable({
             //"scrollX": true
 });
 
-$(document).ready(function() {
+const cargarData= function(){
+    return {
+        init: function(data){
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    var btnEstado;
+                    if(data[key].Enabled == 1){
+                        btnEstado = botonEstado('Deshabilitar Movimiento','btn-light-success estado-movimiento  w-70px','ACTIVO');
+                    }else{
+                        btnEstado = botonEstado('Habilitar Movimiento','btn-light-warning estado-movimiento  w-70px','INACTIVO');
+                    }
+                    var rowNode =  miTabla.row.add( {
+                                        "0": data[key].Id,
+                                        "1": data[key].Nombre,
+                                        "2": data[key].Grupo,
+                                        "3": data[key].Flujo,
+                                        "4": btnEstado,
+                                        "5": botonAcciones('registrar-movimiento',data[key].Id),
+                                    } ).node();
+                    $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
+                    $(rowNode).find('td:eq(3)').addClass('fw-bold text-gray-600');
+                    $(rowNode).find('td:eq(5)').addClass('text-center p-0');          
+                }
+            }
+            miTabla.order([1, 'asc']).draw();
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        }
+    }
 
+}();
 
-
-});
+KTUtil.onDOMContentLoaded((function() {
+    cargarData.init(data);
+}));
 

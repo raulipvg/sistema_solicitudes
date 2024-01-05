@@ -1,8 +1,8 @@
-<div class="modal fade" tabindex="-1" id="registrar" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+<div class="modal fade" tabindex="-1" id="registrar-movimiento" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog mt-20">
         <div class="modal-content" id="div-bloquear">
             <div class="modal-header bg-light p-2 ps-5">
-                <h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Atributo</h2>
+                <h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Movimiento</h2>
 
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -35,22 +35,16 @@
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <select id="GrupoIdInput" name="GrupoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar">
-                                    <option></option>
-                                    @foreach($grupos as $grupo)
-                                    <option value="{{ $grupo->Id }}">{{ $grupo->Nombre }}</option>
-                                    @endforeach
+                                <select id="GrupoIdInput" name="GrupoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar-movimiento">
+
                                 </select>
-                                <label for="GrupoIdInput" class="form-label">Grupo Autorizado</label>
+                                <label for="GrupoIdInput" class="form-label">Grupo Administrador</label>
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <select id="FlujoIdInput" name="FlujoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar">
-                                    <option></option>
-                                    @foreach($flujos as $flujo)
-                                    <option value="{{ $flujo->Id }}">{{ $flujo->Nombre }}</option>
-                                    @endforeach
+                                <select id="FlujoIdInput" name="FlujoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#registrar-movimiento">
+
                                 </select>
                                 <label for="FlujoIdInput" class="form-label">Flujo</label>
                             </div>

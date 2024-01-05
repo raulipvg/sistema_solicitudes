@@ -3,45 +3,13 @@
         <tr class="fw-bolder text-uppercase">
             <th scope="col">#</th>
             <th scope="col">Nombre</th>
-            <th scope="col">Grupo Autorizado</th>
+            <th scope="col">Grupo Administrador</th>
             <th scope="col">Flujo</th>
             <th scope="col">Estado</th>
             <th class="text-center" scope="col">Acción</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($movimientos as $movimiento)
-        <tr class="center-2">
-            <td>{{ $movimiento->Id }}</td>
-            <td class="text-capitalize">{{ $movimiento->Nombre }}</td>
-            <td>{{ $movimiento->grupo->Nombre }}</td>
-            <td>{{ $movimiento->flujo->Nombre }}</td>
-            @if($movimiento->Enabled == 1)
-            <td data-search="Enabled">
-                <button class="btn btn-sm btn-light-success estado-movimiento fs-7 text-uppercase estado justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Movimiento">
-                <span class="indicator-label">ACTIVO</span>
-                <span class="indicator-progress">
-                <span class="spinner-border spinner-border-sm align-middle"></span>
-                </span>
-                </button>
-            </td>
-            @else
-            <td data-search="Disabled">
-                <button class="btn btn-light-warning fs-7 estado-movimiento text-uppercase estado justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Movimiento">
-                    <span class="indicator-label">Inactivo</span>
-                    <span class="indicator-progress">
-                    <span class="spinner-border spinner-border-sm align-middle"></span>
-                    </span>
-                </button>
-            </td>
-            @endif
-            <td class="text-center p-0">
-                <div class="btn-group btn-group-sm" role="group">
-                    <a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $movimiento->Id }}">Ver</a>
-                    <a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#registrar" info="{{ $movimiento->Id }}">Editar</a>
-                </div>
-            </td>
-        </tr>
-        @endforeach
+        
     </tbody>
 </table>

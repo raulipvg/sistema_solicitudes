@@ -51,7 +51,7 @@ class UsuarioController extends Controller
     public function VerCC(Request $request){
         
         try{
-                $centrocostos = CentroDeCosto::select('centro_de_costo.Id', 'centro_de_costo.Nombre as Centro', 'empresa.Nombre as Empresa')
+                $centrocostos = CentroDeCosto::select(DB::raw("CONCAT(empresa.Nombre, ' - ', centro_de_costo.Nombre) as Nombre"), 'centro_de_costo.Id')
                                 ->join('empresa','empresa.Id','=','centro_de_costo.EmpresaId')
                                 ->where('centro_de_costo.Enabled','=', 1)
                                 ->get();
@@ -139,6 +139,12 @@ class UsuarioController extends Controller
                 throw new Exception('Usuario no encontrada');
             }
 
+            $centrocostos = CentroDeCosto::select(DB::raw("CONCAT(empresa.Nombre, ' - ', centro_de_costo.Nombre) as Nombre"), 'centro_de_costo.Id')
+                                ->join('empresa', 'empresa.Id', '=', 'centro_de_costo.EmpresaId')
+                                ->where('centro_de_costo.Enabled', '=', 1)
+                                ->orWhere('centro_de_costo.Id', $usuario->CentroCostoId)
+                                ->get();
+
             $cc = CentroDeCosto::select('Id', 'Nombre', 'Enabled')
                                 ->where('Enabled', 1)
                                 ->orWhere('Id', $usuario->CentroCostoId)
@@ -149,7 +155,8 @@ class UsuarioController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $usuario,
-                'option' => $cc   
+                'option' => $cc,
+                'centrocostos' => $centrocostos
             ],200);
 
         }catch(Exception $e){

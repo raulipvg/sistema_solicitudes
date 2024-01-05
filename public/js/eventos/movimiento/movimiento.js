@@ -71,9 +71,9 @@ $(document).ready(function() {
     //const blockUI = new KTBlockUI(target)
 
      // Evento al presionar el Boton de Registrar
-    $("#AddBtn").on("click", function (e) {
+    $("#addBtnMovimiento").on("click", function (e) {
         //Inicializacion
-        //console.log("AddBtn")
+        //console.log("addBtnMovimiento")
         e.preventDefault();
         e.stopPropagation();
         $("#modal-titulo").empty().html("Registrar Movimiento");
@@ -85,6 +85,62 @@ $(document).ready(function() {
         $("#EditSubmit").hide();
         $("#IdInput").prop("disabled",true);
         $("#AlertaError").hide();
+
+        $.ajax({
+            type: 'POST',
+            url: VerGruposFlujosMovimiento,
+            data: {
+                _token: csrfToken,
+                data: null},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function() {
+                bloquear();
+                KTApp.showPageLoading();
+            },
+            success: function (data) {
+                //console.log(data);
+                //blockUI.release();
+                if(data.success){
+                    var select = $('#GrupoIdInput');
+                    llenarSelect2(data.grupos, $('#GrupoIdInput') );
+                    llenarSelect2(data.flujos, $('#FlujoIdInput') );
+                    
+                }else{
+                    Swal.fire({
+                            text: "Error de Carga",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                    });
+                    $(".btn-cerrar").on("click", function () {
+                            $('#registrar-movimiento').modal('toggle');
+                    });
+                }
+            },
+            error: function () {;
+                Swal.fire({
+                            text: "Error de Carga",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+                     $(".btn-cerrar").on("click", function () {
+                            //console.log("Error");
+                            $('#registrar-movimiento').modal('toggle');
+                     });
+            },
+            complete: function(){
+                KTApp.hidePageLoading();
+                loadingEl.remove();
+            }
+        });
 
         validator.resetForm();
         actualizarValidSelect2();
@@ -113,11 +169,6 @@ $(document).ready(function() {
                         var fd = form1.serialize();
                         var data = formMap(fd);
 
-                        submitButton.setAttribute('data-kt-indicator', 'on');
-                        submitButton.disabled = true; 
-
-                        bloquear();
-
                         $.ajax({
                             type: 'POST',
                             url: GuardarMovimiento,
@@ -128,12 +179,16 @@ $(document).ready(function() {
                             dataType: "json",
                             //content: "application/json; charset=utf-8",
                             beforeSend: function() {
+                                submitButton.setAttribute('data-kt-indicator', 'on');
+                                submitButton.disabled = true; 
+                                bloquear();
                                 KTApp.showPageLoading();
                             },
                             success: function (data) {
                                 if(data.success){
                                     //console.log("exito");
-                                     location.reload();
+                                    cargarData.init(data.movimiento);
+                                    $('#registrar-movimiento').modal('toggle');
                                 }else{
                                     //console.log(data.error);
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
@@ -183,6 +238,8 @@ $(document).ready(function() {
         actualizarValidSelect2();
 
         let id = Number($(this).attr("info"));
+        
+
         bloquear();
         $.ajax({
             type: 'POST',
@@ -202,11 +259,14 @@ $(document).ready(function() {
                 if(data.success){
                     
                     data=data.data;
+
+                    llenarSelect2(data.grupos, $('#GrupoIdInput') );
+                    llenarSelect2(data.flujos, $('#FlujoIdInput') );
                     
                     $("#IdInput").val(data.Id);
                     $("#NombreInput").val(data.Nombre);
-                    $('#GrupoIdInput').val(data.Enabled).trigger("change");
-                    $('#FlujoIdInput').val(data.Enabled).trigger("change");
+                    $('#GrupoIdInput').val(data.GrupoId).trigger("change");
+                    $('#FlujoIdInput').val(data.FlujoId).trigger("change");
                     $('#EstadoIdInput').val(data.Enabled).trigger("change");
                 }else{
                     Swal.fire({
@@ -219,7 +279,7 @@ $(document).ready(function() {
                             }
                         });
                     $(".btn-cerrar").on("click", function () {
-                            $('#registrar').modal('toggle');
+                            $('#registrar-movimiento').modal('toggle');
                     });
                 }
             },
@@ -236,7 +296,7 @@ $(document).ready(function() {
 
                      $(".btn-cerrar").on("click", function () {
                             //console.log("Error");
-                            $('#registrar').modal('toggle');
+                            $('#registrar-movimiento').modal('toggle');
                      });
             },
             complete: function(){
@@ -247,64 +307,69 @@ $(document).ready(function() {
         
     });
 
+    var tr;
+    var row;
     // Manejador al presionar el submit de Editar
     const submitEditButton = document.getElementById('EditSubmit');
     submitEditButton.addEventListener('click', function (e) {
-            
-            e.preventDefault();
-            e.stopPropagation();
-            $("#AlertaError").hide();
-            $("#AlertaError").empty();
-            // Validate form before submit
-            if (validator) {
-                validator.validate().then(function (status) {
-                    actualizarValidSelect2();
-                    //status
-                    if (status == 'Valid') {
-                            let form1= $("#FormularioMovimiento");
-                            var fd = form1.serialize();
-                            var data= formMap(fd);
-                            bloquear();
+        tr = e.target.closest('tr');
+        row = miTabla.row(tr);
+        e.preventDefault();
+        e.stopPropagation();
+        $("#AlertaError").hide();
+        $("#AlertaError").empty();
+        // Validate form before submit
+        if (validator) {
+            validator.validate().then(function (status) {
+                actualizarValidSelect2();
+                //status
+                if (status == 'Valid') {
+                    let form1= $("#FormularioMovimiento");
+                    var fd = form1.serialize();
+                    var data= formMap(fd);
+                    bloquear();
 
-                            $.ajax({
-                                type: 'POST',
-                                url: EditarMovimiento,
-                                data: {
-                                    _token: csrfToken,
-                                    data: data},
+                    $.ajax({
+                        type: 'POST',
+                        url: EditarMovimiento,
+                            data: {
+                                _token: csrfToken,
+                                data: data},
                                 //content: "application/json; charset=utf-8",
-                                dataType: "json",
-                                beforeSend: function() {
-                                    KTApp.showPageLoading();
-                                },
-                                success: function (data) {                                    
-                                    if(data.success){
-                                         location.reload();
-                                    }else{
-                                        html = '<ul><li style="">'+data.message+'</li></ul>';
-                                        $("#AlertaError").append(html);
-                                        $("#AlertaError").show();
-                                    }
-                                },
-                                error: function () {
-                                    Swal.fire({
-                                        text: "Error",
-                                        icon: "error",
-                                        buttonsStyling: false,
-                                        confirmButtonText: "OK",
-                                        customClass: {
-                                            confirmButton: "btn btn-danger btn-cerrar"
-                                        }
-                                    });
-                                },
-                                complete: function(){
-                                    KTApp.hidePageLoading();
-                                    loadingEl.remove();
+                        dataType: "json",
+                        beforeSend: function() {
+                            KTApp.showPageLoading();
+                        },
+                        success: function (data) {                                    
+                            if(data.success){
+                                miTabla.row(row).remove();
+                                cargarData.init(data.movimiento);
+                                $('#registrar-movimiento').modal('toggle');
+                            }else{
+                                // html = '<ul><li style="">'+data.message+'</li></ul>';
+                                $("#AlertaError").append(html);
+                                $("#AlertaError").show();
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                text: "Error",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK",
+                                customClass: {
+                                    confirmButton: "btn btn-danger btn-cerrar"
                                 }
                             });
-                        } 
-                });
-            }
+                        },
+                        complete: function(){
+                            KTApp.hidePageLoading();
+                            loadingEl.remove();
+                        }
+                    });
+                }
+            });
+        }
     });
 
     
@@ -324,6 +389,8 @@ $(document).ready(function() {
         validator.resetForm();
         actualizarValidSelect2();
 
+
+
         let id = Number($(this).attr("info"));
         $.ajax({
             type: 'POST',
@@ -334,18 +401,22 @@ $(document).ready(function() {
             //content: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function() {
+               
                 bloquear();
                 KTApp.showPageLoading();
             },
             success: function (data) {
                 //console.log(data);
                 if(data){
+                    
                     data=data.data;
-        
+                    llenarSelect2(data.grupos, $('#GrupoIdInput') );
+                    llenarSelect2(data.flujos, $('#FlujoIdInput') );
+                    
                     $("#IdInput").val(data.Id);
                     $("#NombreInput").val(data.Nombre);
-                    $('#GrupoIdInput').val(data.Enabled).trigger("change");
-                    $('#FlujoIdInput').val(data.Enabled).trigger("change");
+                    $('#GrupoIdInput').val(data.GrupoId).trigger("change");
+                    $('#FlujoIdInput').val(data.FlujoId).trigger("change");
                     $('#EstadoIdInput').val(data.Enabled).trigger("change");
                 }else{
                     Swal.fire({
@@ -359,7 +430,7 @@ $(document).ready(function() {
                         });
                      $(".btn-cerrar").on("click", function () {
                             //console.log("Error");
-                            $('#registrar').modal('toggle');
+                            $('#registrar-movimiento').modal('toggle');
                      });
                 }
             },
@@ -376,7 +447,7 @@ $(document).ready(function() {
                         });
                 $(".btn-cerrar").on("click", function () {
                         console.log("Error");
-                        $('#registrar').modal('toggle');
+                        $('#registrar-movimiento').modal('toggle');
                 });
             },
             complete: function(){
