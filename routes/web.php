@@ -13,7 +13,7 @@ use App\Http\Controllers\FlujoController;
 use App\Http\Controllers\MovimientoController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\LoginController;
-use App\Models\CentroDeCosto;
+use App\Http\Controllers\MovimientoAtributoController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Monolog\Handler\RotatingFileHandler;
@@ -133,7 +133,8 @@ Route::group(['prefix'=> '/persona'], function () {
 });
 
 Route::group(['prefix'=> '/movimientoatributo'], function () {
-    Route::post('/registrar', [PersonaController::class, 'Guardar'])->name('GuardarMovimientoAtributo');
+    Route::get('/', [MovimientoAtributoController::class, 'Index'])->name('InicioMovimientoAtributo');
+    Route::post('/registrar', [MovimientoAtributoController::class, 'Guardar'])->name('GuardarMovimientoAtributo');
 });
 
 Route::group(['prefix' => 'error'], function () {
