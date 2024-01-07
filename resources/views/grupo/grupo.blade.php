@@ -49,11 +49,13 @@
 		const VerGrupoEdit = '{{ route("VerGrupoEdit") }}';
 		const EditarGrupoPrivilegio = '{{route("EditarGrupoPrivilegio")}}';
 		const CambiarEstadoGrupo = '{{route("CambiarEstadoGrupo")}}';
+
     </script>
 
 	<!--begin::Eventos de la pagina-->
     <script src="{{ asset('js/global/main.js?id=3') }}"></script>
     <script src="{{ asset('js/eventos/grupo/grupo.js?id=3') }}"></script>
+	<script src="{{ asset('js/eventos/grupo/update-grupo.js?id=8') }}"></script>
 
     <!--end::Eventos de la pagina-->
     

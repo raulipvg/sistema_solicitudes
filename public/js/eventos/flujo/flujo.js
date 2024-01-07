@@ -5,8 +5,8 @@ var KTDraggableMultiple = {
             var e = document.querySelectorAll(".draggable-zone");
             if (0 === e.length) return !1;
             var draggable =  new Draggable.Sortable(e, { 
-                draggable: ".draggable:not(.select-prueba)", 
-                handle: ".draggable .draggable-handle:not(.select-prueba)", 
+                draggable: ".draggable", 
+                handle: ".draggable .draggable-handle", 
                 mirror: { appendTo: "body", 
                 constrainDimensions: !0 } });
                 draggable.on('sortable:stop', function (evt) {
@@ -14,7 +14,7 @@ var KTDraggableMultiple = {
                     var newContainer = evt.newContainer; // Nuevo contenedor
                     if (oldContainer !== newContainer) {                        
                         //console.log('El elemento se movió a otro contenedor');
-                        var originalSource = evt.dragEvent.originalSource.querySelector('.cardcito');
+                        var originalSource = evt.dragEvent.originalSource.querySelector('.card-estado');
                         //console.log(originalSource)
                         //var originalSource = oldContainer.querySelector('.card-header');
                         var nuevoContenedorId= newContainer.getAttribute('id');
@@ -24,7 +24,7 @@ var KTDraggableMultiple = {
                             originalSource.style.display= 'block';
                         }else{
                             originalSource.setAttribute('hidden', true)
-                            console.log('Escondemos el header');
+                            //console.log('Escondemos el header');
                         }                        
                     }
                 });
@@ -131,11 +131,13 @@ $(document).ready(function() {
                 let info = $(this).attr("data-info");
                 //PIVOT= 1 ES INICO, PIVOT= 2 INTERMEDIO, PIVOT= 3 FINAL
                 ( i== 0)?pivot =0:pivot=1;
+                var selectElement = $(this).find('select[name="Enabled"]');
 
                 var ordenFlujo = {
                     Nivel: i,
                     EstadoFlujoId: info,
-                    Pivot: pivot                 
+                    Pivot: pivot,
+                    GrupoId: selectElement.val()                 
                 }
                 lista.ordenFlujo.push(ordenFlujo);
                 i=i+1;

@@ -26,10 +26,14 @@ class GrupoController extends Controller
             $query->where('usuario.Enabled', 1);
         }])->get();
 
+        $privilegios = Privilegio::select('Id','Nombre')
+                                        ->where('Enabled','=',1)
+                                        ->get();
         
         return View('grupo.grupo')->with([
             'titulo'=> $titulo,
             'datosgrupo'=> $datosgrupo,
+            'privilegios'=> $privilegios,
             'flag'=> 2, //significa que es para la vista /grupo/
         ]);
     }
@@ -48,16 +52,16 @@ class GrupoController extends Controller
 
             $grupo->save(); 
 
-            $privilegios = Privilegio::select('Id','Nombre')
-                                    ->where('Enabled','=',1)
-                                    ->get();
+           // $privilegios = Privilegio::select('Id','Nombre')->where('Enabled','=',1)->get();
 
+           /*
             foreach ($privilegios as $privilegio) {
                 $grupoprivilegio = new GrupoPrivilegio();
                 $grupoprivilegio->GrupoId = $grupo->Id;
                 $grupoprivilegio->PrivilegioId = $privilegio->Id;
                 $grupoprivilegio->save();
             }
+            */
 
             DB::commit(); 
             
@@ -142,13 +146,12 @@ class GrupoController extends Controller
                                         ->where('Enabled','=',1)
                                         ->get();
 
-           /* return response()->json([
+            return response()->json([
                 'success' => true,
-                'data' => $grupo,
-                'privilegios'=> $privilegios
-            ]); */
-            return view('grupo.componente._formEditarGrupo',
-                        compact('grupo','privilegios'));
+                'data' => $grupo
+            ]);
+           /* return view('grupo.componente._formEditarGrupo',
+                        compact('grupo','privilegios'));*/
 
         }catch(Exception $e){
 
@@ -177,7 +180,19 @@ class GrupoController extends Controller
             $grupoEdit->save();
 
             foreach($request['GrupoPrivilegio'] as $grupoPrivilegio ){
-                $grupoPrivilegioEdit = GrupoPrivilegio::find($grupoPrivilegio['Id']);
+               
+                GrupoPrivilegio::updateOrCreate(
+                    ['Id' => $grupoPrivilegio['Id']], // Busca por el ID proporcionado
+                    [
+                        'Ver' => isset($grupoPrivilegio['Ver']) ? 1 : 0,
+                        'Registrar' => isset($grupoPrivilegio['Registrar']) ? 1 : 0,
+                        'Editar' => isset($grupoPrivilegio['Editar']) ? 1 : 0,
+                        'Eliminar' => isset($grupoPrivilegio['Eliminar']) ? 1 : 0,
+                        'GrupoId'=> $grupoEdit->Id,
+                        'PrivilegioId' => $grupoPrivilegio['PrivilegioId']
+                    ]
+                );
+               /* $grupoPrivilegioEdit = GrupoPrivilegio::find($grupoPrivilegio['Id']);
                 if (!$grupoPrivilegioEdit) {
                     continue; // Opcional: Puede lanzar una excepción si se espera un GrupoPrivilegio específico.
                 }     
@@ -186,7 +201,7 @@ class GrupoController extends Controller
                     'Registrar' => (isset($grupoPrivilegio['Registrar']))?1:0,
                     'Editar' => (isset($grupoPrivilegio['Editar']))?1:0,
                     'Eliminar' => (isset($grupoPrivilegio['Eliminar']))?1:0
-                ]);
+                ]);*/
                 //$grupoPrivilegioEdit->save();                 
             }
 

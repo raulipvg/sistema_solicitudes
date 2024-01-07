@@ -159,7 +159,7 @@
                                                     <div class="row">
                                                         <div class="col mb-2">
                                                             <div class="form-floating fv-row">
-                                                                <select id="GrupoIdInput" name="GrupoId" class="form-select" data-control="select2" data-placeholder="Seleccione Grupo Encargado" data-hide-search="false">
+                                                                <select id="GrupoIdInput" name="GrupoId" class="form-select" data-control="select2" data-placeholder="Seleccione el grupo administrador del flujo" data-hide-search="false">
                                                                     <option></option>
                                                                     @foreach ( $grupos as $grupo )
                                                                         <option value="{{ $grupo->Id }}">{{ $grupo->Nombre}} </option>
@@ -189,17 +189,18 @@
                                                 <!--begin::Card body-->
                                                 <div class="card-body p-0 hover-scroll-x no-select">
                                                     <!--begin::Row-->
-                                                    <div id="estadoDisponible" class="d-flex flew-row align-items-center draggable-zone min-h-75px" tabindex="0">
+                                                    <div id="estadoDisponible" class="d-flex flew-row align-items-center draggable-zone min-h-50px" tabindex="0">
                                                         
                                                     @foreach ( $estados as $estado )
                                                         <div class="draggable mx-2" data-info="{{ $estado->Id }}">
-                                                            <div class="card bg-dark min-h-75px align-items-center align-self-center justify-content-center px-2">
+                                                            <div class="card bg-dark align-items-center align-self-center justify-content-center px-2">
                                                                 <div class="d-flex flex-column">
-                                                                    <div class="cardcito p-1" hidden>
+                                                                    <div class="card-estado py-1" hidden>
                                                                         <select name="Enabled" class="form-select form-select-sm form-select-solid" data-control="select2" data-placeholder="Seleccione" data-hide-search="false">
                                                                             <option></option>
-                                                                            <option value="1">ACTIVO</option>
-                                                                            <option value="0">INACTIVO</option>
+                                                                            @foreach ($grupos as $grupo)
+                                                                                <option value="{{ $grupo->Id }}" > {{ $grupo->Nombre }}
+                                                                            @endforeach
                                                                         </select>
                                                                     </div>
                                                                     <div class="draggable-handle min-h-40px d-flex align-items-center justify-content-center">

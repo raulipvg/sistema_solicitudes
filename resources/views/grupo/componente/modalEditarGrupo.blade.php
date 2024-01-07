@@ -20,7 +20,7 @@
 												<!--end::Modal header-->
 												<!--begin::Modal body-->
 												<div id="modal-update" class="modal-body scroll-y py-3">
-													
+													@include('grupo.componente._formEditarGrupo', ['privilegios'=> $privilegios])
 												</div>
 												<!--end::Modal body-->
 											</div>

@@ -60,6 +60,7 @@ class FlujoController extends Controller
                 $obj->EstadoFlujoId =$ordenFlujo['EstadoFlujoId'];
                 $obj->Pivot = $ordenFlujo['Pivot'];
                 $obj->FlujoId = $flujo->Id;
+                $obj->GrupoId = $ordenFlujo['GrupoId'];
                 $obj->save();
             }
             Log::info('Nuevo FLujo Id: '.$flujo->Id);

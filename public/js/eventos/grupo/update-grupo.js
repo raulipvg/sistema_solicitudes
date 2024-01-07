@@ -137,7 +137,9 @@ function Editar(){
         const [, indice, propiedad] = matches;
         if (!persona[indice]) {
           persona[indice] = {};
+          persona[indice]["PrivilegioId"]= indice;
         }
+        if(valor == "" && propiedad != "Id")valor=1;
         persona[indice][propiedad] = valor;
       }
     });
@@ -152,6 +154,7 @@ function Editar(){
     
     grupo={};
     grupo.Nombre=$("#NombreGrupoInput").val();
+    console.log($("#IdGrupoInput").val())
     grupo.Id= $("#IdGrupoInput").val();
     grupo.GrupoPrivilegio = personas;
 
@@ -169,7 +172,7 @@ function Editar(){
             data: grupo
         },
         //content: "application/json; charset=utf-8",
-        dataType: "HTML",
+        dataType: "json",
         beforeSend: function() {
             bloquear();
             KTApp.showPageLoading();
@@ -178,7 +181,13 @@ function Editar(){
             //console.log(data);
             //blockUI.release();
             //$("#modal-update").html(data);
-            location.reload();
+            if(data.success){
+                location.reload();
+            }else{
+                html = '<ul><li style="">'+data.message+'</li></ul>';
+                $("#AlertaErrorGrupo").append(html);                                    
+                $("#AlertaErrorGrupo").show();
+            }
         },
         error: function () {;
             Swal.fire({

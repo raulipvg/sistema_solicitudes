@@ -13,10 +13,10 @@
 																</label>
 																<!--end::Label-->
 																<!--begin::Input-->
-																<input id="NombreGrupoInput" class="form-control form-control-solid text-capitalize" placeholder="Ingrese nombre del Grupo" name="NombreGrupo"/>
+																<input id="NombreGrupoInput" class="form-control form-control-solid text-capitalize" placeholder="Ingrese nombre del Grupo" name="NombreGrupo" value="{{$grupo->Nombre}}" />
 																<!--end::Input-->
 															</div>
-															<input hidden type="number" id="IdGrupoInput" name="IdGrupo" />
+															<input hidden type="number" id="IdGrupoInput" name="IdGrupo" value="{{ $grupo->Id}}" />
 															<!--end::Input group-->
 															<!--begin::Permissions-->
 															<div class="fv-row">
@@ -50,13 +50,17 @@
 																				</td>
 																			</tr>
 																			<!--end::Table row-->
+                                                                            @php
+                                                                                $aux=0;
+                                                                                $checked= "checked";
+                                                                            @endphp
                                                                             @foreach ($privilegios as $privilegio)
                                                                                 
                                                                                 <!--begin::Table row-->
                                                                                 <tr>
                                                                                     <!--begin::Label-->
                                                                                     <td class="text-gray-800 p-2">{{ $privilegio->Nombre}}
-                                                                                    <input hidden type="number" id="IdPrivilegio{{$privilegio->Id}}" name="GrupoPrivilegio[{{$privilegio->Id}}][Id]" value="" />
+                                                                                    <input hidden type="number" id="IdPrivilegio{{$privilegio->Id}}" name="GrupoPrivilegio[{{$privilegio->Id}}][Id]" value="{{ $grupo->privilegios[$aux]->pivot->Id}}" />
                                                                                     </td>   
                                                                                     <!--end::Label-->                                                                                  
     
@@ -67,25 +71,41 @@
                                                                                             
                                                                                             <!--begin::Checkbox-->
                                                                                             <label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
-                                                                                                <input class="form-check-input" type="checkbox" value="1" name="GrupoPrivilegio[{{$privilegio->Id}}][Ver]"/>
+                                                                                                <input class="form-check-input" type="checkbox" value="1" name="GrupoPrivilegio[{{$privilegio->Id}}][Ver]"  
+                                                                                                @if ($privilegio->Id == $grupo->privilegios[$aux]->pivot->PrivilegioId && $grupo->privilegios[$aux]->pivot->Ver == 1)
+                                                                                                    {{$checked}}
+                                                                                                @endif
+                                                                                                />
                                                                                                 <span class="form-check-label">Ver</span>
                                                                                             </label>
                                                                                             <!--end::Checkbox-->
                                                                                             <!--begin::Checkbox-->
                                                                                             <label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
-                                                                                                <input class="form-check-input" type="checkbox" value="1" name="GrupoPrivilegio[{{$privilegio->Id}}][Registrar]"/>
+                                                                                                <input class="form-check-input" type="checkbox" value="1" name="GrupoPrivilegio[{{$privilegio->Id}}][Registrar]"
+                                                                                                @if ($privilegio->Id == $grupo->privilegios[$aux]->pivot->PrivilegioId && $grupo->privilegios[$aux]->pivot->Registrar == 1)
+                                                                                                    {{$checked}}
+                                                                                                @endif
+                                                                                                />
                                                                                                 <span class="form-check-label">Registrar</span>
                                                                                             </label>
                                                                                             <!--end::Checkbox-->
                                                                                             <!--begin::Checkbox-->
                                                                                             <label class="form-check form-check-custom form-check-solid me-5 me-lg-20">
-                                                                                                <input class="form-check-input" type="checkbox" value="1" name="GrupoPrivilegio[{{$privilegio->Id}}][Editar]"/>
+                                                                                                <input class="form-check-input" type="checkbox" value="1" name="GrupoPrivilegio[{{$privilegio->Id}}][Editar]"
+                                                                                                @if ($privilegio->Id == $grupo->privilegios[$aux]->pivot->PrivilegioId && $grupo->privilegios[$aux]->pivot->Editar == 1)
+                                                                                                    {{$checked}}
+                                                                                                @endif 
+                                                                                                />
                                                                                                 <span class="form-check-label">Editar</span>
                                                                                             </label>
                                                                                             <!--end::Checkbox-->
                                                                                             <!--begin::Checkbox-->
                                                                                             <label class="form-check form-check-custom form-check-solid">
-                                                                                                <input class="form-check-input" type="checkbox" value="1" name="GrupoPrivilegio[{{$privilegio->Id}}][Eliminar]"/>
+                                                                                                <input class="form-check-input" type="checkbox" value="1" name="GrupoPrivilegio[{{$privilegio->Id}}][Eliminar]"
+                                                                                                @if ($privilegio->Id == $grupo->privilegios[$aux]->pivot->PrivilegioId && $grupo->privilegios[$aux]->pivot->Eliminar == 1)
+                                                                                                    {{$checked}}
+                                                                                                @endif
+                                                                                                />
                                                                                                 <span class="form-check-label">Eliminar</span>
                                                                                             </label>
                                                                                             <!--end::Checkbox-->
@@ -97,6 +117,9 @@
                                                                                    
                                                                                 </tr>
                                                                                 <!--end::Table row-->
+                                                                                @php 
+                                                                                    $aux= $aux+1;
+                                                                                @endphp
                                                                             @endforeach																		
 																
 																		</tbody>
