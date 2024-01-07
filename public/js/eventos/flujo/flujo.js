@@ -127,12 +127,21 @@ $(document).ready(function() {
                 ordenFlujo: []
             };         
             var i=0;
+            var flag= true;
+
             $("#nuevoFlujo .draggable").each(function (index) {    
                 let info = $(this).attr("data-info");
                 //PIVOT= 1 ES INICO, PIVOT= 2 INTERMEDIO, PIVOT= 3 FINAL
                 ( i== 0)?pivot =0:pivot=1;
                 var selectElement = $(this).find('select[name="Enabled"]');
 
+                if(selectElement.val() == ""){
+                    html = '<ul><li style="">Seleccione el grupo encargador de Aprobar/Rechazar el Estado</li></ul>';
+                    $("#AlertaErrorFlujoPaso2").append(html);                                    
+                    $("#AlertaErrorFlujoPaso2").show();
+                    flag = false;
+                    return false;
+                }
                 var ordenFlujo = {
                     Nivel: i,
                     EstadoFlujoId: info,
@@ -142,19 +151,22 @@ $(document).ready(function() {
                 lista.ordenFlujo.push(ordenFlujo);
                 i=i+1;
             });
-            if( lista.ordenFlujo.length < 2 ){
-                html = '<ul><li style="">Minimo 2 Estados</li></ul>';
-                $("#AlertaErrorFlujoPaso2").append(html);                                    
-                $("#AlertaErrorFlujoPaso2").show();
-                return;
-            }else{
-                key = lista.ordenFlujo.length-1;
-                lista.ordenFlujo[key].Pivot=2; //FINAL 
-                stepper.goNext();
+
+            if(flag){
+                if( lista.ordenFlujo.length < 2 ){
+                    html = '<ul><li style="">Minimo 2 Estados</li></ul>';
+                    $("#AlertaErrorFlujoPaso2").append(html);                                    
+                    $("#AlertaErrorFlujoPaso2").show();
+                    return;
+                }else{
+                    key = lista.ordenFlujo.length-1;
+                    lista.ordenFlujo[key].Pivot=2; //FINAL 
+                    stepper.goNext();
+                }
             }
                 
         }    
-        stepper.goNext() 
+        //stepper.goNext() 
     });
     // Handle previous step
     stepper.on("kt.stepper.previous", function (stepper) {
