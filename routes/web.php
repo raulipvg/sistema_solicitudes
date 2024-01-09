@@ -14,6 +14,7 @@ use App\Http\Controllers\MovimientoController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MovimientoAtributoController;
+use App\Http\Controllers\SolicitudController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Monolog\Handler\RotatingFileHandler;
@@ -135,6 +136,10 @@ Route::group(['prefix'=> '/persona'], function () {
 Route::group(['prefix'=> '/movimientoatributo'], function () {
     Route::get('/', [MovimientoAtributoController::class, 'Index'])->name('InicioMovimientoAtributo');
     Route::post('/registrar', [MovimientoAtributoController::class, 'Guardar'])->name('GuardarMovimientoAtributo');
+});
+
+Route::group(['prefix'=> '/solicitud'], function () {
+    Route::get('/', [SolicitudController::class,'Index'])->name('Solicitud');
 });
 
 Route::group(['prefix' => 'error'], function () {
