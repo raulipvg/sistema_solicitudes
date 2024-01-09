@@ -7,6 +7,7 @@
             <th scope="col">Flujo</th>
             <th scope="col">Estado</th>
             <th class="text-center" scope="col">Acción</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>

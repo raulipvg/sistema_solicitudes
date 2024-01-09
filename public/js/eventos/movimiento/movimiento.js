@@ -81,8 +81,8 @@ $(document).ready(function() {
         $('.form-select').val("").trigger("change").prop("disabled",false);
         //$('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
 
-        $("#AddSubmit").show();
-        $("#EditSubmit").hide();
+        $("#AddSubmitMov").show();
+        $("#EditSubmitMov").hide();
         $("#IdInput").prop("disabled",true);
         $("#AlertaError").hide();
 
@@ -147,7 +147,7 @@ $(document).ready(function() {
     });
 
     // Manejador al presionar el submit de Registrar
-    const submitButton = document.getElementById('AddSubmit');
+    const submitButton = document.getElementById('AddSubmitMov');
     submitButton.addEventListener('click', function (e) {
         // Prevent default button action
         e.preventDefault();
@@ -187,7 +187,7 @@ $(document).ready(function() {
                             success: function (data) {
                                 if(data.success){
                                     //console.log("exito");
-                                    cargarData.init(data.movimiento);
+                                    cargarDataMovimiento.init(data.movimiento);
                                     $('#registrar-movimiento').modal('toggle');
                                 }else{
                                     //console.log(data.error);
@@ -229,8 +229,8 @@ $(document).ready(function() {
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
 
-        $("#AddSubmit").hide();
-        $("#EditSubmit").show();
+        $("#AddSubmitMov").hide();
+        $("#EditSubmitMov").show();
         $("#IdInput").prop("disabled",false);
         $("#AlertaError").hide();
 
@@ -310,7 +310,7 @@ $(document).ready(function() {
     var tr;
     var row;
     // Manejador al presionar el submit de Editar
-    const submitEditButton = document.getElementById('EditSubmit');
+    const submitEditButton = document.getElementById('EditSubmitMov');
     submitEditButton.addEventListener('click', function (e) {
         tr = e.target.closest('tr');
         row = miTabla.row(tr);
@@ -343,7 +343,7 @@ $(document).ready(function() {
                         success: function (data) {                                    
                             if(data.success){
                                 miTabla.row(row).remove();
-                                cargarData.init(data.movimiento);
+                                cargarDataMovimiento.init(data.movimiento);
                                 $('#registrar-movimiento').modal('toggle');
                             }else{
                                 // html = '<ul><li style="">'+data.message+'</li></ul>';
@@ -381,8 +381,8 @@ $(document).ready(function() {
         $("#modal-titulo").empty().html("Ver Movimiento");
         $("input").val('').prop("disabled",true);
         $('.form-select').val("").trigger("change").prop("disabled",true);
-        $("#AddSubmit").hide();
-        $("#EditSubmit").hide();
+        $("#AddSubmitMov").hide();
+        $("#EditSubmitMov").hide();
         $("#IdInput").prop("disabled",false);
         $("#AlertaError").hide();
 
@@ -518,6 +518,91 @@ $(document).ready(function() {
             }
         });
 
+    });
+
+    //EVENTO DEL BOTON + DE LA TABLA Y CREA SUBTABLA
+    tablaMovimiento.on('click', 'td.dt-control', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var tr = e.target.closest('tr');
+        var row = tablaMovimiento.row(tr);
+        var cell = row.cell(tr, 6); // Elegir bien el numero de colmuna que está el boton + (parte de la col 0)
+        var boton= $(cell.node()).find('button');
+        var userId= $(this).prev().find('a.editar').attr("info")
+
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            boton.removeClass('active')
+            row.child.hide();
+            return;
+        }
+        else {
+            // Open this row             
+            $.ajax({
+                type: 'POST',
+                url: VerAcceso,
+                data: {
+                    _token: csrfToken,
+                    data: userId
+                },
+                //content: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function() {
+                    bloquear();
+                    KTApp.showPageLoading();
+                    boton.children().eq(0).hide();
+                    boton.attr("data-kt-indicator", "on");
+                },
+                success: function (data) {
+                    //console.log(data)
+                    if(data.success){  
+                        boton.children().eq(0).show();
+                        boton.addClass('active')
+                        usuario= data.usuario;
+                        data = data.data;
+
+                        row.child(format(data,usuario)).show();
+
+                        var tbody = boton.closest('table').find('tbody');
+                        tbody.find('[data-bs-toggle="tooltip"]').tooltip();
+
+                        //$(".editar-acceso").tooltip();
+                        //$(".dar-acceso").tooltip();
+                    }else{
+                        boton.children().eq(0).show();
+                        boton.removeClass('active');                        
+                        Swal.fire({
+                            text: "Error: "+ data.message,
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    boton.children().eq(0).show();
+                    boton.removeClass('active');
+                    Swal.fire({
+                        text: "Error",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
+                },
+                complete: function(){
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+                    boton.removeAttr("data-kt-indicator");
+                }
+            });
+        }
     });
 
 });

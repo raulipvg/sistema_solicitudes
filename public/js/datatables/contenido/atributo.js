@@ -1,4 +1,4 @@
-let miTabla = $('#tabla-atributo').DataTable({
+let tablaAtributo = $('#tabla-atributo').DataTable({
     "language": languageConfig,
     "dom":
         "<'d-flex flex-md-row flex-column justify-content-md-between justify-content-start align-items-center'" +
@@ -83,18 +83,18 @@ const cargarData= function(){
                     }else{
                         btnEstado = botonEstado('Habilitar Atributo','btn-light-warning estado-atributo w-70px','INACTIVO');
                     }
-                    var rowNode =  miTabla.row.add( {
+                    var rowNode =  tablaAtributo.row.add( {
                                         "0": data[key].Id,
                                         "1": data[key].Nombre,
                                         "2": '$ '+(data[key].ValorReferencia).toLocaleString(),
                                         "3": btnEstado,
-                                        "4": botonAccion('registrar',data[key].Id)
+                                        "4": botonAccion('registrar-atributo',data[key].Id)
                                     } ).node();
                     $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
                     $(rowNode).find('td:eq(4)').addClass('text-center p-0');          
                 }
             }
-            miTabla.order([1, 'asc']).draw();
+            tablaAtributo.order([1, 'asc']).draw();
             $('[data-bs-toggle="tooltip"]').tooltip();
         }
     }
@@ -102,7 +102,7 @@ const cargarData= function(){
 }();
 
 KTUtil.onDOMContentLoaded((function() {
-    cargarData.init(data);
+    cargarData.init(dataAtributos);
 }));
 
 

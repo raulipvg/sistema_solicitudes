@@ -18,7 +18,7 @@
                     <div class="form-floating fv-row">
                         <select id="AtributoIdInput" name="AtributoId" class="form-select " data-control="select2" data-placeholder="Seleccione" data-close-on-select="false" data-hide-search="true" multiple="multiple"> 
                         <option></option>
-                            @foreach($atributos as $atributo)
+                            @foreach($atributosSelect as $atributo)
                             <option value='{{$atributo->Id}}'>{{ $atributo->Nombre}}</option>
                             @endforeach
                         </select>

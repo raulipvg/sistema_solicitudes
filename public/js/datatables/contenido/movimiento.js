@@ -1,4 +1,4 @@
-let miTabla = $('#tabla-movimiento').DataTable({
+let tablaMovimiento = $('#tabla-movimiento').DataTable({
     "language": languageConfig,
     "dom":
         "<'d-flex flex-md-row flex-column justify-content-md-between justify-content-start align-items-center'" +
@@ -71,7 +71,7 @@ let miTabla = $('#tabla-movimiento').DataTable({
             //"scrollX": true
 });
 
-const cargarData= function(){
+const cargarDataMovimiento= function(){
     return {
         init: function(data){
             for (const key in data) {
@@ -82,20 +82,21 @@ const cargarData= function(){
                     }else{
                         btnEstado = botonEstado('Habilitar Movimiento','btn-light-warning estado-movimiento  w-70px','INACTIVO');
                     }
-                    var rowNode =  miTabla.row.add( {
+                    var rowNode =  tablaMovimiento.row.add( {
                                         "0": data[key].Id,
                                         "1": data[key].Nombre,
                                         "2": data[key].Grupo,
                                         "3": data[key].Flujo,
                                         "4": btnEstado,
                                         "5": botonAcciones('registrar-movimiento',data[key].Id),
+                                        "6" :botonVerDetalle('Atributos Asociados')
                                     } ).node();
                     $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
                     $(rowNode).find('td:eq(3)').addClass('fw-bold text-gray-600');
                     $(rowNode).find('td:eq(5)').addClass('text-center p-0');          
                 }
             }
-            miTabla.order([1, 'asc']).draw();
+            tablaMovimiento.order([1, 'asc']).draw();
             $('[data-bs-toggle="tooltip"]').tooltip();
         }
     }
@@ -103,6 +104,6 @@ const cargarData= function(){
 }();
 
 KTUtil.onDOMContentLoaded((function() {
-    cargarData.init(data);
+    cargarDataMovimiento.init(dataMovimientos);
 }));
 

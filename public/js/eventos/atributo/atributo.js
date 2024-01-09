@@ -1,7 +1,7 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
     const form = document.getElementById('FormularioAtributo');
-    $("#AlertaError").hide();
+    $("#AlertaErrorAtr").hide();
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     const validator = FormValidation.formValidation(
             form,
@@ -61,34 +61,34 @@ $(document).ready(function() {
     //const blockUI = new KTBlockUI(target)
 
      // Evento al presionar el Boton de Registrar
-    $("#AddBtn").on("click", function (e) {
+    $("#AddBtnAtr").on("click", function (e) {
         //Inicializacion
-        //console.log("AddBtn")
+        //console.log("AddBtnAtr")
         e.preventDefault();
         e.stopPropagation();
         $("#modal-titulo").empty().html("Registrar Atributo");
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
-        //$('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
+        //$('#EstadoIdAtInput').val("").trigger("change").prop("disabled",false);
 
-        $("#AddSubmit").show();
-        $("#EditSubmit").hide();
+        $("#AddSubmitAtr").show();
+        $("#EditSubmitAtr").hide();
         $("#IdInput").prop("disabled",true);
-        $("#AlertaError").hide();
+        $("#AlertaErrorAtr").hide();
 
         validator.resetForm();
         actualizarValidSelect2();
     });
 
     // Manejador al presionar el submit de Registrar
-    const submitButton = document.getElementById('AddSubmit');
+    const submitButton = document.getElementById('AddSubmitAtr');
     submitButton.addEventListener('click', function (e) {
         // Prevent default button action
         e.preventDefault();
         e.stopPropagation();
 
-        $("#AlertaError").hide();
-        $("#AlertaError").empty();
+        $("#AlertaErrorAtr").hide();
+        $("#AlertaErrorAtr").empty();
         
         // Validate form before submit
         if (validator) {
@@ -121,12 +121,12 @@ $(document).ready(function() {
                                     //console.log("exito");
                                     //location.reload();
                                     cargarData.init(data.atributo);
-                                    $('#registrar').modal('toggle');
+                                    $('#registrar-atributo').modal('toggle');
                                 }else{
                                     //console.log(data.error);
                                     html = '<ul><li style="">'+data.message+'</li></ul>';
-                                    $("#AlertaError").append(html);                                    
-                                    $("#AlertaError").show();
+                                    $("#AlertaErrorAtr").append(html);                                    
+                                    $("#AlertaErrorAtr").show();
                                 }
                             },
                             error: function (e) {
@@ -164,13 +164,13 @@ $(document).ready(function() {
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
 
-        $("#AddSubmit").hide();
-        $("#EditSubmit").show();
+        $("#AddSubmitAtr").hide();
+        $("#EditSubmitAtr").show();
         $("#IdInput").prop("disabled",false);
-        $("#AlertaError").hide();
+        $("#AlertaErrorAtr").hide();
 
         tr = e.target.closest('tr');
-        row = miTabla.row(tr);        
+        row = tablaAtributo.row(tr);        
         validator.resetForm();
         actualizarValidSelect2();
 
@@ -194,9 +194,9 @@ $(document).ready(function() {
                     data=data.data;
                     
                     $("#IdInput").val(data.Id);
-                    $("#NombreInput").val(data.Nombre);
+                    $("#NombreAtInput").val(data.Nombre);
                     $("#ValorReferenciaInput").val(data.ValorReferencia);
-                    $('#EstadoIdInput').val(data.Enabled).trigger("change");
+                    $('#EstadoIdAtInput').val(data.Enabled).trigger("change");
                 }else{
                     Swal.fire({
                             text: "Error de Carga",
@@ -208,7 +208,7 @@ $(document).ready(function() {
                             }
                         });
                     $(".btn-cerrar").on("click", function () {
-                            $('#registrar').modal('toggle');
+                            $('#registrar-atributo').modal('toggle');
                     });
                 }
             },
@@ -224,7 +224,7 @@ $(document).ready(function() {
                         });
                 $(".btn-cerrar").on("click", function () {
                             //console.log("Error");
-                            $('#registrar').modal('toggle');
+                            $('#registrar-atributo').modal('toggle');
                         });
             },
             complete: function(){
@@ -236,12 +236,12 @@ $(document).ready(function() {
     });
 
     // Manejador al presionar el submit de Editar
-    const submitEditButton = document.getElementById('EditSubmit');
+    const submitEditButton = document.getElementById('EditSubmitAtr');
     submitEditButton.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            $("#AlertaError").hide();
-            $("#AlertaError").empty();
+            $("#AlertaErrorAtr").hide();
+            $("#AlertaErrorAtr").empty();
             // Validate form before submit
             if (validator) {
                 validator.validate().then(function (status) {
@@ -267,13 +267,13 @@ $(document).ready(function() {
                                 success: function (data) {                                    
                                     if(data.success){
                                         //location.reload();
-                                        miTabla.row(row).remove();
+                                        tablaAtributo.row(row).remove();
                                         cargarData.init(data.atributo);
-                                        $('#registrar').modal('toggle');
+                                        $('#registrar-atributo').modal('toggle');
                                     }else{
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
-                                        $("#AlertaError").append(html);
-                                        $("#AlertaError").show();
+                                        $("#AlertaErrorAtr").append(html);
+                                        $("#AlertaErrorAtr").show();
                                     }
                                 },
                                 error: function () {

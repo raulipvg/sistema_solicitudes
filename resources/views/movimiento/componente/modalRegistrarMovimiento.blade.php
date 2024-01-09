@@ -66,13 +66,13 @@
                 </div>
                 <div class="modal-footer bg-light p-2">
                     <button type="button" class="btn btn-light-dark" data-bs-dismiss="modal">Cerrar</button>
-                    <button id="AddSubmit" type="submit" class="btn btn-success">
+                    <button id="AddSubmitMov" type="submit" class="btn btn-success">
                         <div class="indicator-label">Registrar</div>
                         <div class="indicator-progress">Espere...
                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                         </div>
                     </button>
-                    <button id="EditSubmit" type="submit" class="btn btn-success">
+                    <button id="EditSubmitMov" type="submit" class="btn btn-success">
                         <div class="indicator-label">Actualizar</div>
                         <div class="indicator-progress">Espere...
                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
