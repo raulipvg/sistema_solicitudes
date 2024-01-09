@@ -136,7 +136,7 @@ $(document).ready(function() {
                 var selectElement = $(this).find('select[name="Enabled"]');
 
                 if(selectElement.val() == ""){
-                    html = '<ul><li style="">Seleccione el grupo encargador de Aprobar/Rechazar el Estado</li></ul>';
+                    html = '<ul><li style="">Seleccione el grupo encargado de Aprobar/Rechazar el Estado</li></ul>';
                     $("#AlertaErrorFlujoPaso2").append(html);                                    
                     $("#AlertaErrorFlujoPaso2").show();
                     flag = false;
@@ -160,17 +160,38 @@ $(document).ready(function() {
                     return;
                 }else{
                     key = lista.ordenFlujo.length-1;
-                    lista.ordenFlujo[key].Pivot=2; //FINAL 
+                    lista.ordenFlujo[key].Pivot=2; //FINAL
+                    
+                    $("#NombreCheck").val($("#NombreInput").val())
+                    $("#AreaCheck").val($("#AreaIdInput").find(':selected').text())
+                    $("#GrupoCheck").val($("#GrupoIdInput").find(':selected').text())
+
+                    var contenedorOrigen = document.getElementById('disenoFlujo');
+                    var contenedorDestino = document.getElementById('check');
+
+                    var contenidoClonado = contenedorOrigen.cloneNode(true);
+
+                    // Insertamos el contenido clonado en el contenedor destino
+                    contenedorDestino.innerHTML = ''; // Limpiamos el contenedor destino previo
+                    contenedorDestino.appendChild(contenidoClonado);
+
+
                     stepper.goNext();
                 }
             }
+
+
                 
-        }    
+        }  
         //stepper.goNext() 
     });
     // Handle previous step
     stepper.on("kt.stepper.previous", function (stepper) {
         stepper.goPrevious(); // go previous step
+        var contenedorDestino = document.getElementById('check');
+
+                    // Insertamos el contenido clonado en el contenedor destino
+                    contenedorDestino.innerHTML = '';
     });
 
     // Manejador al presionar el submit de Registrar

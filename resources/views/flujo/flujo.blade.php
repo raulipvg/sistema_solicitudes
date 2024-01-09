@@ -13,6 +13,22 @@
     max-height: 40px!important;
     min-height: auto!important;
 }
+.form-select.form-select-solid {
+    background-color: #353A40;
+    border-color: #353A40;
+    color: var(--bs-gray-700);
+    transition: color .2s ease;
+}
+.select2-container--bootstrap5 .select2-selection--single.form-select-solid .select2-selection__placeholder {
+    color: #ffffff;
+}
+.select2-container--bootstrap5.select2-container--focus:not(.select2-container--disabled) .form-select-solid, .select2-container--bootstrap5.select2-container--open:not(.select2-container--disabled) .form-select-solid {
+    background-color: #353A40;
+}
+.select2-container--bootstrap5 .select2-selection--single.form-select-solid .select2-selection__rendered {
+    color: #ffffff;
+}
+
 </style>
 @endpush
 
@@ -196,7 +212,7 @@
                                                             <div class="card bg-dark align-items-center align-self-center justify-content-center px-2">
                                                                 <div class="d-flex flex-column">
                                                                     <div class="card-estado py-1" hidden>
-                                                                        <select name="Enabled" class="form-select form-select-sm form-select-solid" data-control="select2" data-placeholder="Seleccione" data-hide-search="false">
+                                                                        <select name="Enabled" class="form-select form-select-sm form-select-solid select2-negro" data-control="select2" data-placeholder="Seleccione" data-hide-search="false">
                                                                             <option></option>
                                                                             @foreach ($grupos as $grupo)
                                                                                 <option value="{{ $grupo->Id }}" > {{ $grupo->Nombre }}
@@ -223,7 +239,7 @@
                                             <!--END::CARD DE LOS ESTADOS DEL FLUJO-->
 
                                             <!--BEGIN::CARD PARA CREAR UN FLUJO-->
-                                            <div class="card card-bordered mb-10" >
+                                            <div id="disenoFlujo" class="card card-bordered mb-10" >
                                                 <!--begin::Card header-->
                                                 <div class="card-header bg-dark ">
                                                     <div class="card-title">
@@ -271,37 +287,28 @@
                                             <div id="AlertaErrorFlujo" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
                                             </div>
                                             <!--begin::Input group-->
-                                            <div class="fv-row mb-10">
-                                                <!--begin::Label-->
+                                            <div class="fv-row">
                                                 <label class="form-label d-flex align-items-center">
-                                                    <span class="required">Input 1</span>
-                                                    <i class="ki-duotone ki-information-5 ms-2 fs-7" data-bs-toggle="tooltip" title="Example tooltip">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                        <span class="path3"></span>
-                                                    </i>
+                                                    <span class="required">Nombre del Flujo</span>
                                                 </label>
-                                                <!--end::Label-->
-
-                                                <!--begin::Input-->
-                                                <input type="text" class="form-control form-control-solid" name="input1" placeholder="" value=""/>
-                                                <!--end::Input-->
+                                                <input id="NombreCheck" type="text" class="form-control form-control-solid  text-capitalize" name="input1" placeholder="" value="" disabled/>
                                             </div>
                                             <!--end::Input group-->
-
-                                            <!--begin::Input group-->
-                                            <div class="fv-row mb-10">
-                                                <!--begin::Label-->
-                                                <label class="form-label">
-                                                    Input 2
+                                            <div class="fv-row">
+                                                <label class="form-label d-flex align-items-center">
+                                                    <span class="required">Area</span>
                                                 </label>
-                                                <!--end::Label-->
-
-                                                <!--begin::Input-->
-                                                <input type="text" class="form-control form-control-solid" name="input2" placeholder="" value=""/>
-                                                <!--end::Input-->
+                                                <input id="AreaCheck" type="text" class="form-control form-control-solid text-capitalize" name="input1" placeholder="" value="" disabled/>
                                             </div>
-                                            <!--end::Input group-->
+                                            <div class="fv-row">
+                                                <label class="form-label d-flex align-items-center">
+                                                    <span class="required">Grupo Administrador</span>
+                                                </label>
+                                                <input id="GrupoCheck" type="text" class="form-control form-control-solid text-capitalize" name="input1" placeholder="" value="" disabled/>
+                                            </div>
+                                            <div id="check" class="fv-row mt-3">
+
+                                            </div>
                                         </div>
                                         <!--begin::Step 3-->
 
