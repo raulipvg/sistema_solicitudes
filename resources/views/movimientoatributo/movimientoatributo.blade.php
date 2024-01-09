@@ -45,15 +45,6 @@
                                     </span>
                                 </a>
                             </li>
-                            <li class="nav-item w-100 me-0 mb-md-2" role="presentation">
-                                <a class="nav-link w-100 btn btn-flex btn-active-light-info justify-content-center " data-bs-toggle="tab" href="#kt_vtab_pane_6" aria-selected="false" role="tab" tabindex="-1">
-                                    <i class="ki-duotone ki-icons/duotune/general/gen003.svg fs-2 text-primary"></i>
-                                    <span class="d-flex flex-column align-items-start">
-                                        <span class="fs-4 fw-bold text-capitalize">movimiento_atributo</span>
-                                        <span class="fs-7">Description</span>
-                                    </span>
-                                </a>
-                            </li>
                     </ul>
                 </div>
             </div>
@@ -75,10 +66,6 @@
                     @include('atributo.componente.modalRegistrarAtributo')
                 </div>
 
-                <div class="tab-pane fade" id="kt_vtab_pane_6" role="tabpanel">
-                    @include('movimientoatributo.componente.crearMovimientoAtributo')
-                </div>
-
             </div>
             
             <!-- End::HorizontalNav -->
@@ -89,13 +76,15 @@
 </div>
 <!--end::Content-->
 
-
+@include('movimientoatributo.componente.crearMovimientoAtributo')
 
 @endsection
 
 @push('Script')
     <script>
         const GuardarMovimientoAtributo = "{{ route('GuardarMovimientoAtributo') }}";
+        const VerMovimientoAtributo = "{{ route('VerMovimientoAtributo') }}";
+        const VerAtributosFaltantes = "{{ route('VerAtributosFaltantes') }}"
         
         const GuardarMovimiento = "{{ route('GuardarMovimiento') }}";
         const VerMovimiento = "{{ route('VerMovimiento') }}";

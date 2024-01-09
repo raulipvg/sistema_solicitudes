@@ -136,6 +136,8 @@ Route::group(['prefix'=> '/persona'], function () {
 Route::group(['prefix'=> '/movimientoatributo'], function () {
     Route::get('/', [MovimientoAtributoController::class, 'Index'])->name('InicioMovimientoAtributo');
     Route::post('/registrar', [MovimientoAtributoController::class, 'Guardar'])->name('GuardarMovimientoAtributo');
+    Route::post('/ver', [MovimientoAtributoController::class, 'Ver'])->name('VerMovimientoAtributo');
+    Route::post('/verAtributos', [MovimientoAtributoController::class, 'AtributosFaltantes'])->name('VerAtributosFaltantes');
 });
 
 Route::group(['prefix'=> '/solicitud'], function () {

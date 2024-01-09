@@ -541,7 +541,7 @@ $(document).ready(function() {
             // Open this row             
             $.ajax({
                 type: 'POST',
-                url: VerAcceso,
+                url: VerMovimientoAtributo,
                 data: {
                     _token: csrfToken,
                     data: userId
@@ -559,10 +559,10 @@ $(document).ready(function() {
                     if(data.success){  
                         boton.children().eq(0).show();
                         boton.addClass('active')
-                        usuario= data.usuario;
+                        movimiento= data.movimiento;
                         data = data.data;
 
-                        row.child(format(data,usuario)).show();
+                        row.child(format(data,movimiento)).show();
 
                         var tbody = boton.closest('table').find('tbody');
                         tbody.find('[data-bs-toggle="tooltip"]').tooltip();

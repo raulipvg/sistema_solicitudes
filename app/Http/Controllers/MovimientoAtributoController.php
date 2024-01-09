@@ -62,22 +62,27 @@ class MovimientoAtributoController extends Controller
         try{
             $movimiento = Movimiento::find($request['MovimientoId']);
             if(!$movimiento) throw new Exception('Error: Movimiento no encontrado');
+            $atributos = [];
             DB::beginTransaction();
             
             foreach($request['AtributoId'] as $atributoId){
-
-                if(!Atributo::find($atributoId)) throw new Exception('Error: uno de los atributos no fue encontrado');
+                $atributo = Atributo::find($atributoId);
+                if(!$atributo) throw new Exception('Error: uno de los atributos no fue encontrado');
                 $movimientoAtr = new MovimientoAtributo();
                 $movimientoAtr['AtributoId'] = $atributoId;
                 $movimientoAtr['MovimientoId'] = $request['MovimientoId'];
                 $movimientoAtr->save();
+                $atributos[] = $atributo;
             }
+
+            
 
             DB::commit();
             Log::info('Se asignaron atributos al movimiento '.$movimiento->Nombre);
             return response()->json([
                 'success' => true,
-                'message' => 'Atributos asignados a este movimiento'
+                'message' => 'Atributos asignados a este movimiento',
+                'data' => $atributos
             ]);
         }
         catch(Exception $e){
@@ -90,40 +95,55 @@ class MovimientoAtributoController extends Controller
         }
     }
 
-    public function AtributosAsociados(Request $request){
-        $request = $request->data('input');
+    public function Ver(Request $request){
+        $movimientoId = $request->input('data');
 
         try{
-
-            $movimientoExiste = Movimiento::find($request);
-
-            if(!$movimientoExiste) throw new Exception('Movimiento no encontrado');
-
-            $atributosNoAsociados = MovimientoAtributo::select('AtributoId')
-                                ->where('MovimientoId', $request)
-                                ->where('Enabled',1)
-                                ->pluck('AtributoId') // Utiliza pluck para obtener solo los valores de 'Id'
-                                ->toArray();
-            
-            $atributosNoAsociados = Atributo::select('Id', 'Nombre')
-                                    ->where('Enabled', 1)
-                                    ->whereNotIn('Id', $atributosNoAsociados)
-                                    ->get();
+            $movimientoExiste= Movimiento::find($movimientoId);
+            if (!$movimientoExiste) {
+                throw new Exception('Usuario no encontrado');
+            }
+            $movimientoAtributo = MovimientoAtributo::select('movimiento_atributo.Id', 'atributo.Nombre', 'atributo.ValorReferencia')
+                                        ->join('Atributo','Atributo.Id','=','movimiento_atributo.AtributoId')
+                                        ->where('movimiento_atributo.MovimientoId', $movimientoId)
+                                        ->get();
 
             return response()->json([
                 'success' => true,
-                'data' => $atributosNoAsociados,
-                'nombre' => $movimientoExiste->persona->Nombre, 
-                'message' => 'Modelo recibido y procesado'
+                'data' => $movimientoAtributo,
+                'movimiento'=> $movimientoExiste->Id 
             ]);
-        
-        }
-        catch(Exception $e){
-            Log::error('No se pudo acceder a los atributos de un movimiento Id:'.$request, [$e]);
+
+        }catch(Exception $e){
+
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
             ]);
         }
+    }
+
+    public function AtributosFaltantes(Request $request){
+        $request = $request->input('data');
+
+        $movimientoExiste = Movimiento::find($request);
+        if (!$movimientoExiste) {
+            throw new Exception('Movimiento no encontrado');
+        }
+        $atributosAsociados = MovimientoAtributo::select('AtributoId')
+                                ->where('MovimientoId', $movimientoExiste['Id'])
+                                ->pluck('AtributoId') // Utiliza pluck para obtener solo los valores de 'Id'
+                                ->toArray();
+
+        $atributosNoAsociados = Atributo::select('Id', 'Nombre')
+                                    ->where('Enabled', 1)
+                                    ->whereNotIn('Id', $atributosAsociados)
+                                    ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $atributosNoAsociados,
+            'nombre' => $movimientoExiste->Nombre, 
+            'message' => 'Modelo recibido y procesado']);
     }
 }
