@@ -66,14 +66,14 @@ $(document).ready(function() {
         //console.log("AddBtnAtr")
         e.preventDefault();
         e.stopPropagation();
-        $("#modal-titulo").empty().html("Registrar Atributo");
+        $("#modal-titulo-atr").empty().html("Registrar Atributo");
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
         //$('#EstadoIdAtInput').val("").trigger("change").prop("disabled",false);
 
         $("#AddSubmitAtr").show();
         $("#EditSubmitAtr").hide();
-        $("#IdInput").prop("disabled",true);
+        $("#IdInputAtr").prop("disabled",true);
         $("#AlertaErrorAtr").hide();
 
         validator.resetForm();
@@ -86,6 +86,7 @@ $(document).ready(function() {
         // Prevent default button action
         e.preventDefault();
         e.stopPropagation();
+        $("#NombreAtInput").prop("disabled",false);
 
         $("#AlertaErrorAtr").hide();
         $("#AlertaErrorAtr").empty();
@@ -160,13 +161,14 @@ $(document).ready(function() {
         e.preventDefault();
         e.stopPropagation();
         //Inicializacion
-        $("#modal-titulo").empty().html("Editar Atributo");
+        $("#modal-titulo-atr").empty().html("Editar Atributo");
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
 
         $("#AddSubmitAtr").hide();
         $("#EditSubmitAtr").show();
-        $("#IdInput").prop("disabled",false);
+        $("#IdInputAtr").prop("disabled",false);
+        $("#NombreAtInput").prop("disabled",false);
         $("#AlertaErrorAtr").hide();
 
         tr = e.target.closest('tr');
@@ -193,7 +195,7 @@ $(document).ready(function() {
                 if(data.success){                    
                     data=data.data;
                     
-                    $("#IdInput").val(data.Id);
+                    $("#IdInputAtr").val(data.Id);
                     $("#NombreAtInput").val(data.Nombre);
                     $("#ValorReferenciaInput").val(data.ValorReferencia);
                     $('#EstadoIdAtInput').val(data.Enabled).trigger("change");
@@ -250,7 +252,7 @@ $(document).ready(function() {
                     if (status == 'Valid') {
                             let form1= $("#FormularioAtributo");
                             var fd = form1.serialize();
-                            var data= formMap(fd);                            
+                            var data= formMap(fd);                           
 
                             $.ajax({
                                 type: 'POST',

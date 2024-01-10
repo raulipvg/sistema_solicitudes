@@ -62,7 +62,6 @@ class Atributo extends Model
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('atributo','Nombre')->ignore($id, 'Id'),
             ],
             'ValorReferencia' => 'required|min:0',
             'Enabled' => 'required|min:0|max:1'

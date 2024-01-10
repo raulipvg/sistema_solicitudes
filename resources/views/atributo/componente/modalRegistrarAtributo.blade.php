@@ -2,7 +2,7 @@
     <div class="modal-dialog mt-20">
         <div class="modal-content" id="div-bloquear">
             <div class="modal-header bg-light p-2 ps-5">
-                <h2 id="modal-titulo" class="modal-title text-uppercase">Registrar Atributo</h2>
+                <h2 id="modal-titulo-atr" class="modal-title text-uppercase">Registrar Atributo</h2>
 
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -26,7 +26,7 @@
                             <div class="form-floating fv-row">
                                 <input type="text" class="form-control text-capitalize " placeholder="Ingrese el Nombre" id="NombreAtInput" name="Nombre" />
                                 <label for="NombreAtInput" class="form-label">Nombre</label>
-                                <input hidden type="number" id="IdInput" name="Id" />
+                                <input hidden type="number" id="IdInputAtr" name="Id" />
 
                             </div>
                         </div>
