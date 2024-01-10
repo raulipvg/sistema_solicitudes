@@ -26,7 +26,7 @@
 													<!--end::Tabs-->
 													<!--begin::Create campaign button-->
 													<div class="card-toolbar">
-														<a href="#" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#kt_modal_create_campaign">Crear Solicitud</a>
+														<a href="#" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearSolicitud">Crear Solicitud</a>
 													</div>
 													<!--end::Create campaign button-->
 												</div>
@@ -258,14 +258,16 @@
 																							<span class="path2"></span>
 																						</i>
 																					</button>
-																				</div>
-																				<div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
-																					<a class="btn btn-sm btn-icon btn-bg-light btn-active-color-dark" data-bs-toggle="modal" data-bs-target="#historial">
+																					<div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
+
+																					<button class="btn btn-bg-light btn-active-color-dark p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud" style="min-width: 43.55px;">
 																						<i class="ki-duotone ki-arrow-right fs-2">
 																							<span class="path1"></span>
 																							<span class="path2"></span>
 																						</i>
-																					</a>
+																					</button>
+																					</div>
+
 																				</div>
 																				
 																			</td>
@@ -329,14 +331,15 @@
 																							<span class="path2"></span>
 																						</i>
 																					</button>
-																				</div>
-																				<div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
-																					<a class="btn btn-sm btn-icon btn-bg-light btn-active-color-dark" data-bs-toggle="modal" data-bs-target="#historial">
-																						<i class="ki-duotone ki-arrow-right fs-2">
-																							<span class="path1"></span>
-																							<span class="path2"></span>
-																						</i>
-																					</a>
+																					<div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
+																						<button class="btn btn-bg-light btn-active-color-dark p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud" style="min-width: 43.55px;">
+																							<i class="ki-duotone ki-arrow-right fs-2">
+																								<span class="path1"></span>
+																								<span class="path2"></span>
+																							</i>
+																						</button>
+																					</div>
+
 																				</div>
 																				
 																			</td>
@@ -363,12 +366,22 @@
     </div>
     
 </div>
+
+<!--begin::modal - Historial Solicitud-->
+@include('solicitud.componente.modalHistorialSolicitud')
+<!--end::modal - Historial Solicitud-->
+
+<!--begin::modal - Historial Solicitud-->
+@include('solicitud.componente.modalCrearSolicitud')
+<!--end::modal - Historial Solicitud-->
 @endsection
 
 @push('Script')
     <script>
         const Home = '{{ route("Home") }}'
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    </script>
+    </script>    
+	<script src="{{ asset('js/eventos/solicitud/crearsolicitud.js?id=3') }}"></script>
+
 
 @endpush
