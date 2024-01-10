@@ -184,6 +184,7 @@
 															<div class="separator separator-dashed my-5"></div>
 															<!--end::Separator-->
 
+															
 															<!--begin::Table-->
 															<table id="kt_widget_table_3" class="table table-row-dashed align-middle fs-6 gy-4 my-0 pb-3 table-hover" data-kt-table-widget-3="all">
 																	<thead class="d-none">
@@ -200,7 +201,7 @@
 																	<tbody>
 																		<tr>
 																			<td class="min-w-175px p-2">
-																				<div class="position-relative ps-6 pe-3 py-2">
+																				<div class="position-relative ps-6 p-2">
 																					<div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>
 																					<a href="#" class="mb-1 text-gray-900 text-hover-primary fw-bold">#2131 Nombre Apellido</a>
 																					<div class="fs-7 text-muted fw-bold">Creada 01.01.24</div>
@@ -216,14 +217,14 @@
 																			</td>
 																			<td class="p-2">
 																				<div class="d-flex gap-2">
-																					<span class="badge badge-light-success">Estado Flujo 1</span>
+																					<span class="badge badge-secondary min-h-30px text-uppercase">Estado Flujo 1</span>
 																				</div>
 																				<!--end::Team members-->
 																				<div class="fs-7 fw-bold text-muted">Flujo 1</div>
 																				
 																			</td>
 																			<td class="min-w-150px p-2">
-																				<div class="mb-2 fw-bold">24 Ene 24 - 26 Ene 24</div>
+																				<div class="mb-1 fw-bold">24 Ene 24 - 26 Ene 24</div>
 																				<div class="fs-7 fw-bold text-muted">Rango de Fecha</div>
 																			</td>
 																			<td class="min-w-125px p-2">
@@ -243,24 +244,30 @@
 																				<!--end::Team members-->
 																				<div class="fs-7 fw-bold text-muted">Solicitado por</div>
 																			</td>
-																			<td class="text-end p-2">
+																			<td class="text-end p-1">
 																				<div class="btn-group btn-group-sm" role="group">
-																					<a class="ver btn btn-success p-1" data-bs-toggle="modal" data-bs-target="#registrar" info="1">
+																					<button class="aceptar btn btn-light-success p-1" info="1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Aprobar">
 																						<i class="ki-duotone ki-check-circle fs-2hx"> 
 																							<span class="path1"></span>
 																							<span class="path2"></span>
 																						</i>
-																					</a>
-																					<a class="editar btn btn-danger p-1" data-bs-toggle="modal" data-bs-target="#registrar" info="1">
+																					</button>
+																					<button class="rechazar btn btn-light-danger p-1" info="1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Rechazar">
 																						<i class="ki-duotone ki-cross-circle fs-2hx"> 
+																							<span class="path1"></span>
+																							<span class="path2"></span>
+																						</i>
+																					</button>
+																				</div>
+																				<div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
+																					<a class="btn btn-sm btn-icon btn-bg-light btn-active-color-dark" data-bs-toggle="modal" data-bs-target="#historial">
+																						<i class="ki-duotone ki-arrow-right fs-2">
 																							<span class="path1"></span>
 																							<span class="path2"></span>
 																						</i>
 																					</a>
 																				</div>
-																				<button type="button" class="btn btn-icon btn-sm btn-light btn-active-dark w-25px h-25px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
-																					<i class="ki-duotone ki-black-right fs-2 text-muted"></i>
-																				</button>
+																				
 																			</td>
 																		</tr>
 																		<tr>
@@ -281,14 +288,14 @@
 																			</td>
 																			<td class="p-2">
 																				<div class="d-flex gap-2">
-																					<span class="badge badge-light-success">Estado Flujo 2</span>
+																					<span class="badge badge-secondary min-h-30px text-uppercase">Estado Flujo 2</span>
 																				</div>
 																				<!--end::Team members-->
 																				<div class="fs-7 fw-bold text-muted">Flujo 2</div>
 																				
 																			</td>
 																			<td class="min-w-150px p-2">
-																				<div class="mb-2 fw-bold">20 Ene 24 - 26 Ene 24</div>
+																				<div class="mb-1 fw-bold">20 Ene 24 - 26 Ene 24</div>
 																				<div class="fs-7 fw-bold text-muted">Rango de Fecha</div>
 																			</td>
 																			<td class="min-w-125px p-2">
@@ -308,24 +315,30 @@
 																				<!--end::Team members-->
 																				<div class="fs-7 fw-bold text-muted">Solicitado por</div>
 																			</td>
-																			<td class="text-end p-2">
+																			<td class="text-end p-1">
 																				<div class="btn-group btn-group-sm" role="group">
-																					<a class="ver btn btn-success p-1" data-bs-toggle="modal" data-bs-target="#registrar" info="1">
+																					<button class="aceptar btn btn-light-success p-1" info="1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Aprobar">
 																						<i class="ki-duotone ki-check-circle fs-2hx"> 
 																							<span class="path1"></span>
 																							<span class="path2"></span>
 																						</i>
-																					</a>
-																					<a class="editar btn btn-danger p-1" data-bs-toggle="modal" data-bs-target="#registrar" info="1">
+																					</button>
+																					<button class="rechazar btn btn-light-danger p-1" info="1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Rechazar">
 																						<i class="ki-duotone ki-cross-circle fs-2hx"> 
+																							<span class="path1"></span>
+																							<span class="path2"></span>
+																						</i>
+																					</button>
+																				</div>
+																				<div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
+																					<a class="btn btn-sm btn-icon btn-bg-light btn-active-color-dark" data-bs-toggle="modal" data-bs-target="#historial">
+																						<i class="ki-duotone ki-arrow-right fs-2">
 																							<span class="path1"></span>
 																							<span class="path2"></span>
 																						</i>
 																					</a>
 																				</div>
-																				<button type="button" class="btn btn-icon btn-sm btn-light btn-active-dark w-25px h-25px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
-																					<i class="ki-duotone ki-black-right fs-2 text-muted"></i>
-																				</button>
+																				
 																			</td>
 																		</tr>
 																		

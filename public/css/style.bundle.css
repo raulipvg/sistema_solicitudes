@@ -51025,7 +51025,7 @@ code:not([class*=language-]).code-dark {
 
 .badge-secondary {
     color: var(--bs-secondary-inverse);
-    background-color: var(--bs-secondary)
+    background-color: #e0e2e1;
 }
 
 .badge-secondary.badge-outline {
