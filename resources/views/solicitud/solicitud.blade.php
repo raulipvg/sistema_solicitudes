@@ -2,6 +2,7 @@
 
 @push('css')
 <link href='' rel='stylesheet' type="text/css"/>
+<link href="{{ asset('css/progressbar/estilo.css') }}" rel='stylesheet' type="text/css"/>
 @endpush
 
 
@@ -215,7 +216,7 @@
 																				<!--end::Icons-->
 																				<div class="fs-7 text-muted fw-bold">Atributo 1, Atributo 2, Atributo 3</div>
 																			</td>
-																			<td class="p-2">
+																			<td class="p-2 flujo" abierto="0">
 																				<div class="d-flex gap-2">
 																					<span class="badge badge-secondary min-h-30px text-uppercase">Estado Flujo 1</span>
 																				</div>
@@ -246,13 +247,13 @@
 																			</td>
 																			<td class="text-end p-1">
 																				<div class="btn-group btn-group-sm" role="group">
-																					<button class="aceptar btn btn-light-success p-1" info="1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Aprobar">
+																					<button class="aceptar btn btn-light-success p-1" info="0" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Aprobar">
 																						<i class="ki-duotone ki-check-circle fs-2hx"> 
 																							<span class="path1"></span>
 																							<span class="path2"></span>
 																						</i>
 																					</button>
-																					<button class="rechazar btn btn-light-danger p-1" info="1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Rechazar">
+																					<button class="rechazar btn btn-light-danger p-1" info="0" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Rechazar">
 																						<i class="ki-duotone ki-cross-circle fs-2hx"> 
 																							<span class="path1"></span>
 																							<span class="path2"></span>
@@ -288,7 +289,7 @@
 																				<!--end::Icons-->
 																				<div class="fs-7 text-muted fw-bold">Atributo 1, Atributo 2, Atributo 3</div>
 																			</td>
-																			<td class="p-2">
+																			<td class="p-2 flujo" abierto="0">
 																				<div class="d-flex gap-2">
 																					<span class="badge badge-secondary min-h-30px text-uppercase">Estado Flujo 2</span>
 																				</div>
@@ -365,6 +366,8 @@
 											<!--end::Table Widget 3-->
     </div>
     
+
+	@include('solicitud.componente.tablaEstadoFlujo')
 </div>
 
 <!--begin::modal - Historial Solicitud-->
@@ -379,9 +382,22 @@
 @push('Script')
     <script>
         const Home = '{{ route("Home") }}'
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+		const DataTestSolicitud = '{{ route("DataTestSolicitud")}}'
+
     </script>    
+     <!--begin::Datatables y Configuracion de la Tabla-->
+	<script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
+    <script src="{{ asset('js/datatables/language/language_es.js?id=2') }}"></script>
+   
+    <!--end::Datatables y Configuracion de la Tabla-->
+
+	<!--begin::Eventos de la pagina-->
+    <script src="{{ asset('js/global/main.js?id=3') }}"></script>
 	<script src="{{ asset('js/eventos/solicitud/crearsolicitud.js?id=3') }}"></script>
+    <script src="{{ asset('js/eventos/solicitud/solicitudEstados.js')}}"></script>
+    <!--end::Eventos de la pagina-->
+	
+	
 
 
 @endpush

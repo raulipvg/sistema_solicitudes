@@ -15,6 +15,7 @@ use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MovimientoAtributoController;
 use App\Http\Controllers\SolicitudController;
+use App\Http\Controllers\EstadoFlujoSolicitudControllerTest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Monolog\Handler\RotatingFileHandler;
@@ -142,9 +143,10 @@ Route::group(['prefix'=> '/movimientoatributo'], function () {
 
 Route::group(['prefix'=> '/solicitud'], function () {
     Route::get('/', [SolicitudController::class,'Index'])->name('Solicitud');
+    Route::post('/datosSolicitud', [EstadoFlujoSolicitudControllerTest::class,'GetData'])->name('DataTestSolicitud');
 });
 
-Route::group(['prefix' => 'error'], function () {
+Route::group(['prefix' => '/error'], function () {
     Route::get('/404', function () {return view('error.error404');})->name('Error404');
     Route::get('/500', function () {return view('error.error500');})->name('Error500');
 });
