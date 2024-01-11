@@ -94,6 +94,10 @@ class GrupoController extends Controller
                             ->where('Id','=',$id)
                             ->first();
 
+            $privilegios = Privilegio::select('Id','Nombre')
+                            ->where('Enabled','=',1)
+                            ->get();
+
             $titulo= 'Ver Grupo '.$grupo->Nombre;
             if (!$grupo) {
                 // Manejo de error si el Grupo no se encuentra
@@ -117,6 +121,7 @@ class GrupoController extends Controller
             return View('grupo.vergrupo')->with([
                 'titulo'=> $titulo,
                 'datosgrupo'=> $datosgrupo,
+                'privilegios'=> $privilegios,
                 'usuarios'=> $usuarios,
                 'centrocostos'=> $centrocostos,
                 'flag' => 1 //significa que es para la vista /grupo/ver

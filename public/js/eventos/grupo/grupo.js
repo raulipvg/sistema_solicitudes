@@ -161,7 +161,7 @@ $(document).ready(function() {
         //$("#modal-titulo").empty().html("Editar Usuario");
         $("input").val('').prop("disabled",false);
         $('.form-check-input').prop('checked', false);
-
+        $("#AlertaErrorGrupo").hide();
        // $("#AlertaError").hide();
        // $("#AlertaError").hide();
 

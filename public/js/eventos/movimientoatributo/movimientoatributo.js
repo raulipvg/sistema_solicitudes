@@ -41,7 +41,7 @@ $("#tabla-movimiento tbody").on("click",'.registrar-movAtributo', function(e) {
     e.preventDefault();
     e.stopPropagation();
     $('.form-select').val("").trigger("change").prop("disabled",false);
-    $("#AlertaError2").hide();
+    $("#AlertaErrorMovAtr").hide();
     validator.resetForm();
     actualizarValidSelect2();
     var movimientoId= $(this).attr("data-info");

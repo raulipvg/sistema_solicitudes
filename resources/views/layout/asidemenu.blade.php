@@ -37,6 +37,54 @@
 												<!--end:Menu item-->												
 											</div>
 											<!--end:Menu sub-->
+											<!--begin:Menu sub-->
+											<div class="menu-sub menu-sub-accordion">
+												<!--begin:Menu item-->
+												<div class="menu-item">
+													<!--begin:Menu link-->
+													<a class="menu-link" href="{{route('Flujo')}}">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Flujos</span>
+													</a>
+													<!--end:Menu link-->
+												</div>
+												<!--end:Menu item-->												
+											</div>
+											<!--end:Menu sub-->
+											<!--begin:Menu sub-->
+											<div class="menu-sub menu-sub-accordion">
+												<!--begin:Menu item-->
+												<div class="menu-item">
+													<!--begin:Menu link-->
+													<a class="menu-link" href="{{route('InicioMovimientoAtributo')}}">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Movimientos</span>
+													</a>
+													<!--end:Menu link-->
+												</div>
+												<!--end:Menu item-->												
+											</div>
+											<!--end:Menu sub-->
+											<!--begin:Menu sub-->
+											<div class="menu-sub menu-sub-accordion">
+												<!--begin:Menu item-->
+												<div class="menu-item">
+													<!--begin:Menu link-->
+													<a class="menu-link " href="{{route('Solicitud')}}">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Solicitudes</span>
+													</a>
+													<!--end:Menu link-->
+												</div>
+												<!--end:Menu item-->												
+											</div>
+											<!--end:Menu sub-->
 										</div>
 										<!--end:Menu item-->
 										<!--begin:Menu item-->
