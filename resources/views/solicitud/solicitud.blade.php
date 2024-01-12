@@ -3,6 +3,12 @@
 @push('css')
 <link href='' rel='stylesheet' type="text/css"/>
 <link href="{{ asset('css/progressbar/estilo.css') }}" rel='stylesheet' type="text/css"/>
+<style>
+.flujo{
+	cursor: pointer;
+}
+</style>
+
 @endpush
 
 
@@ -10,11 +16,11 @@
 <div id="kt_app_content" class="app-content flex-column-fluid">
     <div id="kt_app_content_container" class="container-fluid mt-2">
         <!--begin::Table Widget 3-->
-        <div class="card card-flush h-xl-100">
+        <div class="card card-flush h-xl-100 mx-2 my-4">
 												<!--begin::Card header-->
-												<div class="card-header py-7">
+												<div class="card-header py-1">
 													<!--begin::Tabs-->
-													<div class="card-title pt-3 mb-0 gap-4 gap-lg-10 gap-xl-15 nav nav-tabs border-bottom-0" data-kt-table-widget-3="tabs_nav">
+													<div class="card-title m-0 gap-4 gap-lg-10 gap-xl-15 nav nav-tabs border-bottom-0" data-kt-table-widget-3="tabs_nav">
 														<ul class="nav">
 															<li class="nav-item">
 																<a class="nav-link btn btn-sm btn-color-dark btn-active btn-active-dark fw-bold px-4 me-1 active" data-bs-toggle="tab" href="#tabulador1">ACTIVAS (47)</a>
@@ -26,7 +32,7 @@
 													</div>
 													<!--end::Tabs-->
 													<!--begin::Create campaign button-->
-													<div class="card-toolbar">
+													<div class="card-toolbar my-0">
 														<a href="#" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearSolicitud">Crear Solicitud</a>
 													</div>
 													<!--end::Create campaign button-->
@@ -182,7 +188,7 @@
 															<!--end::Sort & Filter-->
 
 															<!--begin::Separator-->
-															<div class="separator separator-dashed my-5"></div>
+															<div class="separator separator-dashed my-1"></div>
 															<!--end::Separator-->
 
 															
@@ -201,46 +207,46 @@
 																	</thead>
 																	<tbody>
 																		<tr>
-																			<td class="min-w-175px p-2">
-																				<div class="position-relative ps-6 p-2">
+																			<td class="min-w-175px p-1">
+																				<div class="position-relative ps-6">
 																					<div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>
 																					<a href="#" class="mb-1 text-gray-900 text-hover-primary fw-bold">#2131 Nombre Apellido</a>
 																					<div class="fs-7 text-muted fw-bold">Creada 01.01.24</div>
 																				</div>
 																			</td>
-																			<td class="p-2">
+																			<td class="p-1">
 																				<!--begin::Icons-->
 																				<div class="d-flex gap-2">
-																					<a href="#" class="mb-1 text-gray-900 text-hover-primary fw-bold">Nombre Movimiento</a>
+																					<a href="#" class="text-gray-900 text-hover-primary fw-bold">Nombre Movimiento</a>
 																				</div>
 																				<!--end::Icons-->
 																				<div class="fs-7 text-muted fw-bold">Atributo 1, Atributo 2, Atributo 3</div>
 																			</td>
-																			<td class="p-2 flujo" abierto="0">
+																			<td class="p-0 flujo" abierto="0">
 																				<div class="d-flex gap-2">
-																					<span class="badge badge-secondary min-h-30px text-uppercase">Estado Flujo 1</span>
+																					<span class="badge badge-secondary min-h-30px mh-30px text-uppercase">Estado Flujo 1</span>
 																				</div>
 																				<!--end::Team members-->
-																				<div class="fs-7 fw-bold text-muted">Flujo 1</div>
+																				<div class="ps-1 fs-7 fw-bold text-muted">Flujo 1</div>
 																				
 																			</td>
-																			<td class="min-w-150px p-2">
-																				<div class="mb-1 fw-bold">24 Ene 24 - 26 Ene 24</div>
+																			<td class="min-w-150px p-1">
+																				<div class="fw-bold">24 Ene 24 - 26 Ene 24</div>
 																				<div class="fs-7 fw-bold text-muted">Rango de Fecha</div>
 																			</td>
-																			<td class="min-w-125px p-2">
+																			<td class="min-w-125px p-1">
 																				<!--begin::Team members-->
 																				<div class="d-flex gap-2">
-																					<a href="#" class="mb-1 text-gray-900 fw-bold">Nombre CC</a>
+																					<a href="#" class="text-gray-900 fw-bold">Nombre CC</a>
 																				</div>
 																				<!--end::Team members-->
 																				<div class="fs-7 fw-bold text-muted">Centro de Costo asociado</div>
 																			</td>
 
-																			<td class="min-w-125px p-2">
+																			<td class="min-w-125px p-1">
 																				<!--begin::Team members-->
 																				<div class="d-flex gap-2">
-																					<a href="#" class="mb-1 text-gray-900 fw-bold">Usuario 1</a>
+																					<a href="#" class="text-gray-900 fw-bold">Usuario 1</a>
 																				</div>
 																				<!--end::Team members-->
 																				<div class="fs-7 fw-bold text-muted">Solicitado por</div>
@@ -262,7 +268,7 @@
 																					<div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
 
 																					<button class="btn btn-bg-light btn-active-color-dark p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud" style="min-width: 43.55px;">
-																						<i class="ki-duotone ki-arrow-right fs-2">
+																						<i class="ki-duotone ki-watch fs-2">
 																							<span class="path1"></span>
 																							<span class="path2"></span>
 																						</i>
@@ -274,34 +280,34 @@
 																			</td>
 																		</tr>
 																		<tr>
-																			<td class="min-w-175px p-2">
-																				<div class="position-relative ps-6 pe-3 py-2">
+																			<td class="min-w-175px p-1">
+																				<div class="position-relative ps-6">
 																					<div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-warning"></div>
-																					<a href="#" class="mb-1 text-gray-900 text-hover-primary fw-bold">#3213 Jose Carrera</a>
+																					<a href="#" class="text-gray-900 text-hover-primary fw-bold">#3213 Jose Carrera</a>
 																					<div class="fs-7 text-muted fw-bold">Creada 24.01.24</div>
 																				</div>
 																			</td>
-																			<td class="p-2">
+																			<td class="p-1">
 																				<!--begin::Icons-->
 																				<div class="d-flex gap-2">
-																					<a href="#" class="mb-1 text-gray-900 text-hover-primary fw-bold">Nombre Movimiento</a>
+																					<a href="#" class="text-gray-900 text-hover-primary fw-bold">Nombre Movimiento</a>
 																				</div>
 																				<!--end::Icons-->
 																				<div class="fs-7 text-muted fw-bold">Atributo 1, Atributo 2, Atributo 3</div>
 																			</td>
-																			<td class="p-2 flujo" abierto="0">
+																			<td class="p-0 flujo" abierto="0">
 																				<div class="d-flex gap-2">
 																					<span class="badge badge-secondary min-h-30px text-uppercase">Estado Flujo 2</span>
 																				</div>
 																				<!--end::Team members-->
-																				<div class="fs-7 fw-bold text-muted">Flujo 2</div>
+																				<div class="ps-1 fs-7 fw-bold text-muted">Flujo 2</div>
 																				
 																			</td>
-																			<td class="min-w-150px p-2">
+																			<td class="min-w-150px p-1">
 																				<div class="mb-1 fw-bold">20 Ene 24 - 26 Ene 24</div>
 																				<div class="fs-7 fw-bold text-muted">Rango de Fecha</div>
 																			</td>
-																			<td class="min-w-125px p-2">
+																			<td class="min-w-125px p-1">
 																				<!--begin::Team members-->
 																				<div class="d-flex gap-2">
 																					<a href="#" class="mb-1 text-gray-900 fw-bold">Nombre CC</a>
@@ -310,7 +316,7 @@
 																				<div class="fs-7 fw-bold text-muted">Centro de Costo asociado</div>
 																			</td>
 
-																			<td class="min-w-125px p-2">
+																			<td class="min-w-125px p-1">
 																				<!--begin::Team members-->
 																				<div class="d-flex gap-2">
 																					<a href="#" class="mb-1 text-gray-900 fw-bold">Usuario 2</a>
@@ -334,7 +340,7 @@
 																					</button>
 																					<div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
 																						<button class="btn btn-bg-light btn-active-color-dark p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud" style="min-width: 43.55px;">
-																							<i class="ki-duotone ki-arrow-right fs-2">
+																							<i class="ki-duotone ki-watch fs-2">
 																								<span class="path1"></span>
 																								<span class="path2"></span>
 																							</i>

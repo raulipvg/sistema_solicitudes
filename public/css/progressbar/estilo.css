@@ -1,7 +1,3 @@
-body {
-    font-family: "Poppins", sans-serif;
-}
-
 .step-wizard {
     background-color: #21d4fd;
     background-image: linear-gradient(19deg, #21d4fd 0%, #b721ff 100%);
@@ -42,9 +38,9 @@ body {
     position: absolute;
     left: 0;
     top: 40px;
-    background: #DFFFEA;
+    background: #808080;
     width: 100%;
-    height: 2px;
+    height: 4px;
     transform: translateX(-50%);
     z-index: -10;
 }
