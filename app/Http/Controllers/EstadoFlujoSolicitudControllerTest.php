@@ -23,7 +23,6 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 2,
                                 'Nombre'=>'en tramite',
                             ],
-                            'Usuario' => 'usuario 1',
                         ],
                         [
                             'Nivel' => 1,
@@ -31,7 +30,6 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 6,
                                 'Nombre'=>'espera',
                             ],
-                            'Usuario' => 'usuario 3',
                         ],
                         [
                             'Nivel' => 2,
@@ -39,22 +37,23 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 10,
                                 'Nombre'=>'confirmacion',
                             ],
-                            'Usuario' => 'administrador',
                         ],
                 ],
                 'historial' => [
                     [
                         'estadoFlujoId' => 2,
-                        'tipo' => 1
+                        'tipo' => 1,
+                        'usuario' => 'usuario 1',
                     ],
                     [
                         'estadoFlujoId' => 6,
-                        'tipo' => 0
+                        'tipo' => 0, 
+                        'usuario' => 'usuario 3',
                     ],
                 ],
             ],
         ];
-        $aprobada = [
+        $enCurso = [
             'success' => true,
             'data' => [
                 'flujo' => [
@@ -68,7 +67,7 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 2,
                                 'Nombre'=>'en tramite',
                             ],
-                            'Usuario' => 'usuario 1',
+                            
                         ],
                         [
                             'Nivel' => 1,
@@ -76,7 +75,6 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 6,
                                 'Nombre'=>'espera',
                             ],
-                            'Usuario' => 'usuario 3',
                         ],
                         [
                             'Nivel' => 2,
@@ -84,17 +82,18 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 10,
                                 'Nombre'=>'confirmacion',
                             ],
-                            'Usuario' => 'administrador',
                         ],
                 ],
                 'historial' => [
                     [
                         'estadoFlujoId' => 2,
-                        'tipo' => 1
+                        'tipo' => 1,
+                        'usuario' => 'usuario 1',
                     ],
                     [
                         'estadoFlujoId' => 6,
-                        'tipo' => 2
+                        'tipo' => 2,
+                        'usuario' => '-',
                     ],
                 ],
             ],
@@ -113,7 +112,6 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 2,
                                 'Nombre'=>'en tramite',
                             ],
-                            'Usuario' => 'usuario 1',
                         ],
                         [
                             'Nivel' => 1,
@@ -121,7 +119,6 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 6,
                                 'Nombre'=>'espera',
                             ],
-                            'Usuario' => 'usuario 3',
                         ],
                         [
                             'Nivel' => 2,
@@ -129,20 +126,20 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 10,
                                 'Nombre'=>'confirmacion',
                             ],
-                            'Usuario' => 'usuario 6',
                         ],
                 ],
                 'historial' => [
                     [
                         'estadoFlujoId' => 2,
                         'tipo' => 2,
+                        'usuario' => '-'
                     ],
                 ],
             ],
         ];
         $respuestas = [
             $iniciada,
-            $aprobada,
+            $enCurso,
             $rechazada
         ];
 

@@ -3,7 +3,7 @@ $(document).ready(function(e){
     
     
     //Evento en el clic en la columna donde está el flujo de la tabla, es necesario agregar la clase flujo, cambiar el id de la tabla!
-    $('#kt_widget_table_3 .flujo').on('click',function(e){
+    $('#tabla-solicitudes .flujo').on('click',function(e){
         //console.log('aquí')
         var tr = e.target.closest('tr');
         var row = tablaSolicitudes.row(tr);
@@ -11,9 +11,8 @@ $(document).ready(function(e){
         if($(this).attr('abierto') == '0'){
             $(this).attr('abierto','1');
             
-            var solicitudId = $(this).parent().find('.aceptar').attr('info');
-            console.log(solicitudId);
-            var movimientoId = 1;
+            var solicitudId = $(this).parent().find('.aceptar').attr('info');       //Id de la solicitud
+            var movimientoId = 1;                                                   //Id del movimiento
 
 
             $.ajax({
@@ -30,9 +29,7 @@ $(document).ready(function(e){
                     KTApp.showPageLoading();
                 },
                 success: function (data) {
-                    //console.log(data)
                     if(data.success){
-                        console.log(data.data);
                         row.child(format(data.data)).show();
 
                     }else{                       
@@ -101,26 +98,30 @@ function AgregarTR(data){
     ordenFlujos.forEach((orden) => {
         estado = null;
         currentItem = null;
+        usuario = '-';
         historial.forEach((hist)=>{
             // Si el tipo/estado es rechazado
             if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 0){
                 estado = 'cancel';
                 currentItem = 'current-item-cancel';
+                usuario = hist.usuario;
                 return;
             }
             // Si el tipo/estado es aprobado
             else if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 1){
                 estado = 'success';
+                usuario = hist.usuario;
                 return;
             }
             // Si el tipo/estado es en curso
             else if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 2){
                 currentItem = 'current-item';
+                return;
             }
         })
         html +=
                     '<li class="step-wizard-item '+currentItem+'">'+
-                        '<span class="text-capitalize">'+orden.Usuario+'</span>'+
+                        '<span class="text-capitalize">'+usuario+'</span>'+
                         '<span class="success progress-count '+estado+'">'+contar+'</span>'+
                         '<span class="progress-label text-capitalize" info="'+orden[0].Id+'">'+orden[0].Nombre+'</span>'+
                     '</li>';

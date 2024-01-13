@@ -193,7 +193,7 @@
 
 															
 															<!--begin::Table-->
-															<table id="kt_widget_table_3" class="table table-row-dashed align-middle fs-6 gy-4 my-0 pb-3 table-hover" data-kt-table-widget-3="all">
+															<table id="tabla-solicitudes" class="table table-row-dashed align-middle fs-6 gy-4 my-0 pb-3 table-hover" data-kt-table-widget-3="all">
 																	<thead class="d-none">
 																		<tr>
 																			<th>Campaign</th>
