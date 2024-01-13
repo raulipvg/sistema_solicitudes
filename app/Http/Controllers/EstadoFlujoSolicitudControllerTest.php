@@ -23,7 +23,7 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 2,
                                 'Nombre'=>'en tramite',
                             ],
-                            'Grupo' => 'grupo 1',
+                            'Usuario' => 'usuario 1',
                         ],
                         [
                             'Nivel' => 1,
@@ -31,7 +31,7 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 6,
                                 'Nombre'=>'espera',
                             ],
-                            'Grupo' => 'grupo 3',
+                            'Usuario' => 'usuario 3',
                         ],
                         [
                             'Nivel' => 2,
@@ -39,7 +39,7 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 10,
                                 'Nombre'=>'confirmacion',
                             ],
-                            'Grupo' => 'administrador',
+                            'Usuario' => 'administrador',
                         ],
                 ],
                 'historial' => [
@@ -68,7 +68,7 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 2,
                                 'Nombre'=>'en tramite',
                             ],
-                            'Grupo' => 'grupo 1',
+                            'Usuario' => 'usuario 1',
                         ],
                         [
                             'Nivel' => 1,
@@ -76,7 +76,7 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 6,
                                 'Nombre'=>'espera',
                             ],
-                            'Grupo' => 'grupo 3',
+                            'Usuario' => 'usuario 3',
                         ],
                         [
                             'Nivel' => 2,
@@ -84,7 +84,7 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 10,
                                 'Nombre'=>'confirmacion',
                             ],
-                            'Grupo' => 'administrador',
+                            'Usuario' => 'administrador',
                         ],
                 ],
                 'historial' => [
@@ -113,7 +113,7 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 2,
                                 'Nombre'=>'en tramite',
                             ],
-                            'Grupo' => 'grupo 1',
+                            'Usuario' => 'usuario 1',
                         ],
                         [
                             'Nivel' => 1,
@@ -121,7 +121,7 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 6,
                                 'Nombre'=>'espera',
                             ],
-                            'Grupo' => 'grupo 3',
+                            'Usuario' => 'usuario 3',
                         ],
                         [
                             'Nivel' => 2,
@@ -129,22 +129,19 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                 'Id'=> 10,
                                 'Nombre'=>'confirmacion',
                             ],
-                            'Grupo' => 'administrador',
+                            'Usuario' => 'usuario 6',
                         ],
                 ],
                 'historial' => [
                     [
                         'estadoFlujoId' => 2,
-                        'tipo' => 1
-                    ],
-                    [
-                        'estadoFlujoId' => 6,
-                        'tipo' => 2
+                        'tipo' => 2,
                     ],
                 ],
             ],
         ];
         $respuestas = [
+            $iniciada,
             $aprobada,
             $rechazada
         ];

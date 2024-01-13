@@ -102,18 +102,25 @@ function AgregarTR(data){
         estado = null;
         currentItem = null;
         historial.forEach((hist)=>{
-            if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 1){
-                estado = 'success';
-                return;
-            }else if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 0){
+            // Si el tipo/estado es rechazado
+            if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 0){
                 estado = 'cancel';
                 currentItem = 'current-item-cancel';
                 return;
             }
+            // Si el tipo/estado es aprobado
+            else if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 1){
+                estado = 'success';
+                return;
+            }
+            // Si el tipo/estado es en curso
+            else if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 2){
+                currentItem = 'current-item';
+            }
         })
         html +=
                     '<li class="step-wizard-item '+currentItem+'">'+
-                        '<span class="text-capitalize">'+orden.Grupo+'</span>'+
+                        '<span class="text-capitalize">'+orden.Usuario+'</span>'+
                         '<span class="success progress-count '+estado+'">'+contar+'</span>'+
                         '<span class="progress-label text-capitalize" info="'+orden[0].Id+'">'+orden[0].Nombre+'</span>'+
                     '</li>';
