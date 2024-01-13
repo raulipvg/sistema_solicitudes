@@ -166,24 +166,18 @@ class EstadoFlujoSolicitudControllerTest extends Controller
             'ordenFlujos' => [
                     [
                         'Nivel' => 0,
-                        [
                             'Id'=> 2,
                             'Nombre'=>'en tramite',
-                        ],
                     ],
                     [
                         'Nivel' => 1,
-                        [
                             'Id'=> 6,
                             'Nombre'=>'espera',
-                        ],
                     ],
                     [
                         'Nivel' => 2,
-                        [
                             'Id'=> 10,
                             'Nombre'=>'confirmacion',
-                        ],
                     ],
             ],
             'historial' => [

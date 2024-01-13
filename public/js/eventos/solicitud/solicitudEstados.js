@@ -1,5 +1,5 @@
 $(document).ready(function(e){
-    let tablaSolicitudes = $('#kt_widget_table_3').DataTable();
+    let tablaSolicitudes = $('#tabla-solicitudes').DataTable();
     
     
     //Evento en el clic en la columna donde está el flujo de la tabla, es necesario agregar la clase flujo, cambiar el id de la tabla!
@@ -95,7 +95,7 @@ function AgregarTR(data){
     var ordenFlujos = data.ordenFlujos
     var html = '<td><ul class="step-wizard-list">';
     var contar = 1;
-    var usuario = '-';
+    var usuario;
     ordenFlujos.forEach((orden) => {
         usuario = '-';
         estado = null;
@@ -131,6 +131,5 @@ function AgregarTR(data){
     });
     
     html += '</ul></td>';
-    
     return html;
 }
