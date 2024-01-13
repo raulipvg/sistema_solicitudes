@@ -98,7 +98,9 @@ function AgregarTR(data){
     var ordenFlujos = data.ordenFlujos
     var html = '<td><ul class="step-wizard-list">';
     var contar = 1;
+    var usuario = '-';
     ordenFlujos.forEach((orden) => {
+        usuario = '-';
         estado = null;
         currentItem = null;
         historial.forEach((hist)=>{
@@ -106,21 +108,24 @@ function AgregarTR(data){
             if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 0){
                 estado = 'cancel';
                 currentItem = 'current-item-cancel';
+                usuario = hist.usuario;
                 return;
             }
             // Si el tipo/estado es aprobado
             else if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 1){
                 estado = 'success';
+                usuario = hist.usuario;
                 return;
             }
             // Si el tipo/estado es en curso
             else if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 2){
                 currentItem = 'current-item';
+                return;
             }
         })
         html +=
                     '<li class="step-wizard-item '+currentItem+'">'+
-                        '<span class="text-capitalize">'+orden.Usuario+'</span>'+
+                        '<span class="text-capitalize">'+usuario+'</span>'+
                         '<span class="success progress-count '+estado+'">'+contar+'</span>'+
                         '<span class="progress-label text-capitalize" info="'+orden[0].Id+'">'+orden[0].Nombre+'</span>'+
                     '</li>';
