@@ -95,7 +95,9 @@ function AgregarTR(data){
     var ordenFlujos = data.ordenFlujos
     var html = '<td><ul class="step-wizard-list">';
     var contar = 1;
+    var usuario = '-';
     ordenFlujos.forEach((orden) => {
+        usuario = '-';
         estado = null;
         currentItem = null;
         usuario = '-';

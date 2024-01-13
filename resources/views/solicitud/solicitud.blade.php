@@ -267,7 +267,7 @@
 																					</button>
 																					<div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
 
-																					<button class="btn btn-bg-light btn-active-color-dark p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud" style="min-width: 43.55px;">
+																					<button class="historial btn btn-bg-light btn-active-color-dark p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud" style="min-width: 43.55px;">
 																						<i class="ki-duotone ki-watch fs-2">
 																							<span class="path1"></span>
 																							<span class="path2"></span>
@@ -339,7 +339,7 @@
 																						</i>
 																					</button>
 																					<div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
-																						<button class="btn btn-bg-light btn-active-color-dark p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud" style="min-width: 43.55px;">
+																						<button class="historial btn btn-bg-light btn-active-color-dark p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud" style="min-width: 43.55px;">
 																							<i class="ki-duotone ki-watch fs-2">
 																								<span class="path1"></span>
 																								<span class="path2"></span>
@@ -389,6 +389,7 @@
     <script>
         const Home = '{{ route("Home") }}'
 		const DataTestSolicitud = '{{ route("DataTestSolicitud")}}'
+		const getHistorial = '{{ route("getHistorial")}}'
 
     </script>    
      <!--begin::Datatables y Configuracion de la Tabla-->
@@ -400,7 +401,9 @@
 	<!--begin::Eventos de la pagina-->
     <script src="{{ asset('js/global/main.js?id=3') }}"></script>
 	<script src="{{ asset('js/eventos/solicitud/crearsolicitud.js?id=3') }}"></script>
+	<script src="{{ asset('js/eventos/solicitud/historialSolicitud.js')}}"></script>
     <script src="{{ asset('js/eventos/solicitud/solicitudEstados.js')}}"></script>
+
     <!--end::Eventos de la pagina-->
 	
 	
