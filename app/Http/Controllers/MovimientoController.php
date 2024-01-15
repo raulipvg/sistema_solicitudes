@@ -124,6 +124,7 @@ class MovimientoController extends Controller
         }
     }
 
+
     public function VerGruposFlujos(){
         
         try{

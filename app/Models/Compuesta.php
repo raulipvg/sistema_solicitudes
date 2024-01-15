@@ -7,60 +7,68 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Class EstadoSolicitud
+ * Class Compuesta
  * 
  * @property int $Id
- * @property string $Nombre
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
+ * @property int $MovimientoAtributoId
+ * @property int $SolicitudId
+ * @property int $CostoReal
+ * @property int $Caracteristica
  * 
- * @property Collection|HistorialSolicitud[] $historial_solicituds
- * @property Collection|Solicitud[] $solicitud
+ * @property MovimientoAtributo $movimiento_atributo
+ * @property Solicitud $solicitud
  *
  * @package App\Models
  */
-class EstadoSolicitud extends Model
+class Compuesta extends Model
 {
-	protected $table = 'estado_solicitud';
+	protected $table = 'compuesta';
 	protected $primaryKey = 'Id';
 	public $incrementing = true;
-	public $timestamps = false;
-
+	public $timestamps = true;
 
 	protected $casts = [
-		'Id' => 'int'
+		'Id' => 'int',
+		'MovimientoAtributoId' => 'int',
+		'SolicitudId' => 'int',
+		'CostoReal'=> 'int',
 	];
 
 	protected $fillable = [
-		'Nombre'
+		'MovimientoAtributoId',
+		'SolicitudId',
+		'CostoReal',
+		'Caracteristica',
 	];
 
-	public function historial_solicituds()
+	public function movimiento_atributo()
 	{
-		return $this->hasMany(HistorialSolicitud::class, 'EstadoSolicitudId');
+		return $this->belongsTo(MovimientoAtributo::class, 'MovimientoAtributoId');
 	}
-	
+
+	public function solicitud()
+	{
+		return $this->belongsTo(Solicitud::class, 'SolicitudId');
+	}
+
 	public function validate(array $data){
 		$id = isset($data['Id']) ? $data['Id'] : null;
 
 		$rules = [
-			'Nombre' => [
-				'required',
-				'string',
-				'max:255',
-				Rule::unique('estado_solicitud','Nombre')->ignore($id, 'Id'),	
-			]
+			'MovimientoAtributoId' => 'required|numeric',
+			'CostoReal' => 'required|numeric',
+			'Caracteristica' => 'required|string',
+			'SolicitudId' => 'required|numeric',
 		];
 
 		$messages = [
-			'Nombre.unique'=> 'El Nombre ya está en uso.',
             '*' => 'Hubo un problema con el campo :attribute.'
             // Agrega más mensajes personalizados aquí según tus necesidades
 		];

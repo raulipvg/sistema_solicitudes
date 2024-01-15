@@ -145,6 +145,7 @@ Route::group(['prefix'=> '/solicitud'], function () {
     Route::get('/', [SolicitudController::class,'Index'])->name('Solicitud');
     Route::post('/datosSolicitud', [EstadoFlujoSolicitudControllerTest::class,'GetData'])->name('DataTestSolicitud');
     Route::post('/historial', [EstadoFlujoSolicitudControllerTest::class,'getHistorial'])->name('getHistorial');
+    Route::post('/RealizarSolicitud', [SolicitudController::class,'RealizarSolicitud'])->name('RealizarSolicitud');
 });
 
 Route::group(['prefix' => '/error'], function () {

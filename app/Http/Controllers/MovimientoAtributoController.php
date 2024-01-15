@@ -101,11 +101,12 @@ class MovimientoAtributoController extends Controller
         try{
             $movimientoExiste= Movimiento::find($movimientoId);
             if (!$movimientoExiste) {
-                throw new Exception('Usuario no encontrado');
+                throw new Exception('Movimiento no encontrado');
             }
-            $movimientoAtributo = MovimientoAtributo::select('movimiento_atributo.Id', 'atributo.Nombre', 'atributo.ValorReferencia')
+            $movimientoAtributo = MovimientoAtributo::select('movimiento_atributo.Id', 'atributo.Nombre', 'atributo.ValorReferencia', 'atributo.Caracteristica')
                                         ->join('Atributo','Atributo.Id','=','movimiento_atributo.AtributoId')
                                         ->where('movimiento_atributo.MovimientoId', $movimientoId)
+                                        ->where('Atributo.Enabled', 1)
                                         ->get();
 
             return response()->json([

@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $GrupoId
  * @property int $Pivot
  * @property int $FlujoId
+ * @property int $EstadoFlujoId 
  * 
  * @property OrdenFlujo|null $orden_flujo
  * @property EstadoFlujo $estado_flujo

@@ -1,10 +1,10 @@
 $(document).ready(function(e){
-    let tablaSolicitudes = $('#tabla-solicitudes').DataTable();
+    //let tablaSolicitudes = $('#tabla-solicitudes').DataTable();
     
     
     //Evento en el clic en la columna donde está el flujo de la tabla, es necesario agregar la clase flujo, cambiar el id de la tabla!
-    $('#tabla-solicitudes .flujo').on('click',function(e){
-        //console.log('aquí')
+    $('#tabla-solicitudes').on('click','.flujo',function(e){
+        console.log('flujo')
         var tr = e.target.closest('tr');
         var row = tablaSolicitudes.row(tr);
         //Si no está abierta la fila con el estado de flujo, la abrirá.

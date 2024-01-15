@@ -43,6 +43,7 @@ class Atributo extends Model
 	protected $fillable = [
 		'Nombre',
 		'ValorReferencia',
+        'Caracteristica',
 		'Enabled'
 	];
 

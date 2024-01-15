@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property Atributo $atributo
  * @property Movimiento $movimiento
- * @property Collection|Compuestum[] $compuesta
+ * @property Collection|Compuesta[] $compuesta
  *
  * @package App\Models
  */
@@ -29,7 +29,8 @@ class MovimientoAtributo extends Model
 {
 	protected $table = 'movimiento_atributo';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
+	public $incrementing = true;
+	public $timestamps = true;
 
 	protected $casts = [
 		'Id' => 'int',
@@ -54,6 +55,6 @@ class MovimientoAtributo extends Model
 
 	public function compuesta()
 	{
-		return $this->hasMany(Compuestum::class, 'MovimientoAtributoId');
+		return $this->hasMany(Compuesta::class, 'MovimientoAtributoId');
 	}
 }

@@ -8,6 +8,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class HistorialSolicitud
@@ -15,10 +17,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $Id
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
- * @property int $UsuarioId
  * @property int $EstadoFlujoId
- * @property int $EstadoSolicitudId
+ * @property int $EstadoEtapaFlujoId
  * @property int $SolicitudId
+ * @property int $EstadoSolicitudId
+ * @property int $UsuarioId
  * 
  * @property EstadoFlujo $estado_flujo
  * @property Solicitud $solicitud
@@ -36,17 +39,19 @@ class HistorialSolicitud extends Model
 
 	protected $casts = [
 		'Id' => 'int',
-		'UsuarioId' => 'int',
 		'EstadoFlujoId' => 'int',
+		'EstadoEtapaFlujoId' => 'int',	
+		'SolicitudId' => 'int',
 		'EstadoSolicitudId' => 'int',
-		'SolicitudId' => 'int'
+		'UsuarioId' => 'int',
 	];
 
 	protected $fillable = [
-		'UsuarioId',
 		'EstadoFlujoId',
-		'EstadoSolicitudId',
-		'SolicitudId'
+		'EstadoEtapaFlujoId',
+		'SolicitudId',
+		'EstadoSolicitudId',		
+		'UsuarioId',
 	];
 
 	public function estado_flujo()
@@ -54,18 +59,51 @@ class HistorialSolicitud extends Model
 		return $this->belongsTo(EstadoFlujo::class, 'EstadoFlujoId');
 	}
 
+	public function solicitud()
+	{
+		return $this->belongsTo(Solicitud::class, 'SolicitudId');
+	}
 	public function estado_solicitud()
 	{
 		return $this->belongsTo(EstadoSolicitud::class, 'EstadoSolicitudId');
 	}
 
-	public function solicitud()
-	{
-		return $this->belongsTo(Solicitud::class, 'SolicitudId');
-	}
-
 	public function usuario()
 	{
 		return $this->belongsTo(Usuario::class, 'UsuarioId');
+	}
+
+	public function validate(array $data){
+		$id = isset($data['Id']) ? $data['Id'] : null;
+
+		$rules = [
+			'EstadoFlujoId' => 'required|numeric',
+			'EstadoEtapaFlujoId' => 'required|numeric|min:1|max:3',
+			'SolicitudId' => 'required|numeric',
+			'EstadoSolicitudId' => 'required|numeric|min:1|max:3',
+			'UsuarioId' => 'required|numeric',
+		];
+
+		$messages = [
+            '*' => 'Hubo un problema con el campo :attribute.'
+            // Agrega más mensajes personalizados aquí según tus necesidades
+		];
+
+		$validator = Validator::make($data, $rules, $messages);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $databaseErrors = $errors->getMessages();
+
+            foreach ($databaseErrors as $fieldErrors) {
+                foreach ($fieldErrors as $fieldError) {
+                    if (strpos($fieldError, 'database') !== false) {
+                        //Problema de BD
+                        $messages['*'] = 'Error';
+                        break 2; // Salir de los bucles si se encuentra un error de la base de datos
+                    }
+                }
+            }
+            throw new ValidationException($validator);
+        }
 	}
 }

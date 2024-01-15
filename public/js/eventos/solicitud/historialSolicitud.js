@@ -1,4 +1,5 @@
-$('.historial').on('click',function(e){
+$('#tabla-solicitudes').on('click','.historial',function(e){
+    console.log('historial');
     solicitudId = $(this).parent().parent().find('.aceptar').attr('info');
     var movimientoId = 1;
 

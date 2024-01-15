@@ -54,6 +54,20 @@ var loadingEl = document.createElement("div");
         return fechaFormateada;
     }
 
+    function formatearFecha2(fecha) {
+        var mesesAbreviados = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+    
+        var date = new Date(fecha);
+        // Obtener el día, mes y año
+        var dia = date.getDate();
+        var mes = mesesAbreviados[date.getMonth()]; // Obtener el mes abreviado
+        var anio = date.getFullYear();
+        // Formatear la fecha como "DD-Mes-YYYY"
+        var fechaFormateada = dia+" "+mes+" "+anio;
+    
+        return fechaFormateada;
+    }
+
     function botonEstado(tooltip, className, estado){
         var btn = '<button class="btn btn-sm '+className+' fs-7 text-uppercase justify-content-center p-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="'+tooltip+'">'+
                         '<span class="indicator-label">'+estado+'</span>'+
