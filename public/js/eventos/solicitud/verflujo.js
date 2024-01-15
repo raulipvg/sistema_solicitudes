@@ -74,15 +74,15 @@ $(document).ready(function(e){
 
 function format(data) {   
     var html=
-    '<div class="d-flex justify-content-center">'+
-        '<div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 80%;">'+
-        '<table id="services_table" class="table table-row-dashed">'+
-            '<thead class="services-info">'+
-               '<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">'+
-                    '<th class="p-0 ps-3">Flujo: '+data.flujo.Nombre+'</th>'+
-                '</tr>'+
-            '</thead>'+
-            '<tbody class="fw-bold text-gray-600">';
+            `<div class="d-flex justify-content-center">
+                <div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 80%;">
+                <table id="services_table" class="table table-row-dashed">
+                    <thead class="services-info">
+                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                            <th class="p-0 ps-3">Flujo: '+data.flujo.Nombre+'</th>
+                        </tr>
+                    </thead>
+                    <tbody class="fw-bold text-gray-600">`;
 
         html = html + AgregarTR(data);
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CentroDeCosto;
 use App\Models\Compuesta;
+use App\Models\Flujo;
 use App\Models\HistorialSolicitud;
 use App\Models\Movimiento;
 use App\Models\Persona;
@@ -42,6 +43,8 @@ class SolicitudController extends Controller
                                         'solicitud.created_at as FechaCreado','historial_solicitud.EstadoSolicitudId',
                                         'estado_flujo.Nombre as EstadoFlujo', 'Movimiento.Nombre as Movimiento',
                                         'flujo.Nombre as NombreFlujo',
+                                        'historial_solicitud.Id as HistorialId',
+                                        'flujo.Id as FlujoIdd',
                                         DB::raw('GROUP_CONCAT(atributo.Nombre) as Atributos'),
                                         DB::raw('(
                                             SELECT CONCAT(persona.Nombre," ",persona.Apellido)
@@ -71,7 +74,8 @@ class SolicitudController extends Controller
                                 ->join('movimiento','movimiento.Id','=','movimiento_atributo.MovimientoId')
                                 ->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
                                 ->join('flujo','flujo.Id','=','movimiento.FlujoId')
-                                ->groupBy('solicitud.Id', 'NombreCompleto', 'CentroCosto', 'FechaDesde', 'FechaHasta', 'FechaCreado', 'EstadoSolicitudId', 'EstadoFlujo', 'Movimiento', 'NombreFlujo')
+                                ->groupBy('solicitud.Id', 'NombreCompleto', 'CentroCosto', 'FechaDesde', 'FechaHasta', 'FechaCreado', 'EstadoSolicitudId', 
+                                'EstadoFlujo', 'Movimiento', 'NombreFlujo', 'HistorialId','FlujoIdd')
                                 ->get();
 
         return view('solicitud.solicitud')->with([
@@ -105,6 +109,9 @@ class SolicitudController extends Controller
     public function RealizarSolicitud(Request $request){
         try{
             $request = $request->input('data');
+            //BEGIN::ARREGLAR 
+            $request['UsuarioSolicitanteId'] = 1;
+            //END::ARREGLAR
             $solicitud = new Solicitud();
             $solicitud->validate($request['solicitud']);
             $solicitud->fill($request['solicitud']);
@@ -127,7 +134,6 @@ class SolicitudController extends Controller
                 ]);
                 $obj->save();
             }
-            //falta guardar historial
             $movExiste= Movimiento::find($request['movimiento']);
             if (!$movExiste) {
                 throw new Exception('Movimiento no encontrado');
@@ -149,7 +155,7 @@ class SolicitudController extends Controller
             $historial->SolicitudId = $solicitud->Id;
             $historial->EstadoSolicitudId = 1; //INICIADO
             //ARREGLAR USUARIO SEGUN SESION
-            $historial->UsuarioId = 1; 
+            //$historial->UsuarioId = 1; 
 
             $historial->validate([
                 'EstadoFlujoId' => $historial->EstadoFlujoId,
@@ -166,6 +172,87 @@ class SolicitudController extends Controller
             ],201);
         }catch(Exception $e){
             DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage() 
+            ]);
+        }
+    }
+
+    public function Aprobar(Request $request){
+        try{
+            $request = $request->input('data');
+            $solicitudId= $request['a'];
+            $historialId = $request['b'];
+            $flujoId = $request['c'];
+
+            
+            $historialEdit= HistorialSolicitud::find($historialId);
+            if (!$historialEdit) { throw new Exception('Historial no encontrado');}
+            $flujoExiste = Flujo::find($flujoId);
+            if (!$flujoExiste) { throw new Exception('Flujo no encontrado');}
+
+            DB::beginTransaction();
+            
+
+            $estadoFlujoId= $historialEdit->EstadoFlujoId;
+            $ordenFlujo = $flujoExiste->orden_flujos;
+
+            $ordenFlujoEstadoExiste = $ordenFlujo->firstWhere('EstadoFlujoId', $estadoFlujoId);
+            if (!$ordenFlujoEstadoExiste){ throw new Exception('No existe el estado en el flujo');}
+
+            // SI ES UNA ETAPA DEL FLUJO INICIAL O INTERMEDIA
+            if($ordenFlujoEstadoExiste->Pivot < 2){
+                $ordenFlujoNext= $ordenFlujo->firstWhere('Nivel', $ordenFlujoEstadoExiste->Nivel+1);
+
+                //BEGIN::ARREGLAR LO DEL USUARIO
+                $historialEdit->update([
+                    'EstadoEtapaFlujoId' => 1,  //ETAPA APROBADA
+                    'UsuarioId'=> 1 //ARREGLAR LO DEL USUARIO
+                ]);
+                //END::ARREGLAR LO DEL USUARIO 
+                
+                $historial = new HistorialSolicitud();
+                $historial->EstadoFlujoId = $ordenFlujoNext->estado_flujo->Id;
+                $historial->EstadoEtapaFlujoId =3; //Pendiente
+                $historial->SolicitudId = $historialEdit->SolicitudId;
+                $historial->EstadoSolicitudId = 2; //En Curso
+ 
+                $historial->save();
+
+            //SI ES UNA ETAPA FINAL DEL FLUJO
+            }else{
+                $historialEdit->update([
+                    'EstadoEtapaFlujoId' => 1,  //ETAPA APROBADA,
+                    'EstadoSolicitudId' => 3 // SOLICITUD TERMINADA
+                ]);
+            }
+
+
+
+            DB::commit(); 
+            return response()->json([
+                'success' => true,
+                'movimientos' => 1
+            ]);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage() 
+            ]);
+        }
+    }
+
+    public function Rechazar(Request $request){
+        try{
+            $request = $request->input('data');
+
+            return response()->json([
+                'success' => true,
+                'movimientos' => 1
+            ]);
+        }catch(Exception $e){
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() 

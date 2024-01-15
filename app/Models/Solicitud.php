@@ -19,6 +19,7 @@ use Illuminate\Validation\ValidationException;
  * @property int $PersonaId
  * @property int $CentroCostoId
  * @property int $ConsolidadoMesId
+ * @property int $UsuarioSolicitanteId
  * 
  * @property CentroDeCosto $centro_de_costo
  * @property ConsolidadoMe $consolidado_me
@@ -43,17 +44,22 @@ class Solicitud extends Model
 		'ConsolidadoMesId' => 'int',
 		'FechaDesde'=> 'date',
 		'FechaHasta'=> 'date',
+		'UsuarioSolicitanteId'=> 'int',
 	];
 
 	protected $fillable = [
-		'CostoSolicitud',
 		'PersonaId',
 		'CentroCostoId',
-		'ConsolidadoMesId',
+		'CostoSolicitud',
 		'FechaDesde',
-		'FechaHasta'
+		'FechaHasta',
+		'UsuarioSolicitanteId',
+		'ConsolidadoMesId'		
 	];
-
+	public function persona()
+	{
+		return $this->belongsTo(Persona::class, 'PersonaId');
+	}
 	public function centro_de_costo()
 	{
 		return $this->belongsTo(CentroDeCosto::class, 'CentroCostoId');
@@ -64,11 +70,10 @@ class Solicitud extends Model
 		return $this->belongsTo(ConsolidadoMe::class, 'ConsolidadoMesId');
 	}
 
-	public function persona()
+	public function usuario_solicitante()
 	{
-		return $this->belongsTo(Persona::class, 'PersonaId');
+		return $this->belongsTo(Usuario::class, 'UsuarioSolicitanteId');
 	}
-
 	public function compuesta()
 	{
 		return $this->hasMany(Compuesta::class, 'SolicitudId');

@@ -75,8 +75,10 @@
 		const getHistorial = '{{ route("getHistorial")}}';
 		const VerMovimientoAtributo = '{{ route("VerMovimientoAtributo")}}';
 		const RealizarSolicitud = '{{ route("RealizarSolicitud") }}';
+		const AprobarSolicitud = '{{ route("AprobarSolicitud")}}';
+		const RechazarSolicitud = '{{ route("RechazarSolicitud") }}';
 
-		const solicitudeActivas = {!! $solicitudes !!};
+		const solicitudeActivas = JSON.parse('{!! $solicitudes !!}');
 
 		console.log( solicitudeActivas)
 
@@ -91,9 +93,10 @@
 	<!--begin::Eventos de la pagina-->
 	<script src="{{ asset('js/flatpickr/es.js') }}"></script>
     <script src="{{ asset('js/global/main.js?id=3') }}"></script>
+	<script src="{{ asset('js/eventos/solicitud/generales.js?id=1') }}"></script>
 	<script src="{{ asset('js/eventos/solicitud/crearsolicitud.js?id=3') }}"></script>
-	<script src="{{ asset('js/eventos/solicitud/historialSolicitud.js')}}"></script>
-    <script src="{{ asset('js/eventos/solicitud/solicitudEstados.js')}}"></script>
+	<script src="{{ asset('js/eventos/solicitud/historialsolicitud.js')}}"></script>
+    <script src="{{ asset('js/eventos/solicitud/verflujo.js')}}"></script>
 
     <!--end::Eventos de la pagina-->
 	

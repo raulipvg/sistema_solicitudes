@@ -165,7 +165,7 @@ $(document).ready(function() {
         });
     });
 
-    //SELECCION DE MOVIMIENTOS-ATRIBUTOS PARA LA SOLICITUD, SE CREAN FORMULARIOS
+    //BEGIN::EVENTO SELECCION DE MOVIMIENTOS-ATRIBUTOS PARA LA SOLICITUD, SE CREAN FORMULARIOS
     $('#contenedor-movimiento').on('click', '.movimiento-atributo', function (e) {
       //console.log("dasd")
       var MovAtributoId= $(this).attr("data-id");
@@ -206,7 +206,9 @@ $(document).ready(function() {
       }
       
     });
+    //END::EVENTO
 
+    //BEGIN::EVENTO BTN DE REALIZAR SOLICITUD QUE LIMPIA LOS INPUTS Y SELECT2
     $('#NuevaSolicitud').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation()
@@ -220,119 +222,88 @@ $(document).ready(function() {
         $("#contenedor-movimiento-2").empty();
         $("#elegir-movimientos").hide();
     });
+    //END::EVENTO
 
-    //EVENTO QUE CAPTURA LA DATA Y LA ENVIA AL CONTROLADOR
+    //BEGIN::EVENTO QUE CAPTURA LA DATA Y LA ENVIA AL CONTROLADOR
     $('#AddSubmitSolicitud').on('click', function (e) {
       e.preventDefault();
       e.stopPropagation();     
-
       $("#AlertaErrorSolicitud").hide();
       $("#AlertaErrorSolicitud").empty();
-      
+  
        // Validate form before submit
        if (validator) {
-        validator.validate().then(function (status) {
-             actualizarValidSelect2();
-            //console.log('validated!');
-            //status
-            if (status == 'Valid') {
-               
-                let fechasSeleccionadas = fecha.selectedDates;
-
-               /* let fechasFormateadas = fechasSeleccionadas.map(fecha => {
-                                                var dateObject = new Date(fecha);
-                                                var ano = dateObject.getFullYear();
-                                                var mes = ("0" + (dateObject.getMonth() + 1)).slice(-2);
-                                                var dia = ("0" + dateObject.getDate()).slice(-2);
-                                                return ano + "-" + mes + "-" + dia;
-                                            });*/
+            validator.validate().then(function (status) {
+                actualizarValidSelect2();
+                //console.log('validated!');
+                //status
+                if (status == 'Valid') {
                 
-                                        
-                fechaDesde = formatearFecha(fechasSeleccionadas[0]);
-                fechaHasta = formatearFecha(fechasSeleccionadas[1]);
-                //console.log(fechasFormateadas)
-                //console.log(fechaHasta)
+                    let fechasSeleccionadas = fecha.selectedDates;                                        
+                    fechaDesde = formatearFecha(fechasSeleccionadas[0]);
+                    fechaHasta = formatearFecha(fechasSeleccionadas[1]);
+                    data = {
+                        compuesta: [],        
+                        solicitud: {
+                        PersonaId: $("#PersonaIdInput").val(),
+                        CentroCostoId: $("#CentroCostoIdInput").val(),
+                        CostoSolicitud: 0,
+                        FechaDesde: fechaDesde,
+                        FechaHasta: fechaHasta,
+                        ConsolidadoMesId: 1 //ARREGLAR PROXIMO SPRINT
+                        },
+                        movimiento: movId
+                    };
+                    var CostoSolicitud= 0;
+                    var aux=0
+                    $("#contenedor-movimiento-2 .compuesta").each(function (index) {
+                        
+                        var MovimientoAtributoId =  $(this).find('[name="MovimientoAtributoId"]').val();
+                        var Caracteristica = $(this).find('[name="Caracteristica"]').val();
+                        var CostoReal = $(this).find('[name="CostoReal"]').val();
+                        CostoSolicitud = CostoSolicitud+ parseInt(CostoReal);
 
-                data = {
-                    compuesta: [],        
-                    solicitud: {
-                    PersonaId: $("#PersonaIdInput").val(),
-                    CentroCostoId: $("#CentroCostoIdInput").val(),
-                    CostoSolicitud: 0,
-                    FechaDesde: fechaDesde,
-                    FechaHasta: fechaHasta,
-                    ConsolidadoMesId: 1 //ARREGLAR PROXIMO SPRINT
-                    },
-                    movimiento: movId
-                };
-                var CostoSolicitud= 0;
-                var aux=0
-                $("#contenedor-movimiento-2 .compuesta").each(function (index) {
-                    
-                    var MovimientoAtributoId =  $(this).find('[name="MovimientoAtributoId"]').val();
-                    var Caracteristica = $(this).find('[name="Caracteristica"]').val();
-                    var CostoReal = $(this).find('[name="CostoReal"]').val();
-                    CostoSolicitud = CostoSolicitud+ parseInt(CostoReal);
-
-                    var obj = {
-                    MovimientoAtributoId: MovimientoAtributoId,
-                    Caracteristica: Caracteristica,
-                    CostoReal: CostoReal
-                    }
-                    data.compuesta.push(obj);
-                    aux= aux+1;
-                });
-                if(aux== 0){
-                    html = '<ul><li style="">Debe elegir atributos para realizar la solicitud</li></ul>';
-                    $("#AlertaErrorSolicitud").append(html);                                    
-                    $("#AlertaErrorSolicitud").show();
-                    return;
-                }
-                data.solicitud.CostoSolicitud = CostoSolicitud;
-
-                //console.log(data)
-                $.ajax({
-                    type: 'POST',
-                    url: RealizarSolicitud,
-                    data: {
-                        _token: csrfToken,
-                        data: data
-                    },
-                    //content: "application/json; charset=utf-8",
-                    dataType: "json",
-                    beforeSend: function() {
-                        //$("#contenedor-movimiento").empty();  
-                        bloquear();
-                        KTApp.showPageLoading();
-                    },
-                    success: function (data) {
-                        if(data.success){
-                            data= data.data; 
-                            console.log(data);
-                        // $("#NombreGrupoInput").val(data.Nombre);
-                            //$("#IdGrupoInput").val(data.Id);
-                        }else{
-                            Swal.fire({
-                                text: "Error de Carga",
-                                icon: "error",
-                                buttonsStyling: false,
-                                confirmButtonText: "OK",
-                                customClass: {
-                                    confirmButton: "btn btn-danger btn-cerrar"
-                                }
-                            });
-                        $(".btn-cerrar").on("click", function () {
-                                //console.log("Error");
-                                $('#crearSolicitud').modal('toggle');
-                            })
+                        var obj = {
+                        MovimientoAtributoId: MovimientoAtributoId,
+                        Caracteristica: Caracteristica,
+                        CostoReal: CostoReal
                         }
-                    
-                        //blockUI.release();
-                        //$("#modal-update").html(data);
-                        //$.getScript(updateGrupo);
-                    },
-                    error: function () {;
-                        Swal.fire({
+                        data.compuesta.push(obj);
+                        aux= aux+1;
+                    });
+                    //VALIDADOR DE CONDICION
+                    if(aux== 0){
+                        html = '<ul><li style="">Debe elegir atributos para realizar la solicitud</li></ul>';
+                        $("#AlertaErrorSolicitud").append(html);                                    
+                        $("#AlertaErrorSolicitud").show();
+                        return;
+                    }
+                    data.solicitud.CostoSolicitud = CostoSolicitud;
+
+                    //console.log(data)
+                    $.ajax({
+                        type: 'POST',
+                        url: RealizarSolicitud,
+                        data: {
+                            _token: csrfToken,
+                            data: data
+                        },
+                        //content: "application/json; charset=utf-8",
+                        dataType: "json",
+                        beforeSend: function() {
+                            //$("#contenedor-movimiento").empty();  
+                            bloquear();
+                            KTApp.showPageLoading();
+                        },
+                        success: function (data) {
+                            if(data.success){
+                                data= data.data;
+                                location.reload(); 
+                                //console.log(data);
+                                // $("#NombreGrupoInput").val(data.Nombre);
+                                //$("#IdGrupoInput").val(data.Id);
+                            }else{
+                                Swal.fire({
                                     text: "Error de Carga",
                                     icon: "error",
                                     buttonsStyling: false,
@@ -341,25 +312,42 @@ $(document).ready(function() {
                                         confirmButton: "btn btn-danger btn-cerrar"
                                     }
                                 });
-                        $(".btn-cerrar").on("click", function () {
+                                $(".btn-cerrar").on("click", function () {
                                     //console.log("Error");
                                     $('#crearSolicitud').modal('toggle');
-                                });
-                    },
-                    complete: function(){
-                        KTApp.hidePageLoading();
-                        loadingEl.remove();
-                    }
-                });
+                                })
+                            }
+                        
+                            //blockUI.release();
+                            //$("#modal-update").html(data);
+                            //$.getScript(updateGrupo);
+                        },
+                        error: function () {;
+                            Swal.fire({
+                                        text: "Error de Carga",
+                                        icon: "error",
+                                        buttonsStyling: false,
+                                        confirmButtonText: "OK",
+                                        customClass: {
+                                            confirmButton: "btn btn-danger btn-cerrar"
+                                        }
+                                    });
+                            $(".btn-cerrar").on("click", function () {
+                                        //console.log("Error");
+                                        $('#crearSolicitud').modal('toggle');
+                                    });
+                        },
+                        complete: function(){
+                            KTApp.hidePageLoading();
+                            loadingEl.remove();
+                        }
+                    });
 
-            }
-        });
-    }
-      
-      
-      
-
+                }
+            });
+        }   
     });
+    //END::EVENTO
    
 
 });

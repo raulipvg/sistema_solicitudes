@@ -49,23 +49,23 @@ const cargarData= function(){
                     var col0 = `<div class="position-relative ps-6">
                                     <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 ${claseEstado}"></div>
                                     <a href="#" class="mb-1 text-gray-900 text-hover-primary fw-bold text-capitalize">#${data[key].Id} ${data[key].NombreCompleto}</a>
-                                    <div class="fs-7 text-muted fw-bold">Creada `+formatearFecha(data[key].FechaCreado)+`</div>
+                                    <div class="fs-7 text-muted fw-bold">Creada ${formatearFecha(data[key].FechaCreado)}</div>
                                 </div>`;
                     var col1 = `<div class="d-flex gap-2">
-                                    <a href="#" class="text-gray-900 text-hover-primary fw-bold text-capitalize">`+data[key].Movimiento+`</a>
+                                    <a href="#" class="text-gray-900 text-hover-primary fw-bold text-capitalize">${data[key].Movimiento}</a>
                                 </div>
-                                <div class="fs-7 text-muted fw-bold text-capitalize">`+data[key].Atributos+`</div>`;
+                                <div class="fs-7 text-muted fw-bold text-capitalize">${data[key].Atributos}</div>`;
                     
                     var col2 = `<div class="d-flex gap-2">
-                                    <span class="badge badge-secondary min-h-30px mh-30px text-uppercase">`+data[key].EstadoFlujo+`</span>
+                                    <span class="badge badge-secondary min-h-30px mh-30px text-uppercase">${data[key].EstadoFlujo}</span>
                                 </div>
-                                <div class="ps-1 fs-7 fw-bold text-muted text-capitalize">`+data[key].NombreFlujo+`</div>`;
+                                <div class="ps-1 fs-7 fw-bold text-muted text-capitalize">${data[key].NombreFlujo}</div>`;
                     
-                    var col3 = `<div class="fw-bold">`+formatearFecha2(data[key].FechaDesde)+` - `+formatearFecha2(data[key].FechaHasta)+`</div>
+                    var col3 = `<div class="fw-bold">${formatearFecha2(data[key].FechaDesde)} - ${formatearFecha2(data[key].FechaHasta)}</div>
                                 <div class="fs-7 fw-bold text-muted">Rango de Fecha</div>`;
 
                     var col4 = `<div class="d-flex gap-2">
-                                    <a href="#" class="text-gray-900 fw-bold text-capitalize">`+data[key].CentroCosto+`</a>
+                                    <a href="#" class="text-gray-900 fw-bold text-capitalize">${data[key].CentroCosto}</a>
                                 </div>
                                 <div class="fs-7 fw-bold text-muted">Centro de Costo asociado</div>`;
 
@@ -74,14 +74,14 @@ const cargarData= function(){
                                 </div>
                                 <div class="fs-7 fw-bold text-muted">Solicitado por</div>`;
 
-                    var col6 = `<div class="btn-group btn-group-sm" role="group">
-                                    <button class="aceptar btn btn-light-success p-1" info="`+data[key].Id+`" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Aprobar">
+                    var col6 = `<div class="btn-group btn-group-sm" role="group" a="${data[key].Id}" b="${data[key].HistorialId}" c="${data[key].FlujoIdd}" >
+                                    <button class="aceptar btn btn-light-success p-1"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Aprobar">
                                         <i class="ki-duotone ki-check-circle fs-2hx"> 
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                         </i>
                                     </button>
-                                    <button class="rechazar btn btn-light-danger p-1" info="`+data[key].Id+`" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Rechazar">
+                                    <button class="rechazar btn btn-light-danger p-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Rechazar">
                                         <i class="ki-duotone ki-cross-circle fs-2hx"> 
                                             <span class="path1"></span>
                                             <span class="path2"></span>

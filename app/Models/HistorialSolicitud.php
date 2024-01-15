@@ -81,7 +81,7 @@ class HistorialSolicitud extends Model
 			'EstadoEtapaFlujoId' => 'required|numeric|min:1|max:3',
 			'SolicitudId' => 'required|numeric',
 			'EstadoSolicitudId' => 'required|numeric|min:1|max:3',
-			'UsuarioId' => 'required|numeric',
+			'UsuarioId' => 'nullable|numeric',
 		];
 
 		$messages = [
