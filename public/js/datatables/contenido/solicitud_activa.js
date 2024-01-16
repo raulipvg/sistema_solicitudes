@@ -1,3 +1,4 @@
+let cantActiva = 0;
 let tablaSolicitudes = $('#tabla-solicitudes').DataTable({
     "language": languageConfig,
     "dom":
@@ -113,11 +114,15 @@ const cargarData= function(){
                     $(rowNode).find('td:eq(4)').addClass('min-w-125px p-1');
                     $(rowNode).find('td:eq(5)').addClass('min-w-125px p-1');
                     $(rowNode).find('td:eq(6)').addClass('text-end p-1');
-                    //$(rowNode).find('td:eq(6)').addClass('text-center p-0');          
+                    //$(rowNode).find('td:eq(6)').addClass('text-center p-0');
+                    
+                    cantActiva= cantActiva+1;
                 }
             }
             tablaSolicitudes.order([1, 'asc']).draw();
             $('[data-bs-toggle="tooltip"]').tooltip();
+
+            $("#activas").text(`ACTIVAS ${cantActiva}`);
         }
     }
 
@@ -125,4 +130,14 @@ const cargarData= function(){
 
 KTUtil.onDOMContentLoaded((function() {
     cargarData.init(solicitudeActivas);
+    
+    $("#activas").on("click", function(e){
+        if(tabulador == 2){
+            //console.log("Tab Activadas")
+            tabulador =1; 
+        }
+        
+        
+    });
+
 }));

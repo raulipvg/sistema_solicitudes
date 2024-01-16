@@ -23,10 +23,10 @@
 					<div class="card-title m-0 gap-4 gap-lg-10 gap-xl-15 nav nav-tabs border-bottom-0" data-kt-table-widget-3="tabs_nav">
 						<ul class="nav">
 							<li class="nav-item">
-								<a class="nav-link btn btn-sm btn-color-dark btn-active btn-active-dark fw-bold px-4 me-1 active" data-bs-toggle="tab" href="#tabulador1">ACTIVAS (47)</a>
+								<a id="activas" class="nav-link btn btn-sm btn-color-dark btn-active btn-active-dark fw-bold px-4 me-1 active" data-bs-toggle="tab" href="#tabulador1">ACTIVAS (47)</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link btn btn-sm btn-color-dark btn-active btn-active-dark fw-bold px-4 me-1" data-bs-toggle="tab" href="#tabulador2">TERMINADAS (58)</a>
+								<a id="terminadas" class="nav-link btn btn-sm btn-color-dark btn-active btn-active-dark fw-bold px-4 me-1" data-bs-toggle="tab" href="#tabulador2">TERMINADAS (58)</a>
 							</li>
 						</ul>
 					</div>
@@ -77,8 +77,10 @@
 		const RealizarSolicitud = '{{ route("RealizarSolicitud") }}';
 		const AprobarSolicitud = '{{ route("AprobarSolicitud")}}';
 		const RechazarSolicitud = '{{ route("RechazarSolicitud") }}';
+		const VerTerminadas = '{{ route("VerTerminadas") }}';
 
 		const solicitudeActivas = JSON.parse('{!! $solicitudes !!}');
+	
 
 		console.log( solicitudeActivas)
 
@@ -87,6 +89,7 @@
 	<script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/language/language_es.js?id=2') }}"></script>
 	<script src="{{ asset('js/datatables/contenido/solicitud_activa.js?id=2') }}"></script>
+	<script src="{{ asset('js/datatables/contenido/solicitud_terminada.js?id=2') }}"></script>
    
     <!--end::Datatables y Configuracion de la Tabla-->
 

@@ -179,7 +179,7 @@ class SolicitudController extends Controller
     public function Aprobar(Request $request){
         try{
             $request = $request->input('data');
-            $solicitudId= $request['a'];
+            //$solicitudId= $request['a'];
             $historialId = $request['b'];
             $flujoId = $request['c'];
 
@@ -191,7 +191,6 @@ class SolicitudController extends Controller
 
             DB::beginTransaction();
             
-
             $estadoFlujoId= $historialEdit->EstadoFlujoId;
             $ordenFlujo = $flujoExiste->orden_flujos;
 
@@ -199,6 +198,7 @@ class SolicitudController extends Controller
             if (!$ordenFlujoEstadoExiste){ throw new Exception('No existe el estado en el flujo');}
 
             // SI ES UNA ETAPA DEL FLUJO INICIAL O INTERMEDIA
+            $flag=true;
             if($ordenFlujoEstadoExiste->Pivot < 2){
                 $ordenFlujoNext= $ordenFlujo->firstWhere('Nivel', $ordenFlujoEstadoExiste->Nivel+1);
 
@@ -216,6 +216,7 @@ class SolicitudController extends Controller
                 $historial->EstadoSolicitudId = 2; //En Curso
  
                 $historial->save();
+                $flag=true;
 
             //SI ES UNA ETAPA FINAL DEL FLUJO
             }else{
@@ -224,12 +225,18 @@ class SolicitudController extends Controller
                     'EstadoSolicitudId' => 3, // SOLICITUD TERMINADA
                     'UsuarioId' => 1 //****ARREGLAR LO DE USUARIO*****
                 ]);
+                $flag=false;
             }
 
             DB::commit(); 
             return response()->json([
                 'success' => true,
-                'movimientos' => 1
+                'data' => [
+                    'flag'=> $flag, //Pivot <2 o no
+                    'historialId'=> ($flag)? $historial->Id : null,
+                    'estadoSolicitudId'=>($flag)? $historial->EstadoSolicitudId : null,
+                    'flujoNombre' => ( $flag)? $ordenFlujoNext->estado_flujo->Nombre : null,
+                ]
             ]);
         }catch(Exception $e){
             DB::rollBack();
@@ -243,10 +250,84 @@ class SolicitudController extends Controller
     public function Rechazar(Request $request){
         try{
             $request = $request->input('data');
+            //$solicitudId= $request['a'];
+            $historialId = $request['b'];
+            $flujoId = $request['c'];
 
+            
+            $historialEdit= HistorialSolicitud::find($historialId);
+            if (!$historialEdit) { throw new Exception('Historial no encontrado');}
+            $flujoExiste = Flujo::find($flujoId);
+            if (!$flujoExiste) { throw new Exception('Flujo no encontrado');}
+
+            DB::beginTransaction();
+            $estadoFlujoId= $historialEdit->EstadoFlujoId;
+            $ordenFlujo = $flujoExiste->orden_flujos;
+
+            $ordenFlujoEstadoExiste = $ordenFlujo->firstWhere('EstadoFlujoId', $estadoFlujoId);
+            if (!$ordenFlujoEstadoExiste){ throw new Exception('No existe el estado en el flujo');}
+
+            $historialEdit->update([
+                    'EstadoEtapaFlujoId' => 2,  //ETAPA Rechazada,
+                    'EstadoSolicitudId' => 3, // SOLICITUD TERMINADA
+                    'UsuarioId' => 1 //****ARREGLAR LO DE USUARIO*****
+                ]);
+        
+            DB::commit(); 
             return response()->json([
+                'success' => true
+            ]);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage() 
+            ]);
+        }
+    }
+
+    public function VerTerminadas(){
+        try{
+        $solicitudes = Solicitud::select('solicitud.Id',DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"),
+                                        'centro_de_costo.Nombre as CentroCosto','FechaDesde','FechaHasta',
+                                        'solicitud.created_at as FechaCreado','historial_solicitud.EstadoSolicitudId',
+                                        'estado_flujo.Nombre as EstadoFlujo', 'Movimiento.Nombre as Movimiento',
+                                        'flujo.Nombre as NombreFlujo',
+                                        'historial_solicitud.Id as HistorialId',
+                                        'flujo.Id as FlujoIdd',
+                                        DB::raw('GROUP_CONCAT(atributo.Nombre) as Atributos'),
+                                        DB::raw('(
+                                            SELECT CONCAT(persona_solicitante.Nombre, " ", persona_solicitante.Apellido)
+                                            FROM usuario
+                                            JOIN persona AS persona_solicitante ON persona_solicitante.UsuarioId = usuario.Id
+                                            WHERE usuario.Id = solicitud.UsuarioSolicitanteId
+                                        ) as UsuarioNombre')
+                                        )
+                                ->join('persona','persona.Id','=','solicitud.PersonaId')
+                                ->join('centro_de_costo','centro_de_costo.Id','=','solicitud.CentroCostoId')
+                                ->join('historial_solicitud', function ($join) {
+                                    $join->on('historial_solicitud.SolicitudId', '=', 'solicitud.Id')
+                                        ->where('historial_solicitud.created_at', '=', DB::raw('(
+                                                            SELECT MAX(created_at) 
+                                                            FROM historial_solicitud 
+                                                            WHERE SolicitudId = solicitud.Id
+                                                            )'));
+                                })
+                                ->join('estado_flujo','estado_flujo.Id','=','historial_solicitud.EstadoFlujoId')
+                                ->where('historial_solicitud.EstadoSolicitudId','=', 3)
+                                ->join('compuesta','compuesta.SolicitudId','=','solicitud.Id')                                
+                                ->join('movimiento_atributo','movimiento_atributo.Id','=','compuesta.MovimientoAtributoId')
+                                ->join('movimiento','movimiento.Id','=','movimiento_atributo.MovimientoId')
+                                ->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
+                                ->join('flujo','flujo.Id','=','movimiento.FlujoId')
+                                ->groupBy('solicitud.Id', 'NombreCompleto', 'CentroCosto', 'FechaDesde', 'FechaHasta', 'FechaCreado', 'EstadoSolicitudId', 
+                                'EstadoFlujo', 'Movimiento', 'NombreFlujo', 'HistorialId','FlujoIdd','UsuarioSolicitanteId')
+                                ->get();
+
+
+        return response()->json([
                 'success' => true,
-                'movimientos' => 1
+                'solicitudes' => $solicitudes
             ]);
         }catch(Exception $e){
             return response()->json([
@@ -254,6 +335,7 @@ class SolicitudController extends Controller
                 'message' => $e->getMessage() 
             ]);
         }
+
     }
 }
 
