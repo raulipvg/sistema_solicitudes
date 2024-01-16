@@ -47,13 +47,10 @@ class SolicitudController extends Controller
                                         'flujo.Id as FlujoIdd',
                                         DB::raw('GROUP_CONCAT(atributo.Nombre) as Atributos'),
                                         DB::raw('(
-                                            SELECT CONCAT(persona.Nombre," ",persona.Apellido)
-                                            FROM historial_solicitud
-                                            JOIN usuario ON usuario.Id = historial_solicitud.UsuarioId
-                                            JOIN persona ON persona.UsuarioId = usuario.Id 
-                                            WHERE historial_solicitud.SolicitudId = solicitud.Id
-                                            ORDER BY historial_solicitud.created_at ASC
-                                            LIMIT 1
+                                            SELECT CONCAT(persona_solicitante.Nombre, " ", persona_solicitante.Apellido)
+                                            FROM usuario
+                                            JOIN persona AS persona_solicitante ON persona_solicitante.UsuarioId = usuario.Id
+                                            WHERE usuario.Id = solicitud.UsuarioSolicitanteId
                                         ) as UsuarioNombre')
                                         )
                                 ->join('persona','persona.Id','=','solicitud.PersonaId')
@@ -75,7 +72,7 @@ class SolicitudController extends Controller
                                 ->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
                                 ->join('flujo','flujo.Id','=','movimiento.FlujoId')
                                 ->groupBy('solicitud.Id', 'NombreCompleto', 'CentroCosto', 'FechaDesde', 'FechaHasta', 'FechaCreado', 'EstadoSolicitudId', 
-                                'EstadoFlujo', 'Movimiento', 'NombreFlujo', 'HistorialId','FlujoIdd')
+                                'EstadoFlujo', 'Movimiento', 'NombreFlujo', 'HistorialId','FlujoIdd','UsuarioSolicitanteId')
                                 ->get();
 
         return view('solicitud.solicitud')->with([
@@ -208,7 +205,7 @@ class SolicitudController extends Controller
                 //BEGIN::ARREGLAR LO DEL USUARIO
                 $historialEdit->update([
                     'EstadoEtapaFlujoId' => 1,  //ETAPA APROBADA
-                    'UsuarioId'=> 1 //ARREGLAR LO DEL USUARIO
+                    'UsuarioId'=> 1 //****ARREGLAR LO DE USUARIO*****
                 ]);
                 //END::ARREGLAR LO DEL USUARIO 
                 
@@ -224,11 +221,10 @@ class SolicitudController extends Controller
             }else{
                 $historialEdit->update([
                     'EstadoEtapaFlujoId' => 1,  //ETAPA APROBADA,
-                    'EstadoSolicitudId' => 3 // SOLICITUD TERMINADA
+                    'EstadoSolicitudId' => 3, // SOLICITUD TERMINADA
+                    'UsuarioId' => 1 //****ARREGLAR LO DE USUARIO*****
                 ]);
             }
-
-
 
             DB::commit(); 
             return response()->json([
