@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HistorialSolicitud;
+use App\Models\OrdenFlujo;
+use App\Models\Flujo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class EstadoFlujoSolicitudControllerTest extends Controller
 {
     public function GetData(Request $request){
         $request = $request->input('data');
+        /*
         $rechazada = 
         [
             'success' => true,
@@ -143,14 +149,56 @@ class EstadoFlujoSolicitudControllerTest extends Controller
             $enCurso,
             $rechazada
         ];
-
-        return response()->json($respuestas[$request['solicitudId']]);
+ */
+        $flujo = OrdenFlujo::select('orden_flujo.Nivel',
+                                    'estado_flujo.Nombre',
+                                    'estado_flujo.Id')
+                            ->where('orden_flujo.FlujoId','=',$request['flujoId'])
+                            ->join('estado_flujo','estado_flujo.Id','=','orden_flujo.EstadoFlujoId')
+                            ->get();
+        $historial = HistorialSolicitud::select('EstadoFlujoId',
+                                                'estado_etapa.Id as estadoEtapa',
+                                                'estado_etapa.Nombre as estadoEtapaNombre',
+                                                'usuario.Username as usuario')
+                                        ->where('historial_solicitud.Id','=',$request['historialId'])
+                                        ->join('usuario','usuario.Id', '=','historial_solicitud.UsuarioId')
+                                        ->join('estado_etapa','estado_etapa.Id','=','historial_solicitud.EstadoEtapaFlujoId')
+                                        ->get();
+        $flujoNombre = Flujo::find($request['flujoId'])->first()->Nombre;
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'historial' => $historial,
+                'ordenFlujos' => $flujo,
+                'nombreFlujo' => $flujoNombre
+            ]
+        ]);
     }
 
     public function getHistorial(Request $request){
         $request = $request->input('data');
 
-        $rechazada = [
+        $ordenFlujo = OrdenFlujo::select('orden_flujo.Nivel', 
+                                            'estado_flujo.Nombre as EstadoNombre',
+                                            'estado_flujo.Id as EstadoId'
+                                        )
+                    ->where('orden_flujo.FlujoId','=',$request['flujoId'])
+                    ->join('estado_flujo','estado_flujo.Id','=','orden_flujo.EstadoFlujoId')
+                    ->get();
+        
+
+        $historial = HistorialSolicitud::select('historial_solicitud.created_at as creacion', 
+                                                'historial_solicitud.updated_at as actualizacion',
+                                                'historial_solicitud.EstadoFlujoId as estadoFlujoId',
+                                                'historial_solicitud.EstadoEtapaFlujoId',
+                                                DB::raw('CONCAT(persona.Nombre, " ", persona.Apellido) as Usuario'),
+                                                'historial_solicitud.EstadoSolicitudId')
+                                        ->join('persona','persona.UsuarioId','=','historial_solicitud.UsuarioId')
+                                        ->where('historial_solicitud.SolicitudId','=',$request['solicitudId'])
+                                        ->get();
+
+/*
+$rechazada = [
             'solicitud' => [
                 'id' => '11',
                 'solicitante' => 'Nombre Apellido',
@@ -292,10 +340,13 @@ class EstadoFlujoSolicitudControllerTest extends Controller
             $iniciada,
             $enCurso,
             $rechazada
-        ];
+        ];*/
         return response()->json([
             'success'=> true,
-            'data' => $respuestas[$request['solicitudId']]
+            'data' => [
+                'ordenFlujos' => $ordenFlujo,
+                'historial' => $historial
+            ]
         ]);
     }
 }

@@ -11,8 +11,9 @@ $(document).ready(function(e){
         if($(this).attr('abierto') == '0'){
             $(this).attr('abierto','1');
             
-            var solicitudId = $(this).parent().find('.aceptar').attr('info');       //Id de la solicitud
-            var movimientoId = 1;                                                   //Id del movimiento
+            var solicitudId = $(this).parent().find('.btn-group').attr('a');        //Id de la solicitud
+            var historialId = $(this).parent().find('.btn-group').attr('b');        //Id del historial
+            var flujoId = $(this).parent().find('.btn-group').attr('c');            //Id del flujo asociado al movimiento
 
 
             $.ajax({
@@ -20,7 +21,7 @@ $(document).ready(function(e){
                 url: DataTestSolicitud,
                 data: {
                     _token: csrfToken,
-                    data: {solicitudId, movimientoId}
+                    data: {solicitudId, historialId, flujoId}
                 },
                 //content: "application/json; charset=utf-8",
                 dataType: "json",
@@ -30,6 +31,7 @@ $(document).ready(function(e){
                 },
                 success: function (data) {
                     if(data.success){
+                        console.log(data.data)
                         row.child(format(data.data)).show();
 
                     }else{                       
@@ -45,8 +47,8 @@ $(document).ready(function(e){
                     }
                 },
                 error: function () {
-                    boton.children().eq(0).show();
-                    boton.removeClass('active');
+                    $(this).attr('abierto','0');
+                    row.child.hide();
                     Swal.fire({
                         text: "Error",
                         icon: "error",
@@ -79,7 +81,7 @@ function format(data) {
                 <table id="services_table" class="table table-row-dashed">
                     <thead class="services-info">
                     <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                            <th class="p-0 ps-3">Flujo: '+data.flujo.Nombre+'</th>
+                            <th class="p-0 ps-3">Flujo: ${data.nombreFlujo}</th>
                         </tr>
                     </thead>
                     <tbody class="fw-bold text-gray-600">`;
@@ -100,33 +102,32 @@ function AgregarTR(data){
         usuario = '-';
         estado = null;
         currentItem = null;
-        usuario = '-';
         historial.forEach((hist)=>{
             // Si el tipo/estado es rechazado
-            if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 0){
+            if(hist.EstadoFlujoId == orden.Id && hist.estadoEtapa == 1){
                 estado = 'cancel';
                 currentItem = 'current-item-cancel';
                 usuario = hist.usuario;
                 return;
             }
             // Si el tipo/estado es aprobado
-            else if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 1){
+            else if(hist.EstadoFlujoId == orden.Id && hist.estadoEtapa == 2){
                 estado = 'success';
                 usuario = hist.usuario;
                 return;
             }
             // Si el tipo/estado es en curso
-            else if(hist.estadoFlujoId == orden[0].Id && hist.tipo == 2){
+            else if(hist.EstadoFlujoId == orden.Id && hist.estadoEtapa == 3){
                 currentItem = 'current-item';
                 return;
             }
         })
         html +=
-                    '<li class="step-wizard-item '+currentItem+'">'+
-                        '<span class="text-capitalize">'+usuario+'</span>'+
-                        '<span class="success progress-count '+estado+'">'+contar+'</span>'+
-                        '<span class="progress-label text-capitalize" info="'+orden[0].Id+'">'+orden[0].Nombre+'</span>'+
-                    '</li>';
+                    `<li class="step-wizard-item ${currentItem}">
+                        <span class="text-capitalize">${usuario}</span>
+                        <span class="success progress-count ${estado}">${contar}</span>
+                        <span class="progress-label text-capitalize"">${orden.Nombre}</span>
+                    </li>`;
         contar++;
     });
     
