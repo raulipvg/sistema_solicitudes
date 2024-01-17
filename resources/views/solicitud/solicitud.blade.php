@@ -55,7 +55,6 @@
 		</div>
 		
 
-		@include('solicitud.componente.tablaEstadoFlujo')
 	</div>
 
 	<!--begin::modal - Historial Solicitud-->

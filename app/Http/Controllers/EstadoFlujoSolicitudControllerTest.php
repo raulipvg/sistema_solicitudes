@@ -156,15 +156,18 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                             ->where('orden_flujo.FlujoId','=',$request['flujoId'])
                             ->join('estado_flujo','estado_flujo.Id','=','orden_flujo.EstadoFlujoId')
                             ->get();
-        $historial = HistorialSolicitud::select('EstadoFlujoId',
-                                                'estado_etapa.Id as estadoEtapa',
-                                                'estado_etapa.Nombre as estadoEtapaNombre',
-                                                'usuario.Username as usuario')
-                                        ->where('historial_solicitud.Id','=',$request['historialId'])
-                                        ->join('usuario','usuario.Id', '=','historial_solicitud.UsuarioId')
-                                        ->join('estado_etapa','estado_etapa.Id','=','historial_solicitud.EstadoEtapaFlujoId')
+        $historial = HistorialSolicitud::select(
+                                            'historial_solicitud.EstadoFlujoId',
+                                            'estado_etapa.Id as estadoEtapa',
+                                            'estado_etapa.Nombre as estadoEtapaNombre',
+                                            'usuario.Username as usuario'
+                                        )
+                                        ->where('historial_solicitud.SolicitudId', '=', $request['solicitudId'])
+                                        ->leftJoin('usuario', 'usuario.Id', '=', 'historial_solicitud.UsuarioId')
+                                        ->join('estado_etapa', 'estado_etapa.Id', '=', 'historial_solicitud.EstadoEtapaFlujoId')
                                         ->get();
-        $flujoNombre = Flujo::find($request['flujoId'])->first()->Nombre;
+
+        $flujoNombre = Flujo::select('Nombre')->where('Id',$request['flujoId'])->first()->Nombre;
         return response()->json([
             'success' => true,
             'data' => [
@@ -193,10 +196,10 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                                 'historial_solicitud.EstadoEtapaFlujoId',
                                                 DB::raw('CONCAT(persona.Nombre, " ", persona.Apellido) as Usuario'),
                                                 'historial_solicitud.EstadoSolicitudId')
-                                        ->join('persona','persona.UsuarioId','=','historial_solicitud.UsuarioId')
+                                        ->leftJoin('persona','persona.UsuarioId','=','historial_solicitud.UsuarioId')
                                         ->where('historial_solicitud.SolicitudId','=',$request['solicitudId'])
                                         ->get();
-
+        $flujoNombre = Flujo::select('Nombre')->where('Id',$request['flujoId'])->first()->Nombre;
 /*
 $rechazada = [
             'solicitud' => [
@@ -345,7 +348,8 @@ $rechazada = [
             'success'=> true,
             'data' => [
                 'ordenFlujos' => $ordenFlujo,
-                'historial' => $historial
+                'historial' => $historial,
+                'flujoNombre' => $flujoNombre,
             ]
         ]);
     }
