@@ -202,6 +202,7 @@ class SolicitudController extends Controller
                                 ->groupBy('solicitud.Id', 'NombreCompleto', 'CentroCosto', 'FechaDesde', 'FechaHasta', 'FechaCreado', 'EstadoSolicitudId', 
                                 'EstadoFlujo', 'Movimiento', 'NombreFlujo', 'HistorialId','FlujoIdd','UsuarioSolicitanteId')
                                 ->get();
+                                
             return response()->json([
                 'success' => true,
                 'data'=> $solicitud,

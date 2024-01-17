@@ -291,9 +291,6 @@ $(document).ready(function() {
                                 //console.log(data);
                                 cargarDataActiva.init(data);
                                 $('#crearSolicitud').modal('toggle');
-                                //location.reload(); 
-                                // $("#NombreGrupoInput").val(data.Nombre);
-                                //$("#IdGrupoInput").val(data.Id);
                             }else{
                                 Swal.fire({
                                     text: "Error de Carga",
@@ -308,11 +305,7 @@ $(document).ready(function() {
                                     //console.log("Error");
                                     $('#crearSolicitud').modal('toggle');
                                 })
-                            }
-                        
-                            //blockUI.release();
-                            //$("#modal-update").html(data);
-                            //$.getScript(updateGrupo);
+                            }                        
                         },
                         error: function () {;
                             Swal.fire({
