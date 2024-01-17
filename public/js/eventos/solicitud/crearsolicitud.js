@@ -84,16 +84,6 @@ $(document).ready(function() {
     $('#MovimientoInput').on('select2:select', function (e) {
         var data = e.params.data;
         movId= data.id;
-        //console.log('Elemento seleccionado:', data);
-        //console.log(data.id)
-        //var opcionOcultar = $(this).find('option[value="'+data.id+'"]');
-        //console.log(opcionOcultar)
-        
-        //opcionOcultar.attr('disabled','disabled');
-        //opcionOcultar.hide();
-        //$(this).trigger('change');
-        //$(this).select2('destroy')
-        //$(this).select2();
         $("#AlertaErrorSolicitud").hide();
         $.ajax({
           type: 'POST',
@@ -298,8 +288,10 @@ $(document).ready(function() {
                         success: function (data) {
                             if(data.success){
                                 data= data.data;
-                                location.reload(); 
                                 //console.log(data);
+                                cargarDataActiva.init(data);
+                                $('#crearSolicitud').modal('toggle');
+                                //location.reload(); 
                                 // $("#NombreGrupoInput").val(data.Nombre);
                                 //$("#IdGrupoInput").val(data.Id);
                             }else{
