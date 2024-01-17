@@ -149,6 +149,7 @@ Route::group(['prefix'=> '/solicitud'], function () {
     Route::post('/aprobar', [SolicitudController::class,'Aprobar'])->name('AprobarSolicitud');
     Route::post('/rechazar', [SolicitudController::class,'Rechazar'])->name('RechazarSolicitud');
     Route::get('/verterminadas', [SolicitudController::class,'VerTerminadas'])->name('VerTerminadas');
+    Route::get('/veractivas', [SolicitudController::class,'VerActivas'])->name('VerActivas');
 });
 
 Route::group(['prefix' => '/error'], function () {

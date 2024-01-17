@@ -72,8 +72,8 @@ $(document).ready(function() {
                     }else{
                         cantActiva= cantActiva-1;
                         cantTerminada= cantTerminada+1;
-                        $("#activas").text(`ACTIVAS ${cantActiva}`);
-                        $("#terminadas").text(`TERMINADAS ${cantTerminada}`);
+                        $("#activas").text(`ACTIVAS (${cantActiva})`);
+                        $("#terminadas").text(`TERMINADAS (${cantTerminada})`);
                         row.remove().draw();
                     }
                     
@@ -142,8 +142,8 @@ $(document).ready(function() {
                     //console.log('todo pulento');
                     cantActiva=cantActiva-1;
                     cantTerminada = cantTerminada+1;
-                    $("#activas").text(`ACTIVAS ${cantActiva}`);
-                    $("#terminadas").text(`TERMINADAS ${cantTerminada}`);
+                    $("#activas").text(`ACTIVAS (${cantActiva})`);
+                    $("#terminadas").text(`TERMINADAS (${cantTerminada})`);
                     row.remove().draw();
                     
                 }else{

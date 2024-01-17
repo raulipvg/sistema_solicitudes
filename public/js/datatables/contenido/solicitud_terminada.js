@@ -1,4 +1,3 @@
-let cantTerminada = 0;
 let tablaSolicitudesTerminadas = $('#tabla-solicitudes-terminadas').DataTable({
     "language": languageConfig,
     "dom":
@@ -34,21 +33,16 @@ let tablaSolicitudesTerminadas = $('#tabla-solicitudes-terminadas').DataTable({
     //"scrollX": true
 });
 
-
+let cantTerminada = 0;
 const cargarDataTerminada= function(){
     return {
         init: function(data){
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
                             //console.log("Nombre:", data[persona].username);
-                    var claseEstado="";
-                    if(data[key].EstadoSolicitudId == 1){
-                        claseEstado="bg-success";
-                    }else if(data[key].EstadoSolicitudId == 2){
-                        claseEstado="bg-warning";
-                    }
+                    
                     var col0 = `<div class="position-relative ps-6">
-                                    <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 ${claseEstado}"></div>
+                                    <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-danger"></div>
                                     <a href="#" class="mb-1 text-gray-900 text-hover-primary fw-bold text-capitalize">#${data[key].Id} ${data[key].NombreCompleto}</a>
                                     <div class="fs-7 text-muted fw-bold">Creada ${formatearFecha(data[key].FechaCreado)}</div>
                                 </div>`;
@@ -110,7 +104,7 @@ const cargarDataTerminada= function(){
             tablaSolicitudesTerminadas.order([1, 'asc']).draw();
             $('[data-bs-toggle="tooltip"]').tooltip();
 
-            $("#terminadas").text(`TERMINADAS ${cantTerminada}`);
+            $("#terminadas").text(`TERMINADAS (${cantTerminada})`);
         }
     }
 
@@ -136,10 +130,9 @@ KTUtil.onDOMContentLoaded((function() {
                 },
                 success: function (data) {
                     if(data.success){
-                        //data= data.data; 
-                                                           
-                        console.log('todo pulento terminado');
-                        console.log(data);
+                        //data= data.data;                                                        
+                        //console.log('todo pulento terminado');
+                        //console.log(data);
                         cantTerminada = 0;
                         tablaSolicitudesTerminadas.clear();
                         cargarDataTerminada.init(data.solicitudes);
@@ -149,7 +142,7 @@ KTUtil.onDOMContentLoaded((function() {
                         
                     }else{
                         Swal.fire({
-                            text: "Error al Rechazar Solicitud",
+                            text: "Error al Cargar Solicitudes Terminadas",
                             icon: "error",
                             buttonsStyling: false,
                             confirmButtonText: "OK",
@@ -161,7 +154,7 @@ KTUtil.onDOMContentLoaded((function() {
                 },
                 error: function () {;
                     Swal.fire({
-                            text: "Error al Rechazar Solicitud",
+                            text: "Error al Cargar Solicitudes Terminadas",
                             icon: "error",
                             buttonsStyling: false,
                             confirmButtonText: "OK",

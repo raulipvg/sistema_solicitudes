@@ -1,4 +1,4 @@
-let cantActiva = 0;
+
 let tablaSolicitudes = $('#tabla-solicitudes').DataTable({
     "language": languageConfig,
     "dom":
@@ -34,8 +34,8 @@ let tablaSolicitudes = $('#tabla-solicitudes').DataTable({
     //"scrollX": true
 });
 
-
-const cargarData= function(){
+let cantActiva = 0;
+const cargarDataActiva= function(){
     return {
         init: function(data){
             for (const key in data) {
@@ -122,19 +122,72 @@ const cargarData= function(){
             tablaSolicitudes.order([1, 'asc']).draw();
             $('[data-bs-toggle="tooltip"]').tooltip();
 
-            $("#activas").text(`ACTIVAS ${cantActiva}`);
+            $("#activas").text(`ACTIVAS (${cantActiva})`);
         }
     }
 
 }();
 
 KTUtil.onDOMContentLoaded((function() {
-    cargarData.init(solicitudeActivas);
+    cargarDataActiva.init(solicitudeActivas);
     
     $("#activas").on("click", function(e){
         if(tabulador == 2){
             //console.log("Tab Activadas")
-            tabulador =1; 
+            tabulador =1;
+            
+            $.ajax({
+                type: 'GET',
+                url: VerActivas,
+                data: {
+                    _token: csrfToken 
+                },
+                //content: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function() { 
+                    bloquear();
+                    KTApp.showPageLoading();
+                },
+                success: function (data) {
+                    if(data.success){
+                        //data= data.data;                                                            
+                        //console.log('todo pulento terminado');
+                        //console.log(data);
+                        cantActiva = 0;
+                        tablaSolicitudes.clear();
+                        cargarDataActiva.init(data.solicitudes);
+                        //cantActiva=cantActiva-1;
+                        //$("#activas").text(`ACTIVAS ${cantActiva}`);
+                        //.remove().draw();
+                        
+                    }else{
+                        Swal.fire({
+                            text: "Error al Cargar Solicitudes Activas",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger"
+                            }
+                        });
+                    }
+                },
+                error: function () {;
+                    Swal.fire({
+                            text: "Error al Cargar Solicitudes Activas",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger"
+                            }
+                        });
+                },
+                complete: function(){
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+                }
+            });  
         }
         
         

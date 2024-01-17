@@ -338,5 +338,57 @@ class SolicitudController extends Controller
         }
 
     }
+
+    public function VerActivas(){
+        try{
+            $solicitudes = Solicitud::select('solicitud.Id',DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"),
+                                        'centro_de_costo.Nombre as CentroCosto','FechaDesde','FechaHasta',
+                                        'solicitud.created_at as FechaCreado','historial_solicitud.EstadoSolicitudId',
+                                        'estado_flujo.Nombre as EstadoFlujo', 'Movimiento.Nombre as Movimiento',
+                                        'flujo.Nombre as NombreFlujo',
+                                        'historial_solicitud.Id as HistorialId',
+                                        'flujo.Id as FlujoIdd',
+                                        DB::raw('GROUP_CONCAT(atributo.Nombre) as Atributos'),
+                                        DB::raw('(
+                                            SELECT CONCAT(persona_solicitante.Nombre, " ", persona_solicitante.Apellido)
+                                            FROM usuario
+                                            JOIN persona AS persona_solicitante ON persona_solicitante.UsuarioId = usuario.Id
+                                            WHERE usuario.Id = solicitud.UsuarioSolicitanteId
+                                        ) as UsuarioNombre')
+                                        )
+                                ->join('persona','persona.Id','=','solicitud.PersonaId')
+                                ->join('centro_de_costo','centro_de_costo.Id','=','solicitud.CentroCostoId')
+                                ->join('historial_solicitud', function ($join) {
+                                    $join->on('historial_solicitud.SolicitudId', '=', 'solicitud.Id')
+                                         ->where('historial_solicitud.created_at', '=', DB::raw('(
+                                                            SELECT MAX(created_at) 
+                                                            FROM historial_solicitud 
+                                                            WHERE SolicitudId = solicitud.Id
+                                                            )'));
+                                })
+                                ->join('estado_flujo','estado_flujo.Id','=','historial_solicitud.EstadoFlujoId')
+                                ->where('historial_solicitud.EstadoSolicitudId','=', 1)
+                                ->orWhere('historial_solicitud.EstadoSolicitudId','=', 2)
+                                ->join('compuesta','compuesta.SolicitudId','=','solicitud.Id')                                
+                                ->join('movimiento_atributo','movimiento_atributo.Id','=','compuesta.MovimientoAtributoId')
+                                ->join('movimiento','movimiento.Id','=','movimiento_atributo.MovimientoId')
+                                ->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
+                                ->join('flujo','flujo.Id','=','movimiento.FlujoId')
+                                ->groupBy('solicitud.Id', 'NombreCompleto', 'CentroCosto', 'FechaDesde', 'FechaHasta', 'FechaCreado', 'EstadoSolicitudId', 
+                                'EstadoFlujo', 'Movimiento', 'NombreFlujo', 'HistorialId','FlujoIdd','UsuarioSolicitanteId')
+                                ->get();
+            return response()->json([
+                'success' => true,
+                'solicitudes' => $solicitudes
+            ]);
+
+        }catch(Exception $e){
+            return response()->json([
+                'success'=> false,
+                'message'=> $e->getMessage()
+            ]);
+        }
+
+    }
 }
 
