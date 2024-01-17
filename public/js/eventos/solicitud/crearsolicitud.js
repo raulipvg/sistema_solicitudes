@@ -84,16 +84,6 @@ $(document).ready(function() {
     $('#MovimientoInput').on('select2:select', function (e) {
         var data = e.params.data;
         movId= data.id;
-        //console.log('Elemento seleccionado:', data);
-        //console.log(data.id)
-        //var opcionOcultar = $(this).find('option[value="'+data.id+'"]');
-        //console.log(opcionOcultar)
-        
-        //opcionOcultar.attr('disabled','disabled');
-        //opcionOcultar.hide();
-        //$(this).trigger('change');
-        //$(this).select2('destroy')
-        //$(this).select2();
         $("#AlertaErrorSolicitud").hide();
         $.ajax({
           type: 'POST',
@@ -298,10 +288,9 @@ $(document).ready(function() {
                         success: function (data) {
                             if(data.success){
                                 data= data.data;
-                                location.reload(); 
                                 //console.log(data);
-                                // $("#NombreGrupoInput").val(data.Nombre);
-                                //$("#IdGrupoInput").val(data.Id);
+                                cargarDataActiva.init(data);
+                                $('#crearSolicitud').modal('toggle');
                             }else{
                                 Swal.fire({
                                     text: "Error de Carga",
@@ -316,11 +305,7 @@ $(document).ready(function() {
                                     //console.log("Error");
                                     $('#crearSolicitud').modal('toggle');
                                 })
-                            }
-                        
-                            //blockUI.release();
-                            //$("#modal-update").html(data);
-                            //$.getScript(updateGrupo);
+                            }                        
                         },
                         error: function () {;
                             Swal.fire({
