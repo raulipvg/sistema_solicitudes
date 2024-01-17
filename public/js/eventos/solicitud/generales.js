@@ -40,8 +40,8 @@ $(document).ready(function() {
                 if(data.success){
                     data= data.data;
                     //ocation.reload();
-                    console.log(data)                                    
-                    console.log('todo pulento');
+                    //console.log(data)                                    
+                    //console.log('todo pulento');
                     if(data.flag){
                         //celda 0 color estadoSolicitud
                         //celda 2 la etapa del flujo
@@ -71,7 +71,9 @@ $(document).ready(function() {
                         tablaSolicitudes.draw();
                     }else{
                         cantActiva= cantActiva-1;
+                        cantTerminada= cantTerminada+1;
                         $("#activas").text(`ACTIVAS ${cantActiva}`);
+                        $("#terminadas").text(`TERMINADAS ${cantTerminada}`);
                         row.remove().draw();
                     }
                     
@@ -139,7 +141,9 @@ $(document).ready(function() {
                     data= data.data;                                    
                     //console.log('todo pulento');
                     cantActiva=cantActiva-1;
+                    cantTerminada = cantTerminada+1;
                     $("#activas").text(`ACTIVAS ${cantActiva}`);
+                    $("#terminadas").text(`TERMINADAS ${cantTerminada}`);
                     row.remove().draw();
                     
                 }else{
