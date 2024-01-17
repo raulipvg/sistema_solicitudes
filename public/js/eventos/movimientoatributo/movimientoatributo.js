@@ -34,61 +34,63 @@ $(document).ready(function() {
                 })
             }
         }
-);
+    );
 
-$("#tabla-movimiento tbody").on("click",'.registrar-movAtributo', function(e) {
+    $("#tabla-movimiento tbody").on("click",'.registrar-movAtributo', function(e) {
 
-    e.preventDefault();
-    e.stopPropagation();
-    $('.form-select').val("").trigger("change").prop("disabled",false);
-    $("#AlertaErrorMovAtr").hide();
-    validator.resetForm();
-    actualizarValidSelect2();
-    var movimientoId= $(this).attr("data-info");
-    $('#MovimientoIdInputAtr').val(movimientoId).trigger("change").prop("disabled",true);
-    
-    $("#modal-titulo-asignar-grupo").empty();
-    btnAddAtributo= $(this);
-    
-    $.ajax({
-        type: 'POST',
-        url: VerAtributosFaltantes,
-        data: {
-            _token: csrfToken,
-            data: movimientoId},
-        //content: "application/json; charset=utf-8",
-        dataType: "json",
-        beforeSend: function() {
-            bloquear();
-        },
-        success: function (data) {
-            if(data.success){
-                $("#modal-titulo-asignar-grupo").html("Movimiento: "+data.nombre);
-                data = data.data;
-                llenarSelect2(data,$('#AtributoIdInputMov'))
-            }else{
-                //console.log(data.message)
-                html = '<ul><li style="">'+data.message+'</li></ul>';
-                $("#AlertaError2").append(html);
-                $("#AlertaError2").show();
-            }
-        },
-        error: function () {
-            Swal.fire({
-                text: "Error",
-                icon: "error",
-                buttonsStyling: false,
-                confirmButtonText: "OK",
-                customClass: {
-                    confirmButton: "btn btn-danger btn-cerrar"
+        e.preventDefault();
+        e.stopPropagation();
+        $('.form-select').val("").trigger("change").prop("disabled",false);
+        $("#AlertaErrorMovAtr").hide();
+        validator.resetForm();
+        actualizarValidSelect2();
+        var movimientoId= $(this).attr("data-info")
+        
+        $("#modal-titulo-asignar-grupo").empty();
+        btnAddAtributo= $(this);
+        
+
+        $.ajax({
+            type: 'POST',
+            url: VerAtributosFaltantes,
+            data: {
+                _token: csrfToken,
+                data: movimientoId},
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function() {
+                bloquear();
+            },
+            success: function (data) {
+                if(data.success){
+                    $("#modal-titulo-asignar-grupo").html("Movimiento: "+data.nombre);
+
+                    llenarSelect2(data.movimientos, $('#MovimientoIdInputAtr') );
+                    $('#MovimientoIdInputAtr').val(movimientoId).trigger("change").prop("disabled",true);
+                    data = data.data;
+                    llenarSelect2(data,$('#AtributoIdInputMov'))
+                }else{
+                    html = '<ul><li style="">'+data.message+'</li></ul>';
+                    $("#AlertaError2").append(html);
+                    $("#AlertaError2").show();
                 }
-            });
-        },
-        complete: function(){
-            bloquear();
-        }
+            },
+            error: function () {
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            },
+            complete: function(){
+                bloquear();
+            }
+        });
     });
-});
 
     const submitButton = document.getElementById('AddSubmitMovAtr');
     submitButton.addEventListener('click', function (e) {
@@ -145,7 +147,7 @@ $("#tabla-movimiento tbody").on("click",'.registrar-movAtributo', function(e) {
                                     tbody.find('[data-bs-toggle="tooltip"]').tooltip();
                                 
                                 })
-                                                                
+
                                 $('#registrar-movAtributo').modal('toggle');
                             }else{
                                 Swal.fire({

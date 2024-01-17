@@ -26,9 +26,6 @@
                             <div class="form-floating fv-row">
                                 <select id="MovimientoIdInputAtr" name="MovimientoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" >
                                     <option></option>
-                                    @foreach($movimientos as $movimiento)
-                                    <option value='{{$movimiento->Id}}' class="text-capitalize">{{ $movimiento->Nombre}}</option>
-                                    @endforeach
                                 </select>
                                 <label for="MovimientoIdInputAtr" class="form-label">Movimiento</label>
                             </div>

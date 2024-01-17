@@ -15,7 +15,7 @@ use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MovimientoAtributoController;
 use App\Http\Controllers\SolicitudController;
-use App\Http\Controllers\EstadoFlujoSolicitudControllerTest;
+use App\Http\Controllers\SolicitudFlujoHistorialController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Monolog\Handler\RotatingFileHandler;
@@ -143,8 +143,8 @@ Route::group(['prefix'=> '/movimientoatributo'], function () {
 
 Route::group(['prefix'=> '/solicitud'], function () {
     Route::get('/', [SolicitudController::class,'Index'])->name('Solicitud');
-    Route::post('/datosSolicitud', [EstadoFlujoSolicitudControllerTest::class,'GetData'])->name('DataTestSolicitud');
-    Route::post('/historial', [EstadoFlujoSolicitudControllerTest::class,'getHistorial'])->name('getHistorial');
+    Route::post('/datosSolicitud', [SolicitudFlujoHistorialController::class,'GetFlujo'])->name('DataTestSolicitud');
+    Route::post('/historial', [SolicitudFlujoHistorialController::class,'getHistorial'])->name('getHistorial');
     Route::post('/RealizarSolicitud', [SolicitudController::class,'RealizarSolicitud'])->name('RealizarSolicitud');
     Route::post('/aprobar', [SolicitudController::class,'Aprobar'])->name('AprobarSolicitud');
     Route::post('/rechazar', [SolicitudController::class,'Rechazar'])->name('RechazarSolicitud');

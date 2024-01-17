@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-class EstadoFlujoSolicitudControllerTest extends Controller
+class SolicitudFlujoHistorialController extends Controller
 {
-    public function GetData(Request $request){
+    public function GetFlujo(Request $request){
         $request = $request->input('data');
         /*
         $rechazada = 
@@ -160,10 +160,10 @@ class EstadoFlujoSolicitudControllerTest extends Controller
                                             'historial_solicitud.EstadoFlujoId',
                                             'estado_etapa.Id as estadoEtapa',
                                             'estado_etapa.Nombre as estadoEtapaNombre',
-                                            'usuario.Username as usuario'
+                                            DB::raw('CONCAT(persona.Nombre, " ", persona.Apellido) as Usuario'),
                                         )
                                         ->where('historial_solicitud.SolicitudId', '=', $request['solicitudId'])
-                                        ->leftJoin('usuario', 'usuario.Id', '=', 'historial_solicitud.UsuarioId')
+                                        ->leftJoin('persona', 'persona.UsuarioId', '=', 'historial_solicitud.UsuarioId')
                                         ->join('estado_etapa', 'estado_etapa.Id', '=', 'historial_solicitud.EstadoEtapaFlujoId')
                                         ->get();
 

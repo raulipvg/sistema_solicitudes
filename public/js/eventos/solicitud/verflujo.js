@@ -144,14 +144,14 @@ function AgregarTR(data){
             // Si el tipo/estado es aprobado
             if(hist.estadoEtapa == 1){
                 estado = 'success';
-                usuario = hist.usuario;
+                usuario = hist.Usuario;
                 currentItem = '';
             }
             // Si el tipo/estado es rechazado
             else if(hist.estadoEtapa == 2){
                 estado = 'cancel';
                 currentItem = 'current-item-cancel';
-                usuario = hist.usuario;
+                usuario = hist.Usuario;
             }
             // Si el tipo/estado es en curso
             else if(hist.estadoEtapa == 3){
@@ -161,7 +161,7 @@ function AgregarTR(data){
         
         html +=
                         `<li class="step-wizard-item ${currentItem}">
-                            <span>${usuario}</span>
+                            <span class="text-capitalize">${usuario}</span>
                             <span class="${estado} progress-count">${contar}</span>
                             <span class="progress-label text-capitalize"">${orden.Nombre}</span>
                         </li>`;

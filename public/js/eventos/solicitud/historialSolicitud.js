@@ -12,6 +12,27 @@ $('#tabla-solicitudes').on('click','.historial',function(e){
     var solicitudId = $(this).parent().parent().attr('a');        //Id de la solicitud
     var historialId = $(this).parent().parent().attr('b');        //Id del historial
     var flujoId = $(this).parent().parent().attr('c');            //Id del flujo asociado al movimiento
+
+    tr = e.target.closest('tr');
+    row = tablaSolicitudes.row(tr);
+    var tempDiv = document.createElement('div');
+    tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(5)).data();
+    var pill = `<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>`
+    solicitante = tempDiv.querySelector('.fs-7').textContent + ' ' +tempDiv.querySelector('a').textContent;
+    $('#Solicitante').html(pill+solicitante);
+    
+    tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(0)).data();
+    receptor = 'Receptor: ' +tempDiv.querySelector('a').textContent;
+    $('#Receptor').html(pill+receptor);
+
+    tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(3)).data();
+    console.log(tempDiv);
+    fecha = tempDiv.querySelector('.fs-7').textContent + ': ' +tempDiv.querySelector('.fw-bold').textContent;
+    $('#RangoFecha').html(pill+fecha);
+    
     cargarHistorial(solicitudId,historialId,flujoId);
 
 });
@@ -20,6 +41,26 @@ $('#tabla-solicitudes-terminadas').on('click','.historial',function(e){
     var solicitudId = $(this).parent().parent().attr('a');        //Id de la solicitud
     var historialId = $(this).parent().parent().attr('b');        //Id del historial
     var flujoId = $(this).parent().parent().attr('c');            //Id del flujo asociado al movimiento
+
+    tr = e.target.closest('tr');
+    row = tablaSolicitudesTerminadas.row(tr);
+    var tempDiv = document.createElement('div');
+    tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(5)).data();
+    var pill = `<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>`
+    solicitante = tempDiv.querySelector('.fs-7').textContent + ' ' +tempDiv.querySelector('a').textContent;
+    $('#Solicitante').html(pill+solicitante);
+    
+    tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(0)).data();
+    receptor = 'Receptor: ' +tempDiv.querySelector('a').textContent;
+    $('#Receptor').html(pill+receptor);
+
+    tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(3)).data();
+    console.log(tempDiv);
+    fecha = tempDiv.querySelector('.fs-7').textContent + ': ' +tempDiv.querySelector('.fw-bold').textContent;
+    $('#RangoFecha').html(pill+fecha);
     cargarHistorial(solicitudId,historialId,flujoId);
 
 });
@@ -70,7 +111,7 @@ function cargarHistorial(solicitudId,historialId,flujoId){
                     if(hist.EstadoEtapaFlujoId == 1){
                         color = 'success';
                         tipo = 'Aprobado';
-                        usuario = `<span class="fs-6 text-gray-500 fw-semibold d-block"> Responsable: ${hist.Usuario}</span>
+                        usuario = `<span class="fs-6 text-gray-500 fw-semibold d-block text-capitalize"> Responsable: ${hist.Usuario}</span>
                         <span class="fs-7 text-gray-500 fw-semibold d-block">Actualización: ${new Date(hist.actualizacion).toLocaleDateString(formatoFecha)}</span>`;
                     }
                     else if(hist.EstadoEtapaFlujoId == 2){
@@ -81,7 +122,7 @@ function cargarHistorial(solicitudId,historialId,flujoId){
                     }
                     else if(hist.EstadoEtapaFlujoId == 3){
                         color = 'warning';
-                        tipo = 'En espera';
+                        tipo = 'Pendiente';
                         usuario = '';
                     }
                         

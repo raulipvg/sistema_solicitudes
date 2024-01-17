@@ -99,6 +99,8 @@
         const EditarAtributo = "{{ route('EditarAtributo') }}";
         const CambiarEstadoAtributo = "{{ route('CambiarEstadoAtributo') }}";
 
+		const getMovimientos = '{{ route("getMovimientos") }}';
+
         const dataAtributos = {!! $atributos !!};
 
         

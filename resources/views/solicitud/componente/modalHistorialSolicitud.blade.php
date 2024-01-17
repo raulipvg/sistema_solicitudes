@@ -16,14 +16,67 @@
                 </div>
                 <!--end::Close-->
             </div>
-            <div class="modal-body">
-                <h3 class="h3 text-capitalize " id="titulo-flujo"> Flujo:</h3>
+            <div class="modal-body py-1">
+                <div>
+					<!--begin::Subtitle-->
+					<h3 class="fw-bold text-gray-800 mb-3">Detalles de Solicitud</h3>
+					<!--end::Subtitle-->
+					<!--begin::Items-->
+					<div class="d-flex d-grid gap-5">
+						<!--begin::Item-->
+						<div class="d-flex flex-column flex-shrink-0 me-4">
+							<!--begin::Section-->
+							<span id="Solicitante" class="d-flex align-items-center fs-7 fw-bold text-gray-500 mb-2">
+							<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
+								<span class="path1"></span>
+								<span class="path2"></span>
+							</i>Solicitante: </span>
+							<!--end::Section-->
+							<!--begin::Section-->
+							<span id="Estimado" class="d-flex align-items-center text-gray-500 fw-bold fs-7 mb-1">
+							<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
+								<span class="path1"></span>
+								<span class="path2"></span>
+							</i>Valor estimado: </span>
+							<!--end::Section-->
+                            
+						</div>
+						<!--end::Item-->
+						<!--begin::Item-->
+						<div class="d-flex flex-column flex-shrink-0">
+							<!--begin::Section-->
+							<span id="Receptor" class="d-flex align-items-center fs-7 fw-bold text-gray-500 mb-1">
+							<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
+								<span class="path1"></span>
+								<span class="path2"></span>
+							</i>Receptor: </span>
+							<!--end::Section-->
+							<!--begin::Section-->
+							<span id="Real" class="d-flex align-items-center text-gray-500 fw-bold fs-7 mb-1">
+							<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
+								<span class="path1"></span>
+								<span class="path2"></span>
+							</i>Valor real:</span>
+							<!--end::Section-->
+						</div>
+						<!--end::Item-->
+					</div>
+                    <!--begin::Section-->
+							<span id="RangoFecha" class="d-flex align-items-center fs-7 fw-bold text-gray-500 mb-1">
+							<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
+								<span class="path1"></span>
+								<span class="path2"></span>
+							</i>Fecha inicio: </span>
+							<!--end::Section-->
+					<!--end::Items-->
+				</div>
+                <h3 class="text-gray-800 text-capitalize mb-3" id="titulo-flujo"> Flujo:</h3>
                 <div id="lineaTiempo" class="m-0">
                 
                 </div>
                 <div class="modal-footer bg-light p-2">
                     <button type="button" class="btn btn-light-dark" data-bs-dismiss="modal">Cerrar</button>                    
-                    </div>
+                </div>
             </div>
         </div>
     </div>

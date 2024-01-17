@@ -140,11 +140,20 @@ class MovimientoAtributoController extends Controller
                                     ->where('Enabled', 1)
                                     ->whereNotIn('Id', $atributosAsociados)
                                     ->get();
+        $movimientos= Movimiento::select(
+                                    'Id',
+                                    'Nombre',
+                                )
+                                ->where('Enabled',1)
+                                ->get();
 
         return response()->json([
             'success' => true,
             'data' => $atributosNoAsociados,
             'nombre' => $movimientoExiste->Nombre, 
-            'message' => 'Modelo recibido y procesado']);
+            'message' => 'Modelo recibido y procesado',
+            'movimientos' => $movimientos
+        ]);
+
     }
 }
