@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\HistorialSolicitud;
 use App\Models\OrdenFlujo;
 use App\Models\Flujo;
+use App\Models\Compuesta;
+use App\Models\Solicitud;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,143 +15,7 @@ class SolicitudFlujoHistorialController extends Controller
 {
     public function GetFlujo(Request $request){
         $request = $request->input('data');
-        /*
-        $rechazada = 
-        [
-            'success' => true,
-            'data' => [
-                'flujo' => [
-                    'Id'=>'5',
-                    'Nombre'=>'flujouno'
-                ],
-                'ordenFlujos' => [
-                        [
-                            'Nivel' => 0,
-                            [
-                                'Id'=> 2,
-                                'Nombre'=>'en tramite',
-                            ],
-                        ],
-                        [
-                            'Nivel' => 1,
-                            [
-                                'Id'=> 6,
-                                'Nombre'=>'espera',
-                            ],
-                        ],
-                        [
-                            'Nivel' => 2,
-                            [
-                                'Id'=> 10,
-                                'Nombre'=>'confirmacion',
-                            ],
-                        ],
-                ],
-                'historial' => [
-                    [
-                        'estadoFlujoId' => 2,
-                        'tipo' => 1,
-                        'usuario' => 'usuario 1',
-                    ],
-                    [
-                        'estadoFlujoId' => 6,
-                        'tipo' => 0,
-                        'usuario' => 'usuario 3',
-                    ],
-                ],
-            ],
-        ];
-        $enCurso = [
-            'success' => true,
-            'data' => [
-                'flujo' => [
-                    'Id'=>'5',
-                    'Nombre'=>'flujouno'
-                ],
-                'ordenFlujos' => [
-                        [
-                            'Nivel' => 0,
-                            [
-                                'Id'=> 2,
-                                'Nombre'=>'en tramite',
-                            ],
-                        ],
-                        [
-                            'Nivel' => 1,
-                            [
-                                'Id'=> 6,
-                                'Nombre'=>'espera',
-                            ],
-                        ],
-                        [
-                            'Nivel' => 2,
-                            [
-                                'Id'=> 10,
-                                'Nombre'=>'confirmacion',
-                            ],
-                        ],
-                ],
-                'historial' => [
-                    [
-                        'estadoFlujoId' => 2,
-                        'tipo' => 1,
-                        'usuario' => 'usuario 1',
-                    ],
-                    [
-                        'estadoFlujoId' => 6,
-                        'tipo' => 2,
-                        'usuario' => 'usuario 3',
-                    ],
-                ],
-            ],
-        ];
-        $iniciada = [
-            'success' => true,
-            'data' => [
-                'flujo' => [
-                    'Id'=>'5',
-                    'Nombre'=>'flujouno'
-                ],
-                'ordenFlujos' => [
-                        [
-                            'Nivel' => 0,
-                            [
-                                'Id'=> 2,
-                                'Nombre'=>'en tramite',
-                            ],
-                        ],
-                        [
-                            'Nivel' => 1,
-                            [
-                                'Id'=> 6,
-                                'Nombre'=>'espera',
-                            ],
-                        ],
-                        [
-                            'Nivel' => 2,
-                            [
-                                'Id'=> 10,
-                                'Nombre'=>'confirmacion',
-                            ],
-                        ],
-                ],
-                'historial' => [
-                    [
-                        'estadoFlujoId' => 2,
-                        'tipo' => 2,
-                        'usuario' => '-'
-                    ],
-                ],
-            ],
-        ];
 
-
-        $respuestas = [
-            $iniciada,
-            $enCurso,
-            $rechazada
-        ];
- */
         $flujo = OrdenFlujo::select('orden_flujo.Nivel',
                                     'estado_flujo.Nombre',
                                     'estado_flujo.Id')
@@ -199,159 +65,29 @@ class SolicitudFlujoHistorialController extends Controller
                                         ->leftJoin('persona','persona.UsuarioId','=','historial_solicitud.UsuarioId')
                                         ->where('historial_solicitud.SolicitudId','=',$request['solicitudId'])
                                         ->get();
-        $flujoNombre = Flujo::select('Nombre')->where('Id',$request['flujoId'])->first()->Nombre;
-/*
-$rechazada = [
-            'solicitud' => [
-                'id' => '11',
-                'solicitante' => 'Nombre Apellido',
-                'receptor' => 'Nombre Apellido',
-                'costoSolicitud' => '50000',
-                'centroCosto' => 'centro de costos de finanzas',
-                'movimiento' => 'Movimiento 1',
-                'atributos' => ['atributo 1','atributo 3','atributo 3',],
-            ],'flujo' => [
-                'Id'=>'5',
-                'Nombre'=>'flujouno'
-            ],
-            'ordenFlujos' => [
-                    [
-                        'Nivel' => 0,
-                            'Id'=> 2,
-                            'Nombre'=>'en tramite',
-                    ],
-                    [
-                        'Nivel' => 1,
-                            'Id'=> 6,
-                            'Nombre'=>'espera',
-                    ],
-                    [
-                        'Nivel' => 2,
-                            'Id'=> 10,
-                            'Nombre'=>'confirmacion',
-                    ],
-            ],
-            'historial' => [
-                [
-                    'creacion' => '2024-01-04 13:32:52',
-                    'actualizacion' => '2024-01-05 14:32:52',
-                    'estadoFlujoId' => 2,
-                    'tipo' => 1,
-                    'usuario' => 'usuario 1',
-                ],
-                [
-                    'creacion' => '2024-01-05 14:32:52',
-                    'actualizacion' => '2024-01-05 17:32:52',
-                    'estadoFlujoId' => 6,
-                    'tipo' => 0,
-                    'usuario' => 'usuario 3',
-                ],
-            ],
-        ];
-        $iniciada =[
-            'solicitud' => [
-                'id' => '11',
-                'solicitante' => 'Nombre Apellido',
-                'receptor' => 'Nombre Apellido',
-                'costoSolicitud' => '50000',
-                'centroCosto' => 'centro de costos de finanzas',
-                'movimiento' => 'Movimiento 1',
-                'atributos' => ['atributo 1','atributo 3','atributo 3',],
-            ],
-            'flujo' => [
-                'Id'=>'5',
-                'Nombre'=>'flujouno'
-            ],
-            'ordenFlujos' => [
-                    [
-                        'Nivel' => 0,
-                            'Id'=> 2,
-                            'Nombre'=>'en tramite',
-                    ],
-                    [
-                        'Nivel' => 1,
-                            'Id'=> 6,
-                            'Nombre'=>'espera',
-                    ],
-                    [
-                        'Nivel' => 2,
-                            'Id'=> 10,
-                            'Nombre'=>'confirmacion',
-                    ],
-            ],
-            'historial' => [
-                [
-                    'creacion' => '2024-01-04 13:32:52',
-                    'actualizacion' => '2024-01-04 13:32:52',
-                    'estadoFlujoId' => 2,
-                    'tipo' => 2,
-                    'usuario' => 'usuario 1',
-                ],
-            ],
-        ];
-        $enCurso= [
-            'solicitud' => [
-                'id' => '11',
-                'solicitante' => 'Nombre Apellido',
-                'receptor' => 'Nombre Apellido',
-                'costoSolicitud' => '50000',
-                'centroCosto' => 'centro de costos de finanzas',
-                'movimiento' => 'Movimiento 1',
-                'atributos' => ['atributo 1','atributo 3','atributo 3',],
-            ],
-            'flujo' => [
-                'Id'=>'5',
-                'Nombre'=>'flujouno'
-            ],
-            'ordenFlujos' => [
-                    [
-                        'Nivel' => 0,
-                            'Id'=> 2,
-                            'Nombre'=>'en tramite',
-                    ],
-                    [
-                        'Nivel' => 1,
-                            'Id'=> 6,
-                            'Nombre'=>'espera',
-                    ],
-                    [
-                        'Nivel' => 2,
-                            'Id'=> 10,
-                            'Nombre'=>'confirmacion',
-                    ],
-            ],
-            'historial' => [
-                [
-                    'creacion' => '2024-01-04 13:32:52',
-                    'actualizacion' => '2024-01-04 14:32:52',
-                    'estadoFlujoId' => 2,
-                    'tipo' => 1,
-                    'usuario' => 'usuario 1',
-                ],
-                [
-                    'creacion' => '2024-01-05 13:32:52',
-                    'actualizacion' => '2024-01-05 15:32:52',
-                    'estadoFlujoId' => 2,
-                    'tipo' => 1,
-                    'usuario' => 'usuario 1',
-                ],
-            ],
-            'estadoSolicitud' => 2,
-        ];
+        $flujoNombre = Flujo::select('Nombre')->where('Id',$request['flujoId'])->first()->Nombre;  
+        
+        $costoPorAtributo = Compuesta::select('AtributoId as Atributo',
+                                            'atributo.Nombre as Nombre',
+                                            'atributo.ValorReferencia',
+                                            'compuesta.CostoReal',
+                                        )
+                                        ->join('movimiento_atributo','movimiento_atributo.Id','=','compuesta.MovimientoAtributoId')
+                                        ->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
+                                        ->where('compuesta.SolicitudId',$request['solicitudId'])
+                                        ->get();
+        $costoSolicitud = Solicitud::select('CostoSolicitud')
+                                        ->where('Id',$request['solicitudId'])
+                                        ->first();
 
-        $respuestas = [
-            $iniciada,
-            $enCurso,
-            $rechazada
-        ];*/
-        
-        
         return response()->json([
             'success'=> true,
             'data' => [
                 'ordenFlujos' => $ordenFlujo,
                 'historial' => $historial,
                 'flujoNombre' => $flujoNombre,
+                'costoPorAtributo' => $costoPorAtributo,
+                'costoSolicitud' => $costoSolicitud->CostoSolicitud,
             ]
         ]);
     }

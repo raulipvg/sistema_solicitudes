@@ -13,27 +13,27 @@ $('#tabla-solicitudes').on('click','.historial',function(e){
     var historialId = $(this).parent().parent().attr('b');        //Id del historial
     var flujoId = $(this).parent().parent().attr('c');            //Id del flujo asociado al movimiento
 
-    tr = e.target.closest('tr');
-    row = tablaSolicitudes.row(tr);
-    var tempDiv = document.createElement('div');
-    tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(5)).data();
-    var pill = `<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                </i>`
-    solicitante = tempDiv.querySelector('.fs-7').textContent + ' ' +tempDiv.querySelector('a').textContent;
-    $('#Solicitante').html(pill+solicitante);
+    // tr = e.target.closest('tr');
+    // row = tablaSolicitudes.row(tr);
+    // var tempDiv = document.createElement('div');
+    // tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(5)).data();
+    // var pill = `<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
+    //                 <span class="path1"></span>
+    //                 <span class="path2"></span>
+    //             </i>`
+    // solicitante = tempDiv.querySelector('.fs-7').textContent + ' ' +tempDiv.querySelector('a').textContent;
+    // $('#Solicitante').html(pill+solicitante);
     
-    tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(0)).data();
-    receptor = 'Receptor: ' +tempDiv.querySelector('a').textContent;
-    $('#Receptor').html(pill+receptor);
+    // tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(0)).data();
+    // receptor = 'Receptor: ' +tempDiv.querySelector('a').textContent;
+    // $('#Receptor').html(pill+receptor);
 
-    tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(3)).data();
-    console.log(tempDiv);
-    fecha = tempDiv.querySelector('.fs-7').textContent + ': ' +tempDiv.querySelector('.fw-bold').textContent;
-    $('#RangoFecha').html(pill+fecha);
+    // tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(3)).data();
+    // console.log(tempDiv);
+    // fecha = tempDiv.querySelector('.fs-7').textContent + ': ' +tempDiv.querySelector('.fw-bold').textContent;
+    // $('#RangoFecha').html(pill+fecha);
     
-    cargarHistorial(solicitudId,historialId,flujoId);
+    cargarHistorial(solicitudId,historialId,flujoId, e,tablaSolicitudes);
 
 });
 
@@ -42,10 +42,18 @@ $('#tabla-solicitudes-terminadas').on('click','.historial',function(e){
     var historialId = $(this).parent().parent().attr('b');        //Id del historial
     var flujoId = $(this).parent().parent().attr('c');            //Id del flujo asociado al movimiento
 
-    tr = e.target.closest('tr');
-    row = tablaSolicitudesTerminadas.row(tr);
+    
+    cargarHistorial(solicitudId,historialId,flujoId,e,tablaSolicitudesTerminadas);
+
+});
+
+function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
+    $('#tabla-atributos-solicitud tbody').empty();
+    tr = f.target.closest('tr');
+    row = tabla.row(tr);
     var tempDiv = document.createElement('div');
     tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(5)).data();
+    console.log(tempDiv);
     var pill = `<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
                     <span class="path1"></span>
                     <span class="path2"></span>
@@ -61,11 +69,7 @@ $('#tabla-solicitudes-terminadas').on('click','.historial',function(e){
     console.log(tempDiv);
     fecha = tempDiv.querySelector('.fs-7').textContent + ': ' +tempDiv.querySelector('.fw-bold').textContent;
     $('#RangoFecha').html(pill+fecha);
-    cargarHistorial(solicitudId,historialId,flujoId);
 
-});
-
-function cargarHistorial(solicitudId,historialId,flujoId){
 
     $.ajax({
         type: 'POST',
@@ -85,6 +89,19 @@ function cargarHistorial(solicitudId,historialId,flujoId){
                 $('#modal-titulo-historialSolicitud').empty().html("Historial Solicitud "+solicitudId);
                 $('#titulo-flujo').empty().html("Flujo: "+data.data.flujoNombre);
                 data = data.data;
+                $('#ValorReal').empty().html(pill+'Valor Real: '+data.costoSolicitud);
+                var valorRef = 0;
+                data.costoPorAtributo.forEach((atr)=>{
+                    valorRef += atr.ValorReferencia;
+                    $('#tabla-atributos-solicitud tbody').append(`
+                        <tr class="p-0">
+                            <td class="text-capitalize p-0 "> ${atr.Nombre} </td>
+                            <td class="p-1"> ${atr.ValorReferencia} </td>
+                            <td class="p-1"> ${atr.CostoReal} </td>
+                        </tr>
+                    `);
+                });
+                $('#ValorEstimado').empty().html(pill+'Valor referencia: '+valorRef);
                 estados = data.ordenFlujos;
                 footer = '';
                 console.log(data);
