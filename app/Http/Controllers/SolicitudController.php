@@ -19,6 +19,7 @@ use function Laravel\Prompts\select;
 class SolicitudController extends Controller
 {
     //
+    public int $modulo =1;
     public function Index(){
 
         $movimientos = Movimiento::select('Id','Nombre')
