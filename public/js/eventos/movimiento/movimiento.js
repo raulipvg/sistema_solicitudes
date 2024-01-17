@@ -313,7 +313,7 @@ $(document).ready(function() {
     const submitEditButton = document.getElementById('EditSubmitMov');
     submitEditButton.addEventListener('click', function (e) {
         tr = e.target.closest('tr');
-        row = miTabla.row(tr);
+        row = tablaMovimiento.row(tr);
         e.preventDefault();
         e.stopPropagation();
         $("#AlertaError").hide();
@@ -342,7 +342,7 @@ $(document).ready(function() {
                         },
                         success: function (data) {                                    
                             if(data.success){
-                                miTabla.row(row).remove();
+                                tablaMovimiento.row(row).remove();
                                 cargarDataMovimiento.init(data.movimiento);
                                 $('#registrar-movimiento').modal('toggle');
                             }else{

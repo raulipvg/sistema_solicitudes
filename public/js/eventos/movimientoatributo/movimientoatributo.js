@@ -131,7 +131,7 @@ $(document).ready(function() {
                                 $('.form-select').val("").trigger("change").prop("disabled",false);
                                 var tbody = btnAddAtributo.closest('table').find('tbody');
                                 Swal.fire({
-                                    text: "Movimientos y atributos agregados con éxito.",
+                                    text: "Atributos agregados con éxito.",
                                     icon: "success",
                                     buttonsStyling: false,
                                     confirmButtonText: "OK",

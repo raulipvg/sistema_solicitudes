@@ -92,16 +92,15 @@
         const CambiarEstadoMovimiento = "{{ route('CambiarEstadoMovimiento') }}";
         const VerGruposFlujosMovimiento = "{{ route('VerGruposFlujosMovimiento') }}";
         
-        const dataMovimientos =  {!! $movimientos !!};
+        const dataMovimientos =  JSON.parse('{!! $movimientos !!}');
 
         const GuardarAtributo = "{{ route('GuardarAtributo') }}";
         const VerAtributo = "{{ route('VerAtributo') }}";
         const EditarAtributo = "{{ route('EditarAtributo') }}";
         const CambiarEstadoAtributo = "{{ route('CambiarEstadoAtributo') }}";
 
-		const getMovimientos = '{{ route("getMovimientos") }}';
-
-        const dataAtributos = {!! $atributos !!};
+	
+        const dataAtributos = JSON.parse('{!! $atributos !!}');
 
         
     </script>

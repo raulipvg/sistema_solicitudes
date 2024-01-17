@@ -72,7 +72,7 @@
                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                         </div>
                     </button>
-                    <button id="EditSubmitMov" type="submit" class="btn btn-success">
+                    <button id="EditSubmitMov" type="button" class="btn btn-success">
                         <div class="indicator-label">Actualizar</div>
                         <div class="indicator-progress">Espere...
                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>

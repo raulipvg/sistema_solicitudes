@@ -87,7 +87,7 @@ function cargarHistorial(solicitudId,historialId,flujoId){
                 data = data.data;
                 estados = data.ordenFlujos;
                 footer = '';
-                
+                console.log(data);
                 $('#lineaTiempo').empty();
                 var html,color,usuario = '';
                 
