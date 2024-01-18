@@ -62,7 +62,7 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
     $('#Solicitante').html(pill+solicitante);
     
     tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(0)).data();
-    receptor = 'Receptor: ' +tempDiv.querySelector('a').textContent;
+    receptor = 'Solicitud para: ' +tempDiv.querySelector('a').textContent;
     $('#Receptor').html(pill+receptor);
 
     tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(3)).data();
@@ -89,26 +89,25 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
                 $('#modal-titulo-historialSolicitud').empty().html("Historial Solicitud "+solicitudId);
                 $('#titulo-flujo').empty().html("Flujo: "+data.data.flujoNombre);
                 data = data.data;
-                $('#ValorReal').empty().html(pill+'Valor Real: '+data.costoSolicitud);
+                $('#ValorReal').empty().html(pill+'Costo: $'+data.costoSolicitud);
                 var valorRef = 0;
                 data.costoPorAtributo.forEach((atr)=>{
                     valorRef += atr.ValorReferencia;
                     $('#tabla-atributos-solicitud tbody').append(`
-                        <tr class="p-0">
-                            <td class="text-capitalize p-0 "> ${atr.Nombre} </td>
-                            <td class="p-1"> ${atr.ValorReferencia} </td>
-                            <td class="p-1"> ${atr.CostoReal} </td>
+                        <tr>
+                            <td class="text-capitalize p-1"> ${atr.Nombre} </td>
+                            <td class="p-1"> $ ${atr.ValorReferencia} </td>
                         </tr>
                     `);
                 });
-                $('#ValorEstimado').empty().html(pill+'Valor referencia: '+valorRef);
+                //$('#ValorEstimado').empty().html(pill+'Valor referencia: '+valorRef);
                 estados = data.ordenFlujos;
                 footer = '';
-                console.log(data);
+                //console.log(data);
                 $('#lineaTiempo').empty();
                 var html,color,usuario = '';
                 
-                html = `<div class="m-0">`
+                html ='<div class="m-0">';
                 data.historial.forEach((hist)=>{
                     if(hist.EstadoSolicitudId != 2){
                         if(hist.EstadoSolicitudId == 1){
@@ -147,7 +146,7 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
 
                     html += 
                             `
-                                <div class="timeline-item align-items-center mb-7">
+                                <div class="timeline-item align-items-center mb-5">
                                     <div class="timeline-line mt-1 mb-n6 mb-sm-n7"></div>
 
                                     <div class="timeline-icon">
@@ -200,7 +199,7 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
 
 function cabecera(fecha,titulo,texto){
     html= `
-                <div class="d-flex align-items-sm-center mb-5">
+                <div class="d-flex align-items-sm-center mb-1">
                     <div class="symbol symbol-45px me-4">
                         <span class="symbol-label bg-primary">
                         <i class="ki-duotone ki-ship text-inverse-primary fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>

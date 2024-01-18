@@ -54,7 +54,7 @@
         const EditarPersona = "{{ route('EditarPersona') }}";
         const CambiarEstadoPersona = "{{ route('CambiarEstadoPersona') }}";
         const DarAccesoPersona =  "{{ route('DarAccesoPersona') }}";
-        const VerCC= "{{ route('VerCC')}}";
+        const VerCC= "{{ route('VerCC') }}";
         
         const data = {!! $personas !!};
     </script>

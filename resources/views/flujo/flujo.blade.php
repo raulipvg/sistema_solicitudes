@@ -56,7 +56,7 @@
                 
 
                 <!--BEGIN::CARD STEPPER CREAR UN FLUJO-->
-                <div class="card card-bordered" style="width: 70%;">
+                <div class="card card-bordered" style="width: 90%;">
                     <!--begin::Card header-->
                     <div class="card-header">
                         <div class="card-title">

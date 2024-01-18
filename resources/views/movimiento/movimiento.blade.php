@@ -46,7 +46,7 @@
         const CambiarEstadoMovimiento = "{{ route('CambiarEstadoMovimiento') }}";
         const VerGruposFlujosMovimiento = "{{ route('VerGruposFlujosMovimiento') }}";
         
-        const dataMovimientos =  {!! $movimientos !!};
+        const dataMovimientos =  JSON.parse('{!! $movimientos !!}');
 
         //const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     </script>

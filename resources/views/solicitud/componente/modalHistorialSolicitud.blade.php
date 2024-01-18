@@ -18,14 +18,14 @@
             </div>
             <div class="modal-body py-1">
 			
-				<div class="d-flex flex-row ">
-					<div class="">
+				<div class="row">
+					<div class="col">
 						<div>
 							<!--begin::Subtitle-->
 							<h3 class="fw-bold text-gray-800 mb-3">Detalles de Solicitud</h3>
 							<!--end::Subtitle-->
 							<!--begin::Items-->
-							<div class="d-flex d-grid gap-5">
+							<div class="col">
 								<!--begin::Item-->
 								<div class="d-flex flex-column flex-shrink-0 me-4">
 									<!--begin::Section-->
@@ -36,29 +36,23 @@
 									</i>Solicitante: </span>
 									<!--end::Section-->
 									<!--begin::Section-->
-									<span id="ValorEstimado" class="d-flex align-items-center text-gray-500 fw-bold fs-7 mb-1">
+									<span id="Receptor" class="d-flex align-items-center fs-7 fw-bold text-gray-500 mb-1">
 									<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
 										<span class="path1"></span>
 										<span class="path2"></span>
-									</i>Valor referencia: </span>
+									</i>Persona: </span>
 									<!--end::Section-->
+									
 								</div>
 								<!--end::Item-->
 								<!--begin::Item-->
 								<div class="d-flex flex-column flex-shrink-0">
 									<!--begin::Section-->
-									<span id="Receptor" class="d-flex align-items-center fs-7 fw-bold text-gray-500 mb-1">
-									<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
-										<span class="path1"></span>
-										<span class="path2"></span>
-									</i>Receptor: </span>
-									<!--end::Section-->
-									<!--begin::Section-->
 									<span id="ValorReal" class="d-flex align-items-center text-gray-500 fw-bold fs-7 mb-1">
 									<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
 										<span class="path1"></span>
 										<span class="path2"></span>
-									</i>Valor real:</span>
+									</i>Costo:</span>
 									<!--end::Section-->
 								</div>
 								<!--end::Item-->
@@ -73,15 +67,14 @@
 							<!--end::Items-->
 
 						</div>
-						<div class="table-responsive">
+						<div class="table-responsive px-5 py-2">
 								<!--begin::Table-->
 								<table id="tabla-atributos-solicitud" class="table align-middle table-row-bordered table-row-solid gy-4 gs-9">
 									<!--begin::Thead-->
 									<thead class="border-gray-200 fs-6 fw-semibold bg-lighten">
 										<tr>
-											<th class="min-w-100px p-1">Atributo</th>
-											<th class="min-w-100px p-1">Valor Referencia</th>
-											<th class="min-w-150px p-1">Valor Real</th>
+											<th class="p-1">Atributo</th>
+											<th class="p-1">Costo</th>
 										</tr>
 									</thead>
 									<!--end::Thead-->
@@ -95,10 +88,10 @@
 						</div>
 					</div>
 				
-					<div class="">
+					<div class="col">
 						<div>
-							<h3 class="text-gray-800 text-capitalize mb-3" id="titulo-flujo"> Flujo:</h3>
-							<div id="lineaTiempo" class="m-0">
+							<h3 class="text-gray-800 text-capitalize mb-1" id="titulo-flujo"> Flujo:</h3>
+							<div id="lineaTiempo">
 										
 							</div>
 						</div>
