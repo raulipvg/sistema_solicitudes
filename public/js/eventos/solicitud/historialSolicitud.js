@@ -13,25 +13,6 @@ $('#tabla-solicitudes').on('click','.historial',function(e){
     var historialId = $(this).parent().parent().attr('b');        //Id del historial
     var flujoId = $(this).parent().parent().attr('c');            //Id del flujo asociado al movimiento
 
-    // tr = e.target.closest('tr');
-    // row = tablaSolicitudes.row(tr);
-    // var tempDiv = document.createElement('div');
-    // tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(5)).data();
-    // var pill = `<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
-    //                 <span class="path1"></span>
-    //                 <span class="path2"></span>
-    //             </i>`
-    // solicitante = tempDiv.querySelector('.fs-7').textContent + ' ' +tempDiv.querySelector('a').textContent;
-    // $('#Solicitante').html(pill+solicitante);
-    
-    // tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(0)).data();
-    // receptor = 'Receptor: ' +tempDiv.querySelector('a').textContent;
-    // $('#Receptor').html(pill+receptor);
-
-    // tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(3)).data();
-    // console.log(tempDiv);
-    // fecha = tempDiv.querySelector('.fs-7').textContent + ': ' +tempDiv.querySelector('.fw-bold').textContent;
-    // $('#RangoFecha').html(pill+fecha);
     
     cargarHistorial(solicitudId,historialId,flujoId, e,tablaSolicitudes);
 
@@ -52,7 +33,7 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
     tr = f.target.closest('tr');
     row = tabla.row(tr);
     var tempDiv = document.createElement('div');
-    tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(5)).data();
+    tempDiv.innerHTML = row.cell(row,tabla.column(5)).data();
     console.log(tempDiv);
     var pill = `<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
                     <span class="path1"></span>
@@ -61,11 +42,11 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
     solicitante = tempDiv.querySelector('.fs-7').textContent + ' ' +tempDiv.querySelector('a').textContent;
     $('#Solicitante').html(pill+solicitante);
     
-    tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(0)).data();
+    tempDiv.innerHTML = row.cell(row,tabla.column(0)).data();
     receptor = 'Solicitud para: ' +tempDiv.querySelector('a').textContent;
     $('#Receptor').html(pill+receptor);
 
-    tempDiv.innerHTML = row.cell(row,tablaSolicitudes.column(3)).data();
+    tempDiv.innerHTML = row.cell(row,tabla.column(3)).data();
     console.log(tempDiv);
     fecha = tempDiv.querySelector('.fs-7').textContent + ': ' +tempDiv.querySelector('.fw-bold').textContent;
     $('#RangoFecha').html(pill+fecha);
@@ -78,7 +59,7 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
             _token: csrfToken,
             data: {solicitudId, historialId, flujoId}
         },
-        //content: "application/json; charset=utf-8",
+
         dataType: "json",
         beforeSend: function() {
             bloquear();
@@ -100,28 +81,30 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
                         </tr>
                     `);
                 });
-                //$('#ValorEstimado').empty().html(pill+'Valor referencia: '+valorRef);
+
                 estados = data.ordenFlujos;
                 footer = '';
-                //console.log(data);
+
                 $('#lineaTiempo').empty();
                 var html,color,usuario = '';
-                
+                var primerEstado = true;
                 html ='<div class="m-0">';
                 data.historial.forEach((hist)=>{
-                    if(hist.EstadoSolicitudId != 2){
-                        if(hist.EstadoSolicitudId == 1){
-                            fecha = new Date(hist.creacion).toLocaleDateString(formatoFecha);
-                            titulo = 'Iniciado';
-                            texto = 'Fecha de creación:'
-                            html += cabecera(fecha,titulo,texto)+'<div class="timeline">';
-                        }
-                        else if(hist.EstadoSolicitudId == 3){
-                            fecha = new Date(hist.actualizacion).toLocaleDateString(formatoFecha);
-                            titulo = 'Terminado';
-                            texto = 'Fecha de cierre:'
-                            footer = '</div>'+cabecera(fecha,titulo,texto);
-                        }
+                    linea='';
+                    //Si es el primer estado que lee, agregará la cabecera de iniciado
+                    if(primerEstado){
+                        primerEstado = false;
+                        fecha = new Date(hist.creacion).toLocaleDateString(formatoFecha);
+                        titulo = 'Iniciado';
+                        texto = 'Fecha de creación:'
+                        html += cabecera(fecha,titulo,texto)+'<div class="timeline">';
+                    }
+                    //Si el estado de la solicitud es 3, creará el footer de terminado y se agrega una vez fuera del forEach
+                    if(hist.EstadoSolicitudId == 3){
+                        fecha = new Date(hist.actualizacion).toLocaleDateString(formatoFecha);
+                        titulo = 'Terminado';
+                        texto = 'Fecha de cierre:'
+                        footer = '</div>'+cabecera(fecha,titulo,texto);
                     }
 
                     if(hist.EstadoEtapaFlujoId == 1){
@@ -129,6 +112,7 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
                         tipo = 'Aprobado';
                         usuario = `<span class="fs-6 text-gray-500 fw-semibold d-block text-capitalize"> Responsable: ${hist.Usuario}</span>
                         <span class="fs-7 text-gray-500 fw-semibold d-block">Actualización: ${new Date(hist.actualizacion).toLocaleDateString(formatoFecha)}</span>`;
+                        hist.EstadoSolicitudId==3 ? linea = '' : linea = '<div class="timeline-line mt-1 mb-n6 mb-sm-n7"></div>';   // Si la solicitud está terminada, no agrega la línea al final del flujo, en caso contrario, si
                     }
                     else if(hist.EstadoEtapaFlujoId == 2){
                         color = 'danger';
@@ -147,24 +131,21 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
                     html += 
                             `
                                 <div class="timeline-item align-items-center mb-5">
-                                    <div class="timeline-line mt-1 mb-n6 mb-sm-n7"></div>
+                                    ${linea}
 
                                     <div class="timeline-icon">
                                         <i class="ki-duotone ki-cd fs-2 text-${color}"><span class="path1"></span><span class="path2"></span></i>
                                     </div>
 
                                     <div class="timeline-content m-0">
-
                                         <span class="fs-7 text-gray-500 fw-semibold d-block">${new Date(hist.creacion).toLocaleDateString(formatoFecha)}</span>
-
                                         <span class="fs-6 fw-bold text-gray-800 text-capitalize">${estadoFlujo.EstadoNombre}</span>
                                         <span class='badge badge-lg badge-light-${color} fw-bold my-2 fs-8'> ${tipo} </span>
                                         ${usuario}
                                     </div>
                                 </div>`;
-                    
-                    html += footer;
                 });
+                html += footer;
                 $('#lineaTiempo').html(html);
 
             }else{                       

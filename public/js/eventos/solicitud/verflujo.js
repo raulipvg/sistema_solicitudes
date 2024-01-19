@@ -41,20 +41,14 @@ $('#tabla-solicitudes-terminadas').on('click','.flujo',function(e){
 
 });
 
-//Evento en el clic en la columna donde está el botón de aceptar/rechazar de la tabla en solicitudes activas
-$('#tabla-solicitudes').on('click','.aceptar, .rechazar',function(e){
-    console.log("funcionó")
-    var tr = e.target.closest('tr');
-    var row = tablaSolicitudes.row(tr);
-    //Si está abierta la fila con el estado de flujo, actualizará.
-    if($(this).parent().parent().parent().find('.flujo').attr('abierto') == '1'){
-        console.log("encontrado")
-        row.child.hide();
-        var solicitudId = $(this).attr('a');        //Id de la solicitud
-        var historialId = $(this).attr('b');        //Id del historial
-        var flujoId = $(this).attr('c');            //Id del flujo asociado al movimiento
-        llamaTabla(solicitudId,historialId,flujoId, row);
-    }
+//Evento en el clic en la columna donde está el botón de aceptar/rechazar/historial de la tabla en solicitudes activas
+$('#tabla-solicitudes').on('click','.aceptar, .rechazar, .historial',function(e){
+    var tr = $('#tabla-solicitudes .flujo[abierto="1"]');           // encuentra las tr abiertas
+    tr.each(function(){
+        $(this).find('.flujo').attr('abierto', '0');
+        row = tablaSolicitudes.row($(this));
+        row.child.hide();                                           // oculta la subtabla con el flujo
+    });
 });
 
 //función que llena la tabla de flujos
