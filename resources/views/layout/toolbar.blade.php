@@ -22,7 +22,7 @@
         <!--begin::Action group-->
         <div class="d-flex align-items-center flex-wrap">         
              @if(isset($vista) && $vista == 1 )
-                    <button id="AddBtnGrupo" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrarGrupo">
+                    <button id="AddBtnGrupo" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrarGrupo" style="position: relative;z-index: 10;">
                         Registrar
                     </button>
              @endif
