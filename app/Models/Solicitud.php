@@ -126,7 +126,7 @@ class Solicitud extends Model
 		$solicitudes= Solicitud::select('solicitud.Id',DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"),
 																	'centro_de_costo.Nombre as CentroCosto','FechaDesde','FechaHasta',
 																	'solicitud.created_at as FechaCreado','historial_solicitud.EstadoSolicitudId',
-																	'estado_flujo.Nombre as EstadoFlujo', 'Movimiento.Nombre as Movimiento',
+																	'estado_flujo.Nombre as EstadoFlujo', 'movimiento.Nombre as Movimiento',
 																	'flujo.Nombre as NombreFlujo',
 																	'historial_solicitud.Id as HistorialId',
 																	'flujo.Id as FlujoIdd',

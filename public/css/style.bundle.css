@@ -34030,7 +34030,7 @@ textarea.form-control-lg {
     --bs-light: #F9F9F9;
     --bs-primary: #1B84FF;
     --bs-secondary: #F9F9F9;
-    --bs-success: #50cd89;
+    --bs-success: #50cd89c2;
     --bs-info: #7239EA;
     --bs-warning: #F6C000;
     --bs-danger: #F8285A;
@@ -40522,7 +40522,7 @@ textarea.form-control-lg {
 .btn.btn-success {
     color: var(--bs-success-inverse);
     border-color: var(--bs-success);
-    background-color: var(--bs-success);
+    background-color: #50cd89c2;
 }
 
 .btn.btn-success .svg-icon,.btn.btn-success i {

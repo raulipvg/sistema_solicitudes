@@ -52,20 +52,39 @@ class Area extends Model
 	
 	public function validate(array $data)
     {
-        if(isset($data['Id'])){
-            $id = $data['Id'];
-        }else{
-            $id = null;
-        }
+		$id = isset($data['Id']) ? $data['Id'] : null;
 
         $rules = [
-            'Nombre' => 'required|string|max:255',
+            'Nombre' =>  [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('area','Nombre')->ignore($id, 'Id'),
+            ],
             'Descripcion' => 'required|string|max:255',
             'Enabled' => 'required|min:0|max:1'
         ];
 
-        $validator = Validator::make($data, $rules);
+		$messages = [
+            'Nombre.unique'=> 'El Nombre ya está en uso.',
+            '*' => 'Hubo un problema con el campo :attribute.'
+            // Agrega más mensajes personalizados aquí según tus necesidades
+        ];
+
+		$validator = Validator::make($data, $rules, $messages);
         if ($validator->fails()) {
+            $errors = $validator->errors();
+            $databaseErrors = $errors->getMessages();
+
+            foreach ($databaseErrors as $fieldErrors) {
+                foreach ($fieldErrors as $fieldError) {
+                    if (strpos($fieldError, 'database') !== false) {
+                        //Problema de BD
+                        $messages['*'] = 'Error';
+                        break 2; // Salir de los bucles si se encuentra un error de la base de datos
+                    }
+                }
+            }
             throw new ValidationException($validator);
         }
     }

@@ -18,15 +18,15 @@
 			<!--begin::Table Widget 3-->
 			<div class="card card-flush h-xl-100 mx-2 my-4">
 				<!--begin::Card header-->
-				<div class="card-header py-1">
+				<div class="card-header bg-dark py-1">
 					<!--begin::Tabs-->
 					<div class="card-title m-0 gap-4 gap-lg-10 gap-xl-15 nav nav-tabs border-bottom-0" data-kt-table-widget-3="tabs_nav">
 						<ul class="nav">
 							<li class="nav-item">
-								<a id="activas" class="nav-link btn btn-sm btn-color-dark btn-active btn-active-dark fw-bold px-4 me-1 active" data-bs-toggle="tab" href="#tabulador1">ACTIVAS</a>
+								<a id="activas" class="nav-link btn btn-sm btn-color-white btn-active btn-active-white fw-bold px-4 me-1 active" data-bs-toggle="tab" href="#tabulador1">ACTIVAS</a>
 							</li>
 							<li class="nav-item">
-								<a id="terminadas" class="nav-link btn btn-sm btn-color-dark btn-active btn-active-dark fw-bold px-4 me-1" data-bs-toggle="tab" href="#tabulador2">TERMINADAS</a>
+								<a id="terminadas" class="nav-link btn btn-sm btn-color-white btn-active btn-active-white fw-bold px-4 me-1" data-bs-toggle="tab" href="#tabulador2">TERMINADAS</a>
 							</li>
 						</ul>
 					</div>
