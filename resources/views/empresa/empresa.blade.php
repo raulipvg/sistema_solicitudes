@@ -24,7 +24,7 @@
         <div class="card-header bg-dark">
             <h3 class="card-title text-uppercase text-white">Empresa</h3>
             <div class="m-1">
-            @if (auth()->user()->puedeVer(1))
+                @if (auth()->user()->puedeVer(1))
                 <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                     Registrar
                 </button>
@@ -65,7 +65,7 @@
         /* END:RUTAS */
         const data =  {!! $empresas !!};
 
-        const puedeVer= ' {{auth()->user()->puedeVer(1); }}';
+        const puedeVer= ' {{auth()->user()->puedeVer(1) }}';
         console.log(puedeVer)
     </script>
 

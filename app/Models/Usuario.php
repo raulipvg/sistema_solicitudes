@@ -145,8 +145,7 @@ class Usuario extends Authenticatable
     public function puedeVer($privilegioId){
        //$flag=  $this->gruposEnabled()->get();
        $flag=  $this->gruposPrivilegios($privilegioId)
-                        ->where('Ver','=',1)->exists();
-      
+                        ->where('Ver','=',1)->exists();   
        return $flag;
     }
 
@@ -154,22 +153,19 @@ class Usuario extends Authenticatable
         //$flag=  $this->gruposEnabled()->get();
         $flag=  $this->gruposPrivilegios($privilegioId)
                         ->where('Registrar','=',1)->exists();
-       
         return $flag;
      }
 
      public function puedeEditar($privilegioId){
         //$flag=  $this->gruposEnabled()->get();
         $flag=  $this->gruposPrivilegios($privilegioId)
-                        ->where('Editar','=',1)->exists();
-       
+                        ->where('Editar','=',1)->exists();     
         return $flag;
      }
      public function puedeEliminar($privilegioId){
         //$flag=  $this->gruposEnabled()->get();
         $flag=  $this->gruposPrivilegios($privilegioId)
-                        ->where('Eliminar','=',1)->exists();
-       
+                        ->where('Eliminar','=',1)->exists();    
         return $flag;
      }
 }
