@@ -4226,7 +4226,7 @@ textarea.form-control-lg {
     padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
     font-size: var(--bs-nav-link-font-size);
     font-weight: var(--bs-nav-link-font-weight);
-    color: var(--bs-nav-link-color);
+    color: #000000;
     background: 0 0;
     border: 0;
     transition: color .15s ease-in-out
@@ -34034,7 +34034,7 @@ textarea.form-control-lg {
     --bs-info: #7239EA;
     --bs-warning: #F6C000;
     --bs-danger: #F8285A;
-    --bs-dark: #1E2129;
+    --bs-dark: #353A40;
     --bs-primary-active: #056EE9;
     --bs-secondary-active: #DBDFE9;
     --bs-light-active: #FCFCFC;
