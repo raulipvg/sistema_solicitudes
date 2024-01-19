@@ -123,4 +123,53 @@ class Usuario extends Authenticatable
             throw new ValidationException($validator);
         }
     }
+
+    public function gruposPrivilegios($privilegioId)
+	{
+		return $this->belongsToMany(Grupo::class, 'usuario_grupo', 'UsuarioId', 'GrupoId')
+                    ->select([
+                        //'grupo_privilegio.Id',
+                        //'grupo_privilegio.GrupoId',
+                        'grupo_privilegio.PrivilegioId',
+                        'grupo_privilegio.Ver',
+                        'grupo_privilegio.Registrar',
+                        'grupo_privilegio.Editar', 
+                        'grupo_privilegio.Eliminar',    
+                    ])
+                    ->where('grupo.Enabled','=', 1)
+                    ->where('usuario_grupo.Enabled','=',1)
+                    ->where('grupo_privilegio.PrivilegioId','=', $privilegioId)
+					->join('grupo_privilegio','grupo_privilegio.GrupoId','=','grupo.Id');
+	}
+
+    public function puedeVer($privilegioId){
+       //$flag=  $this->gruposEnabled()->get();
+       $flag=  $this->gruposPrivilegios($privilegioId)
+                        ->where('Ver','=',1)->exists();
+      
+       return $flag;
+    }
+
+    public function puedeRegistrar($privilegioId){
+        //$flag=  $this->gruposEnabled()->get();
+        $flag=  $this->gruposPrivilegios($privilegioId)
+                        ->where('Registrar','=',1)->exists();
+       
+        return $flag;
+     }
+
+     public function puedeEditar($privilegioId){
+        //$flag=  $this->gruposEnabled()->get();
+        $flag=  $this->gruposPrivilegios($privilegioId)
+                        ->where('Editar','=',1)->exists();
+       
+        return $flag;
+     }
+     public function puedeEliminar($privilegioId){
+        //$flag=  $this->gruposEnabled()->get();
+        $flag=  $this->gruposPrivilegios($privilegioId)
+                        ->where('Eliminar','=',1)->exists();
+       
+        return $flag;
+     }
 }

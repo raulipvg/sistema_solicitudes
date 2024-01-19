@@ -15,6 +15,8 @@ class EmpresaController extends Controller
     {
         $titulo= "Empresas";
         //$empresas= Empresa::all();
+        $user = auth()->user();
+        $resultado = $user->puedeVer(1);
 
         $empresas = Empresa::select(
                                 'empresa.Id',
@@ -27,7 +29,8 @@ class EmpresaController extends Controller
 
         return view('empresa.empresa')->with([
                         'titulo'=> $titulo,
-                        'empresas'=> $empresas                        
+                        'empresas'=> $empresas,
+                        'resultado' => $resultado                        
                     ]);
     
     }
