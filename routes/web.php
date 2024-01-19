@@ -45,31 +45,24 @@ Route::group(['prefix' => '/usuario', 'middleware' => 'auth'], function () { //L
 });
 
 
-Route::group(['prefix' => '/usuariogrupo'], function () { //
+Route::group(['prefix' => '/usuariogrupo', 'middleware' => 'auth'], function () { //
     Route::post('/ver', [UsuarioGrupoController::class, 'Ver'])->name('VerUsuarioGrupo');
     Route::post('/vergrupos', [UsuarioGrupoController::class, 'VerGrupo'])->name('VerGrupoPorUsuario');
     Route::post('/registrar', [UsuarioGrupoController::class, 'Registrar'])->name('GuardarUsuarioGrupo');
     Route::post('/eliminar', [UsuarioGrupoController::class, 'Eliminar'])->name('DeleteUsuarioGrupo');
-
-    //Route::get('/', [UserController::class, 'Index'])->name('Usuario');
-    //Route::post('/registrar', [AccesoComunidadController::class, 'Guardar'])->name('RegistrarAcceso');
-    
-    //Route::post('/editar', [AccesoComunidadController::class, 'Editar'])->name('EditarAcceso');
-    //Route::post('/comunidadsinacceso',[AccesoComunidadController::class, 'getComunidadSinAcceso'])->name('ComunidadSinAcceso');
 });
 
-Route::group(['prefix' => '/grupo'], function () {
+Route::group(['prefix' => '/grupo', 'middleware' => 'auth'], function () {
     Route::get('/', [GrupoController::class, 'Index'])->name('Grupo');
     Route::get('/ver/{id}', [GrupoController::class, 'Ver'])->name('VerGrupo');
     Route::post('/registrar', [GrupoController::class, 'Guardar'])->name('GuardarGrupo');
     Route::post('/veredit', [GrupoController::class, 'VerEdit'])->name('VerGrupoEdit');
     Route::post('/editargrupoprivilegio', [GrupoController::class, 'EditarGrupoPrivilegio'])->name('EditarGrupoPrivilegio');
     Route::post('/cambiarestado', [GrupoController::class,'CambiarEstado'])->name('CambiarEstadoGrupo');
-    //Route::post('/asignar',[AccesoComunidadController::class, 'AsignarGrupo'])->name('AsignarGrupo');
 });
 
 
-Route::group(['prefix' => '/estadoflujo'], function () {
+Route::group(['prefix' => '/estadoflujo', 'middleware' => 'auth'], function () {
     Route::get('/', [EstadoFlujoController::class, 'Index'])->name('EstadoFlujo');
     Route::post('/registrar', [EstadoFlujoController::class, 'Guardar'])->name('GuardarEstado');
     Route::post('/ver', [EstadoFlujoController::class, 'VerId'])->name('VerEstado');
@@ -77,7 +70,7 @@ Route::group(['prefix' => '/estadoflujo'], function () {
     Route::post('/editarEstado', [EstadoFlujoController::class, 'CambiarEstado'])->name('CambiarEstadoEstado');
 });
 
-Route::group(['prefix' => '/atributo'], function () {
+Route::group(['prefix' => '/atributo', 'middleware' => 'auth'], function () {
     Route::get('/', [AtributoController::class, 'Index'])->name('Atributo');
     Route::post('/registrar', [AtributoController::class, 'Guardar'])->name('GuardarAtributo');
     Route::post('/ver', [AtributoController::class, 'VerId'])->name('VerAtributo');
@@ -85,7 +78,7 @@ Route::group(['prefix' => '/atributo'], function () {
     Route::post('/editarEstado', [AtributoController::class, 'CambiarEstado'])->name('CambiarEstadoAtributo');
 });
 
-Route::group(['prefix' => '/movimiento'], function () {
+Route::group(['prefix' => '/movimiento', 'middleware' => 'auth'], function () {
     Route::get('/', [MovimientoController::class, 'Index'])->name('Movimiento');
     Route::post('/registrar', [MovimientoController::class, 'Guardar'])->name('GuardarMovimiento');
     Route::post('/ver', [MovimientoController::class, 'VerId'])->name('VerMovimiento');
@@ -94,7 +87,7 @@ Route::group(['prefix' => '/movimiento'], function () {
     Route::post('/flujosGrupos', [MovimientoController::class, 'VerGruposFlujos'])->name('VerGruposFlujosMovimiento');
 });
 
-Route::group(['prefix'=> '/area'], function () {
+Route::group(['prefix'=> '/area', 'middleware' => 'auth'], function () {
     Route::get('/', [AreaController::class,'Index'])->name('Area');
     Route::post('/registrar', [AreaController::class, 'Guardar'])->name('GuardarArea');
     Route::post('/ver', [AreaController::class, 'VerId'])->name('VerArea');
@@ -103,13 +96,13 @@ Route::group(['prefix'=> '/area'], function () {
     Route::post('/verflujos', [AreaController::class, 'VerFlujos'])->name('VerFlujos');
 });
 
-Route::group(['prefix'=> '/flujo'], function () {
+Route::group(['prefix'=> '/flujo', 'middleware' => 'auth'], function () {
     Route::get('/', [FlujoController::class,'Index'])->name('Flujo');
     Route::post('/eliminar', [FlujoController::class, 'Eliminar'])->name('EliminarFlujo');
     Route::post('/registrar', [FlujoController::class, 'Guardar'])->name('GuardarFlujo');
 });
 
-Route::group(['prefix'=> '/empresa'], function () {
+Route::group(['prefix'=> '/empresa', 'middleware' => 'auth'], function () {
     Route::get('/', [EmpresaController::class,'Index'])->name('Empresa');
     Route::post('/registrar', [EmpresaController::class, 'Guardar'])->name('GuardarEmpresa');
     Route::post('/ver', [EmpresaController::class, 'VerId'])->name('VerEmpresa');
@@ -119,12 +112,12 @@ Route::group(['prefix'=> '/empresa'], function () {
     Route::post('/Vercentrocostoempresa', [EmpresaController::class, 'VerCentroCostoxEmpresa'])->name('VerCentroCostoxEmpresa');
 });
 
-Route::group(['prefix'=> '/centrocosto'], function () {
+Route::group(['prefix'=> '/centrocosto', 'middleware' => 'auth'], function () {
     Route::post('/registrar', [CentroCostoController::class,'Guardar'])->name('GuardarCentroCosto');
     Route::post('/cambiarestado', [CentroCostoController::class, 'CambiarEstado'])->name('CambiarEstadoCentroCosto');
 });
 
-Route::group(['prefix'=> '/persona'], function () {
+Route::group(['prefix'=> '/persona', 'middleware' => 'auth'], function () {
     Route::get('/', [PersonaController::class,'Index'])->name('Persona');
     Route::post('/registrar', [PersonaController::class, 'Guardar'])->name('GuardarPersona');
     Route::post('/ver', [PersonaController::class, 'VerId'])->name('VerPersona');
@@ -134,14 +127,14 @@ Route::group(['prefix'=> '/persona'], function () {
 
 });
 
-Route::group(['prefix'=> '/movimientoatributo'], function () {
+Route::group(['prefix'=> '/movimientoatributo', 'middleware' => 'auth'], function () {
     Route::get('/', [MovimientoAtributoController::class, 'Index'])->name('InicioMovimientoAtributo');
     Route::post('/registrar', [MovimientoAtributoController::class, 'Guardar'])->name('GuardarMovimientoAtributo');
     Route::post('/ver', [MovimientoAtributoController::class, 'Ver'])->name('VerMovimientoAtributo');
     Route::post('/verAtributos', [MovimientoAtributoController::class, 'AtributosFaltantes'])->name('VerAtributosFaltantes');
 });
 
-Route::group(['prefix'=> '/solicitud'], function () {
+Route::group(['prefix'=> '/solicitud', 'middleware' => 'auth'], function () {
     Route::get('/', [SolicitudController::class,'Index'])->name('Solicitud');
     Route::post('/datosSolicitud', [SolicitudFlujoHistorialController::class,'GetFlujo'])->name('DataTestSolicitud');
     Route::post('/historial', [SolicitudFlujoHistorialController::class,'getHistorial'])->name('getHistorial');
@@ -158,14 +151,14 @@ Route::group(['prefix' => '/error'], function () {
 });
 
 
-Route::get('/test', function () {
+Route::get('/test', ['middleware' => 'auth', function () {
     try {
         DB::connection()->getPdo();
         return "Conexión a la base de datos exitosa.";
     } catch (\Exception $e) {
         return "Error al conectar a la base de datos: " . $e->getMessage();
     }
-});
+}]);
 
 Route::group(['prefix'=>'/login'], function(){
     Route::get('/', [LoginController::class, 'Index'])->name('login');
