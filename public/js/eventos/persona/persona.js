@@ -200,16 +200,7 @@ $(document).ready(function() {
                 //console.log(data);
                 //blockUI.release();
                 if(data.success){
-                    dataselect=data.option;
-                    var select = $('#CentroCostoInput');
-                    select.empty();
-                    var option = new Option('','');
-                    select.append(option);
-                    for (const key in dataselect) {
-                        var textoCapitalizado = (dataselect[key].Empresa + ' - ' + dataselect[key].Centro).toUpperCase();
-                        var option = new Option(textoCapitalizado, dataselect[key].Id);
-                        select.append(option);                        
-                    }                    
+                    llenarSelect2(data.option, $('#CentroCostoInput') );                                      
                 }else{
                     Swal.fire({
                             text: "Error de Carga",
@@ -288,14 +279,12 @@ $(document).ready(function() {
                             success: function (data) {
                                 if(data.success){
                                     //console.log("exito");
-                                    // location.reload();
-                                    //console.log(data);
                                     cargarData.init(data.persona);
                                     $('#registrar').modal('toggle');                                   
                                 }else{
                                     //console.log(data.error);
-                                        html = '<ul><li style="">'+data.message+'</li></ul>';
-                                       $("#AlertaError").append(html);                                    
+                                    html = '<ul><li style="">'+data.message+'</li></ul>';
+                                    $("#AlertaError").append(html);                                    
                                     $("#AlertaError").show();
                                 }
                             },
@@ -360,23 +349,16 @@ $(document).ready(function() {
             },
             success: function (data) {
                 if(data.success){
-                    console.log(data)
+                    //console.log(data)
                     dataselect=data.option; 
                     data=data.data;
-                     //console.log(data)
                     $("#IdInput").val(data.Id);
                     $("#NombreInput").val(data.Nombre);
                     $("#ApellidoInput").val(data.Apellido);
                     $("#RutInput").val(data.Rut);
                     $('#EstadoIdInput2').val(data.Enabled).trigger("change");
 
-                    var select = $('#CentroCostoInput');
-                    select.empty();
-                    for (const key in dataselect) {
-                        var textoCapitalizado = (dataselect[key].Empresa + ' - ' + dataselect[key].Centro).toUpperCase();
-                        var option = new Option(textoCapitalizado, dataselect[key].Id);
-                        select.append(option);                        
-                    }   
+                    llenarSelect2(dataselect, $('#CentroCostoInput') );  
                     $('#CentroCostoInput').val(data.CentroCostoId).trigger("change");
                 }else{
                     Swal.fire({
@@ -448,7 +430,6 @@ $(document).ready(function() {
                                 },
                                 success: function (data) {                                    
                                     if(data.success){
-                                         //location.reload();
                                         miTabla.row(row).remove();
                                         cargarData.init(data.persona);
                                         $('#registrar').modal('toggle');
@@ -513,8 +494,7 @@ $(document).ready(function() {
             success: function (data) {
                 //console.log(data);
                 if(data){
-                    data=data.data;
-        
+                    data=data.data;        
                     $("#IdInput").val(data.Id);
                     $("#NombreInput").val(data.Nombre);
                     $("#ApellidoInput").val(data.Apellido);
@@ -538,7 +518,6 @@ $(document).ready(function() {
                 }
             },
             error: function () {
-                //blockUI.release();
                 Swal.fire({
                             text: "Error de Carga",
                             icon: "error",
@@ -627,7 +606,6 @@ $(document).ready(function() {
         e.stopPropagation();
         $("input").val('').prop("disabled",false);
         $('.form-select').val("").trigger("change").prop("disabled",false);
-        //$('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
 
         $("#AlertaError2").hide();
         validatorAcceso.resetForm();
@@ -682,8 +660,8 @@ $(document).ready(function() {
                                         location.reload();
                                    }else{
                                        //console.log(data.error);
-                                           html = '<ul><li style="">'+data.message+'</li></ul>';
-                                          $("#AlertaError2").append(html);                                    
+                                        html = '<ul><li style="">'+data.message+'</li></ul>';
+                                        $("#AlertaError2").append(html);                                    
                                        $("#AlertaError2").show();
                                    }
                                },

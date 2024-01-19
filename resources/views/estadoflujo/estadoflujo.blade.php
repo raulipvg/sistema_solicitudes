@@ -18,14 +18,16 @@
 <div class="d-flex flex-column flex-column-fluid">
 
     <div class="card mx-5">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-                <h3 class="card-title text-uppercase">Estados de Flujo</h3>
-
+        <div class="card-header bg-dark">
+            <h3 class="card-title text-uppercase text-white">Estados de Flujo</h3>
+            <div class="m-1">
                 <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                     Registrar
                 </button>
-            </div>
+            </div>                
+        </div>
+        <div class="card-body">
+            
             @include('estadoflujo.componente.tablaEstadoFlujo')
         </div>
     </div>

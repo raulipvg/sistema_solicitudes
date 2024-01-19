@@ -1,22 +1,22 @@
                                             <div class="card card-flush h-md-100">
 												<!--begin::Card header-->
-												<div class="card-header">
+												<div class="card-header bg-dark">
 													<!--begin::Card title-->
 													<div class="card-title">
-														<h2 class="text-capitalize">{{ $grupo->Nombre }} </h2>
+														<h2 class="text-white text-uppercase">{{ $grupo->Nombre }} </h2>
 													</div>
 													<!--end::Card title-->
 													<div class="card-toolbar">
 
 													@if($grupo->Enabled ==1 )
-														<button class="btn btn-sm btn-light-success estado-grupo fs-7 text-uppercase justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Grupo" data-info="{{ $grupo->Id }}">
+														<button class="btn btn-sm btn-success estado-grupo fs-7 text-uppercase justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Grupo" data-info="{{ $grupo->Id }}">
 															<span class="indicator-label">ACTIVO</span>
 															<span class="indicator-progress">
 																<span class="spinner-border spinner-border-sm align-middle"></span>
 															</span>
 														</button>
 													@else
-														<button class="btn btn-light-warning fs-7 estado-grupo text-uppercase  justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Grupo" data-info="{{ $grupo->Id }}">
+														<button class="btn btn-warning fs-7 estado-grupo text-uppercase  justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Grupo" data-info="{{ $grupo->Id }}">
 															<span class="indicator-label">INACTIVO</span>
 															<span class="indicator-progress">
 																<span class="spinner-border spinner-border-sm align-middle"></span>

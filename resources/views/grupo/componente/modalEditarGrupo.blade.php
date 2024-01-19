@@ -1,12 +1,12 @@
-<div class="modal fade" id="kt_modal_update_role" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+									<div class="modal fade" id="kt_modal_update_role" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
 										<!--begin::Modal dialog-->
 										<div class="modal-dialog modal-dialog-centered mw-750px">
 											<!--begin::Modal content-->
 											<div class="modal-content">
 												<!--begin::Modal header-->
-												<div class="modal-header">
+												<div class="modal-header bg-light p-2 ps-5">
 													<!--begin::Modal title-->
-													<h2 class="fw-bold">Editar Privilegios del Grupo</h2>
+													<h2 class="fw-bold text-uppercase">Editar Privilegios del Grupo</h2>
 													<!--end::Modal title-->
 													<!--begin::Close-->
 													<div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-roles-modal-action="close">
@@ -19,7 +19,7 @@
 												</div>
 												<!--end::Modal header-->
 												<!--begin::Modal body-->
-												<div id="modal-update" class="modal-body scroll-y py-3">
+												<div id="modal-update">
 													@include('grupo.componente._formEditarGrupo', ['privilegios'=> $privilegios])
 												</div>
 												<!--end::Modal body-->

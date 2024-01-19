@@ -92,7 +92,7 @@ class PersonaController extends Controller
                 throw new Exception('Persona no encontrada');
             }
 
-            $cc = CentroDeCosto::select('centro_de_costo.Id', 'centro_de_costo.Nombre as Centro', 'empresa.Nombre as Empresa')
+            $cc = CentroDeCosto::select(DB::raw("CONCAT(empresa.Nombre, ' - ', centro_de_costo.Nombre) as Nombre"), 'centro_de_costo.Id')
                                 ->join('empresa','empresa.Id','=','centro_de_costo.EmpresaId')
                                 ->where('centro_de_costo.Enabled','=', 1)
                                 ->orWhere('centro_de_costo.Id', $persona->CentroCostoId)
