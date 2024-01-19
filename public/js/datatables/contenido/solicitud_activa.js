@@ -11,20 +11,13 @@ let tablaSolicitudes = $('#tabla-solicitudes').DataTable({
         <'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>
         >`
     ,
-    "pageLength": 20,
+    "pageLength": 30,
     "columnDefs": [
-        { "targets": 1, "responsivePriority": 1 },
-        { "targets": 0, "responsivePriority": 3,"searchable": false },
-        { 
-            targets: -1,
-            responsivePriority: 1,
-            className: 'dt-control',
-            orderable: false,
-            searchable: false,
-            
-        },      
-        { "targets": 2, "responsivePriority": 4 },
-        { "targets": 3, "responsivePriority": 5 }
+        { targets: 6, responsivePriority: 3,searchable: false},
+        { targets: 0, responsivePriority: 1 },   
+        { targets: 1, responsivePriority: 2 },                  
+        { targets: 2, responsivePriority: 3 },
+        { targets: 5, responsivePriority: 4 }
     ],
     "responsive": true,
     "initComplete": function() {
@@ -105,7 +98,8 @@ const cargarDataActiva= function(){
                                         "3": col3,
                                         "4": col4,
                                         "5": col5,
-                                        "6": col6
+                                        "6": col6,
+                                        "7": data[key].Id
                                     } ).node();
                     $(rowNode).find('td:eq(0)').addClass('min-w-175px p-1');
                     $(rowNode).find('td:eq(1)').addClass('p-1');
@@ -114,12 +108,12 @@ const cargarDataActiva= function(){
                     $(rowNode).find('td:eq(4)').addClass('min-w-125px p-1');
                     $(rowNode).find('td:eq(5)').addClass('min-w-125px p-1');
                     $(rowNode).find('td:eq(6)').addClass('text-end p-1');
-                    //$(rowNode).find('td:eq(6)').addClass('text-center p-0');
+                    $(rowNode).find('td:eq(7)').addClass('d-none');
                     
                     cantActiva= cantActiva+1;
                 }
             }
-            tablaSolicitudes.order([1, 'asc']).draw();
+            tablaSolicitudes.order([7, 'desc']).draw();
             $('[data-bs-toggle="tooltip"]').tooltip();
 
             $("#activas").text(`ACTIVAS (${cantActiva})`);
@@ -150,16 +144,10 @@ KTUtil.onDOMContentLoaded((function() {
                 },
                 success: function (data) {
                     if(data.success){
-                        //data= data.data;                                                            
-                        //console.log('todo pulento terminado');
                         //console.log(data);
                         cantActiva = 0;
                         tablaSolicitudes.clear();
                         cargarDataActiva.init(data.solicitudes);
-                        //cantActiva=cantActiva-1;
-                        //$("#activas").text(`ACTIVAS ${cantActiva}`);
-                        //.remove().draw();
-                        
                     }else{
                         Swal.fire({
                             text: "Error al Cargar Solicitudes Activas",

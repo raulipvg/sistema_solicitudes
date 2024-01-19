@@ -12,18 +12,11 @@ let tablaSolicitudesTerminadas = $('#tabla-solicitudes-terminadas').DataTable({
     ,
     "pageLength": 20,
     "columnDefs": [
-        { "targets": 1, "responsivePriority": 1 },
-        { "targets": 0, "responsivePriority": 3,"searchable": false },
-        { 
-            targets: -1,
-            responsivePriority: 1,
-            className: 'dt-control',
-            orderable: false,
-            searchable: false,
-            
-        },      
-        { "targets": 2, "responsivePriority": 4 },
-        { "targets": 3, "responsivePriority": 5 }
+        { targets: 6, responsivePriority: 3,searchable: false},
+        { targets: 0, responsivePriority: 1 },   
+        { targets: 1, responsivePriority: 2 },                  
+        { targets: 2, responsivePriority: 3 },
+        { targets: 5, responsivePriority: 4 }
     ],
     "responsive": true,
     "initComplete": function() {
@@ -87,7 +80,8 @@ const cargarDataTerminada= function(){
                                         "3": col3,
                                         "4": col4,
                                         "5": col5,
-                                        "6": col6
+                                        "6": col6,
+                                        "7": data[key].Id
                                     } ).node();
                     $(rowNode).find('td:eq(0)').addClass('min-w-175px p-1');
                     $(rowNode).find('td:eq(1)').addClass('p-1');
@@ -96,12 +90,12 @@ const cargarDataTerminada= function(){
                     $(rowNode).find('td:eq(4)').addClass('min-w-125px p-1');
                     $(rowNode).find('td:eq(5)').addClass('min-w-125px p-1');
                     $(rowNode).find('td:eq(6)').addClass('text-end p-1');
-                    //$(rowNode).find('td:eq(6)').addClass('text-center p-0');
+                    $(rowNode).find('td:eq(7)').addClass('d-none');
                     
                     cantTerminada= cantTerminada+1;
                 }
             }
-            tablaSolicitudesTerminadas.order([1, 'asc']).draw();
+            tablaSolicitudesTerminadas.order([7, 'desc']).draw();
             $('[data-bs-toggle="tooltip"]').tooltip();
 
             $("#terminadas").text(`TERMINADAS (${cantTerminada})`);
@@ -130,16 +124,11 @@ KTUtil.onDOMContentLoaded((function() {
                 },
                 success: function (data) {
                     if(data.success){
-                        //data= data.data;                                                        
-                        //console.log('todo pulento terminado');
+                        //data= data.data;             
                         //console.log(data);
                         cantTerminada = 0;
                         tablaSolicitudesTerminadas.clear();
-                        cargarDataTerminada.init(data.solicitudes);
-                        //cantActiva=cantActiva-1;
-                        //$("#activas").text(`ACTIVAS ${cantActiva}`);
-                        //.remove().draw();
-                        
+                        cargarDataTerminada.init(data.solicitudes);                        
                     }else{
                         Swal.fire({
                             text: "Error al Cargar Solicitudes Terminadas",

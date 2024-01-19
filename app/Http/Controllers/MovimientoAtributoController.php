@@ -145,6 +145,7 @@ class MovimientoAtributoController extends Controller
                                     'Nombre',
                                 )
                                 ->where('Enabled',1)
+                                ->orWhere('Id', '=', $movimientoExiste->Id)
                                 ->get();
 
         return response()->json([

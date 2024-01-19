@@ -31,7 +31,7 @@
                                     @endforeach
                                     
                                 </select>
-                                <label for="PersonaIdInput" class="form-label">Persona</label>
+                                <label for="PersonaIdInput" class="form-label">Destinatario de la Solicitud</label>
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
