@@ -14,11 +14,22 @@ class EstadoFlujoController extends Controller
     public function Index()
     {
         $titulo = 'Estados de Flujo';
+
+        $user = auth()->user();
+        // 8 Privilegios de Estado Flujo
+        $credenciales = [
+                'puedeVer'=> $user->puedeVer(8),
+                'puedeRegistrar'=> $user->puedeRegistrar(8),
+                'puedeEditar'=> $user->puedeEditar(8),
+                'puedeEliminar'=> $user->puedeEliminar(8),
+        ];
+
         $estadosFlujo = EstadoFlujo::select('Id','Nombre','Enabled')->get();
 
         return View('estadoflujo.estadoflujo')->with([
             'titulo'=>$titulo,
-            'estadosFlujo'=>$estadosFlujo
+            'estadosFlujo'=>$estadosFlujo,
+            'credenciales'=>$credenciales
         ]);
     }
 

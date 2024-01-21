@@ -1,3 +1,4 @@
+@if ($credenciales['puedeVer'])
 @extends('layout.main')
 
 @push('css')
@@ -46,19 +47,29 @@
 
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade active show" id="panel-movimiento" role="tabpanel">
-                    <button id="addBtnMovimiento" type="button" class="btn btn-sm btn-success float-end mx-2" data-bs-toggle="modal" data-bs-target="#registrar-movimiento" style="z-index: 10; position: relative;">
-                        Registrar
-                    </button>
+                    @if ($credenciales['puedeRegistrar'])
+                        <button id="addBtnMovimiento" type="button" class="btn btn-sm btn-success float-end mx-2" data-bs-toggle="modal" data-bs-target="#registrar-movimiento" style="z-index: 10; position: relative;">
+                            Registrar
+                        </button>
+                    @endif
                     @include('movimiento.componente.tablaMovimiento')
-                    @include('movimiento.componente.modalRegistrarMovimiento')
+
+                    @if ($credenciales['puedeRegistrar'] || $credenciales['puedeEditar'] || $credenciales['puedeVer'])
+                        @include('movimiento.componente.modalRegistrarMovimiento')
+                    @endif
                 </div>
 
                 <div class="tab-pane fade" id="panel-atributo" role="tabpanel">
-                    <button id="AddBtnAtr" type="button" class="btn btn-sm btn-success float-end mx-2" data-bs-toggle="modal" data-bs-target="#registrar-atributo">
-                        Registrar
-                    </button>
+                    @if ($credenciales['puedeRegistrar'])
+                        <button id="AddBtnAtr" type="button" class="btn btn-sm btn-success float-end mx-2" data-bs-toggle="modal" data-bs-target="#registrar-atributo" style="z-index: 10; position: relative;">
+                            Registrar
+                        </button>
+                    @endif
                     @include('atributo.componente.tablaAtributo')
-                    @include('atributo.componente.modalRegistrarAtributo')
+
+                    @if ($credenciales['puedeRegistrar'] || $credenciales['puedeEditar'] || $credenciales['puedeVer'])
+                        @include('atributo.componente.modalRegistrarAtributo')
+                    @endif
                 </div>
 
             </div>
@@ -70,8 +81,9 @@
     </div>
 </div>
 <!--end::Content-->
-
-@include('movimientoatributo.componente.crearMovimientoAtributo')
+@if ($credenciales['puedeRegistrar'])
+    @include('movimientoatributo.componente.crearMovimientoAtributo')
+@endif
 
 @endsection
 
@@ -97,6 +109,8 @@
 	
         const dataAtributos = JSON.parse('{!! $atributos !!}');
 
+        const credenciales= {!! json_encode($credenciales) !!};
+
         
     </script>
     <!--begin::Datatables y Configuracion de la Tabla-->
@@ -119,3 +133,9 @@
     <!--end::Eventos de la pagina-->
 
 @endpush
+
+@else
+    <script>
+        window.location = '{{ route('Error404') }}';
+    </script>
+@endif

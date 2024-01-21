@@ -15,6 +15,21 @@ class PersonaController extends Controller
     public function Index()
     {
         $titulo= "Personas";
+        $user = auth()->user();
+        // 5 Privilegios de Persona
+        $credenciales = [
+            'puedeVer'=> $user->puedeVer(5),
+            'puedeRegistrar'=> $user->puedeRegistrar(5),
+            'puedeEditar'=> $user->puedeEditar(5),
+            'puedeEliminar'=> $user->puedeEliminar(5),
+        ];
+        // 1 Privilegios de Usuario
+        $credenciales2 = [
+            'puedeVer'=> $user->puedeVer(1),
+            'puedeRegistrar'=> $user->puedeRegistrar(1),
+            'puedeEditar'=> $user->puedeEditar(1),
+            'puedeEliminar'=> $user->puedeEliminar(1),
+        ];
         //$personas = Persona::all();
         $personas = Persona::select('persona.Id',
                                     DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"),
@@ -34,7 +49,9 @@ class PersonaController extends Controller
         return view('persona.persona')->with([
                         'titulo'=> $titulo,
                         'personas'=> $personas,
-                        'centrocostos'=> $centrocostos
+                        'centrocostos'=> $centrocostos,
+                        'credenciales'=> $credenciales,
+                        'credenciales2'=> $credenciales2,
                     ]);
     
     }

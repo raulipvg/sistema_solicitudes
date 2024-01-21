@@ -1,23 +1,25 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 function format(data,usuario) {   
-    var html=
-    '<div class="d-flex justify-content-center">'+
-        '<div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">'+
-        '<table id="services_table" class="table table-row-dashed">'+
-            '<thead class="services-info">'+
-               '<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">'+
-                    '<th class="p-0 ps-3">Grupo</th>'+
-                    '<th class="p-0 ps-3">Fecha</th>'+
-                    '<th class="text-center col-3 p-0 ps-2">ESTADO'+
-                        '<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Asignar un Grupo">'+ 
-                        '<button type="button" data-info="'+usuario+'" class="registrar-acceso btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-acceso">'+
-                            '<i class="ki-outline ki-plus-square fs-2"></i>'+
-                        '</button>'+
-                        '</span>'+
-                    '</th>'+
-                '</tr>'+
-            '</thead>'+
-            '<tbody class="fw-bold text-gray-600">';
+    var html=`
+            <div class="d-flex justify-content-center">
+                <div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">
+                <table id="services_table" class="table table-row-dashed">
+                    <thead class="services-info">
+                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                            <th class="p-0 ps-3">Grupo</th>
+                            <th class="p-0 ps-3">Fecha</th>
+                            <th class="text-center col-3 p-0 ps-2">ESTADO${
+                                credenciales2.puedeRegistrar
+                                ?`<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Asignar un Grupo"> 
+                                    <button type="button" data-info="${usuario}" class="registrar-acceso btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-acceso">
+                                        <i class="ki-outline ki-plus-square fs-2"></i>
+                                    </button>
+                                </span>`
+                                :''
+                            }</th>
+                        </tr>
+                    </thead>
+                    <tbody class="fw-bold text-gray-600">`;
 
     for(const elemento of data) {
         html = html + AgregarTR(elemento.Nombre, elemento.Id, elemento.created_at, "Desvincular del Grupo");   
@@ -37,20 +39,21 @@ function AgregarTR(nombre, id, fecha, titulo){
     // Formatear la fecha como "DD-MM-YYYY"
     var fechaFormateada = dia + "-" + (mes < 10 ? "0" : "") + mes + "-" + anio;
 
-    var html ='<tr>'+
-                    '<td class="text-gray-700 text-capitalize">'+nombre+'</td>'+
-                    '<td>'+fechaFormateada+'</td>'+
-                    '<td class="text-center p-0">'+
-                        '<div class="btn-group btn-group-sm" role="group">'+
-                            '<button class="btn btn-sm btn-light-success editar-acceso fs-7 text-uppercase estado justify-content-center p-1 w-100px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="'+id+'" title="'+titulo+'">'+
-                            '<span class="indicator-label">HABILITADO</span>'+
-                            '<span class="indicator-progress">'+
-                                '<span class="spinner-border spinner-border-sm align-middle"></span>'+
-                            '</span>'+
-                            '</button>';
-                        '</div>'+
-                    '</td>'+
-                '</tr>';
+    var className = (credenciales2.puedeEliminar)? 'editar-acceso': 'disabled';
+    var html =`<tr>
+                    <td class="text-gray-700 text-capitalize">${nombre}</td>
+                    <td>${fechaFormateada}</td>
+                    <td class="text-center p-0">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button class="btn btn-sm btn-light-success ${className} fs-7 text-uppercase estado justify-content-center p-1 w-100px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="${id}" title="${titulo}">
+                                <span class="indicator-label">HABILITADO</span>
+                                <span class="indicator-progress">
+                                    <span class="spinner-border spinner-border-sm align-middle"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
     return html;
 }
  
@@ -132,13 +135,11 @@ const cargarData= function(){
         init: function(data){
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
-                            //console.log("Nombre:", data[persona].username);
-                    var btnEstado;
-                    if(data[key].Enabled == 1){
-                        btnEstado = botonEstado('Deshabilitar Usuario','btn-light-success estado-usuario  w-70px','ACTIVO');
-                    }else{
-                        btnEstado = botonEstado('Habilitar Usuario','btn-light-warning estado-usuario  w-70px','INACTIVO');
-                    }
+                    var className = (credenciales.puedeEliminar)? 'estado-usuario': 'disabled';
+
+                    var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Usuario','btn-light-success w-115px '+className,'HABILITADO')
+                                                             :botonEstado('Habilitar Usuario','btn-light-warning w-115px '+className,'DESHABILITADO');
+                
                     var rowNode =  miTabla.row.add( {
                                         "0": data[key].Id,
                                         "1": data[key].NombreCompleto,
@@ -146,7 +147,7 @@ const cargarData= function(){
                                         "3": data[key].Email,
                                         "4": btnEstado,
                                         "5": botonAcciones('registrar',data[key].Id),
-                                        "6" :botonVerDetalle('Grupos Asociados')
+                                        "6": (credenciales2.puedeVer)?botonVerDetalle('Grupos Asociados'):null
                                     } ).node();
                     $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
                     $(rowNode).find('td:eq(3)').addClass('fw-bold text-gray-600');
@@ -161,7 +162,7 @@ const cargarData= function(){
 }();
 
 KTUtil.onDOMContentLoaded((function() {
-    cargarData.init(data);
+    (credenciales.puedeVer)?cargarData.init(data):null;
 }));
 
 

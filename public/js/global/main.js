@@ -68,52 +68,6 @@ var loadingEl = document.createElement("div");
         return fechaFormateada;
     }
 
-    function botonEstado(tooltip, className, estado){
-        var btn = '<button class="btn btn-sm '+className+' fs-7 text-uppercase justify-content-center p-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="'+tooltip+'">'+
-                        '<span class="indicator-label">'+estado+'</span>'+
-                        '<span class="indicator-progress">'+
-                            '<span class="spinner-border spinner-border-sm align-middle"></span>'+
-                        '</span>'+
-                   '</button>';
-        return btn;
-    }
-
-    function botonAcciones(modal,id){
-        var btn ='<div class="btn-group btn-group-sm" role="group">'+
-                    '<a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#'+modal+'" info="'+id+'">Ver</a>'+
-                    '<a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#'+modal+'" info="'+id+'">Editar</a>'+
-                '</div>';
-        return btn;
-    }
-
-    function botonAccion(modal,id){
-        var btn ='<div class="btn-group btn-group-sm" role="group">'+
-                    '<a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#'+modal+'" info="'+id+'">Editar</a>'+
-                '</div>';
-        return btn;
-    }
-
-    function botonVerDetalle(tooltip){
-        var btn =   '<button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="'+tooltip+'">'+
-                        '<i class="ki-duotone ki-plus fs-3 m-0 toggle-off"></i>'+
-                        '<i class="ki-duotone ki-minus fs-3 m-0 toggle-on"></i>'+
-                        '<span class="indicator-label"></span>'+
-                        '<span class="indicator-progress">'+
-                            '<span class="spinner-border spinner-border-sm align-middle"></span>'+
-                        '</span>'+
-                    '</button>';
-        return btn;
-    }
-
-    function botonModal(modal,tooltip,id){
-        var btn =   '<div data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="'+tooltip+'">'+
-                        '<a class="btn btn-sm btn-icon btn-light btn-active-light-primary h-25px w-25px dar-acceso" type="button" data-bs-toggle="modal" data-bs-target="'+modal+'" info="'+id+'">'+
-                            '<i class="ki-duotone ki-plus fs-3 m-0"></i>'+
-                        '</a>'+
-                    '</div>';
-        return btn;
-    }
-
     function llenarSelect2(data,select){
         select.empty();
         var option = new Option('','');
@@ -124,3 +78,63 @@ var loadingEl = document.createElement("div");
             select.append(option);                        
         }
     }
+
+    function botonEstado(tooltip, className, estado){
+        var btn = `
+                    <button class="btn btn-sm ${className} fs-7 text-uppercase justify-content-center p-1" 
+                            data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="${tooltip}">
+                        <span class="indicator-label">${estado}</span>
+                        <span class="indicator-progress">
+                            <span class="spinner-border spinner-border-sm align-middle"></span>
+                        </span>
+                    </button>
+                `;
+        return btn;
+    }
+
+    function botonAcciones(modal,id){
+        var btn =   `
+                    <div class="btn-group btn-group-sm" role="group">
+                        ${credenciales.puedeVer ? `<a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#${modal}" info="${id}">Ver</a>` : ''}
+                        ${credenciales.puedeEditar ? `<a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#${modal}" info="${id}">Editar</a>` : ''}
+                    </div>
+                    `;
+        return btn;
+    }
+
+    function botonAccion(modal,id){
+        var btn =   `
+                    <div class="btn-group btn-group-sm" role="group">
+                        ${credenciales.puedeEditar ? `<a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#${modal}" info="${id}">Editar</a>` : ''}
+                    </div>
+                    `;
+        return btn;
+    }
+
+    function botonVerDetalle(tooltip){
+        var btn =   `
+                    <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px" 
+                            data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="${tooltip}">
+                        <i class="ki-duotone ki-plus fs-3 m-0 toggle-off"></i>
+                        <i class="ki-duotone ki-minus fs-3 m-0 toggle-on"></i>
+                        <span class="indicator-label"></span>
+                        <span class="indicator-progress">
+                            <span class="spinner-border spinner-border-sm align-middle"></span>
+                        </span>
+                    </button>
+                    `;
+        return btn;
+    }
+
+    function botonModal(modal,tooltip,id){
+        var btn =   `
+                    <div data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="${tooltip}">
+                        <a class="btn btn-sm btn-icon btn-light btn-active-light-primary h-25px w-25px dar-acceso" type="button" data-bs-toggle="modal" data-bs-target="${modal}" info="${id}">
+                            <i class="ki-duotone ki-plus fs-3 m-0"></i>
+                        </a>
+                    </div>
+                    `;
+        return btn;
+    }
+
+    

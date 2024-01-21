@@ -1,3 +1,4 @@
+@if ($credenciales['puedeVer'])
 @extends('layout.main')
 
 @push('css')
@@ -20,24 +21,26 @@
     <div class="card mx-5">
         <div class="card-header bg-dark">
             <h3 class="card-title text-uppercase text-white">Estados de Flujo</h3>
+            @if ($credenciales['puedeRegistrar'])
             <div class="m-1">
                 <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                     Registrar
                 </button>
-            </div>                
+            </div>
+            @endif                
         </div>
         <div class="card-body">
-            
-            @include('estadoflujo.componente.tablaEstadoFlujo')
+                @include('estadoflujo.componente.tablaEstadoFlujo')
         </div>
     </div>
 </div>
 <!--end::Content-->
 
-<!--begin::modal-->
-@include('estadoflujo.componente.modalRegistrarEstadoFlujo')
-<!--end::modal-->
-
+@if ($credenciales['puedeRegistrar'] || $credenciales['puedeEditar'] || $credenciales['puedeVer'])
+    <!--begin::modal-->
+    @include('estadoflujo.componente.modalRegistrarEstadoFlujo')
+    <!--end::modal-->
+@endif
 
 @endsection
 
@@ -50,6 +53,7 @@
         const CambiarEstado = "{{ route('CambiarEstadoEstado') }}";
         /* END:RUTAS */
         const data =  {!! $estadosFlujo !!};
+        const credenciales= {!! json_encode($credenciales) !!};
     </script>
     
     <!--begin::Datatables y Configuracion de la Tabla-->
@@ -64,3 +68,9 @@
     <!--end::Eventos de la pagina-->
 
 @endpush
+
+@else
+    <script>
+        window.location = '{{ route('Error404') }}';
+    </script>
+@endif

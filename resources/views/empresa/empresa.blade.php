@@ -1,3 +1,4 @@
+@if ($credenciales['puedeVer'])
 @extends('layout.main')
 
 @push('css')
@@ -12,7 +13,6 @@
 </style>
 @endpush
 
-
 @section('main-content')
 <!--begin::Toolbar-->
 @include('layout.toolbar')
@@ -23,31 +23,34 @@
     <div class="card mx-5">
         <div class="card-header bg-dark">
             <h3 class="card-title text-uppercase text-white">Empresa</h3>
-            <div class="m-1">
-                @if (auth()->user()->puedeVer(1))
+            @if ($credenciales['puedeRegistrar'])
+            <div class="m-1">                
                 <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                     Registrar
                 </button>
-                @endif
             </div>
+            @endif
         </div>
-        <div class="card-body">
-            <!--begin::Tabla Empresa-->
-            @include('empresa.componente.tablaEmpresa')
-            <!--end::Tabla Empresa-->
+        <div class="card-body">          
+                <!--begin::Tabla Empresa-->
+                @include('empresa.componente.tablaEmpresa')
+                <!--end::Tabla Empresa-->
         </div>
     </div>
     
 </div>
 <!--end::Content-->
+@if ($credenciales['puedeRegistrar'] || $credenciales['puedeEditar'] || $credenciales['puedeVer'])
+    <!--begin::modal - Registrar Empresa-->
+    @include('empresa.componente.modalRegistrarEmpresa')
+    <!--end::modal - Registrar Empresa-->
+@endif
 
-<!--begin::modal - Registrar Empresa-->
-@include('empresa.componente.modalRegistrarEmpresa')
-<!--end::modal - Registrar Empresa-->
-
-<!--begin::modal - Asignar Centro de Costo-->
-@include('empresa.componente.modalRegistrarCentroCosto')
-<!--end::modal-->
+@if ($credenciales2['puedeRegistrar'])
+    <!--begin::modal - Asignar Centro de Costo-->
+    @include('empresa.componente.modalRegistrarCentroCosto')
+    <!--end::modal-->
+@endif
 
 @endsection
 
@@ -64,9 +67,9 @@
         const VerCentroCostoxEmpresa = "{{ route('VerCentroCostoxEmpresa') }}"
         /* END:RUTAS */
         const data =  {!! $empresas !!};
-
-        const puedeVer= ' {{auth()->user()->puedeVer(1) }}';
-        console.log(puedeVer)
+        const credenciales= {!! json_encode($credenciales) !!};
+        const credenciales2= {!! json_encode($credenciales2) !!};
+        
     </script>
 
     <!--begin::Datatables y Configuracion de la Tabla-->
@@ -81,3 +84,9 @@
     <!--end::Eventos de la pagina-->
 
 @endpush
+
+@else
+    <script>
+        window.location = '{{ route('Error404') }}';
+    </script>
+@endif

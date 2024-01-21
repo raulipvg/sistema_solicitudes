@@ -15,13 +15,30 @@ class AreaController extends Controller
     {
         $titulo= "Areas";
         //$areas = Area::all();
+        $user = auth()->user();
+        // 6 Privilegios de Area
+        $credenciales = [
+                'puedeVer'=> $user->puedeVer(6),
+                'puedeRegistrar'=> $user->puedeRegistrar(6),
+                'puedeEditar'=> $user->puedeEditar(6),
+                'puedeEliminar'=> $user->puedeEliminar(6),
+        ];
+        // 7 Privilegios de Flujo
+        $credenciales2 = [
+                'puedeVer'=> $user->puedeVer(7),
+                'puedeRegistrar'=> $user->puedeRegistrar(7),
+                'puedeEditar'=> $user->puedeEditar(7),
+                'puedeEliminar'=> $user->puedeEliminar(7),
+        ];
 
         $areas = Area::select('Id','Nombre','Descripcion','created_at','Enabled')->get();
 
         Log::info('Ingreso vista Area');
         return view('area.area')->with([
                         'titulo'=> $titulo,
-                        'areas'=> $areas
+                        'areas'=> $areas,
+                        'credenciales'=> $credenciales,
+                        'credenciales2'=> $credenciales2
                     ]);
     
     }

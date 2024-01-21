@@ -18,6 +18,15 @@ class FlujoController extends Controller
 {
     public function Index(){
 
+        $user = auth()->user();
+        // 7 Privilegios de Empresa
+        $credenciales = [
+                'puedeVer'=> $user->puedeVer(7),
+                'puedeRegistrar'=> $user->puedeRegistrar(7),
+                'puedeEditar'=> $user->puedeEditar(7),
+                'puedeEliminar'=> $user->puedeEliminar(7),
+        ];
+
         $areas= Area::select('Id','Nombre')
                     ->where('Enabled',1)
                     ->get();
@@ -35,7 +44,8 @@ class FlujoController extends Controller
             'titulo'=> 'Flujos',
             'areas' => $areas,
             'grupos'=> $grupos,
-            'estados'=> $estados
+            'estados'=> $estados,
+            'credenciales'=> $credenciales,
         ]);
     }
 

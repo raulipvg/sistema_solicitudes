@@ -17,15 +17,26 @@ class UsuarioController extends Controller
      * Display a listing of the resource.
      */
     public function Index()
-    {/*
-        $permiso = false;
-        foreach(auth()->user()->grupos as $grupoUsuario){
-            if($grupoUsuario->privilegio->Id == 2){
-                $permiso = true;
-            }
-        }*/
+    {
         $titulo= "Usuarios";
         //$usuarios = Usuario::all();
+
+        $user = auth()->user();
+        // 1 Privilegios de Usuario
+        $credenciales = [
+                'puedeVer'=> $user->puedeVer(1),
+                'puedeRegistrar'=> $user->puedeRegistrar(1),
+                'puedeEditar'=> $user->puedeEditar(1),
+                'puedeEliminar'=> $user->puedeEliminar(1),
+        ];
+
+         // 2 Privilegios de Usuario
+        $credenciales2 = [
+            'puedeVer'=> $user->puedeVer(2),
+            'puedeRegistrar'=> $user->puedeRegistrar(2),
+            'puedeEditar'=> $user->puedeEditar(2),
+            'puedeEliminar'=> $user->puedeEliminar(2),
+        ];
 
         $usuarios2 = Usuario::select(
                                 'usuario.Id',
@@ -44,7 +55,9 @@ class UsuarioController extends Controller
         return view('usuario.usuario')->with([
                         'titulo'=> $titulo,
                         'usuarios2'=> json_encode($usuarios2),
-                        'centrocostos'=> $centrocostos
+                        'centrocostos'=> $centrocostos,
+                        'credenciales'=> $credenciales,
+                        'credenciales2'=> $credenciales2,
                     ]);
     }
 

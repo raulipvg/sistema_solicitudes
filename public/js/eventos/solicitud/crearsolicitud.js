@@ -162,7 +162,7 @@ $(document).ready(function() {
       if( $(this).hasClass("active") ){
         $(this).removeClass("active");
         $('#Mov'+MovAtributoId+'').remove();
-        console.log("ta activo")
+        //console.log("ta activo")
       }else{
       $(this).addClass("active");
       var Nombre = $(this).text();

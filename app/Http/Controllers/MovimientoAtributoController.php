@@ -19,6 +19,15 @@ class MovimientoAtributoController extends Controller
     public function Index(){
         $titulo = 'Movimientos y Atributos';
 
+        $user = auth()->user();
+        // 10 Privilegios de Movimiento
+        $credenciales = [
+                'puedeVer'=> $user->puedeVer(10),
+                'puedeRegistrar'=> $user->puedeRegistrar(10),
+                'puedeEditar'=> $user->puedeEditar(10),
+                'puedeEliminar'=> $user->puedeEliminar(10),
+        ];
+
         $movimientos= Movimiento::select(
                                 'movimiento.Id',
                                 'movimiento.Nombre',
@@ -50,7 +59,8 @@ class MovimientoAtributoController extends Controller
             'atributosSelect' => $atributosSelect,
             'atributos' => $atributos,
             'flujos' => $flujos,
-            'grupos' => $grupos
+            'grupos' => $grupos,
+            'credenciales' => $credenciales
         ]);
         
     }

@@ -1,21 +1,22 @@
 //CREACION SUBTABLLA
 function format(data,usuario) {   
-    var html=
-    '<div class="d-flex justify-content-center">'+
-        '<div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">'+
-        '<table id="services_table" class="table table-row-dashed">'+
-            '<thead class="services-info">'+
-               '<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">'+
-                    '<th class="p-0 ps-3">Flujo</th>'+
-                    '<th class="p-0 ps-3">Fecha</th>'+
-                    '<th class="text-center col-3 p-0 ps-2">ESTADO'+
-                    '</th>'+
-                '</tr>'+
-            '</thead>'+
-            '<tbody class="fw-bold text-gray-600">';
+    var html=`
+            <div class="d-flex justify-content-center">
+                <div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">
+                <table id="services_table" class="table table-row-dashed">
+                    <thead class="services-info">
+                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                            <th class="p-0 ps-3">Flujo</th>
+                            <th class="p-0 ps-3">Fecha</th>
+                            <th class="text-center col-3 p-0 ps-2">ESTADO
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="fw-bold text-gray-600">
+            `;
 
     for(const elemento of data) {
-        html = html + AgregarTR(elemento.Nombre, elemento.Id, elemento.created_at, "Desvincular del Area");   
+        html = html + AgregarTR(elemento.Nombre, elemento.Id, elemento.created_at, "Deshabilitar Flujo");   
     }
 
     html=  html+'</tbody></table></div></div>';
@@ -26,21 +27,24 @@ function format(data,usuario) {
 function AgregarTR(nombre, id, fecha, titulo){
 
     var fechaFormateada = formatearFecha(fecha);
-
-    var html ='<tr>'+
-                    '<td class="text-gray-700 text-capitalize">'+nombre+'</td>'+
-                    '<td>'+fechaFormateada+'</td>'+
-                    '<td class="text-center p-0">'+
-                        '<div class="btn-group btn-group-sm" role="group">'+
-                            '<button class="btn btn-sm btn-light-success editar-flujo fs-7 text-uppercase estado justify-content-center p-1 w-100px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="'+id+'" title="'+titulo+'">'+
-                            '<span class="indicator-label">HABILITADO</span>'+
-                            '<span class="indicator-progress">'+
-                                '<span class="spinner-border spinner-border-sm align-middle"></span>'+
-                            '</span>'+
-                            '</button>';
-                        '</div>'+
-                    '</td>'+
-                '</tr>';
+    var className = (credenciales2.puedeEliminar)? 'editar-flujo': 'disabled';
+    var html =`
+                <tr>
+                    <td class="text-gray-700 text-capitalize">${nombre}</td>
+                    <td>${fechaFormateada}</td>
+                    <td class="text-center p-0">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button class="btn btn-sm btn-light-success ${className} fs-7 text-uppercase estado justify-content-center p-1 w-100px" 
+                                    data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="${id}" title="${titulo}">
+                                <span class="indicator-label">HABILITADO</span>
+                                <span class="indicator-progress">
+                                    <span class="spinner-border spinner-border-sm align-middle"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
     return html;
 }
 
@@ -124,12 +128,12 @@ const cargarData= function(){
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
                             //console.log("Nombre:", data[persona].username);
-                    var btnEstado;
-                    if(data[key].Enabled == 1){
-                        btnEstado = botonEstado('Deshabilitar Area','btn-light-success estado-area  w-115px','HABILITADO');
-                    }else{
-                        btnEstado = botonEstado('Habilitar Area','btn-light-warning estado-area w-115px','DESHABILITADO');
-                    }
+
+                    var className = (credenciales.puedeEliminar)? 'estado-area': 'disabled';
+
+                    var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Area','btn-light-success w-115px '+className,'HABILITADO')
+                                                             :botonEstado('Habilitar Area','btn-light-warning w-115px '+className,'DESHABILITADO');
+                    
                     var rowNode =  miTabla.row.add( {
                                         "0": data[key].Id,
                                         "1": data[key].Nombre,
@@ -137,7 +141,7 @@ const cargarData= function(){
                                         "3": formatearFecha(data[key].created_at),
                                         "4": btnEstado,
                                         "5": botonAcciones('registrar',data[key].Id),
-                                        "6" :botonVerDetalle('Flujos Asociados')
+                                        "6": (credenciales2.puedeVer)?botonVerDetalle('Flujos Asociados'):null
                                     } ).node();
                     $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
                     $(rowNode).find('td:eq(2)').addClass('text-capitalize');
@@ -153,5 +157,5 @@ const cargarData= function(){
 }();
 
 KTUtil.onDOMContentLoaded((function() {
-    cargarData.init(data);
+    (credenciales.puedeVer)?cargarData.init(data):null;
 }));

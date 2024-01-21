@@ -77,21 +77,19 @@ const cargarData= function(){
         init: function(data){
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
-                            //console.log("Nombre:", data[persona].username);
-                    var btnEstado;
-                    if(data[key].Enabled == 1){
-                        btnEstado = botonEstado('Deshabilitar Estado','btn-light-success estado-estado  w-70px','ACTIVO');
-                    }else{
-                        btnEstado = botonEstado('Habilitar Estado','btn-light-warning estado-estado  w-70px','INACTIVO');
-                    }
+                    var className = (credenciales.puedeEliminar)? 'estado-estado': 'disabled';
+
+                    var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Estado','btn-light-success w-115px '+className,'HABILITADO')
+                                                            :botonEstado('Habilitar Estado','btn-light-warning w-115px '+className,'DESHABILITADO');
+                    
                     var rowNode =  miTabla.row.add( {
                                         "0": data[key].Id,
                                         "1": data[key].Nombre,
                                         "2": btnEstado,
-                                        "3": botonAccion('registrar',data[key].Id)
+                                        "3": (credenciales.puedeEditar)?botonAccion('registrar',data[key].Id):null
                                     } ).node();
                     $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
-                    $(rowNode).find('td:eq(3)').addClass('text-center p-0');          
+                    (credenciales.puedeEditar)?$(rowNode).find('td:eq(3)').addClass('text-center p-0'):null;          
                 }
             }
             miTabla.order([1, 'asc']).draw();
@@ -102,6 +100,7 @@ const cargarData= function(){
 }();
 
 KTUtil.onDOMContentLoaded((function() {
-    cargarData.init(data);
+    (credenciales.puedeVer)?cargarData.init(data):null;
+
 }));
 

@@ -78,12 +78,10 @@ const cargarData= function(){
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
                             //console.log("Nombre:", data[persona].username);
-                    var btnEstado;
-                    if(data[key].Enabled == 1){
-                        btnEstado = botonEstado('Deshabilitar Persona','btn-light-success estado-persona w-70px','ACTIVO');
-                    }else{
-                        btnEstado = botonEstado('Habilitar Persona','btn-light-warning estado-persona w-70px','INACTIVO');
-                    }
+                    var className = (credenciales.puedeEliminar)? 'estado-persona': 'disabled'
+                    var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Persona','btn-light-success w-70px '+className,'ACTIVO')
+                                                            :botonEstado('Habilitar Persona','btn-light-warning w-70px '+className,'INACTIVO');
+                  
                     var rowNode =  miTabla.row.add( {
                                         "0": data[key].Id,
                                         "1": data[key].NombreCompleto,
@@ -92,7 +90,7 @@ const cargarData= function(){
                                         "4": data[key].NombreCC,
                                         "5": btnEstado,
                                         "6": botonAcciones('registrar',data[key].Id),
-                                        "7": (data[key].UsuarioId == null)?botonModal('#registrar-acceso-sistema','Dar Acceso al Sistema',data[key].Id):null
+                                        "7": (data[key].UsuarioId == null && credenciales2.puedeRegistrar)?botonModal('#registrar-acceso-sistema','Dar Acceso al Sistema',data[key].Id):null
                                     } ).node();
                     $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
                     $(rowNode).find('td:eq(3)').addClass('text-capitalize fw-bold text-gray-600');
@@ -101,12 +99,12 @@ const cargarData= function(){
                 }
             }
             miTabla.order([1, 'asc']).draw();
-            $('[data-bs-toggle="tooltip"]').tooltip();
+            $('[data-bs-toggle="tooltip"]').tooltip(); 
         }
     }
 
 }();
 
 KTUtil.onDOMContentLoaded((function() {
-    cargarData.init(data);
+    (credenciales.puedeVer)?cargarData.init(data):null;
 }));

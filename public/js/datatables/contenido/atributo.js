@@ -76,22 +76,20 @@ const cargarData= function(){
         init: function(data){
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
-                            //console.log("Nombre:", data[persona].username);
-                    var btnEstado;
-                    if(data[key].Enabled == 1){
-                        btnEstado = botonEstado('Deshabilitar Atributo','btn-light-success estado-atributo w-70px','ACTIVO');
-                    }else{
-                        btnEstado = botonEstado('Habilitar Atributo','btn-light-warning estado-atributo w-70px','INACTIVO');
-                    }
+                    var className = (credenciales.puedeEliminar)? 'estado-atributo': 'disabled';
+
+                    var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Atributo','btn-light-success w-115px '+className,'HABILITADO')
+                                                            :botonEstado('Habilitar Atributo','btn-light-warning w-115px '+className,'DESHABILITADO');
+                   
                     var rowNode =  tablaAtributo.row.add( {
                                         "0": data[key].Id,
                                         "1": data[key].Nombre,
                                         "2": '$ '+(data[key].ValorReferencia).toLocaleString(),
                                         "3": btnEstado,
-                                        "4": botonAccion('registrar-atributo',data[key].Id)
+                                        "4":(credenciales.puedeEditar)?botonAccion('registrar-atributo',data[key].Id):null
                                     } ).node();
                     $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
-                    $(rowNode).find('td:eq(4)').addClass('text-center p-0');          
+                    (credenciales.puedeEditar)?$(rowNode).find('td:eq(4)').addClass('text-center p-0'):null;          
                 }
             }
             tablaAtributo.order([1, 'asc']).draw();
@@ -102,7 +100,7 @@ const cargarData= function(){
 }();
 
 KTUtil.onDOMContentLoaded((function() {
-    cargarData.init(dataAtributos);
+    (credenciales.puedeVer)?cargarData.init(dataAtributos):null;
 }));
 
 

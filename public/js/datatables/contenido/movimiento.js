@@ -1,22 +1,25 @@
 function format(data,movimiento) {   
-    var html=
-    '<div class="d-flex justify-content-center">'+
-        '<div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">'+
-        '<table id="services_table" class="table table-row-dashed">'+
-            '<thead class="services-info">'+
-               '<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">'+
-                    '<th class="p-0 ps-3" info='+movimiento+'>Id</th>'+
-                    '<th class="p-0 ps-3">Nombre Atributo</th>'+
-                    '<th class="p-0 ps-3">Valor de Referencia'+
-                        '<span class="asignar-movAtributo" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Asignar Atributo">'+ 
-                        '<button type="button" data-info="'+movimiento+'" class="registrar-movAtributo btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-movAtributo">'+
-                            '<i class="ki-outline ki-plus-square fs-2"></i>'+
-                        '</button>'+
-                        '</span>'+
-                    '</th>'+
-                '</tr>'+
-            '</thead>'+
-            '<tbody class="fw-bold text-gray-600">';
+    var html=`
+            <div class="d-flex justify-content-center">
+                <div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">
+                <table id="services_table" class="table table-row-dashed">
+                    <thead class="services-info">
+                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                            <th class="p-0 ps-3" info=${movimiento}>Id</th>
+                            <th class="p-0 ps-3">Nombre Atributo</th>
+                            <th class="p-0 ps-3">Valor de Referencia${
+                                credenciales.puedeRegistrar
+                                    ?`<span class="asignar-movAtributo" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Asignar Atributo">
+                                        <button type="button" data-info="${movimiento}" class="registrar-movAtributo btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-movAtributo">
+                                            <i class="ki-outline ki-plus-square fs-2"></i>
+                                        </button>
+                                    </span>`
+                                    :''
+                            }</th>
+                        </tr>
+                    </thead>
+                    <tbody class="fw-bold text-gray-600">
+                    `;
 
     for(const elemento of data) {
         html = html + AgregarTR(elemento.Id, elemento.Nombre, elemento.ValorReferencia);   
@@ -114,12 +117,11 @@ const cargarDataMovimiento= function(){
         init: function(data){
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
-                    var btnEstado;
-                    if(data[key].Enabled == 1){
-                        btnEstado = botonEstado('Deshabilitar Movimiento','btn-light-success estado-movimiento  w-70px','ACTIVO');
-                    }else{
-                        btnEstado = botonEstado('Habilitar Movimiento','btn-light-warning estado-movimiento  w-70px','INACTIVO');
-                    }
+                    var className = (credenciales.puedeEliminar)? 'estado-movimiento': 'disabled';
+
+                    var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Movimiento','btn-light-success w-115px '+className,'HABILITADO')
+                                                            :botonEstado('Habilitar Movimiento','btn-light-warning w-115px '+className,'DESHABILITADO');
+                    
                     var rowNode =  tablaMovimiento.row.add( {
                                         "0": data[key].Id,
                                         "1": data[key].Nombre,

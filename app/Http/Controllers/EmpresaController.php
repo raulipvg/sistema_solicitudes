@@ -16,7 +16,21 @@ class EmpresaController extends Controller
         $titulo= "Empresas";
         //$empresas= Empresa::all();
         $user = auth()->user();
-        $resultado = $user->puedeVer(1);
+        // 3 Privilegios de Empresa
+        $credenciales = [
+                'puedeVer'=> $user->puedeVer(3),
+                'puedeRegistrar'=> $user->puedeRegistrar(3),
+                'puedeEditar'=> $user->puedeEditar(3),
+                'puedeEliminar'=> $user->puedeEliminar(3),
+        ];
+
+        // 4 Privilegios Centro de Costo
+        $credenciales2 = [
+            'puedeVer'=> $user->puedeVer(4),
+            'puedeRegistrar'=> $user->puedeRegistrar(4),
+            'puedeEditar'=> $user->puedeEditar(4),
+            'puedeEliminar'=> $user->puedeEliminar(4),
+        ];
 
         $empresas = Empresa::select(
                                 'empresa.Id',
@@ -30,7 +44,8 @@ class EmpresaController extends Controller
         return view('empresa.empresa')->with([
                         'titulo'=> $titulo,
                         'empresas'=> $empresas,
-                        'resultado' => $resultado                        
+                        'credenciales' => $credenciales,
+                        'credenciales2' => $credenciales2                        
                     ]);
     
     }

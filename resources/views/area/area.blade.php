@@ -1,3 +1,4 @@
+@if ($credenciales['puedeVer'])
 @extends('layout.main')
 
 @push('css')
@@ -20,26 +21,29 @@
     <div class="card mx-5">
         <div class="card-header bg-dark">
             <h3 class="card-title text-uppercase text-white">Areas</h3>
+            @if ($credenciales['puedeRegistrar'])
             <div class="m-1">
                 <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                     Registrar
                 </button>
             </div>
+            @endif
         </div>
         <div class="card-body">
-            
-            <!--begin::Tabla Area-->
-            @include('area.componente.tablaArea')
-            <!--end::Tabla Area-->
+                <!--begin::Tabla Area-->
+                @include('area.componente.tablaArea')
+                <!--end::Tabla Area-->
         </div>
     </div>
     
 </div>
 <!--end::Content-->
 
-<!--begin::modal - Registrar Area-->
-@include('area.componente.modalRegistarArea')
-<!--end::modal-->
+@if ($credenciales['puedeRegistrar'] || $credenciales['puedeEditar'] || $credenciales['puedeVer'])
+    <!--begin::modal - Registrar Area-->
+    @include('area.componente.modalRegistarArea')
+    <!--end::modal-->
+@endif
 
 <!--begin::modal -  Asignar Grupo-->
 @include('usuario.componente.modalAsignarGrupo')
@@ -58,6 +62,9 @@
         const EliminarFlujo = "{{ route('EliminarFlujo') }}";
 
         const data =  {!! $areas !!};
+        const credenciales= {!! json_encode($credenciales) !!};
+        const credenciales2= {!! json_encode($credenciales2) !!};
+
     </script>
     <!--begin::Datatables y Configuracion de la Tabla-->
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
@@ -72,3 +79,9 @@
     <!--end::Eventos de la pagina-->
 
 @endpush
+
+@else
+    <script>
+        window.location = '{{ route('Error404') }}';
+    </script>
+@endif

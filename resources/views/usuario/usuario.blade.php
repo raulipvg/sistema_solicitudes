@@ -1,3 +1,4 @@
+@if ($credenciales['puedeVer'])
 @extends('layout.main')
 
 @push('css')
@@ -20,11 +21,13 @@
     <div class="card mx-5">
         <div class="card-header bg-dark">
             <h3 class="card-title text-uppercase text-white">Usuarios</h3>
-            <div class="m-1">
-                <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
-                    Registrar
-                </button>
-            </div>
+            @if ($credenciales['puedeRegistrar'])
+                <div class="m-1">
+                    <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
+                        Registrar
+                    </button>
+                </div>
+            @endif
         </div>
         <div class="card-body">
             <!--begin::Tabla Usuario-->
@@ -35,14 +38,17 @@
     
 </div>
 <!--end::Content-->
+@if ($credenciales['puedeRegistrar'] || $credenciales['puedeEditar'] || $credenciales['puedeVer'])
+    <!--begin::modal - Registrar Usuario-->
+    @include('usuario.componente.modalRegistrarUsuario')
+    <!--end::modal - Registrar Usuario-->
+@endif
 
-<!--begin::modal - Registrar Usuario-->
-@include('usuario.componente.modalRegistrarUsuario')
-<!--end::modal - Registrar Usuario-->
-
-<!--begin::modal -Asignar Grupo-->
-@include('usuario.componente.modalAsignarGrupo')
-<!--end::modal - Asignar Grupo-->
+@if ($credenciales2['puedeRegistrar'])
+    <!--begin::modal -Asignar Grupo-->
+    @include('usuario.componente.modalAsignarGrupo')
+    <!--end::modal - Asignar Grupo-->
+@endif
 
 @endsection
 
@@ -62,6 +68,8 @@
         /* END:RUTAS */
 
         const data =  {!! $usuarios2 !!};
+        const credenciales= {!! json_encode($credenciales) !!};
+        const credenciales2= {!! json_encode($credenciales2) !!};
     </script>
 
     <!--begin::Datatables y Configuracion de la Tabla-->
@@ -76,3 +84,9 @@
     <!--end::Eventos de la pagina-->
     
 @endpush
+
+@else
+    <script>
+        window.location = '{{ route('Error404') }}';
+    </script>
+@endif
