@@ -54,7 +54,7 @@ class LoginController extends Controller
     // Envía la solicitud a Google
     public function redirectToGoogle()
     {
-        if(Auth::check()) redirect()->intended(route('Home'));
+        if(Auth::check()) redirect()->intended(route('Solicitud'));
         return Socialite::driver('google')->redirect();
     }
     // Respuesta desde Google, iniciar sesión
@@ -90,7 +90,7 @@ class LoginController extends Controller
             }
             Auth::login($usuarioLogear);
             app('log')->info('Usuario inició sesión.');
-            return redirect()->intended(route('Home'));
+            return redirect()->intended(route('Solicitud'));
         }catch(Exception $e){
             return redirect()->intended(route('login'))
                 ->with([
