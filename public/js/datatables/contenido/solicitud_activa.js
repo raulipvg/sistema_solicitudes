@@ -31,6 +31,8 @@ let cantActiva = 0;
 const cargarDataActiva= function(){
     return {
         init: function(data){
+            bloquear();
+            KTApp.showPageLoading();
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
                             //console.log("Nombre:", data[persona].username);
@@ -123,7 +125,11 @@ const cargarDataActiva= function(){
 }();
 
 KTUtil.onDOMContentLoaded((function() {
+    bloquear();
+    KTApp.showPageLoading();
     cargarDataActiva.init(solicitudeActivas);
+    KTApp.hidePageLoading();
+    loadingEl.remove();
     
     $("#activas").on("click", function(e){
         if(tabulador == 2){

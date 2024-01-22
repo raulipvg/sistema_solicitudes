@@ -127,9 +127,8 @@ class Solicitud extends Model
 																	'centro_de_costo.Nombre as CentroCosto','FechaDesde','FechaHasta',
 																	'solicitud.created_at as FechaCreado','historial_solicitud.EstadoSolicitudId',
 																	'estado_flujo.Nombre as EstadoFlujo', 'movimiento.Nombre as Movimiento',
-																	'flujo.Nombre as NombreFlujo',
+																	'flujo.Nombre as NombreFlujo','flujo.Id as FlujoIdd',
 																	'historial_solicitud.Id as HistorialId',
-																	'flujo.Id as FlujoIdd',
 																	DB::raw('GROUP_CONCAT(atributo.Nombre) as Atributos'),
 																	DB::raw('(
 																		SELECT CONCAT(persona_solicitante.Nombre, " ", persona_solicitante.Apellido)

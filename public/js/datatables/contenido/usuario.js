@@ -133,6 +133,8 @@ let miTabla = $('#tabla-usuario').DataTable({
 const cargarData= function(){
     return {
         init: function(data){
+            bloquear();
+            KTApp.showPageLoading();
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
                     var className = (credenciales.puedeEliminar)? 'estado-usuario': 'disabled';
@@ -156,6 +158,7 @@ const cargarData= function(){
             }
             miTabla.order([1, 'asc']).draw();
             $('[data-bs-toggle="tooltip"]').tooltip();
+            
         }
     }
 
@@ -163,6 +166,8 @@ const cargarData= function(){
 
 KTUtil.onDOMContentLoaded((function() {
     (credenciales.puedeVer)?cargarData.init(data):null;
+
+    
 }));
 
 

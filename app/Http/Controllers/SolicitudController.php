@@ -73,7 +73,8 @@ class SolicitudController extends Controller
         try{
             $request = $request->input('data');
             //BEGIN::ARREGLAR 
-            $request['UsuarioSolicitanteId'] = 1;
+            $userId = auth()->user()->Id;
+            $request['solicitud']['UsuarioSolicitanteId'] = $userId;
             //END::ARREGLAR
             $solicitud = new Solicitud();
             $solicitud->validate($request['solicitud']);
@@ -118,7 +119,7 @@ class SolicitudController extends Controller
             $historial->SolicitudId = $solicitud->Id;
             $historial->EstadoSolicitudId = 1; //INICIADO
             //ARREGLAR USUARIO SEGUN SESION
-            //$historial->UsuarioId = 1; 
+            $historial->UsuarioId = $userId; 
 
             $historial->validate([
                 'EstadoFlujoId' => $historial->EstadoFlujoId,
@@ -169,6 +170,7 @@ class SolicitudController extends Controller
             $ordenFlujoEstadoExiste = $ordenFlujo->firstWhere('EstadoFlujoId', $estadoFlujoId);
             if (!$ordenFlujoEstadoExiste){ throw new Exception('No existe el estado en el flujo');}
 
+            $userId = auth()->user()->Id;
             // SI ES UNA ETAPA DEL FLUJO INICIAL O INTERMEDIA
             $flag=true;
             if($ordenFlujoEstadoExiste->Pivot < 2){
@@ -177,7 +179,7 @@ class SolicitudController extends Controller
                 //BEGIN::ARREGLAR LO DEL USUARIO
                 $historialEdit->update([
                     'EstadoEtapaFlujoId' => 1,  //ETAPA APROBADA
-                    'UsuarioId'=> 1 //****ARREGLAR LO DE USUARIO*****
+                    'UsuarioId'=> $userId //****ARREGLAR LO DE USUARIO*****
                 ]);
                 //END::ARREGLAR LO DEL USUARIO 
                 
@@ -195,7 +197,7 @@ class SolicitudController extends Controller
                 $historialEdit->update([
                     'EstadoEtapaFlujoId' => 1,  //ETAPA APROBADA,
                     'EstadoSolicitudId' => 3, // SOLICITUD TERMINADA
-                    'UsuarioId' => 1 //****ARREGLAR LO DE USUARIO*****
+                    'UsuarioId' => $userId //****ARREGLAR LO DE USUARIO*****
                 ]);
                 $flag=false;
             }
@@ -238,11 +240,11 @@ class SolicitudController extends Controller
 
             $ordenFlujoEstadoExiste = $ordenFlujo->firstWhere('EstadoFlujoId', $estadoFlujoId);
             if (!$ordenFlujoEstadoExiste){ throw new Exception('No existe el estado en el flujo');}
-
+            $userId = auth()->user()->Id;
             $historialEdit->update([
                     'EstadoEtapaFlujoId' => 2,  //ETAPA Rechazada,
                     'EstadoSolicitudId' => 3, // SOLICITUD TERMINADA
-                    'UsuarioId' => 1 //****ARREGLAR LO DE USUARIO*****
+                    'UsuarioId' => $userId //****ARREGLAR LO DE USUARIO*****
                 ]);
         
             DB::commit(); 
