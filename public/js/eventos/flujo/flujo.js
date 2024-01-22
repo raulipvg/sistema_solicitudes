@@ -56,11 +56,11 @@ $(document).ready(function() {
                         stringLength: {
                             min: 3,
                             max: 20,
-                            message: 'Entre 3 y 20 caracteres'
+                            message: 'Entre 3 y 150 caracteres'
                         },
                         regexp: {
-                            regexp: /^[a-zñáéíóú\s]+$/i,
-                            message: 'Solo letras de la A-Z '
+                            regexp: /^[a-zA-Z0-9$%-_.!#*(),ñáéíóú\s]+$/,
+                            message: 'Solo letras, numeros y simbolos '
                         }
                     }
                 },
