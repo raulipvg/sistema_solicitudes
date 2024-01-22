@@ -102,6 +102,18 @@ var loadingEl = document.createElement("div");
         return btn;
     }
 
+    function botonAcciones2(modal,id){
+        var btn =   `
+                    <div class="btn-group btn-group-sm" role="group">
+                        ${credencialesUsuario.puedeVer ? `<a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#${modal}" info="${id}">Ver</a>` : ''}
+                        ${credencialesUsuario.puedeEditar ? `<a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#${modal}" info="${id}">Editar</a>` : ''}
+                    </div>
+                    `;
+        return btn;
+    }
+
+    
+
     function botonAccion(modal,id){
         var btn =   `
                     <div class="btn-group btn-group-sm" role="group">

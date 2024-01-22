@@ -23,15 +23,15 @@ class UsuarioController extends Controller
 
         $user = auth()->user();
         // 1 Privilegios de Usuario
-        $credenciales = [
+        $credencialesUsuario = [
                 'puedeVer'=> $user->puedeVer(1),
                 'puedeRegistrar'=> $user->puedeRegistrar(1),
                 'puedeEditar'=> $user->puedeEditar(1),
                 'puedeEliminar'=> $user->puedeEliminar(1),
         ];
 
-         // 2 Privilegios de Usuario
-        $credenciales2 = [
+         // 2 Privilegios de Grupo
+        $credencialesGrupo = [
             'puedeVer'=> $user->puedeVer(2),
             'puedeRegistrar'=> $user->puedeRegistrar(2),
             'puedeEditar'=> $user->puedeEditar(2),
@@ -56,8 +56,8 @@ class UsuarioController extends Controller
                         'titulo'=> $titulo,
                         'usuarios2'=> json_encode($usuarios2),
                         'centrocostos'=> $centrocostos,
-                        'credenciales'=> $credenciales,
-                        'credenciales2'=> $credenciales2,
+                        'credencialesUsuario'=> $credencialesUsuario,
+                        'credencialesGrupo'=> $credencialesGrupo,
                     ]);
     }
 

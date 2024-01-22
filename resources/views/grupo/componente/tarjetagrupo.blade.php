@@ -7,16 +7,19 @@
 													</div>
 													<!--end::Card title-->
 													<div class="card-toolbar">
+													@php
+														$className = ($credencialesGrupo['puedeEliminar'])? 'estado-grupo': 'disabled';
+													@endphp
 
 													@if($grupo->Enabled ==1 )
-														<button class="btn btn-sm btn-success estado-grupo fs-7 text-uppercase justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Grupo" data-info="{{ $grupo->Id }}">
+														<button class="btn btn-sm btn-success {{ $className }} fs-7 text-uppercase justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Deshabilitar Grupo" data-info="{{ $grupo->Id }}">
 															<span class="indicator-label">ACTIVO</span>
 															<span class="indicator-progress">
 																<span class="spinner-border spinner-border-sm align-middle"></span>
 															</span>
 														</button>
 													@else
-														<button class="btn btn-warning fs-7 estado-grupo text-uppercase  justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Grupo" data-info="{{ $grupo->Id }}">
+														<button class="btn btn-warning fs-7 {{ $className }} text-uppercase  justify-content-center p-1 w-70px" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Habilitar Grupo" data-info="{{ $grupo->Id }}">
 															<span class="indicator-label">INACTIVO</span>
 															<span class="indicator-progress">
 																<span class="spinner-border spinner-border-sm align-middle"></span>
@@ -63,9 +66,9 @@
 												<!--end::Card body-->
 												<!--begin::Card footer-->
 												<div class="d-flex justify-content-center card-footer flex-wrap pt-0">
-                                                    @if ($flag == 1)
+                                                    @if ($flag == 1 && $credencialesGrupo['puedeEditar'])
                                                     <button type="button" class="btn btn-light btn-active-light-warning my-1 editar-grupo" data-bs-toggle="modal" data-bs-target="#kt_modal_update_role" data-info="{{ $grupo->Id }}">Editar Grupo</button>
-                                                    @elseif ($flag == 2 )
+                                                    @elseif ($flag == 2 && $credencialesGrupo['puedeEditar'])
                                                     <a href="{{route('VerGrupo', ['id' => $grupo->Id]) }}" class="btn btn-light btn-active-dark my-1 me-2" data-info="{{ $grupo->Id }}">Ver Grupo</a>
 													<button type="button" class="btn btn-light btn-active-light-warning my-1 editar-grupo" data-bs-toggle="modal" data-bs-target="#kt_modal_update_role" data-info="{{ $grupo->Id }}">Editar Grupo</button>
                                                     @endif

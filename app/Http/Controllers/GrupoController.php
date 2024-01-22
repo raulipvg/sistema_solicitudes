@@ -21,6 +21,15 @@ class GrupoController extends Controller
 
         //Contar Usuarios con Acceso al Grupo, que estén Habilitados para el grupo y
         // Que el estado del usuario sea activo
+        $user = auth()->user();
+        // 2 Privilegios de Grupo
+        $credencialesGrupo = [
+                'puedeVer'=> $user->puedeVer(2),
+                'puedeRegistrar'=> $user->puedeRegistrar(2),
+                'puedeEditar'=> $user->puedeEditar(2),
+                'puedeEliminar'=> $user->puedeEliminar(2),
+        ];
+
         $datosgrupo = Grupo::withCount([
             'usuarios' => function ($query) {
             $query->where('usuario.Enabled', 1);
@@ -35,6 +44,7 @@ class GrupoController extends Controller
             'datosgrupo'=> $datosgrupo,
             'privilegios'=> $privilegios,
             'flag'=> 2, //significa que es para la vista /grupo/
+            'credencialesGrupo' => $credencialesGrupo
         ]);
     }
     public function Guardar(Request $request)
@@ -86,6 +96,22 @@ class GrupoController extends Controller
             if (!$datosgrupo) {
                 return View('blank');
             }
+            $user = auth()->user();
+            // 2 Privilegios de Grupo
+            $credencialesGrupo = [
+                    'puedeVer'=> $user->puedeVer(2),
+                    'puedeRegistrar'=> $user->puedeRegistrar(2),
+                    'puedeEditar'=> $user->puedeEditar(2),
+                    'puedeEliminar'=> $user->puedeEliminar(2),
+            ];
+
+            // 1 Privilegios de Grupo
+            $credencialesUsuario = [
+                    'puedeVer'=> $user->puedeVer(1),
+                    'puedeRegistrar'=> $user->puedeRegistrar(1),
+                    'puedeEditar'=> $user->puedeEditar(1),
+                    'puedeEliminar'=> $user->puedeEliminar(1),
+            ];
             $centrocostos = CentroDeCosto::select('Id', 'Nombre')
                             ->where('Enabled','=', 1)
                             ->get();
@@ -124,7 +150,9 @@ class GrupoController extends Controller
                 'privilegios'=> $privilegios,
                 'usuarios'=> $usuarios,
                 'centrocostos'=> $centrocostos,
-                'flag' => 1 //significa que es para la vista /grupo/ver
+                'flag' => 1, //significa que es para la vista /grupo/ver
+                'credencialesGrupo' => $credencialesGrupo,
+                'credencialesUsuario'=> $credencialesUsuario,
             ]);
         }catch(Exception $e){
         
