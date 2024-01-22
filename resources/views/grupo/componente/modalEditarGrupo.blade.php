@@ -1,6 +1,6 @@
 									<div class="modal fade" id="kt_modal_update_role" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
 										<!--begin::Modal dialog-->
-										<div class="modal-dialog modal-dialog-centered mw-750px">
+										<div class="modal-dialog modal-xl  modal-dialog-centered">
 											<!--begin::Modal content-->
 											<div class="modal-content">
 												<!--begin::Modal header-->

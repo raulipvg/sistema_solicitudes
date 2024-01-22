@@ -21,7 +21,7 @@ class EmpresaController extends Controller
                 'puedeVer'=> $user->puedeVer(3),
                 'puedeRegistrar'=> $user->puedeRegistrar(3),
                 'puedeEditar'=> $user->puedeEditar(3),
-                'puedeEliminar'=> $user->puedeEliminar(3),
+                'puedeEliminar'=> $user->puedeEliminar(3)
         ];
 
         // 4 Privilegios Centro de Costo

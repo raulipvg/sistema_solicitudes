@@ -36,7 +36,6 @@ class FlujoController extends Controller
                     ->get();
         $estados = EstadoFlujo::select('Id','Nombre')
                     ->where('Enabled',1)
-                    ->where('Id','!=',1)
                     ->get();
 
 

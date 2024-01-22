@@ -25,7 +25,7 @@
 																	<span class="fs-5 fw-bold form-label mb-2">Privilegios del Grupo</label>
 																	<!--end::Label-->
 																	<!--begin::Table wrapper-->
-																	<div class="table-responsive">
+																	<div class="">
 																		<!--begin::Table-->
 																		<table id="tabla-privilegios" class="table align-middle table-row-dashed fs-6 gy-5">
 																			<!--begin::Table body-->
@@ -51,8 +51,16 @@
 																					</td>
 																				</tr>
 																				<!--end::Table row-->
+																				
 	                                                                            @foreach ($privilegios as $privilegio)
-	                                                                                
+																					@php
+																						if($privilegio->Id == 12){
+																						$a1= "Ver Grupos";
+																						$a2= "Ver Todas";
+																						$a3= "Realizar Solicitud";
+																						$a4= "Aprobador";
+																						}
+																					@endphp
 	                                                                                <!--begin::Table row-->
 	                                                                                <tr>
 	                                                                                    <!--begin::Label-->
@@ -64,30 +72,30 @@
 	                                                                                    <!--begin::Input group-->
 	                                                                                    <td class="p-2">
 	                                                                                        <!--begin::Wrapper-->
-	                                                                                        <div class="d-flex">
+	                                                                                        <div class="row">
 	                                                                                            
 	                                                                                            <!--begin::Checkbox-->
-	                                                                                            <label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
+	                                                                                            <label class="col-3 form-check form-check-sm form-check-custom form-check-solid ">
 	                                                                                                <input class="form-check-input" type="checkbox" value="1" name="GrupoPrivilegio[{{$privilegio->Id}}][Ver]"/>
-	                                                                                                <span class="form-check-label">Ver</span>
+	                                                                                                <span class="form-check-label">@if( $privilegio->Id != 12 ) Ver @else {{ $a1 }} @endif</span>
 	                                                                                            </label>
 	                                                                                            <!--end::Checkbox-->
 	                                                                                            <!--begin::Checkbox-->
-	                                                                                            <label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
+	                                                                                            <label class="col-3 form-check form-check-sm form-check-custom form-check-solid ">
 	                                                                                                <input class="form-check-input" type="checkbox" value="1" name="GrupoPrivilegio[{{$privilegio->Id}}][Registrar]"/>
-	                                                                                                <span class="form-check-label">Registrar</span>
+	                                                                                                <span class="form-check-label">@if( $privilegio->Id != 12 ) Registrar @else {{ $a2 }}@endif</span>
 	                                                                                            </label>
 	                                                                                            <!--end::Checkbox-->
 	                                                                                            <!--begin::Checkbox-->
-	                                                                                            <label class="form-check form-check-custom form-check-solid me-5 me-lg-20">
+	                                                                                            <label class="col-3 form-check form-check-custom form-check-solid ">
 	                                                                                                <input class="form-check-input" type="checkbox" value="1" name="GrupoPrivilegio[{{$privilegio->Id}}][Editar]"/>
-	                                                                                                <span class="form-check-label">Editar</span>
+	                                                                                                <span class="form-check-label">@if( $privilegio->Id != 12 ) Editar @else {{ $a3 }}@endif</span>
 	                                                                                            </label>
 	                                                                                            <!--end::Checkbox-->
 	                                                                                            <!--begin::Checkbox-->
-	                                                                                            <label class="form-check form-check-custom form-check-solid">
+	                                                                                            <label class="col-3 form-check form-check-custom form-check-solid">
 	                                                                                                <input class="form-check-input" type="checkbox" value="1" name="GrupoPrivilegio[{{$privilegio->Id}}][Eliminar]"/>
-	                                                                                                <span class="form-check-label">Eliminar</span>
+	                                                                                                <span class="form-check-label">@if( $privilegio->Id != 12 ) Eliminar @else {{ $a4 }}@endif</span>
 	                                                                                            </label>
 	                                                                                            <!--end::Checkbox-->
 	                                                                                        </div>

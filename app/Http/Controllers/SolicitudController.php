@@ -22,6 +22,15 @@ class SolicitudController extends Controller
     public int $modulo =1;
     public function Index(){
 
+        $user = auth()->user();
+        // 12 Privilegios de Solicitudes
+        $credenciales = [
+                'verGrupos'=> $user->puedeVer(12),                
+                'verTodas'=> $user->puedeEliminar(12),
+                'realizar'=> $user->puedeRegistrar(12),
+                'aprobador'=> $user->puedeEditar(12)
+        ];
+
         $movimientos = Movimiento::select('Id','Nombre')
                                 ->where('Enabled',1)
                                 ->orderBy('Nombre','desc')
@@ -45,7 +54,8 @@ class SolicitudController extends Controller
             'movimientos'=> $movimientos,
             'personas' => $personas,
             'centrocostos'=> $centrocostos,
-            'solicitudes'=> json_encode($solicitudes)
+            'solicitudes'=> json_encode($solicitudes),
+            'credenciales' => $credenciales
 
         ]);
     }
@@ -133,9 +143,7 @@ class SolicitudController extends Controller
             DB::commit();
 
             $solicitud = Solicitud::getSolicitudes("", $solicitud->Id);
-
-           
-                                
+                           
             return response()->json([
                 'success' => true,
                 'data'=> $solicitud,
