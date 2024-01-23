@@ -1,4 +1,4 @@
-
+let tabulador =1;
 let tablaSolicitudes = $('#tabla-solicitudes').DataTable({
     "language": languageConfig,
     "dom":
@@ -26,8 +26,8 @@ let tablaSolicitudes = $('#tabla-solicitudes').DataTable({
     }
     //"scrollX": true
 });
-
 let cantActiva = 0;
+
 const cargarDataActiva= function(){
     return {
         init: function(data){
@@ -71,13 +71,17 @@ const cargarDataActiva= function(){
                                 <div class="fs-7 fw-bold text-muted">Solicitado por</div>`;
 
                     var col6 = `<div class="btn-group btn-group-sm" role="group" a="${data[key].Id}" b="${data[key].HistorialId}" c="${data[key].FlujoIdd}" >
-                                    <button class="aceptar btn btn-light-success p-1"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Aprobar">
+                                    <button class="${credenciales.aprobador?
+                                        `aceptar`:`disabled`
+                                    } btn btn-light-success p-1"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Aprobar">
                                         <i class="ki-duotone ki-check-circle fs-2hx"> 
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                         </i>
                                     </button>
-                                    <button class="rechazar btn btn-light-danger p-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Rechazar">
+                                    <button class="${credenciales.aprobador?
+                                        `rechazar`:`disabled`
+                                    } btn btn-light-danger p-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Rechazar">
                                         <i class="ki-duotone ki-cross-circle fs-2hx"> 
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -117,7 +121,6 @@ const cargarDataActiva= function(){
             }
             tablaSolicitudes.order([7, 'desc']).draw();
             $('[data-bs-toggle="tooltip"]').tooltip();
-
             $("#activas").text(`ACTIVAS (${cantActiva})`);
         }
     }

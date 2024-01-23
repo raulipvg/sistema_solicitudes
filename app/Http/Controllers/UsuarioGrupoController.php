@@ -120,7 +120,7 @@ class UsuarioGrupoController extends Controller
             ]);
             $accesoExiste->save();
             DB::commit();
-            Log::info('Usuario #'. $request['UsuarioId'].' eliminado del grupo #'.$request['GrupoId']);
+            Log::info('Eliminando '.$request);
             
             return response()->json([
                 'success' => true,
@@ -129,7 +129,7 @@ class UsuarioGrupoController extends Controller
 
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al quitar usuario #'. $request['UsuarioId'].' al grupo #'.$request['GrupoId']);
+            Log::error('Error al eliminar'.$request);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

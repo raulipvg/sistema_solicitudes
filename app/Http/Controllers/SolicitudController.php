@@ -21,36 +21,58 @@ class SolicitudController extends Controller
 {
     //
     public int $modulo =1;
-    public function Index(){
+    public function Index()
+    {
 
         $user = auth()->user();
         // 12 Privilegios de Solicitudes
         $credenciales = [
                 'verGrupos'=> $user->puedeVer(12),                
-                'verTodas'=> $user->puedeEliminar(12),
-                'realizar'=> $user->puedeRegistrar(12),
-                'aprobador'=> $user->puedeEditar(12)
+                'verTodas'=> $user->puedeRegistrar(12),
+                'realizar'=> $user->puedeEditar(12),
+                'aprobador'=> $user->puedeEliminar(12)
         ];
+       
+        if( $credenciales['realizar']){
+            $movimientos = Movimiento::select('Id','Nombre')
+                                    ->where('Enabled',1)
+                                    ->orderBy('Nombre','desc')
+                                    ->get();
 
-        $movimientos = Movimiento::select('Id','Nombre')
+            $personas = Persona::select('Id','Rut',
+                                DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"))
                                 ->where('Enabled',1)
-                                ->orderBy('Nombre','desc')
+                                ->orderBy('NombreCompleto','asc')
+                                ->get();
+            $personas = Persona::select('Id','Rut',
+                                DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"))
+                                ->where('Enabled',1)
+                                ->orderBy('NombreCompleto','asc')
                                 ->get();
 
-        $personas = Persona::select('Id','Rut',
-                            DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"))
-                            ->where('Enabled',1)
-                            ->orderBy('NombreCompleto','asc')
-                            ->get();
-
-        $centrocostos = CentroDeCosto::select('centro_de_costo.Id', DB::raw("CONCAT(empresa.Nombre, ' - ', centro_de_costo.Nombre) AS Nombre"))
-                            ->join('empresa','empresa.Id','=','centro_de_costo.EmpresaId')
-                            ->where('centro_de_costo.Enabled','=', 1)
-                            ->orderBy('Nombre','asc')
-                            ->get();   
-
-        $solicitudes = Solicitud::getSolicitudes("<",0);
-
+            $centrocostos = CentroDeCosto::select('centro_de_costo.Id', DB::raw("CONCAT(empresa.Nombre, ' - ', centro_de_costo.Nombre) AS Nombre"))
+                                ->join('empresa','empresa.Id','=','centro_de_costo.EmpresaId')
+                                ->where('centro_de_costo.Enabled','=', 1)
+                                ->orderBy('Nombre','asc')
+                                ->get();
+        }else{
+            $movimientos= null;
+            $personas= null;
+            $centrocostos = null;
+        }
+        
+        if( !($credenciales['verGrupos'] || $credenciales['verTodas']) ){ //Modo 1, solo ver sus propias solicitudes
+            $solicitudes = Solicitud::getSolicitudesListar(1,"<",$user->Id,0);
+        }
+        else if( $credenciales['verGrupos'] && !$credenciales['verTodas']){ //Modo 2, ver sus solicitudes y todas aquellas que en que su grupo participe
+            $flujosParticipaGrupo = Flujo::select('flujo.Id as FlujoId')
+                                        ->join('orden_flujo', 'orden_flujo.FlujoId', '=', 'flujo.Id')
+                                        ->whereIn('orden_flujo.GrupoId', $user->grupos->where('pivot.Enabled', 1)->pluck('Id')->toArray())
+                                        ->get();
+            $solicitudes= Solicitud::getSolicitudesListar(2,"<",$user->Id, $flujosParticipaGrupo);
+        }else if($credenciales['verTodas']){ //Modo 3, ver todas las solicitudes
+            $solicitudes = Solicitud::getSolicitudesListar(3,"<",0,0);
+        }
         Log::info('Ingreso vista Solicitud');
 
         return view('solicitud.solicitud')->with([
@@ -143,16 +165,15 @@ class SolicitudController extends Controller
             DB::commit();
             Log::info('Solicitud #'.$solicitud->Id.' generada');
 
-            $solicitud = Solicitud::getSolicitudes("", $solicitud->Id);
-
-                                
+            $solicitud = Solicitud::getSolicitudesId($solicitud->Id);
+                           
             return response()->json([
                 'success' => true,
                 'data'=> $solicitud,
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al generar solicitud', [$e]);
+            Log::error('Error al generar solicitud', [$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() 
@@ -298,8 +319,28 @@ class SolicitudController extends Controller
 
     public function VerActivas(){
         try{
-            $solicitudes = $solicitudes = Solicitud::getSolicitudes("<",0);
+            $user = auth()->user();
+            $credenciales = [
+                'verGrupos'=> $user->puedeVer(12),                
+                'verTodas'=> $user->puedeRegistrar(12),
+                'realizar'=> $user->puedeEditar(12),
+                'aprobador'=> $user->puedeEliminar(12)
+            ];
+
+            if( !($credenciales['verGrupos'] || $credenciales['verTodas']) ){ //Modo 1, solo ver sus propias solicitudes
+                $solicitudes = Solicitud::getSolicitudes(1,"<",$user->Id,0);
+            }
+            if( $credenciales['verGrupos'] && !$credenciales['verTodas']){ //Modo 2, ver sus solicitudes y todas aquellas que en que su grupo participe
+                $flujosParticipaGrupo = Flujo::select('flujo.Id as FlujoId')
+                                            ->join('orden_flujo', 'orden_flujo.FlujoId', '=', 'flujo.Id')
+                                            ->whereIn('orden_flujo.GrupoId', $user->grupos->where('pivot.Enabled', 1)->pluck('Id')->toArray())
+                                            ->get();
+                $solicitudes= Solicitud::getSolicitudes(2,"<",0, $flujosParticipaGrupo);
+            }elseif($credenciales['verTodas']){ //Modo 3, ver todas las solicitudes
+                $solicitudes = Solicitud::getSolicitudes(3,"<",0,0);
+            }
             Log::info('Ingreso vista solicitudes activas');
+
             return response()->json([
                 'success' => true,
                 'solicitudes' => $solicitudes
@@ -314,5 +355,6 @@ class SolicitudController extends Controller
         }
 
     }
+
 }
 

@@ -1,5 +1,3 @@
-let tabulador =1;
-
 $(document).ready(function() {
     
     //BEGIN::EVENTO ACEPTAR ETAPA DEL FLUJO

@@ -31,11 +31,11 @@
 						</ul>
 					</div>
 					<!--end::Tabs-->
-					<!--begin::Create campaign button-->
-					<div class="card-toolbar my-0">
-						<a id="NuevaSolicitud" href="#" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearSolicitud">Realizar Solicitud</a>
-					</div>
-					<!--end::Create campaign button-->
+					@if ($credenciales['realizar'])
+						<div class="card-toolbar my-0">
+							<a id="NuevaSolicitud" href="#" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearSolicitud">Realizar Solicitud</a>
+						</div>
+					@endif
 				</div>
 				<!--end::Card header-->
 				<!--begin::Card body-->
@@ -61,9 +61,12 @@
 	@include('solicitud.componente.modalHistorialSolicitud')
 	<!--end::modal - Historial Solicitud-->
 
-	<!--begin::modal - Realizar Solicitud-->
-	@include('solicitud.componente.modalCrearSolicitud')
-	<!--end::modal - Realizar Solicitud-->
+	@if ($credenciales['realizar'])
+		<!--begin::modal - Realizar Solicitud-->
+		@include('solicitud.componente.modalCrearSolicitud')
+		<!--end::modal - Realizar Solicitud-->
+	@endif
+	
 
 @endsection
 
@@ -80,6 +83,8 @@
 		const VerActivas = '{{ route("VerActivas") }}';
 
 		const solicitudeActivas = JSON.parse('{!! $solicitudes !!}');
+
+		const credenciales= {!! json_encode($credenciales) !!};
 	
 
 		//console.log( solicitudeActivas)
@@ -94,10 +99,14 @@
     <!--end::Datatables y Configuracion de la Tabla-->
 
 	<!--begin::Eventos de la pagina-->
-	<script src="{{ asset('js/flatpickr/es.js') }}"></script>
     <script src="{{ asset('js/global/main.js?id=3') }}"></script>
+	@if($credenciales['aprobador'])
 	<script src="{{ asset('js/eventos/solicitud/generales.js?id=1') }}"></script>
+	@endif
+	@if ($credenciales['realizar'])
+	<script src="{{ asset('js/flatpickr/es.js') }}"></script>
 	<script src="{{ asset('js/eventos/solicitud/crearsolicitud.js?id=3') }}"></script>
+	@endif
 	<script src="{{ asset('js/eventos/solicitud/historialsolicitud.js')}}"></script>
     <script src="{{ asset('js/eventos/solicitud/verflujo.js')}}"></script>
 

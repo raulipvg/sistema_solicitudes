@@ -19,6 +19,7 @@ use Illuminate\Validation\ValidationException;
  * @property int $Id
  * @property string $Nombre
  * @property string $Rut
+ * @property string $Descripcion
  * @property int $Enabled
  * @property Carbon $created_at
  * @property Carbon|null $updated_at

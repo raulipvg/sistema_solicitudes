@@ -31,7 +31,7 @@ use Monolog\Handler\RotatingFileHandler;
 |
 */
 
-Route::group(['prefix' => '/'], function () {
+Route::group(['prefix' => '/','middleware' => 'auth'], function () {
     Route::get('/', [SolicitudController::class,'Index'])->name('Home');
 });
 
