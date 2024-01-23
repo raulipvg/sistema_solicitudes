@@ -62,6 +62,7 @@ $(document).ready(function() {
                 dataType: "json",
                 beforeSend: function() {
                     bloquear();
+                    KTApp.showPageLoading();
                 },
                 success: function (data) {
                     if(data.success){
@@ -70,6 +71,7 @@ $(document).ready(function() {
                         llenarSelect2(data.movimientos, $('#MovimientoIdInputAtr') );
                         $('#MovimientoIdInputAtr').val(movimientoId).trigger("change").prop("disabled",true);
                         data = data.data;
+
                         llenarSelect2(data,$('#AtributoIdInputMov'))
                     }else{
                         html = '<ul><li style="">'+data.message+'</li></ul>';
@@ -90,6 +92,7 @@ $(document).ready(function() {
                 },
                 complete: function(){
                     bloquear();
+                    KTApp.hidePageLoading();
                 }
             });
         });

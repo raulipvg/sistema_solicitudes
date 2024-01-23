@@ -50,7 +50,7 @@ class EstadoFlujoController extends Controller
             DB::beginTransaction();
             $estadoFlujo->save();
 
-            Log::info('Nuevo estado de flujo #'.$estadoFlujo->Id);
+            Log::info('Nuevo estado de flujo');
             DB::commit();
             return response()->json([
                 'success' => true,
@@ -63,7 +63,7 @@ class EstadoFlujoController extends Controller
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al crear un nuevo estado: '.$estadoFlujo->Nombre, [$e]);
+            Log::error('Error al crear un nuevo estado' [$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -77,18 +77,18 @@ class EstadoFlujoController extends Controller
         $request = $request->input('data');
 
         try{
-            $estadoFlujo = EstadoFlujo::find($request);
+            $estadoFlujo = EstadoFlujo::find();
 
             if(!$estadoFlujo){
                 throw new Exception ('Estado de flujo no encontrado');
             }
-            Log::info('Ver información de estado de flujo #'.$request);
+            Log::info('Ver información de estado de flujo');
             return response()->json([
                 'success' => true,
                 'data' => $estadoFlujo
             ]);
         }catch(Exception $e){
-            Log::error('Error al ver estado de flujo #'.$request,[$e]);
+            Log::error('Error al ver estado de flujo',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -119,7 +119,7 @@ class EstadoFlujoController extends Controller
             }
             $estadoFlujoEdit->fill($request);
             $estadoFlujoEdit->save();
-            Log::info('Se modificó el estado #'.$estadoFlujoEdit->Id);
+            Log::info('Se modificó el estado');
             DB::commit();
             return response()->json([
                 'success' => true,
@@ -132,7 +132,7 @@ class EstadoFlujoController extends Controller
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar estado:'.$estadoFlujoEdit->Id, [$e]);
+            Log::error('Error al modificar estado', [$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -147,7 +147,7 @@ class EstadoFlujoController extends Controller
     {
         $request = $request->input('data');
         try{
-            $estadoFlujoEdit = EstadoFlujo::find($request);
+            $estadoFlujoEdit = EstadoFlujo::find();
 
             if(!$estadoFlujoEdit){
                 throw new Exception('Estado de Flujo no encontrado');
@@ -160,14 +160,14 @@ class EstadoFlujoController extends Controller
 
             $estadoFlujoEdit->save();
             DB::commit();
-            Log::info('Cambio de estado en estado de flujo #'.$request);
+            Log::info('Cambio de estado en estado de flujo');
             return response()->json([
                 'success' => true,
                 'message' => 'Estado del Estado de Flujo cambiado'
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar estado en estado de flujo #'.$request,[$e]);
+            Log::error('Error al modificar estado en estado de flujo',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

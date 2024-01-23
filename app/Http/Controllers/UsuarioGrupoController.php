@@ -84,7 +84,7 @@ class UsuarioGrupoController extends Controller
             $acceso->save();
 
             DB::commit();
-            Log::info('Usuario #'. $request['UsuarioId'].' asignado al grupo #'.$request['GrupoId']);
+            Log::info('Usuario  asignado a grupo');
             return response()->json([
                 'success' => true,
                 'data'=> [
@@ -96,7 +96,7 @@ class UsuarioGrupoController extends Controller
             ]);
         }catch(Exception $e){  
             DB::rollBack();
-            Log::info('Error al asignar usuario #'. $request['UsuarioId'].' al grupo #'.$request['GrupoId']);
+            Log::info('Error al asignar usuario a grupo');
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -120,7 +120,7 @@ class UsuarioGrupoController extends Controller
             ]);
             $accesoExiste->save();
             DB::commit();
-            Log::info('Eliminando '.$request);
+            Log::info('Se quito acceso de usuario a grupo');
             
             return response()->json([
                 'success' => true,
@@ -129,7 +129,7 @@ class UsuarioGrupoController extends Controller
 
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al eliminar'.$request);
+            Log::error('Error al quitar acceso de usuario a grupo',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

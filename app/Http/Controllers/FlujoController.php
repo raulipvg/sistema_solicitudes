@@ -71,7 +71,7 @@ class FlujoController extends Controller
                 $obj->GrupoId = $ordenFlujo['GrupoId'];
                 $obj->save();
             }
-            Log::info('Nuevo Flujo #'.$flujo->Id);
+            Log::info('Nuevo Flujo');
             DB::commit(); 
             return response()->json([
                 'success' => true,
@@ -80,7 +80,7 @@ class FlujoController extends Controller
         }catch(Exception $e){  
             DB::rollBack();
 
-            Log::error('Error al crear usuario: '.$flujo->Nombre, [$e]);
+            Log::error('Error al crear usuario:', [$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -105,14 +105,14 @@ class FlujoController extends Controller
             $flujoEdit->save();
             
             DB::commit();
-            Log::info('Flujo #'.$request.' desvinculado de un área.');
+            Log::info('Flujo desvinculado de un área.');
             return response()->json([
                 'success' => true,
                 'message' => 'Flujo desvinculado del Area'
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al desvincular flujo #'.$request, [$e]);
+            Log::error('Error al desvincular flujo', [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

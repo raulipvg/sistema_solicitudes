@@ -42,7 +42,7 @@ class AtributoController extends Controller
             $atributo->save();
 
             DB::commit();
-            Log::info('Nuevo atributo #'.$atributo->Id);
+            Log::info('Nuevo atributo');
             return response()->json([
                 'success' => true,
                 'atributo'=>[[
@@ -55,7 +55,7 @@ class AtributoController extends Controller
             ], 200);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al guardar atributo.',[$e]);
+            Log::error('Error al guardar atributo.',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -79,13 +79,13 @@ class AtributoController extends Controller
             }
 
             
-            Log::info('Ver información de atributo #'.$request);
+            Log::info('Ver información de atributo');
             return response()->json([
                 'success' => true,
                 'data' => $atributo
             ]);
         }catch(Exception $e){
-            Log::error('Error al ver atributo #'.$request,[$e]);
+            Log::error('Error al ver atributo',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -120,7 +120,7 @@ class AtributoController extends Controller
             $atributoEdit->save();
 
             DB::commit();
-            Log::info('Se modificó el atributo #'.$request['Id']);
+            Log::info('Se modificó el atributo');
             return response()->json([
                 'success' => true,
                 'atributo'=>[[
@@ -133,7 +133,7 @@ class AtributoController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar atributo #'.$request['Id'],[$e]);
+            Log::error('Error al modificar atributo',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -162,14 +162,14 @@ class AtributoController extends Controller
             ]);
             $atributoEdit->save();
             DB::commit();
-            Log::info('Cambio de estado de atributo #'.$request);
+            Log::info('Cambio de estado de atributo');
             return response()->json([
                 'success' => true,
                 'message' => 'Estado del Atributo cambiado'
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar atributo #'.$request,[$e]);
+            Log::error('Error al modificar atributo',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

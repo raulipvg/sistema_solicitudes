@@ -88,7 +88,7 @@ class MovimientoAtributoController extends Controller
             
 
             DB::commit();
-            Log::info('Se asignaron atributos al movimiento '.$movimiento->Nombre);
+            Log::info('Se asignaron atributos al movimiento');
             return response()->json([
                 'success' => true,
                 'message' => 'Atributos asignados a este movimiento',
@@ -97,7 +97,7 @@ class MovimientoAtributoController extends Controller
         }
         catch(Exception $e){
             DB::rollBack();
-            Log::error('Intento fallido de asignar atributos a '.$movimiento->Nombre, [$e]);
+            Log::error('Intento fallido de asignar atributos', [$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -118,7 +118,7 @@ class MovimientoAtributoController extends Controller
                                         ->where('movimiento_atributo.MovimientoId', $movimientoId)
                                         ->where('atributo.Enabled', 1)
                                         ->get();
-            Log::info('Ver atributos del movimiento #'.$movimientoId);
+            Log::info('Ver atributos del movimiento');
             return response()->json([
                 'success' => true,
                 'data' => $movimientoAtributo,
@@ -126,7 +126,7 @@ class MovimientoAtributoController extends Controller
             ]);
 
         }catch(Exception $e){
-            Log::error('Error al ver atributos de movimiento #'. $movimientoId, [$e]);
+            Log::error('Error al ver atributos de movimiento', [$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

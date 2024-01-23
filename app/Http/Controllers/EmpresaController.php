@@ -67,7 +67,7 @@ class EmpresaController extends Controller
             DB::beginTransaction();
 
             $empresa->save();
-            Log::info('Nueva empresa #'. $empresa->Id);
+            Log::info('Nueva empresa');
             DB::commit(); 
             return response()->json([
                 'success' => true,
@@ -82,7 +82,7 @@ class EmpresaController extends Controller
             ],201);
         }catch(Exception $e){  
             DB::rollBack();
-            Log::error('Error al Guardar Empresa: '.$empresa->Nombre, [$e]);
+            Log::error('Error al Guardar Empresa', [$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -101,14 +101,14 @@ class EmpresaController extends Controller
             if (!$empresa) {
                 throw new Exception('Empresa no encontrada');
             }
-            Log::info('Ver empresa #'.$request);
+            Log::info('Ver empresa');
             return response()->json([
                 'success' => true,
                 'data' => $empresa 
             ]);
 
         }catch(Exception $e){
-            Log::error('Error al ver empresa #'.$request,[$e]);
+            Log::error('Error al ver empresa',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -139,7 +139,7 @@ class EmpresaController extends Controller
             $empresaEdit->save();
 
             DB::commit();
-            Log::info('Modificar empresa #'.$empresaEdit->Id);
+            Log::info('Modificar empresa');
             return response()->json([
                 'success' => true,
                 'empresa'=> [[
@@ -153,7 +153,7 @@ class EmpresaController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar empresa '.$request['Id'],[$e]);
+            Log::error('Error al modificar empresa',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -166,7 +166,7 @@ class EmpresaController extends Controller
         $request = $request->input('data');
 
         try{
-            $empresaEdit = Empresa::find($request);
+            $empresaEdit = Empresa::find();
 
             if (!$empresaEdit) {
                 throw new Exception('Empresa no encontrada');
@@ -177,7 +177,7 @@ class EmpresaController extends Controller
             ]);
             $empresaEdit->save();
             DB::commit();
-            Log::info('Cambio de estado de empresa #'.$request);
+            Log::info('Cambio de estado de empresa');
             return response()->json([
                 'success' => true,
                 'message' => 'Estado de la Empresa cambiado'
@@ -185,7 +185,7 @@ class EmpresaController extends Controller
 
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar estado de empresa #'.$request,[$e]);
+            Log::error('Error al modificar estado de empresa',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

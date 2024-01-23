@@ -157,7 +157,7 @@ class SolicitudController extends Controller
 
             $historial->save();
             DB::commit();
-            Log::info('Solicitud #'.$solicitud->Id.' generada');
+            Log::info('Solicitud generada');
 
             $solicitud = Solicitud::getSolicitudesId($solicitud->Id);
                            
@@ -216,7 +216,7 @@ class SolicitudController extends Controller
                 $historial->save();
                 $flag=true;
 
-                $mensaje = 'Solicitud #'.$historial->SolicitudId.' avanzó de etapa.';
+                $mensaje = 'Solicitud avanzó de etapa.';
 
             //SI ES UNA ETAPA FINAL DEL FLUJO
             }else{
@@ -226,7 +226,7 @@ class SolicitudController extends Controller
                     'UsuarioId' => $userId 
                 ]);
                 $flag=false;
-                $mensaje = 'Solicitud #'.$historialEdit->SolicitudId.' aprobada y terminada.';
+                $mensaje = 'Solicitud aprobada y terminada.';
             }
 
             DB::commit(); 
@@ -242,7 +242,7 @@ class SolicitudController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error en el avance de la solicitud #'.$historialEdit->SolicitudId,[$e]);
+            Log::error('Error en el avance de la solicitud',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() 
@@ -277,13 +277,13 @@ class SolicitudController extends Controller
                 ]);
         
             DB::commit(); 
-            Log::info('Solicitud #'.$historialEdit->SolicitudId.' rechazada y terminada.');
+            Log::info('Solicitud rechazada y terminada.');
             return response()->json([
                 'success' => true
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al rechazar solicitud #'.$historialEdit->SolicitudId,[$e]);
+            Log::error('Error al rechazar solicitud',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() 
@@ -310,7 +310,7 @@ class SolicitudController extends Controller
                 'solicitudes' => $solicitudes
             ]);
         }catch(Exception $e){
-            Log::error('Error al ver solicitudes terminadas', [$e]);
+            Log::error('Error al ver solicitudes terminadas', [$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() 
@@ -339,7 +339,7 @@ class SolicitudController extends Controller
             ]);
 
         }catch(Exception $e){
-            Log::error('Error al ver solicitudes activas', [$e]);
+            Log::error('Error al ver solicitudes activas', [$e->getMessage()]);
             return response()->json([
                 'success'=> false,
                 'message'=> $e->getMessage()

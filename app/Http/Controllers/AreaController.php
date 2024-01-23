@@ -61,7 +61,7 @@ class AreaController extends Controller
             $area->save(); 
 
             DB::commit();
-            Log::info('Nueva Area #'.$area->Id); 
+            Log::info('Nueva Area'); 
             
             return response()->json([
                 'success' => true,
@@ -97,14 +97,14 @@ class AreaController extends Controller
             if (!$area) {
                 throw new Exception('Area no encontrada');
             }
-            Log::info('Ver información del área #'.$request);
+            Log::info('Ver información del área');
             return response()->json([
                 'success' => true,
                 'data' => $area
             ],200);
 
         }catch(Exception $e){
-            Log::error('Error al ver información del área #'.$request);
+            Log::error('Error al ver información del área',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -138,7 +138,7 @@ class AreaController extends Controller
             $areaEdit->save();
 
             DB::commit();
-            Log::info('Se modificó el area Id: '.$areaEdit->Id);
+            Log::info('Se modificó el area');
             return response()->json([
                 'success' => true,
                 'area'=> [[
@@ -152,7 +152,7 @@ class AreaController extends Controller
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar area #'.$request, [$e]);  
+            Log::error('Error al modificar area' [$e->getMessage()]);  
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -179,14 +179,14 @@ class AreaController extends Controller
             ]);
             $areaEdit->save();
             DB::commit();
-            Log::info('Cambio de estado en área #'.$areaEdit->Id);
+            Log::info('Cambio de estado en área');
             return response()->json([
                 'success' => true,
                 'message' => 'Estado del Area cambiado'
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al cambiar estado del área #'.$request,[$e]);
+            Log::error('Error al cambiar estado del área',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

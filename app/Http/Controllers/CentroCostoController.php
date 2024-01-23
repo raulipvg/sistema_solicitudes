@@ -45,7 +45,7 @@ class CentroCostoController extends Controller
             ]);
         }catch(Exception $e){  
             DB::rollBack();
-            Log::error('Error al guardar centro de costo',[$e]);
+            Log::error('Error al guardar centro de costo',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -58,7 +58,7 @@ class CentroCostoController extends Controller
         $request = $request->input('data');
 
         try{
-            $centroCostoEdit = CentroDeCosto::find($request);
+            $centroCostoEdit = CentroDeCosto::find();
 
             if (!$centroCostoEdit) {
                 throw new Exception('Centro de Costo no encontrado');
@@ -69,7 +69,7 @@ class CentroCostoController extends Controller
             ]);
             $centroCostoEdit->save();
             DB::commit();
-            Log::info('Modificación de estado en centro de costo #'.$request);
+            Log::info('Modificación de estado en centro de costo');
             return response()->json([
                 'success' => true,
                 'message' => 'Estado del Centro de Costo cambiado'
@@ -77,7 +77,7 @@ class CentroCostoController extends Controller
 
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al cambiar estado de centro de costo #'.$request,[$e]);
+            Log::error('Error al cambiar estado de centro de costo',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

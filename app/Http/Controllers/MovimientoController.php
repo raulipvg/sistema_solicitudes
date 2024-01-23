@@ -61,7 +61,7 @@ class MovimientoController extends Controller
 
             DB::commit();
 
-            Log::info('Nuevo movimiento #'.$movimiento->Id);
+            Log::info('Nuevo movimiento');
             return response()->json([
                 'success' => true,
                 'movimiento' => [[
@@ -74,7 +74,7 @@ class MovimientoController extends Controller
             ]);
         }catch(Exception $e){  
             DB::rollBack();
-            Log::error('Error al guardar movimiento', [$e]);
+            Log::error('Error al guardar movimiento', [$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -104,7 +104,7 @@ class MovimientoController extends Controller
                     ->where('Enabled','=',1)
                     ->orWhere('Id', '=', $movimiento->GrupoId)
                     ->get();
-            Log::info('Ver información del movimiento #'.$request);
+            Log::info('Ver información del movimiento');
             return response()->json([
                 'success' => true,
                 'data' => [
@@ -119,7 +119,7 @@ class MovimientoController extends Controller
             ]);
 
         }catch(Exception $e){
-            Log::error('Error al ver información de movimiento #'.$request, [$e]);
+            Log::error('Error al ver información de movimiento', [$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -176,7 +176,7 @@ class MovimientoController extends Controller
             $movimientoEdit->save();
 
             DB::commit();
-            Log::info('Modificación al movimiento #'.$request['Id']);
+            Log::info('Modificación al movimiento');
             return response()->json([
                 'success' => true,
                 'movimiento' => [[
@@ -189,7 +189,7 @@ class MovimientoController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar movimiento #'.$request['Id'], [$e]);
+            Log::error('Error al modificar movimiento', [$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -220,7 +220,7 @@ class MovimientoController extends Controller
             $movimientoEdit->save();
 
             DB::commit();
-            Log::info('Cambio de estado de movimiento #'.$request);
+            Log::info('Cambio de estado de movimiento');
             return response()->json([
                 'success' => true,
                 'message' => 'Estado de la Empresa cambiado'
@@ -228,7 +228,7 @@ class MovimientoController extends Controller
 
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar estado de movimiento #'.$request,[$e]);
+            Log::error('Error al modificar estado de movimiento',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

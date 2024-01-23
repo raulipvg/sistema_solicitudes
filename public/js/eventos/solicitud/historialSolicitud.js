@@ -1,5 +1,4 @@
 var formatoFecha={ 
-    timeZone: 'UTC', 
     hour12: false, 
     year: 'numeric', 
     month: '2-digit', 
@@ -94,7 +93,7 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
                     //Si es el primer estado que lee, agregará la cabecera de iniciado
                     if(primerEstado){
                         primerEstado = false;
-                        fecha = new Date(hist.creacion).toLocaleDateString(formatoFecha);
+                        fecha = new Date(hist.creacion).toLocaleDateString('es-CL',formatoFecha);
                         titulo = 'Iniciado';
                         texto = 'Fecha de creación:'
                         html += cabecera(fecha,titulo,texto)+'<div class="timeline">';
@@ -111,14 +110,14 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
                         color = 'success';
                         tipo = 'Aprobado';
                         usuario = `<span class="fs-6 text-gray-500 fw-semibold d-block text-capitalize"> Responsable: ${hist.Usuario}</span>
-                        <span class="fs-7 text-gray-500 fw-semibold d-block">Actualización: ${new Date(hist.actualizacion).toLocaleDateString(formatoFecha)}</span>`;
+                        <span class="fs-7 text-gray-500 fw-semibold d-block">Actualización: ${new Date(hist.actualizacion).toLocaleDateString('es-CL',formatoFecha)}</span>`;
                         hist.EstadoSolicitudId==3 ? linea = '' : linea = '<div class="timeline-line mt-1 mb-n6 mb-sm-n7"></div>';   // Si la solicitud está terminada, no agrega la línea al final del flujo, en caso contrario, si
                     }
                     else if(hist.EstadoEtapaFlujoId == 2){
                         color = 'danger';
                         tipo = 'Rechazado';
                         usuario = `<span class="fs-6 text-gray-500 fw-semibold d-block"> Responsable: ${hist.Usuario}</span>
-                        <span class="fs-6 text-gray-500 fw-semibold d-block">Actualización: ${new Date(hist.actualizacion).toLocaleDateString(formatoFecha)}</span>`;
+                        <span class="fs-6 text-gray-500 fw-semibold d-block">Actualización: ${new Date(hist.actualizacion).toLocaleDateString('es-CL',formatoFecha)}</span>`;
                     }
                     else if(hist.EstadoEtapaFlujoId == 3){
                         color = 'warning';
