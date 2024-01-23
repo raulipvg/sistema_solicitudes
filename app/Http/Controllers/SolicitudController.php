@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 use function Laravel\Prompts\select;
 
@@ -50,6 +51,8 @@ class SolicitudController extends Controller
 
         $solicitudes = Solicitud::getSolicitudes("<",0);
 
+        Log::info('Ingreso vista Solicitud');
+
         return view('solicitud.solicitud')->with([
             'movimientos'=> $movimientos,
             'personas' => $personas,
@@ -82,10 +85,8 @@ class SolicitudController extends Controller
     public function RealizarSolicitud(Request $request){
         try{
             $request = $request->input('data');
-            //BEGIN::ARREGLAR 
             $userId = auth()->user()->Id;
             $request['solicitud']['UsuarioSolicitanteId'] = $userId;
-            //END::ARREGLAR
             $solicitud = new Solicitud();
             $solicitud->validate($request['solicitud']);
             $solicitud->fill($request['solicitud']);
@@ -128,7 +129,6 @@ class SolicitudController extends Controller
             $historial->EstadoEtapaFlujoId = 3; //Pendiente
             $historial->SolicitudId = $solicitud->Id;
             $historial->EstadoSolicitudId = 1; //INICIADO
-            //ARREGLAR USUARIO SEGUN SESION
             $historial->UsuarioId = $userId; 
 
             $historial->validate([
@@ -141,15 +141,18 @@ class SolicitudController extends Controller
 
             $historial->save();
             DB::commit();
+            Log::info('Solicitud #'.$solicitud->Id.' generada');
 
             $solicitud = Solicitud::getSolicitudes("", $solicitud->Id);
-                           
+
+                                
             return response()->json([
                 'success' => true,
                 'data'=> $solicitud,
             ],201);
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error en solicitud', [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() 
@@ -184,12 +187,10 @@ class SolicitudController extends Controller
             if($ordenFlujoEstadoExiste->Pivot < 2){
                 $ordenFlujoNext= $ordenFlujo->firstWhere('Nivel', $ordenFlujoEstadoExiste->Nivel+1);
 
-                //BEGIN::ARREGLAR LO DEL USUARIO
                 $historialEdit->update([
                     'EstadoEtapaFlujoId' => 1,  //ETAPA APROBADA
-                    'UsuarioId'=> $userId //****ARREGLAR LO DE USUARIO*****
+                    'UsuarioId'=> $userId 
                 ]);
-                //END::ARREGLAR LO DEL USUARIO 
                 
                 $historial = new HistorialSolicitud();
                 $historial->EstadoFlujoId = $ordenFlujoNext->estado_flujo->Id;
@@ -200,17 +201,21 @@ class SolicitudController extends Controller
                 $historial->save();
                 $flag=true;
 
+                $mensaje = 'Solicitud #'.$historial->SolicitudId.' avanzó de etapa.';
+
             //SI ES UNA ETAPA FINAL DEL FLUJO
             }else{
                 $historialEdit->update([
                     'EstadoEtapaFlujoId' => 1,  //ETAPA APROBADA,
                     'EstadoSolicitudId' => 3, // SOLICITUD TERMINADA
-                    'UsuarioId' => $userId //****ARREGLAR LO DE USUARIO*****
+                    'UsuarioId' => $userId 
                 ]);
                 $flag=false;
+                $mensaje = 'Solicitud #'.$historialEdit->SolicitudId.' aprobada y terminada.';
             }
 
             DB::commit(); 
+            Log::info($mensaje);
             return response()->json([
                 'success' => true,
                 'data' => [
@@ -222,6 +227,7 @@ class SolicitudController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error en solicitud',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() 
@@ -252,15 +258,17 @@ class SolicitudController extends Controller
             $historialEdit->update([
                     'EstadoEtapaFlujoId' => 2,  //ETAPA Rechazada,
                     'EstadoSolicitudId' => 3, // SOLICITUD TERMINADA
-                    'UsuarioId' => $userId //****ARREGLAR LO DE USUARIO*****
+                    'UsuarioId' => $userId 
                 ]);
         
             DB::commit(); 
+            Log::info('Solicitud #'.$historialEdit->SolicitudId.' rechazada y terminada.');
             return response()->json([
                 'success' => true
             ]);
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al rechazar solicitud',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() 
@@ -273,12 +281,13 @@ class SolicitudController extends Controller
 
             $solicitudes = Solicitud::getSolicitudes("=",0);
 
-
+            Log::info('Ingreso vista solicitudes terminadas');
         return response()->json([
                 'success' => true,
                 'solicitudes' => $solicitudes
             ]);
         }catch(Exception $e){
+            Log::error('Error al ver solicitudes terminadas', [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() 
@@ -290,13 +299,14 @@ class SolicitudController extends Controller
     public function VerActivas(){
         try{
             $solicitudes = $solicitudes = Solicitud::getSolicitudes("<",0);
-
+            Log::info('Ingreso vista solicitudes activas');
             return response()->json([
                 'success' => true,
                 'solicitudes' => $solicitudes
             ]);
 
         }catch(Exception $e){
+            Log::error('Error al ver solicitudes activas', [$e]);
             return response()->json([
                 'success'=> false,
                 'message'=> $e->getMessage()

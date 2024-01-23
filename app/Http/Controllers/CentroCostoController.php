@@ -7,6 +7,7 @@ use App\Models\Empresa;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CentroCostoController extends Controller
 {
@@ -32,6 +33,7 @@ class CentroCostoController extends Controller
             $centrocosto->save();
 
             DB::commit(); 
+            Log::info('Centro de costo guardado');
             return response()->json([
                 'success' => true,
                 'data'=> [
@@ -43,7 +45,7 @@ class CentroCostoController extends Controller
             ]);
         }catch(Exception $e){  
             DB::rollBack();
-            
+            Log::error('Error al guardar centro de costo',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -67,7 +69,7 @@ class CentroCostoController extends Controller
             ]);
             $centroCostoEdit->save();
             DB::commit();
-            
+            Log::info('Modificación de estado en centro de costo #'.$request);
             return response()->json([
                 'success' => true,
                 'message' => 'Estado del Centro de Costo cambiado'
@@ -75,6 +77,7 @@ class CentroCostoController extends Controller
 
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al cambiar estado de centro de costo',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

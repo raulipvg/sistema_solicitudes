@@ -9,6 +9,7 @@ use Exception;
 use Faker\Provider\ar_EG\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PersonaController extends Controller
 {
@@ -45,7 +46,7 @@ class PersonaController extends Controller
                             ->join('empresa','empresa.Id','=','centro_de_costo.EmpresaId')
                             ->where('centro_de_costo.Enabled','=', 1)
                             ->get();    
-
+        Log::info('Acceso vista Persona');
         return view('persona.persona')->with([
                         'titulo'=> $titulo,
                         'personas'=> $personas,
@@ -75,6 +76,7 @@ class PersonaController extends Controller
             $persona->save();
 
             DB::commit(); 
+            Log::info('Nueva persona #'.$persona->Id);
             return response()->json([
                 'success' => true,
                 'persona' => [[
@@ -90,7 +92,7 @@ class PersonaController extends Controller
             ],201);
         }catch(Exception $e){  
             DB::rollBack();
-            
+            Log::error('Error al crear persona', [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -115,7 +117,7 @@ class PersonaController extends Controller
                                 ->orWhere('centro_de_costo.Id', $persona->CentroCostoId)
                                 ->get();
 
-
+            Log::info('Ver información de persona #'. $request);
             return response()->json([
                 'success' => true,
                 'data' => $persona,
@@ -123,7 +125,7 @@ class PersonaController extends Controller
             ],200);
 
         }catch(Exception $e){
-
+            Log::error('Error al ver información de persona', [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -151,6 +153,7 @@ class PersonaController extends Controller
             $personaEdit->save();
 
             DB::commit();
+
             return response()->json([
                 'success' => true,
                 'persona' => [[
@@ -190,7 +193,7 @@ class PersonaController extends Controller
             $personaEdit->save();
             
             DB::commit();
-            
+            Log::info('Cambio de estado de persona #'.$request);
             return response()->json([
                 'success' => true,
                 'message' => 'Estado de la Persona cambiado'
@@ -198,6 +201,7 @@ class PersonaController extends Controller
 
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al modificar persona',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

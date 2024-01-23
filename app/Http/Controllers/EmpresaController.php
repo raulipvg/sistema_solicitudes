@@ -67,7 +67,7 @@ class EmpresaController extends Controller
             DB::beginTransaction();
 
             $empresa->save();
-            Log::info('Empresa Guardada Id: '. $empresa->Id);
+            Log::info('Nueva empresa #'. $empresa->Id);
             DB::commit(); 
             return response()->json([
                 'success' => true,
@@ -101,14 +101,14 @@ class EmpresaController extends Controller
             if (!$empresa) {
                 throw new Exception('Empresa no encontrada');
             }
-
+            Log::info('Ver empresa #'.$request);
             return response()->json([
                 'success' => true,
                 'data' => $empresa 
             ]);
 
         }catch(Exception $e){
-
+            Log::error('Error al ver empresa',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -139,6 +139,7 @@ class EmpresaController extends Controller
             $empresaEdit->save();
 
             DB::commit();
+            Log::info('Modificar empresa #'.$empresaEdit->Id);
             return response()->json([
                 'success' => true,
                 'empresa'=> [[
@@ -152,6 +153,7 @@ class EmpresaController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al modificar empresa '.$request['Id'],[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

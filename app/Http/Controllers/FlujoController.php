@@ -38,7 +38,7 @@ class FlujoController extends Controller
                     ->where('Enabled',1)
                     ->get();
 
-
+        Log::info('Ingreso vista flujo');
         return view('flujo.flujo')->with([
             'titulo'=> 'Flujos',
             'areas' => $areas,
@@ -47,7 +47,6 @@ class FlujoController extends Controller
             'credenciales'=> $credenciales,
         ]);
     }
-
     public function Guardar(Request $request){
     
         $request = $request->input('data');
@@ -72,7 +71,7 @@ class FlujoController extends Controller
                 $obj->GrupoId = $ordenFlujo['GrupoId'];
                 $obj->save();
             }
-            Log::info('Nuevo FLujo Id: '.$flujo->Id);
+            Log::info('Nuevo Flujo #'.$flujo->Id);
             DB::commit(); 
             return response()->json([
                 'success' => true,
@@ -106,13 +105,14 @@ class FlujoController extends Controller
             $flujoEdit->save();
             
             DB::commit();
-            
+            Log::info('Flujo #'.$request.' desvinculado de un área.');
             return response()->json([
                 'success' => true,
                 'message' => 'Flujo desvinculado del Area'
             ],201);
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al desvincular flujo', [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

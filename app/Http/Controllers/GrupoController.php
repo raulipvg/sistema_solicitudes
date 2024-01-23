@@ -12,6 +12,7 @@ use Doctrine\DBAL\Schema\View;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class GrupoController extends Controller
 {
@@ -38,7 +39,7 @@ class GrupoController extends Controller
         $privilegios = Privilegio::select('Id','Nombre')
                                         ->where('Enabled','=',1)
                                         ->get();
-        
+        Log::info('Acceso vista Grupo');
         return View('grupo.grupo')->with([
             'titulo'=> $titulo,
             'datosgrupo'=> $datosgrupo,
@@ -74,7 +75,7 @@ class GrupoController extends Controller
             */
 
             DB::commit(); 
-            
+            Log::info('Nuevo grupo #'. $grupo->Id);
             return response()->json([
                 'success' => true,
                 'message' => 'Area Guardada'
@@ -82,6 +83,7 @@ class GrupoController extends Controller
 
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al guardar grupo', [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -179,15 +181,13 @@ class GrupoController extends Controller
                                         ->where('Enabled','=',1)
                                         ->get();
 
+            Log::info('Ver información del grupo #'.$request);
             return response()->json([
                 'success' => true,
                 'data' => $grupo
             ]);
-           /* return view('grupo.componente._formEditarGrupo',
-                        compact('grupo','privilegios'));*/
-
         }catch(Exception $e){
-
+            Log::error('Error al ver grupo',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -239,12 +239,14 @@ class GrupoController extends Controller
             }
 
             DB::commit();
+            Log::info('Privilegios del grupo #'.$request['Id'].' actualizados');
             return response()->json([
                 'success' => true,
                 'message' => 'Grupo actualizado correctamente'
             ]);
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al modificar privilegios de grupo', [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -271,13 +273,14 @@ class GrupoController extends Controller
             ]);
             $grupoEdit->save();
             DB::commit();
-            
+            Log::info('Cambio de estado de grupo #'.$request);
             return response()->json([
                 'success' => true,
-                'message' => 'Estado del Area cambiado'
+                'message' => 'Estado del Grupo cambiado'
             ]);
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al modificar grupo',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

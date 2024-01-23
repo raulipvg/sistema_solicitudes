@@ -8,6 +8,7 @@ use App\Models\UsuarioGrupo;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UsuarioGrupoController extends Controller
 {
@@ -62,7 +63,7 @@ class UsuarioGrupoController extends Controller
                                     ->where('Enabled', 1)
                                     ->whereNotIn('Id', $gruposAsociados)
                                     ->get();
-
+        
         return response()->json([
             'success' => true,
             'data' => $gruposNoAsociados,
@@ -82,7 +83,8 @@ class UsuarioGrupoController extends Controller
 
             $acceso->save();
 
-            DB::commit(); 
+            DB::commit();
+            Log::info('Usuario #'. $request['UsuarioId'].' asignado al grupo #'.$request['GrupoId']);
             return response()->json([
                 'success' => true,
                 'data'=> [
@@ -94,7 +96,7 @@ class UsuarioGrupoController extends Controller
             ]);
         }catch(Exception $e){  
             DB::rollBack();
-            
+            Log::info('Error al asignar usuario #'. $request['UsuarioId'].' al grupo #'.$request['GrupoId']);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -118,6 +120,7 @@ class UsuarioGrupoController extends Controller
             ]);
             $accesoExiste->save();
             DB::commit();
+            Log::info('Usuario #'. $request['UsuarioId'].' eliminado del grupo #'.$request['GrupoId']);
             
             return response()->json([
                 'success' => true,
@@ -126,6 +129,7 @@ class UsuarioGrupoController extends Controller
 
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al quitar usuario #'. $request['UsuarioId'].' al grupo #'.$request['GrupoId']);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

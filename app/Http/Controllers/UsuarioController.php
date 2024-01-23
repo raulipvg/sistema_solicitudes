@@ -74,7 +74,7 @@ class UsuarioController extends Controller
                                         'option' => $centrocostos,
                                         'message' => 'CC Entregado'
                                     ],200);
-             }catch(Exception $e){
+            }catch(Exception $e){
                 return response()->json([
                                     'success' => false,
                                     'message' => $e->getMessage()

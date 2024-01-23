@@ -25,7 +25,7 @@ class EstadoFlujoController extends Controller
         ];
 
         $estadosFlujo = EstadoFlujo::select('Id','Nombre','Enabled')->get();
-
+        Log::info('Ingreso vista estado flujo');
         return View('estadoflujo.estadoflujo')->with([
             'titulo'=>$titulo,
             'estadosFlujo'=>$estadosFlujo,
@@ -50,7 +50,7 @@ class EstadoFlujoController extends Controller
             DB::beginTransaction();
             $estadoFlujo->save();
 
-            Log::info('Nuevo estado de flujo: '.$estadoFlujo->Id);
+            Log::info('Nuevo estado de flujo #'.$estadoFlujo->Id);
             DB::commit();
             return response()->json([
                 'success' => true,
@@ -82,12 +82,13 @@ class EstadoFlujoController extends Controller
             if(!$estadoFlujo){
                 throw new Exception ('Estado de flujo no encontrado');
             }
-
+            Log::info('Ver información de estado de flujo #'.$request);
             return response()->json([
                 'success' => true,
                 'data' => $estadoFlujo
             ]);
         }catch(Exception $e){
+            Log::error('Error al ver estado de flujo',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -118,7 +119,7 @@ class EstadoFlujoController extends Controller
             }
             $estadoFlujoEdit->fill($request);
             $estadoFlujoEdit->save();
-            Log::info('Se modificó el estado Id: '.$estadoFlujoEdit->Id);
+            Log::info('Se modificó el estado #'.$estadoFlujoEdit->Id);
             DB::commit();
             return response()->json([
                 'success' => true,
@@ -159,13 +160,14 @@ class EstadoFlujoController extends Controller
 
             $estadoFlujoEdit->save();
             DB::commit();
-
+            Log::info('Cambio de estado en estado de flujo #'.$request);
             return response()->json([
                 'success' => true,
                 'message' => 'Estado del Estado de Flujo cambiado'
             ]);
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al modificar estado en estado de flujo',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

@@ -76,6 +76,7 @@ class AreaController extends Controller
             ],201);
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al guardar un área.',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -178,13 +179,14 @@ class AreaController extends Controller
             ]);
             $areaEdit->save();
             DB::commit();
-            
+            Log::info('Cambio de estado en área #'.$areaEdit->Id);
             return response()->json([
                 'success' => true,
                 'message' => 'Estado del Area cambiado'
             ]);
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al cambiar estado del área #'.$request,[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

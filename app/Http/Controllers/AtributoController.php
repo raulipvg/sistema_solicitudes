@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Atributo;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AtributoController extends Controller
 {
@@ -16,6 +17,7 @@ class AtributoController extends Controller
 
         $atributos = Atributo::select('Id','Nombre','ValorReferencia','Enabled')->get();
 
+        Log::info('');
         return View('atributo.atributo')->with([
             'titulo'=>$titulo,
             'atributos' => $atributos
@@ -40,6 +42,7 @@ class AtributoController extends Controller
             $atributo->save();
 
             DB::commit();
+            Log::info('Nuevo atributo #'.$atributo->Id);
             return response()->json([
                 'success' => true,
                 'atributo'=>[[
@@ -52,7 +55,7 @@ class AtributoController extends Controller
             ], 200);
         }catch(Exception $e){
             DB::rollBack();
-
+            Log::error('Error al guardar atributo.',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -75,12 +78,14 @@ class AtributoController extends Controller
                 throw new Exception('Atributo no encontrado');
             }
 
+            
+            Log::info('Ver información de atributo #'.$request);
             return response()->json([
                 'success' => true,
                 'data' => $atributo
             ]);
         }catch(Exception $e){
-
+            Log::error('Error al ver atributo',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -115,7 +120,7 @@ class AtributoController extends Controller
             $atributoEdit->save();
 
             DB::commit();
-
+            Log::info('Se modificó el atributo #'.$request['Id']);
             return response()->json([
                 'success' => true,
                 'atributo'=>[[
@@ -128,7 +133,7 @@ class AtributoController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
-
+            Log::error('Error al modificar atributo',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -157,13 +162,14 @@ class AtributoController extends Controller
             ]);
             $atributoEdit->save();
             DB::commit();
-            
+            Log::info('Cambio de estado de atributo #'.$request);
             return response()->json([
                 'success' => true,
                 'message' => 'Estado del Atributo cambiado'
             ]);
         }catch(Exception $e){
             DB::rollBack();
+            Log::error('Error al modificar atributo',[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

@@ -118,7 +118,7 @@ class MovimientoAtributoController extends Controller
                                         ->where('movimiento_atributo.MovimientoId', $movimientoId)
                                         ->where('atributo.Enabled', 1)
                                         ->get();
-
+            Log::info('Ver atributos del movimiento #'.$request);
             return response()->json([
                 'success' => true,
                 'data' => $movimientoAtributo,
@@ -126,7 +126,7 @@ class MovimientoAtributoController extends Controller
             ]);
 
         }catch(Exception $e){
-
+            Log::error('Error al ver atributos de movimiento', [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
