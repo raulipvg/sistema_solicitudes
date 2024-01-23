@@ -100,7 +100,7 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
                     }
                     //Si el estado de la solicitud es 3, creará el footer de terminado y se agrega una vez fuera del forEach
                     if(hist.EstadoSolicitudId == 3){
-                        fecha = new Date(hist.actualizacion).toLocaleDateString(formatoFecha);
+                        fecha = new Date(hist.actualizacion).toLocaleDateString('es-CL',formatoFecha);
                         titulo = 'Terminado';
                         texto = 'Fecha de cierre:'
                         footer = '</div>'+cabecera(fecha,titulo,texto);
