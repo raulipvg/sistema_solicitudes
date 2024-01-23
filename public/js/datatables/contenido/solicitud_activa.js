@@ -130,6 +130,7 @@ const cargarDataActiva= function(){
 KTUtil.onDOMContentLoaded((function() {
     bloquear();
     KTApp.showPageLoading();
+    console.log(solicitudeActivas)
     cargarDataActiva.init(solicitudeActivas);
     KTApp.hidePageLoading();
     loadingEl.remove();

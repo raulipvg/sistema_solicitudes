@@ -23,7 +23,6 @@ class SolicitudController extends Controller
     public int $modulo =1;
     public function Index()
     {
-
         $user = auth()->user();
         // 12 Privilegios de Solicitudes
         $credenciales = [
@@ -60,19 +59,14 @@ class SolicitudController extends Controller
             $personas= null;
             $centrocostos = null;
         }
-        
-        if( !($credenciales['verGrupos'] || $credenciales['verTodas']) ){ //Modo 1, solo ver sus propias solicitudes
-            $solicitudes = Solicitud::getSolicitudesListar(1,"<",$user->Id,0);
-        }
-        else if( $credenciales['verGrupos'] && !$credenciales['verTodas']){ //Modo 2, ver sus solicitudes y todas aquellas que en que su grupo participe
-            $flujosParticipaGrupo = Flujo::select('flujo.Id as FlujoId')
+        $flujosParticipaGrupo = Flujo::select('flujo.Id as FlujoId')
                                         ->join('orden_flujo', 'orden_flujo.FlujoId', '=', 'flujo.Id')
                                         ->whereIn('orden_flujo.GrupoId', $user->grupos->where('pivot.Enabled', 1)->pluck('Id')->toArray())
                                         ->get();
-            $solicitudes= Solicitud::getSolicitudesListar(2,"<",$user->Id, $flujosParticipaGrupo);
-        }else if($credenciales['verTodas']){ //Modo 3, ver todas las solicitudes
-            $solicitudes = Solicitud::getSolicitudesListar(3,"<",0,0);
-        }
+                                        
+
+        $solicitudes= $this->solicitudesModo($credenciales,$user,"<");
+
         Log::info('Ingreso vista Solicitud');
 
         return view('solicitud.solicitud')->with([
@@ -299,8 +293,16 @@ class SolicitudController extends Controller
 
     public function VerTerminadas(){
         try{
+            $user = auth()->user();
+            // 12 Privilegios de Solicitudes
+            $credenciales = [
+                    'verGrupos'=> $user->puedeVer(12),                
+                    'verTodas'=> $user->puedeRegistrar(12),
+                    'realizar'=> $user->puedeEditar(12),
+                    'aprobador'=> $user->puedeEliminar(12)
+            ];
 
-            $solicitudes = Solicitud::getSolicitudes("=",0);
+            $solicitudes= $this->solicitudesModo($credenciales,$user,"=");
 
             Log::info('Ingreso vista solicitudes terminadas');
         return response()->json([
@@ -320,25 +322,15 @@ class SolicitudController extends Controller
     public function VerActivas(){
         try{
             $user = auth()->user();
+            // 12 Privilegios de Solicitudes
             $credenciales = [
-                'verGrupos'=> $user->puedeVer(12),                
-                'verTodas'=> $user->puedeRegistrar(12),
-                'realizar'=> $user->puedeEditar(12),
-                'aprobador'=> $user->puedeEliminar(12)
+                    'verGrupos'=> $user->puedeVer(12),                
+                    'verTodas'=> $user->puedeRegistrar(12),
+                    'realizar'=> $user->puedeEditar(12),
+                    'aprobador'=> $user->puedeEliminar(12)
             ];
 
-            if( !($credenciales['verGrupos'] || $credenciales['verTodas']) ){ //Modo 1, solo ver sus propias solicitudes
-                $solicitudes = Solicitud::getSolicitudes(1,"<",$user->Id,0);
-            }
-            if( $credenciales['verGrupos'] && !$credenciales['verTodas']){ //Modo 2, ver sus solicitudes y todas aquellas que en que su grupo participe
-                $flujosParticipaGrupo = Flujo::select('flujo.Id as FlujoId')
-                                            ->join('orden_flujo', 'orden_flujo.FlujoId', '=', 'flujo.Id')
-                                            ->whereIn('orden_flujo.GrupoId', $user->grupos->where('pivot.Enabled', 1)->pluck('Id')->toArray())
-                                            ->get();
-                $solicitudes= Solicitud::getSolicitudes(2,"<",0, $flujosParticipaGrupo);
-            }elseif($credenciales['verTodas']){ //Modo 3, ver todas las solicitudes
-                $solicitudes = Solicitud::getSolicitudes(3,"<",0,0);
-            }
+            $solicitudes= $this->solicitudesModo($credenciales,$user,"<");
             Log::info('Ingreso vista solicitudes activas');
 
             return response()->json([
@@ -354,6 +346,24 @@ class SolicitudController extends Controller
             ]);
         }
 
+    }
+
+    public function solicitudesModo($credenciales,$user, $condicion){
+        // SI variable condicional es < 3 Muestra Solicitudes activas
+		// SI variable condicional es = 3 Muestra Solicitudes terminadas 
+        if( !($credenciales['verGrupos'] || $credenciales['verTodas']) ){ //Modo 1, solo ver sus propias solicitudes
+            $solicitudes = Solicitud::getSolicitudesListar(1,$condicion,$user->Id,0);
+        }
+        else if( $credenciales['verGrupos'] && !$credenciales['verTodas']){ //Modo 2, ver sus solicitudes y todas aquellas que en que su grupo participe
+            $flujosParticipaGrupo = Flujo::select('flujo.Id as FlujoId')
+                                        ->join('orden_flujo', 'orden_flujo.FlujoId', '=', 'flujo.Id')
+                                        ->whereIn('orden_flujo.GrupoId', $user->grupos->where('pivot.Enabled', 1)->pluck('Id')->toArray())
+                                        ->get();
+            $solicitudes= Solicitud::getSolicitudesListar(2,$condicion,$user->Id, $flujosParticipaGrupo);
+        }else if($credenciales['verTodas']){ //Modo 3, ver todas las solicitudes
+            $solicitudes = Solicitud::getSolicitudesListar(3,$condicion,0,0);
+        }
+        return $solicitudes;
     }
 
 }

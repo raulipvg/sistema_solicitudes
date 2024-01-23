@@ -134,7 +134,7 @@ class Solicitud extends Model
 																	'centro_de_costo.Nombre as CentroCosto','FechaDesde','FechaHasta',
 																	'solicitud.created_at as FechaCreado','historial_solicitud.EstadoSolicitudId',
 																	'estado_flujo.Nombre as EstadoFlujo', 'movimiento.Nombre as Movimiento',
-																	'flujo.Nombre as NombreFlujo','flujo.Id as FlujoIdd',
+																	'flujo.Nombre as NombreFlujo','flujo.Id as FlujoIdd','orden_flujo.GrupoId as GrupoAprobadorId',
 																	'historial_solicitud.Id as HistorialId',
 																	DB::raw('GROUP_CONCAT(atributo.Nombre) as Atributos'),
 																	DB::raw('(
@@ -162,8 +162,10 @@ class Solicitud extends Model
 															->join('movimiento','movimiento.Id','=','movimiento_atributo.MovimientoId')
 															->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
 															->join('flujo','flujo.Id','=','movimiento.FlujoId')
+															->join('orden_flujo','orden_flujo.FlujoId','=','flujo.Id')
+															->where('orden_flujo.EstadoFlujoId', '=', DB::raw('estado_flujo.Id'))
 															->groupBy('solicitud.Id', 'NombreCompleto', 'CentroCosto', 'FechaDesde', 'FechaHasta', 'FechaCreado', 'EstadoSolicitudId', 
-															'EstadoFlujo', 'Movimiento', 'NombreFlujo', 'HistorialId','FlujoIdd','UsuarioSolicitanteId');
+															'EstadoFlujo', 'Movimiento', 'NombreFlujo', 'HistorialId','FlujoIdd','UsuarioSolicitanteId','GrupoAprobadorId');
 															//->get();
 															
 										
@@ -179,23 +181,30 @@ class Solicitud extends Model
 		
 		$solicitudes= Solicitud::querySolicitudes();
 
-		if( $modo == 1){ // Modo 1, solo ver sus propias solicitudes
+		if( $modo == 1 ){ // Modo 1, solo ver sus propias solicitudes
 			
 			$solicitudes = $solicitudes->where('historial_solicitud.EstadoSolicitudId',$condicional, 3)
-												->where('solicitud.UsuarioSolicitanteId','=', $userId)
-												->get();				
+										->where('solicitud.UsuarioSolicitanteId','=', $userId)
+										->get();				
 		}elseif( $modo == 2){ // Modo 2, ver sus solicitudes y todas aquellas que en que su grupo participe
 			
-			$solicitudes = $solicitudes->where('historial_solicitud.EstadoSolicitudId',$condicional, 3)
+			/*$solicitudes = $solicitudes->where('historial_solicitud.EstadoSolicitudId',$condicional, 3)
 										->whereIn('flujo.Id', $flujos->pluck('FlujoId')->toArray())
 										->orWhere('solicitud.UsuarioSolicitanteId','=', $userId)
+										->get();*/
+
+			$solicitudes = $solicitudes->where('historial_solicitud.EstadoSolicitudId', $condicional, 3)
+										->where(function ($query) use ($flujos, $userId) {
+											$query->whereIn('flujo.Id', $flujos->pluck('FlujoId')->toArray())
+												  ->orWhere('solicitud.UsuarioSolicitanteId', '=', $userId);
+										})
 										->get();
 											
 
 		}elseif( $modo == 3){ // Modo 3, ver todas las solicitudes
 
 			$solicitudes = $solicitudes->where('historial_solicitud.EstadoSolicitudId',$condicional, 3)
-											->get();				
+										->get();				
 		}
 		return $solicitudes;
 
