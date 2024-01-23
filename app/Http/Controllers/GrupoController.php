@@ -187,7 +187,7 @@ class GrupoController extends Controller
                 'data' => $grupo
             ]);
         }catch(Exception $e){
-            Log::error('Error al ver grupo',[$e]);
+            Log::error('Error al ver grupo #'.$request,[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -246,7 +246,7 @@ class GrupoController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar privilegios de grupo', [$e]);
+            Log::error('Error al modificar privilegios de grupo #'.$request['Id'], [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -280,7 +280,7 @@ class GrupoController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar grupo',[$e]);
+            Log::error('Error al modificar grupo #'.$request,[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

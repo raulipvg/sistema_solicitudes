@@ -108,7 +108,7 @@ class UsuarioController extends Controller
             $persona->fill($request);
             $persona->save();
 
-            Log::info('Nuevo usuario: '.$usuario->Username);
+            Log::info('Nuevo usuario #'.$usuario->Id);
             DB::commit(); 
             return response()->json([
                 'success' => true,
@@ -124,7 +124,7 @@ class UsuarioController extends Controller
         }catch(Exception $e){  
             DB::rollBack();
 
-            Log::error('Error al crear usuario: '.$usuario->Username, [$e]);
+            Log::error('Error al crear usuario', [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -163,7 +163,7 @@ class UsuarioController extends Controller
                                 ->orWhere('Id', $usuario->CentroCostoId)
                                 ->get();
 
-            Log::info('Acceso a información del usuario: '.$usuario->Username);
+            Log::info('Acceso a información del usuario #'.$usuario->Id);
 
             return response()->json([
                 'success' => true,
@@ -173,7 +173,7 @@ class UsuarioController extends Controller
             ],200);
 
         }catch(Exception $e){
-            Log::error('Error al ver usuario: '.$usuario->Username, [$e]);
+            Log::error('Error al ver usuario: '.$request, [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -221,7 +221,7 @@ class UsuarioController extends Controller
             $personaEdit->save();
 
             DB::commit();
-            Log::info('Se modificó el usuario Id: '.$usuarioEdit->Id);
+            Log::info('Se modificó el usuario #'.$usuarioEdit->Id);
             return response()->json([
                 'success' => true,
                 'usuario' =>[[
@@ -231,11 +231,11 @@ class UsuarioController extends Controller
                     'Enabled'=> $usuarioEdit->Enabled,
                     'NombreCompleto'=> $personaEdit->Nombre.' '.$personaEdit->Apellido
                 ]],
-                'message' => 'Usuario actualizada correctamente'
+                'message' => 'Usuario actualizado correctamente'
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar usuario:'.$usuarioEdit->Username, [$e]);
+            Log::error('Error al modificar usuario #'.$request['Id'], [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -264,14 +264,14 @@ class UsuarioController extends Controller
             $usuarioEdit->save();
             
             DB::commit();
-            Log::info('Se modificó el estado del usuario: '.$usuarioEdit->Username);
+            Log::info('Se modificó el estado del usuario #'.$usuarioEdit->Id);
             return response()->json([
                 'success' => true,
                 'message' => 'Estado de la Usuario cambiado'
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al cambiar estado del usuario: '.$usuarioEdit->Username, [$e]);
+            Log::error('Error al cambiar estado del usuario #'.$usuarioEdit->Id, [$e]);
 
             return response()->json([
                 'success' => false,

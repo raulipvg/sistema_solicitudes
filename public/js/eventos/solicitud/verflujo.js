@@ -69,7 +69,7 @@ function llamaTabla(solicitudId, historialId, flujoId, row){
         },
         success: function (data) {
             if(data.success){
-                console.log(data.data)
+
                 row.child(format(data.data)).show();
 
             }else{                       

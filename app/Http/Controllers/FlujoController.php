@@ -112,7 +112,7 @@ class FlujoController extends Controller
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al desvincular flujo', [$e]);
+            Log::error('Error al desvincular flujo #'.$request, [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

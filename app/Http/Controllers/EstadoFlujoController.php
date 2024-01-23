@@ -88,7 +88,7 @@ class EstadoFlujoController extends Controller
                 'data' => $estadoFlujo
             ]);
         }catch(Exception $e){
-            Log::error('Error al ver estado de flujo',[$e]);
+            Log::error('Error al ver estado de flujo #'.$request,[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -167,7 +167,7 @@ class EstadoFlujoController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar estado en estado de flujo',[$e]);
+            Log::error('Error al modificar estado en estado de flujo #'.$request,[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

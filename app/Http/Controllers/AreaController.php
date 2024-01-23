@@ -61,7 +61,7 @@ class AreaController extends Controller
             $area->save(); 
 
             DB::commit();
-            Log::info('Nueva Area: '.$area->Id); 
+            Log::info('Nueva Area #'.$area->Id); 
             
             return response()->json([
                 'success' => true,
@@ -97,14 +97,14 @@ class AreaController extends Controller
             if (!$area) {
                 throw new Exception('Area no encontrada');
             }
-
+            Log::info('Ver información del área #'.$request);
             return response()->json([
                 'success' => true,
                 'data' => $area
             ],200);
 
         }catch(Exception $e){
-
+            Log::error('Error al ver información del área #'.$request);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -152,7 +152,7 @@ class AreaController extends Controller
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar area:', [$e]);  
+            Log::error('Error al modificar area #'.$request, [$e]);  
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

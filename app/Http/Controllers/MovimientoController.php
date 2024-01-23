@@ -119,7 +119,7 @@ class MovimientoController extends Controller
             ]);
 
         }catch(Exception $e){
-            Log::error('Error al ver información de movimiento', [$e]);
+            Log::error('Error al ver información de movimiento #'.$request, [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -189,7 +189,7 @@ class MovimientoController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar movimiento', [$e]);
+            Log::error('Error al modificar movimiento #'.$request['Id'], [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -228,7 +228,7 @@ class MovimientoController extends Controller
 
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar estado de movimiento',[$e]);
+            Log::error('Error al modificar estado de movimiento #'.$request,[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

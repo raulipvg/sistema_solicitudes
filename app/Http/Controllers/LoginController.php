@@ -89,7 +89,7 @@ class LoginController extends Controller
                 throw new Exception('Error al iniciar sesión.'); 
             }
             Auth::login($usuarioLogear);
-            app('log')->info('Usuario inició sesión.');
+            Log::info('Usuario '.auth()->user()->Username.' inició sesión.');
             return redirect()->intended(route('Solicitud'));
         }catch(Exception $e){
             return redirect()->intended(route('login'))
@@ -105,7 +105,7 @@ class LoginController extends Controller
             $username = auth()->user()->Username;
 
             Auth::logout();
-            Log::channel('database')->info('Usuario '.$username.' ha cerrado sesión.');
+            Log::info('Usuario '.$username.' ha cerrado sesión.');
         }
         return redirect()->intended(route('login'));
     }

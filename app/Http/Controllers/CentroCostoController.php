@@ -77,7 +77,7 @@ class CentroCostoController extends Controller
 
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al cambiar estado de centro de costo',[$e]);
+            Log::error('Error al cambiar estado de centro de costo #'.$request,[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

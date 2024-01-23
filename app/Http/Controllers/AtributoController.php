@@ -85,7 +85,7 @@ class AtributoController extends Controller
                 'data' => $atributo
             ]);
         }catch(Exception $e){
-            Log::error('Error al ver atributo',[$e]);
+            Log::error('Error al ver atributo #'.$request,[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -133,7 +133,7 @@ class AtributoController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar atributo',[$e]);
+            Log::error('Error al modificar atributo #'.$request['Id'],[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -169,7 +169,7 @@ class AtributoController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar atributo',[$e]);
+            Log::error('Error al modificar atributo #'.$request,[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

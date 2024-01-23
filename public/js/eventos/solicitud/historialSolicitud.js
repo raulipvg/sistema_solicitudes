@@ -34,7 +34,7 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
     row = tabla.row(tr);
     var tempDiv = document.createElement('div');
     tempDiv.innerHTML = row.cell(row,tabla.column(5)).data();
-    console.log(tempDiv);
+
     var pill = `<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
                     <span class="path1"></span>
                     <span class="path2"></span>
@@ -47,7 +47,7 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
     $('#Receptor').html(pill+receptor);
 
     tempDiv.innerHTML = row.cell(row,tabla.column(3)).data();
-    console.log(tempDiv);
+
     fecha = tempDiv.querySelector('.fs-7').textContent + ': ' +tempDiv.querySelector('.fw-bold').textContent;
     $('#RangoFecha').html(pill+fecha);
 

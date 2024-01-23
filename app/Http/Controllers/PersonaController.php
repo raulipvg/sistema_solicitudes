@@ -201,7 +201,7 @@ class PersonaController extends Controller
 
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar persona',[$e]);
+            Log::error('Error al modificar persona #'.$request,[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

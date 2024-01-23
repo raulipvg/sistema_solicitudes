@@ -152,7 +152,7 @@ class SolicitudController extends Controller
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error en solicitud', [$e]);
+            Log::error('Error al generar solicitud', [$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() 
@@ -227,7 +227,7 @@ class SolicitudController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error en solicitud',[$e]);
+            Log::error('Error en el avance de la solicitud #'.$historialEdit->SolicitudId,[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() 
@@ -268,7 +268,7 @@ class SolicitudController extends Controller
             ]);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al rechazar solicitud',[$e]);
+            Log::error('Error al rechazar solicitud #'.$historialEdit->SolicitudId,[$e]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() 
