@@ -14,7 +14,7 @@ class EmpresaController extends Controller
     public function Index()
     {
         $titulo= "Empresas";
-        
+
         //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 3 Privilegios de Empresa
@@ -169,7 +169,7 @@ class EmpresaController extends Controller
         $request = $request->input('data');
 
         try{
-            $empresaEdit = Empresa::find();
+            $empresaEdit = Empresa::find($request);
 
             if (!$empresaEdit) {
                 throw new Exception('Empresa no encontrada');

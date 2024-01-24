@@ -801,6 +801,7 @@ $(document).ready(function() {
         //Evento al presionar el Boton Submit del modal de Registrar NUEVO ACCESO
         const submitButton2 = document.getElementById('AddSubmit-acceso');
         submitButton2.addEventListener('click', function (e) {
+            $("#UsuarioIdInput").prop("disabled",false);
             // Prevent default button action
             e.preventDefault();
             e.stopPropagation();

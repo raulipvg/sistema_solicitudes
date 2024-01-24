@@ -63,7 +63,7 @@ class EstadoFlujo extends Model
 				'required',
 				'string',
 				'max:255',
-				Rule::unique('estado_solicitud','Nombre')->ignore($id, 'Id'),	
+				Rule::unique('estado_flujo','Nombre')->ignore($id, 'Id'),	
 			],
 			'Enabled' => 'required|min:0|max:1'
 		];

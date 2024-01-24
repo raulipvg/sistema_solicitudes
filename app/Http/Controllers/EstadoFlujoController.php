@@ -68,7 +68,7 @@ class EstadoFlujoController extends Controller
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al crear un nuevo estado' [$e->getMessage()]);
+            Log::error('Error al crear un nuevo estado', [$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -82,7 +82,7 @@ class EstadoFlujoController extends Controller
         $request = $request->input('data');
 
         try{
-            $estadoFlujo = EstadoFlujo::find();
+            $estadoFlujo = EstadoFlujo::find($request);
 
             if(!$estadoFlujo){
                 throw new Exception ('Estado de flujo no encontrado');
@@ -152,7 +152,7 @@ class EstadoFlujoController extends Controller
     {
         $request = $request->input('data');
         try{
-            $estadoFlujoEdit = EstadoFlujo::find();
+            $estadoFlujoEdit = EstadoFlujo::find($request);
 
             if(!$estadoFlujoEdit){
                 throw new Exception('Estado de Flujo no encontrado');

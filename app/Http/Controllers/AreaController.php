@@ -156,7 +156,7 @@ class AreaController extends Controller
             ],201);
         }catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al modificar area' [$e->getMessage()]);  
+            Log::error('Error al modificar area', [$e->getMessage()]);  
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

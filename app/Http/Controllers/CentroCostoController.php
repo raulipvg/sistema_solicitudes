@@ -58,7 +58,7 @@ class CentroCostoController extends Controller
         $request = $request->input('data');
 
         try{
-            $centroCostoEdit = CentroDeCosto::find();
+            $centroCostoEdit = CentroDeCosto::find($request);
 
             if (!$centroCostoEdit) {
                 throw new Exception('Centro de Costo no encontrado');
