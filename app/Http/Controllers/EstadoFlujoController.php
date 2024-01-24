@@ -24,7 +24,7 @@ class EstadoFlujoController extends Controller
                 'puedeEditar'=> $user->puedeEditar(8),
                 'puedeEliminar'=> $user->puedeEliminar(8),
         ];
-        $accesoLayot= $user->todoPuedeVer();
+        $accesoLayout= $user->todoPuedeVer();
         //END::PRIVILEGIOS
         
 
@@ -34,7 +34,7 @@ class EstadoFlujoController extends Controller
                     'titulo'=>$titulo,
                     'estadosFlujo'=>$estadosFlujo,
                     'credenciales'=>$credenciales,
-                    'accesoLayout' => $accesoLayot
+                    'accesoLayout' => $accesoLayout
                 ]);
     }
 

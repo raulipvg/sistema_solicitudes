@@ -28,7 +28,7 @@ class MovimientoAtributoController extends Controller
                 'puedeEditar'=> $user->puedeEditar(10),
                 'puedeEliminar'=> $user->puedeEliminar(10),
         ];
-        $accesoLayot= $user->todoPuedeVer();
+        $accesoLayout= $user->todoPuedeVer();
         //END::PRIVILEGIOS
 
         $movimientos= Movimiento::select(
@@ -64,7 +64,7 @@ class MovimientoAtributoController extends Controller
                         'flujos' => $flujos,
                         'grupos' => $grupos,
                         'credenciales' => $credenciales,
-                        'accesoLayout' => $accesoLayot
+                        'accesoLayout' => $accesoLayout
                     ]);
         
     }

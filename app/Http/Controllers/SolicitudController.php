@@ -34,7 +34,7 @@ class SolicitudController extends Controller
                 'grupos'=> $user->gruposHabilidatos()
         ];
 
-        $accesoLayot= $user->todoPuedeVer();
+        $accesoLayout= $user->todoPuedeVer();
        
         if( $credenciales['realizar']){
             $movimientos = Movimiento::select('Id','Nombre')
@@ -74,7 +74,7 @@ class SolicitudController extends Controller
             'centrocostos'=> $centrocostos,
             'solicitudes'=> json_encode($solicitudes),
             'credenciales' => $credenciales,
-            'accesoLayout' => $accesoLayot   
+            'accesoLayout' => $accesoLayout   
 
         ]);
     }

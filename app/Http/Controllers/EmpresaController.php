@@ -31,7 +31,7 @@ class EmpresaController extends Controller
             'puedeEditar'=> $user->puedeEditar(4),
             'puedeEliminar'=> $user->puedeEliminar(4),
         ];
-        $accesoLayot= $user->todoPuedeVer();
+        $accesoLayout= $user->todoPuedeVer();
         //END::PRIVILEGIOS
 
         $empresas = Empresa::select(
@@ -48,7 +48,7 @@ class EmpresaController extends Controller
                         'empresas'=> $empresas,
                         'credenciales' => $credenciales,
                         'credenciales2' => $credenciales2,
-                        'accesoLayout' => $accesoLayot                        
+                        'accesoLayout' => $accesoLayout                        
                     ]);
     
     }

@@ -31,7 +31,7 @@ class AreaController extends Controller
                 'puedeEditar'=> $user->puedeEditar(7),
                 'puedeEliminar'=> $user->puedeEliminar(7),
         ];
-        $accesoLayot= $user->todoPuedeVer();
+        $accesoLayout= $user->todoPuedeVer();
         //END::PRIVILEGIOS
 
         $areas = Area::select('Id','Nombre','Descripcion','created_at','Enabled')->get();
@@ -42,7 +42,7 @@ class AreaController extends Controller
                         'areas'=> $areas,
                         'credenciales'=> $credenciales,
                         'credenciales2'=> $credenciales2,
-                        'accesoLayout' => $accesoLayot
+                        'accesoLayout' => $accesoLayout
                     ]);
     
     }

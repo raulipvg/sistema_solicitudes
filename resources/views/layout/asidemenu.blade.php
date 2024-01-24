@@ -16,10 +16,12 @@
 											</a>
 										<!--end:Menu link-->
 										</div>
+										@if( collect($accesoLayout)->where('PrivilegioId', 10)->pluck('Ver')->first() == 1 || collect($accesoLayout)->where('PrivilegioId', 7)->pluck('Ver')->first())
 										<!--begin:Menu item-->
 										<div data-kt-menu-trigger="click" class="menu-item menu-accordion pt-2 {{ request()->routeIs('Flujo') || 
 																													request()->routeIs('InicioMovimientoAtributo') ? 'here show' : '' }}">
-											<!--begin:Menu link-->
+											
+																													<!--begin:Menu link-->
 											<span class="menu-link">
 												<span class="menu-icon">
 													<i class="ki-duotone ki-element-11 fs-2">
@@ -33,8 +35,11 @@
 												<span class="menu-arrow"></span>
 											</span>
 											<!--end:Menu link-->
+											@if( collect($accesoLayout)->where('PrivilegioId', 7)->pluck('Ver')->first() == 1 )
+
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
+											
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
@@ -49,6 +54,9 @@
 												<!--end:Menu item-->												
 											</div>
 											<!--end:Menu sub-->
+											@endif
+											@if( collect($accesoLayout)->where('PrivilegioId', 10)->pluck('Ver')->first() == 1 )
+
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
 												<!--begin:Menu item-->
@@ -65,10 +73,10 @@
 												<!--end:Menu item-->												
 											</div>
 											<!--end:Menu sub-->
+											@endif
 										</div>
 										<!--end:Menu item-->
-
-										
+										@endif
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu content-->
@@ -78,7 +86,7 @@
 											<!--end:Menu content-->
 										</div>
 										<!--end:Menu item-->
-
+										@if( collect($accesoLayout)->where('PrivilegioId', 1)->pluck('Ver')->first() == 1 || collect($accesoLayout)->where('PrivilegioId', 2)->pluck('Ver')->first())
 										<!--begin:Menu item-->
 										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('Usuario') || 
 																											request()->routeIs('Grupo') ? 'here show' : '' }}">
@@ -97,6 +105,7 @@
 											<!--end:Menu link-->
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
+												@if( collect($accesoLayout)->where('PrivilegioId', 1)->pluck('Ver')->first() == 1 )
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
@@ -109,6 +118,8 @@
 													<!--end:Menu link-->
 												</div>
 												<!--end:Menu item-->
+												@endif
+												@if( collect($accesoLayout)->where('PrivilegioId', 2)->pluck('Ver')->first() == 1 )
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
@@ -120,12 +131,17 @@
 													</a>
 													<!--end:Menu link-->
 												</div>
-												<!--end:Menu item-->												
+												<!--end:Menu item-->
+												@endif											
 											</div>
 											<!--end:Menu sub-->
 										</div>
 										<!--end:Menu item-->
-
+										@endif
+										@if( collect($accesoLayout)->where('PrivilegioId', 3)->pluck('Ver')->first() == 1 ||
+										collect($accesoLayout)->where('PrivilegioId', 5)->pluck('Ver')->first() == 1 ||
+										collect($accesoLayout)->where('PrivilegioId', 6)->pluck('Ver')->first() == 1 ||
+										collect($accesoLayout)->where('PrivilegioId', 8)->pluck('Ver')->first() == 1)
 										<!--begin:Menu item-->
 										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('Empresa') || 
 																											request()->routeIs('Persona') || 
@@ -146,6 +162,7 @@
 											<!--end:Menu link-->
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
+												@if( collect($accesoLayout)->where('PrivilegioId', 3)->pluck('Ver')->first() == 1 )
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
@@ -158,6 +175,8 @@
 													<!--end:Menu link-->
 												</div>
 												<!--end:Menu item-->
+												@endif
+												@if( collect($accesoLayout)->where('PrivilegioId', 5)->pluck('Ver')->first() == 1 )
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
@@ -170,6 +189,8 @@
 													<!--end:Menu link-->
 												</div>
 												<!--end:Menu item-->
+												@endif
+												@if( collect($accesoLayout)->where('PrivilegioId', 6)->pluck('Ver')->first() == 1 )
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
@@ -182,6 +203,8 @@
 													<!--end:Menu link-->
 												</div>
 												<!--end:Menu item-->
+												@endif
+												@if( collect($accesoLayout)->where('PrivilegioId', 8)->pluck('Ver')->first() == 1 )
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
@@ -194,12 +217,12 @@
 													<!--end:Menu link-->
 												</div>
 												<!--end:Menu item-->
-												
+												@endif
 											</div>
 											<!--end:Menu sub-->
 										</div>
 										<!--end:Menu item-->
-										
+										@endif
 									</div>
 									<!--end::Menu-->
 								</div>

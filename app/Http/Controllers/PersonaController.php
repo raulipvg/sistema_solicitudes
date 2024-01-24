@@ -33,7 +33,7 @@ class PersonaController extends Controller
             'puedeEditar'=> $user->puedeEditar(1),
             'puedeEliminar'=> $user->puedeEliminar(1),
         ];
-        $accesoLayot= $user->todoPuedeVer();
+        $accesoLayout= $user->todoPuedeVer();
         //END::PRIVILEGIOS
 
 
@@ -60,7 +60,7 @@ class PersonaController extends Controller
                         'centrocostos'=> $centrocostos,
                         'credenciales'=> $credenciales,
                         'credenciales2'=> $credenciales2,
-                        'accesoLayout' => $accesoLayot
+                        'accesoLayout' => $accesoLayout
                     ]);
     
     }

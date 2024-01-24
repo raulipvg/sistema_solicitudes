@@ -27,7 +27,7 @@ class FlujoController extends Controller
                 'puedeEditar'=> $user->puedeEditar(7),
                 'puedeEliminar'=> $user->puedeEliminar(7),
         ];
-        $accesoLayot= $user->todoPuedeVer();
+        $accesoLayout= $user->todoPuedeVer();
         //END::PRIVILEGIOS
 
         $areas= Area::select('Id','Nombre')
@@ -48,7 +48,7 @@ class FlujoController extends Controller
                         'grupos'=> $grupos,
                         'estados'=> $estados,
                         'credenciales'=> $credenciales,
-                        'accesoLayout' => $accesoLayot 
+                        'accesoLayout' => $accesoLayout 
         ]);
     }
     public function Guardar(Request $request){

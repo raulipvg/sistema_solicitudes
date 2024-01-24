@@ -29,7 +29,7 @@ class GrupoController extends Controller
                 'puedeEditar'=> $user->puedeEditar(2),
                 'puedeEliminar'=> $user->puedeEliminar(2),
         ];
-        $accesoLayot= $user->todoPuedeVer();
+        $accesoLayout= $user->todoPuedeVer();
         //END::PRIVILEGIOS
 
         $datosgrupo = Grupo::withCount([
@@ -47,7 +47,7 @@ class GrupoController extends Controller
             'privilegios'=> $privilegios,
             'flag'=> 2, //significa que es para la vista /grupo/
             'credencialesGrupo' => $credencialesGrupo,
-            'accesoLayout' => $accesoLayot 
+            'accesoLayout' => $accesoLayout 
         ]);
     }
     public function Guardar(Request $request)
@@ -117,7 +117,7 @@ class GrupoController extends Controller
                     'puedeEditar'=> $user->puedeEditar(1),
                     'puedeEliminar'=> $user->puedeEliminar(1),
             ];
-            $accesoLayot= $user->todoPuedeVer();
+            $accesoLayout= $user->todoPuedeVer();
             //END::PRIVILEGIOS
 
             $centrocostos = CentroDeCosto::select('Id', 'Nombre')
@@ -161,7 +161,7 @@ class GrupoController extends Controller
                 'flag' => 1, //significa que es para la vista /grupo/ver
                 'credencialesGrupo' => $credencialesGrupo,
                 'credencialesUsuario'=> $credencialesUsuario,
-                'accesoLayout' => $accesoLayot 
+                'accesoLayout' => $accesoLayout 
             ]);
         }catch(Exception $e){
         

@@ -38,7 +38,7 @@ class UsuarioController extends Controller
             'puedeEditar'=> $user->puedeEditar(2),
             'puedeEliminar'=> $user->puedeEliminar(2),
         ];
-        $accesoLayot= $user->todoPuedeVer();
+        $accesoLayout= $user->todoPuedeVer();
          //END::PRIVILEGIOS
 
         $usuarios2 = Usuario::select(
@@ -61,7 +61,7 @@ class UsuarioController extends Controller
                         'centrocostos'=> $centrocostos,
                         'credencialesUsuario'=> $credencialesUsuario,
                         'credencialesGrupo'=> $credencialesGrupo,
-                        'accesoLayout' => $accesoLayot   
+                        'accesoLayout' => $accesoLayout   
                     ]);
     }
 
