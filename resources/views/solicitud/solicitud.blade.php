@@ -85,7 +85,10 @@
 		const solicitudeActivas = JSON.parse('{!! $solicitudes !!}');
 
 		const credenciales= {!! json_encode($credenciales) !!};
+		//msg = 'Etapa ya gestionada, recargue la pagina';
+		//console.log(msg.length)
 	
+		
 
 		//console.log( solicitudeActivas)
 

@@ -70,6 +70,9 @@
         const credenciales= {!! json_encode($credenciales) !!};
         const credenciales2= {!! json_encode($credenciales2) !!};
         
+        const layout= {!! json_encode($accesoLayout) !!};
+        console.log(layout)
+        
     </script>
 
     <!--begin::Datatables y Configuracion de la Tabla-->

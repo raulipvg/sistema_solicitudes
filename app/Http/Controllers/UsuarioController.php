@@ -21,6 +21,7 @@ class UsuarioController extends Controller
         $titulo= "Usuarios";
         //$usuarios = Usuario::all();
 
+        //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 1 Privilegios de Usuario
         $credencialesUsuario = [
@@ -37,6 +38,8 @@ class UsuarioController extends Controller
             'puedeEditar'=> $user->puedeEditar(2),
             'puedeEliminar'=> $user->puedeEliminar(2),
         ];
+        $accesoLayot= $user->todoPuedeVer();
+         //END::PRIVILEGIOS
 
         $usuarios2 = Usuario::select(
                                 'usuario.Id',
@@ -58,6 +61,7 @@ class UsuarioController extends Controller
                         'centrocostos'=> $centrocostos,
                         'credencialesUsuario'=> $credencialesUsuario,
                         'credencialesGrupo'=> $credencialesGrupo,
+                        'accesoLayout' => $accesoLayot   
                     ]);
     }
 

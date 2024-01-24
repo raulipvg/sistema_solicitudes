@@ -9,6 +9,7 @@ use App\Models\HistorialSolicitud;
 use App\Models\Movimiento;
 use App\Models\Persona;
 use App\Models\Solicitud;
+use App\Models\Usuario;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -29,8 +30,11 @@ class SolicitudController extends Controller
                 'verGrupos'=> $user->puedeVer(12),                
                 'verTodas'=> $user->puedeRegistrar(12),
                 'realizar'=> $user->puedeEditar(12),
-                'aprobador'=> $user->puedeEliminar(12)
+                'aprobador'=> $user->puedeEliminar(12),
+                'grupos'=> $user->gruposHabilidatos()
         ];
+
+        $accesoLayot= $user->todoPuedeVer();
        
         if( $credenciales['realizar']){
             $movimientos = Movimiento::select('Id','Nombre')
@@ -59,12 +63,7 @@ class SolicitudController extends Controller
             $personas= null;
             $centrocostos = null;
         }
-        $flujosParticipaGrupo = Flujo::select('flujo.Id as FlujoId')
-                                        ->join('orden_flujo', 'orden_flujo.FlujoId', '=', 'flujo.Id')
-                                        ->whereIn('orden_flujo.GrupoId', $user->grupos->where('pivot.Enabled', 1)->pluck('Id')->toArray())
-                                        ->get();
-                                        
-
+    
         $solicitudes= $this->solicitudesModo($credenciales,$user,"<");
 
         Log::info('Ingreso vista Solicitud');
@@ -74,7 +73,8 @@ class SolicitudController extends Controller
             'personas' => $personas,
             'centrocostos'=> $centrocostos,
             'solicitudes'=> json_encode($solicitudes),
-            'credenciales' => $credenciales
+            'credenciales' => $credenciales,
+            'accesoLayout' => $accesoLayot   
 
         ]);
     }
@@ -182,22 +182,26 @@ class SolicitudController extends Controller
             $historialId = $request['b'];
             $flujoId = $request['c'];
 
-            
+            ///BEGIN::VALIDACIONES
             $historialEdit= HistorialSolicitud::find($historialId);
             if (!$historialEdit) { throw new Exception('Historial no encontrado');}
+            
+            $semaforo = HistorialSolicitud::where('SolicitudId','=', $historialEdit->SolicitudId)
+                                        ->where('Id','>', $historialEdit->Id )->exists();
+            if ($semaforo){ throw new Exception('Etapa ya gestionada, recargue la pagina');}
+            
             $flujoExiste = Flujo::find($flujoId);
             if (!$flujoExiste) { throw new Exception('Flujo no encontrado');}
-
-            DB::beginTransaction();
-            
+     
             $estadoFlujoId= $historialEdit->EstadoFlujoId;
             $ordenFlujo = $flujoExiste->orden_flujos;
-
             $ordenFlujoEstadoExiste = $ordenFlujo->firstWhere('EstadoFlujoId', $estadoFlujoId);
             if (!$ordenFlujoEstadoExiste){ throw new Exception('No existe el estado en el flujo');}
+            ///END:VALIDACIONES
 
             $userId = auth()->user()->Id;
             // SI ES UNA ETAPA DEL FLUJO INICIAL O INTERMEDIA
+            DB::beginTransaction();
             $flag=true;
             if($ordenFlujoEstadoExiste->Pivot < 2){
                 $ordenFlujoNext= $ordenFlujo->firstWhere('Nivel', $ordenFlujoEstadoExiste->Nivel+1);
@@ -212,7 +216,6 @@ class SolicitudController extends Controller
                 $historial->EstadoEtapaFlujoId =3; //Pendiente
                 $historial->SolicitudId = $historialEdit->SolicitudId;
                 $historial->EstadoSolicitudId = 2; //En Curso
- 
                 $historial->save();
                 $flag=true;
 
@@ -237,7 +240,8 @@ class SolicitudController extends Controller
                     'flag'=> $flag, //Pivot <2 o no
                     'historialId'=> ($flag)? $historial->Id : null,
                     'estadoSolicitudId'=>($flag)? $historial->EstadoSolicitudId : null,
-                    'flujoNombre' => ( $flag)? $ordenFlujoNext->estado_flujo->Nombre : null,
+                    'flujoNombre' => ($flag)? $ordenFlujoNext->estado_flujo->Nombre : null,
+                    'GrupoAprobadorId'=> ($flag)? $ordenFlujoNext->GrupoId : null
                 ]
             ]);
         }catch(Exception $e){
@@ -257,19 +261,25 @@ class SolicitudController extends Controller
             $historialId = $request['b'];
             $flujoId = $request['c'];
 
-            
+            ///BEGIN::VALIDACIONES
             $historialEdit= HistorialSolicitud::find($historialId);
             if (!$historialEdit) { throw new Exception('Historial no encontrado');}
             $flujoExiste = Flujo::find($flujoId);
             if (!$flujoExiste) { throw new Exception('Flujo no encontrado');}
 
-            DB::beginTransaction();
+            $semaforo = HistorialSolicitud::where('SolicitudId','=', $historialEdit->SolicitudId)
+                                        ->where('Id','>', $historialEdit->Id )->exists();
+            if ($semaforo){ throw new Exception('Etapa ya gestionada, recargue la pagina');}
+
             $estadoFlujoId= $historialEdit->EstadoFlujoId;
             $ordenFlujo = $flujoExiste->orden_flujos;
-
             $ordenFlujoEstadoExiste = $ordenFlujo->firstWhere('EstadoFlujoId', $estadoFlujoId);
             if (!$ordenFlujoEstadoExiste){ throw new Exception('No existe el estado en el flujo');}
+            ///END::VALIDACIONES
+            
             $userId = auth()->user()->Id;
+
+            DB::beginTransaction();
             $historialEdit->update([
                     'EstadoEtapaFlujoId' => 2,  //ETAPA Rechazada,
                     'EstadoSolicitudId' => 3, // SOLICITUD TERMINADA
@@ -365,6 +375,6 @@ class SolicitudController extends Controller
         }
         return $solicitudes;
     }
-
+   
 }
 

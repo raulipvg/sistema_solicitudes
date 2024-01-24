@@ -14,7 +14,8 @@ class AreaController extends Controller
     public function Index()
     {
         $titulo= "Areas";
-        //$areas = Area::all();
+        
+        //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 6 Privilegios de Area
         $credenciales = [
@@ -30,6 +31,8 @@ class AreaController extends Controller
                 'puedeEditar'=> $user->puedeEditar(7),
                 'puedeEliminar'=> $user->puedeEliminar(7),
         ];
+        $accesoLayot= $user->todoPuedeVer();
+        //END::PRIVILEGIOS
 
         $areas = Area::select('Id','Nombre','Descripcion','created_at','Enabled')->get();
 
@@ -38,7 +41,8 @@ class AreaController extends Controller
                         'titulo'=> $titulo,
                         'areas'=> $areas,
                         'credenciales'=> $credenciales,
-                        'credenciales2'=> $credenciales2
+                        'credenciales2'=> $credenciales2,
+                        'accesoLayout' => $accesoLayot
                     ]);
     
     }

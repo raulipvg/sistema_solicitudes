@@ -18,6 +18,7 @@ class FlujoController extends Controller
 {
     public function Index(){
 
+        //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 7 Privilegios de Empresa
         $credenciales = [
@@ -26,6 +27,8 @@ class FlujoController extends Controller
                 'puedeEditar'=> $user->puedeEditar(7),
                 'puedeEliminar'=> $user->puedeEliminar(7),
         ];
+        $accesoLayot= $user->todoPuedeVer();
+        //END::PRIVILEGIOS
 
         $areas= Area::select('Id','Nombre')
                     ->where('Enabled',1)
@@ -40,11 +43,12 @@ class FlujoController extends Controller
 
         Log::info('Ingreso vista flujo');
         return view('flujo.flujo')->with([
-            'titulo'=> 'Flujos',
-            'areas' => $areas,
-            'grupos'=> $grupos,
-            'estados'=> $estados,
-            'credenciales'=> $credenciales,
+                        'titulo'=> 'Flujos',
+                        'areas' => $areas,
+                        'grupos'=> $grupos,
+                        'estados'=> $estados,
+                        'credenciales'=> $credenciales,
+                        'accesoLayout' => $accesoLayot 
         ]);
     }
     public function Guardar(Request $request){

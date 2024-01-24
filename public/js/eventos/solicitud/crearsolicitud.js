@@ -182,8 +182,8 @@ $(document).ready(function() {
                                 </div>
                                 <div class="col-md-4 mb-2">
                                     <div class="form-floating fv-row">
-                                        <input type="text" class="form-control" placeholder="Ingrese el nombre" id="CaracteristicaInput" name="Caracteristica" value="`+Caracteristica+`" />
-                                        <label for="NombreInput" class="form-label">Caracteristica</label>
+                                        <input type="text" class="form-control" placeholder="Ingrese el detalle" id="CaracteristicaInput" name="Caracteristica" value="`+Caracteristica+`" />
+                                        <label for="NombreInput" class="form-label">Detalle</label>
                                     </div>
                                 </div>
                                 <div class="col-md-2 mb-2">
@@ -293,6 +293,7 @@ $(document).ready(function() {
                                     //console.log(data);
                                     cargarDataActiva.init(data);
                                     $('#crearSolicitud').modal('toggle');
+                                    toastr.success("Solicitud Realizada!");
                                 }else{
                                     Swal.fire({
                                         text: "Error al realizar la solicitud",

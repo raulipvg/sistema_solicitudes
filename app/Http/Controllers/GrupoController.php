@@ -20,8 +20,7 @@ class GrupoController extends Controller
     {
         $titulo="Grupos";
 
-        //Contar Usuarios con Acceso al Grupo, que estén Habilitados para el grupo y
-        // Que el estado del usuario sea activo
+        //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 2 Privilegios de Grupo
         $credencialesGrupo = [
@@ -30,6 +29,8 @@ class GrupoController extends Controller
                 'puedeEditar'=> $user->puedeEditar(2),
                 'puedeEliminar'=> $user->puedeEliminar(2),
         ];
+        $accesoLayot= $user->todoPuedeVer();
+        //END::PRIVILEGIOS
 
         $datosgrupo = Grupo::withCount([
             'usuarios' => function ($query) {
@@ -45,7 +46,8 @@ class GrupoController extends Controller
             'datosgrupo'=> $datosgrupo,
             'privilegios'=> $privilegios,
             'flag'=> 2, //significa que es para la vista /grupo/
-            'credencialesGrupo' => $credencialesGrupo
+            'credencialesGrupo' => $credencialesGrupo,
+            'accesoLayout' => $accesoLayot 
         ]);
     }
     public function Guardar(Request $request)
@@ -96,8 +98,10 @@ class GrupoController extends Controller
         try{
             $datosgrupo= Grupo::find($id); 
             if (!$datosgrupo) {
-                return View('blank');
+                return View('error.error404');
             }
+
+             //BEGIN::PRIVILEGIOS
             $user = auth()->user();
             // 2 Privilegios de Grupo
             $credencialesGrupo = [
@@ -106,7 +110,6 @@ class GrupoController extends Controller
                     'puedeEditar'=> $user->puedeEditar(2),
                     'puedeEliminar'=> $user->puedeEliminar(2),
             ];
-
             // 1 Privilegios de Grupo
             $credencialesUsuario = [
                     'puedeVer'=> $user->puedeVer(1),
@@ -114,6 +117,9 @@ class GrupoController extends Controller
                     'puedeEditar'=> $user->puedeEditar(1),
                     'puedeEliminar'=> $user->puedeEliminar(1),
             ];
+            $accesoLayot= $user->todoPuedeVer();
+            //END::PRIVILEGIOS
+
             $centrocostos = CentroDeCosto::select('Id', 'Nombre')
                             ->where('Enabled','=', 1)
                             ->get();
@@ -155,6 +161,7 @@ class GrupoController extends Controller
                 'flag' => 1, //significa que es para la vista /grupo/ver
                 'credencialesGrupo' => $credencialesGrupo,
                 'credencialesUsuario'=> $credencialesUsuario,
+                'accesoLayout' => $accesoLayot 
             ]);
         }catch(Exception $e){
         

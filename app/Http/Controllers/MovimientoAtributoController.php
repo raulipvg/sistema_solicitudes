@@ -19,6 +19,7 @@ class MovimientoAtributoController extends Controller
     public function Index(){
         $titulo = 'Movimientos y Atributos';
 
+        //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 10 Privilegios de Movimiento
         $credenciales = [
@@ -27,6 +28,8 @@ class MovimientoAtributoController extends Controller
                 'puedeEditar'=> $user->puedeEditar(10),
                 'puedeEliminar'=> $user->puedeEliminar(10),
         ];
+        $accesoLayot= $user->todoPuedeVer();
+        //END::PRIVILEGIOS
 
         $movimientos= Movimiento::select(
                                 'movimiento.Id',
@@ -54,14 +57,15 @@ class MovimientoAtributoController extends Controller
         Log::info('Ingreso vista movimiento-atributo');
 
         return View('movimientoatributo.movimientoatributo')->with([
-            'titulo' => $titulo,
-            'movimientos' => $movimientos,
-            'atributosSelect' => $atributosSelect,
-            'atributos' => $atributos,
-            'flujos' => $flujos,
-            'grupos' => $grupos,
-            'credenciales' => $credenciales
-        ]);
+                        'titulo' => $titulo,
+                        'movimientos' => $movimientos,
+                        'atributosSelect' => $atributosSelect,
+                        'atributos' => $atributos,
+                        'flujos' => $flujos,
+                        'grupos' => $grupos,
+                        'credenciales' => $credenciales,
+                        'accesoLayout' => $accesoLayot
+                    ]);
         
     }
 

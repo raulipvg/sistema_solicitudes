@@ -14,7 +14,8 @@ class EmpresaController extends Controller
     public function Index()
     {
         $titulo= "Empresas";
-        //$empresas= Empresa::all();
+        
+        //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 3 Privilegios de Empresa
         $credenciales = [
@@ -23,7 +24,6 @@ class EmpresaController extends Controller
                 'puedeEditar'=> $user->puedeEditar(3),
                 'puedeEliminar'=> $user->puedeEliminar(3)
         ];
-
         // 4 Privilegios Centro de Costo
         $credenciales2 = [
             'puedeVer'=> $user->puedeVer(4),
@@ -31,6 +31,8 @@ class EmpresaController extends Controller
             'puedeEditar'=> $user->puedeEditar(4),
             'puedeEliminar'=> $user->puedeEliminar(4),
         ];
+        $accesoLayot= $user->todoPuedeVer();
+        //END::PRIVILEGIOS
 
         $empresas = Empresa::select(
                                 'empresa.Id',
@@ -45,7 +47,8 @@ class EmpresaController extends Controller
                         'titulo'=> $titulo,
                         'empresas'=> $empresas,
                         'credenciales' => $credenciales,
-                        'credenciales2' => $credenciales2                        
+                        'credenciales2' => $credenciales2,
+                        'accesoLayout' => $accesoLayot                        
                     ]);
     
     }

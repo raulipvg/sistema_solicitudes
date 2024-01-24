@@ -70,8 +70,11 @@ const cargarDataActiva= function(){
                                 </div>
                                 <div class="fs-7 fw-bold text-muted">Solicitado por</div>`;
 
+                    var estaEnElArray = credenciales.grupos.includes(data[key].GrupoAprobadorId);
+                    //console.log(estaEnElArray)
+
                     var col6 = `<div class="btn-group btn-group-sm" role="group" a="${data[key].Id}" b="${data[key].HistorialId}" c="${data[key].FlujoIdd}" >
-                                    <button class="${credenciales.aprobador?
+                                    <button class="${credenciales.aprobador && estaEnElArray?
                                         `aceptar`:`disabled`
                                     } btn btn-light-success p-1"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Aprobar">
                                         <i class="ki-duotone ki-check-circle fs-2hx"> 
@@ -79,7 +82,7 @@ const cargarDataActiva= function(){
                                             <span class="path2"></span>
                                         </i>
                                     </button>
-                                    <button class="${credenciales.aprobador?
+                                    <button class="${credenciales.aprobador && estaEnElArray?
                                         `rechazar`:`disabled`
                                     } btn btn-light-danger p-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Rechazar">
                                         <i class="ki-duotone ki-cross-circle fs-2hx"> 
@@ -148,7 +151,8 @@ KTUtil.onDOMContentLoaded((function() {
                 },
                 //content: "application/json; charset=utf-8",
                 dataType: "json",
-                beforeSend: function() { 
+                beforeSend: function() {
+                    tablaSolicitudes.clear(); 
                     bloquear();
                     KTApp.showPageLoading();
                 },
@@ -156,7 +160,6 @@ KTUtil.onDOMContentLoaded((function() {
                     if(data.success){
                         //console.log(data);
                         cantActiva = 0;
-                        tablaSolicitudes.clear();
                         cargarDataActiva.init(data.solicitudes);
                     }else{
                         Swal.fire({

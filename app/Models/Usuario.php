@@ -74,6 +74,14 @@ class Usuario extends Authenticatable
 					->withTimestamps();
 	}
 
+    public function gruposHabilidatos()
+    {
+        return $this->belongsToMany(Grupo::class, 'usuario_grupo', 'UsuarioId', 'GrupoId')                       
+                        ->where('usuario_grupo.Enabled', '=', 1)
+                        ->where('grupo.Enabled', '=', 1)
+                        ->pluck('grupo.Id');
+                                    
+    }
 	public function validate(array $data)
     {
         $id = isset($data['Id']) ? $data['Id'] : null;
@@ -126,7 +134,7 @@ class Usuario extends Authenticatable
 
     public function gruposPrivilegios($privilegioId)
 	{
-		return $this->belongsToMany(Grupo::class, 'usuario_grupo', 'UsuarioId', 'GrupoId')
+		$query = $this->belongsToMany(Grupo::class, 'usuario_grupo', 'UsuarioId', 'GrupoId')
                     ->select([
                         //'grupo_privilegio.Id',
                         //'grupo_privilegio.GrupoId',
@@ -140,6 +148,9 @@ class Usuario extends Authenticatable
                     ->where('usuario_grupo.Enabled','=',1)
                     ->where('grupo_privilegio.PrivilegioId','=', $privilegioId)
 					->join('grupo_privilegio','grupo_privilegio.GrupoId','=','grupo.Id');
+        
+        
+        return $query;
 	}
 
     public function puedeVer($privilegioId){
@@ -168,4 +179,20 @@ class Usuario extends Authenticatable
                         ->where('Eliminar','=',1)->exists();    
         return $flag;
      }
+
+     public function todoPuedeVer(){
+         $query = $this
+                    ->selectRaw('grupo_privilegio.PrivilegioId, MAX(grupo_privilegio.Ver = 1) as Ver')
+                    ->where('grupo.Enabled','=', 1)
+                    ->where('usuario_grupo.Enabled','=',1)
+                    ->where('usuario.Id','=',$this->Id)
+                    ->join('usuario_grupo','usuario_grupo.UsuarioId','=','usuario.Id')
+                    ->join('grupo','grupo.Id','=','usuario_grupo.GrupoId')
+					->join('grupo_privilegio','grupo_privilegio.GrupoId','=','grupo.Id')
+                    ->groupBy('grupo_privilegio.PrivilegioId')
+                    ->get();
+
+        return $query;
+     } 
+
 }

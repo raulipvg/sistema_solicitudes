@@ -16,6 +16,8 @@ class PersonaController extends Controller
     public function Index()
     {
         $titulo= "Personas";
+
+         //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 5 Privilegios de Persona
         $credenciales = [
@@ -31,6 +33,11 @@ class PersonaController extends Controller
             'puedeEditar'=> $user->puedeEditar(1),
             'puedeEliminar'=> $user->puedeEliminar(1),
         ];
+        $accesoLayot= $user->todoPuedeVer();
+        //END::PRIVILEGIOS
+
+
+
         //$personas = Persona::all();
         $personas = Persona::select('persona.Id',
                                     DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"),
@@ -53,6 +60,7 @@ class PersonaController extends Controller
                         'centrocostos'=> $centrocostos,
                         'credenciales'=> $credenciales,
                         'credenciales2'=> $credenciales2,
+                        'accesoLayout' => $accesoLayot
                     ]);
     
     }

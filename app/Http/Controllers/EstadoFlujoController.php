@@ -15,6 +15,7 @@ class EstadoFlujoController extends Controller
     {
         $titulo = 'Estados de Flujo';
 
+        //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 8 Privilegios de Estado Flujo
         $credenciales = [
@@ -23,14 +24,18 @@ class EstadoFlujoController extends Controller
                 'puedeEditar'=> $user->puedeEditar(8),
                 'puedeEliminar'=> $user->puedeEliminar(8),
         ];
+        $accesoLayot= $user->todoPuedeVer();
+        //END::PRIVILEGIOS
+        
 
         $estadosFlujo = EstadoFlujo::select('Id','Nombre','Enabled')->get();
         Log::info('Ingreso vista estado flujo');
         return View('estadoflujo.estadoflujo')->with([
-            'titulo'=>$titulo,
-            'estadosFlujo'=>$estadosFlujo,
-            'credenciales'=>$credenciales
-        ]);
+                    'titulo'=>$titulo,
+                    'estadosFlujo'=>$estadosFlujo,
+                    'credenciales'=>$credenciales,
+                    'accesoLayout' => $accesoLayot
+                ]);
     }
 
     /**

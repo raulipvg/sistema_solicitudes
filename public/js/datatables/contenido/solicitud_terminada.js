@@ -121,13 +121,13 @@ KTUtil.onDOMContentLoaded((function() {
                 beforeSend: function() { 
                     bloquear();
                     KTApp.showPageLoading();
+                    tablaSolicitudesTerminadas.clear();
                 },
                 success: function (data) {
                     if(data.success){
                         //data= data.data;             
                         //console.log(data);
                         cantTerminada = 0;
-                        tablaSolicitudesTerminadas.clear();
                         cargarDataTerminada.init(data.solicitudes);                        
                     }else{
                         Swal.fire({
