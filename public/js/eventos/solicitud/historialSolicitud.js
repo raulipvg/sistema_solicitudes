@@ -6,7 +6,7 @@ var formatoFecha={
     hour: '2-digit', 
     minute: '2-digit'
 };
-
+//
 $('#tabla-solicitudes').on('click','.historial',function(e){
     var solicitudId = $(this).parent().parent().attr('a');        //Id de la solicitud
     var historialId = $(this).parent().parent().attr('b');        //Id del historial
