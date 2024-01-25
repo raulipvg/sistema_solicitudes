@@ -349,7 +349,7 @@ $(document).ready(function() {
                                     cargarDataMovimiento.init(data.movimiento);
                                     $('#registrar-movimiento').modal('toggle');
                                 }else{
-                                    // html = '<ul><li style="">'+data.message+'</li></ul>';
+                                    html = '<ul><li style="">'+data.message+'</li></ul>';
                                     $("#AlertaError").append(html);
                                     $("#AlertaError").show();
                                 }
