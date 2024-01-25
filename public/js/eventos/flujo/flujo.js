@@ -153,8 +153,8 @@ $(document).ready(function() {
             });
 
             if(flag){
-                if( lista.ordenFlujo.length < 2 ){
-                    html = '<ul><li style="">Minimo 2 Estados</li></ul>';
+                if( lista.ordenFlujo.length < 1 ){
+                    html = '<ul><li style="">Minimo 1 Estado</li></ul>';
                     $("#AlertaErrorFlujoPaso2").append(html);                                    
                     $("#AlertaErrorFlujoPaso2").show();
                     return;

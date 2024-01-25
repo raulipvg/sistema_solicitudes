@@ -17,11 +17,11 @@ $(document).ready(function() {
                                 },
                                 stringLength: {
                                     min: 3,
-                                    max: 20,
-                                    message: 'Entre 3 y 20 caracteres'
+                                    max: 100,
+                                    message: 'Entre 3 y 100 caracteres'
                                 },
                                 regexp: {
-                                    regexp: /^[a-zA-Z0-9ñáéíóú\s]+$/,
+                                    regexp: /^[a-zA-Z0-9 -ñáéíóú\s]+$/,
                                     message: 'Solo letras y números '
                                 }
                             }

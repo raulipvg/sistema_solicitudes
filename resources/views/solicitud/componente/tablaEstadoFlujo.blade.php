@@ -1,5 +1,5 @@
 
-        <ul class="step-wizard-list">
+        <ul class="step-wizard-list" hidden>
             <li class="step-wizard-item">
                 <span class="">Usuario 1</span>
                 <span class="success progress-count">1</span>
@@ -22,7 +22,7 @@
             </li>
         </ul>
 
-        <ul class="step-wizard-list">
+        <ul class="step-wizard-list" hidden>
             <li class="step-wizard-item">
                 <span class="">Usuario1</span>
                 <span class="success progress-count">1</span>
