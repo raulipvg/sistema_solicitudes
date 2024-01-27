@@ -8,6 +8,7 @@ use App\Models\Movimiento;
 use App\Models\Flujo;
 use App\Models\Grupo;
 use App\Models\MovimientoAtributo;
+use App\Models\TipoMoneda;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -52,7 +53,11 @@ class MovimientoAtributoController extends Controller
                     ->where('Enabled','=',1)
                     ->get();
 
-        $atributos = Atributo::select('Id','Nombre','ValorReferencia','Enabled')->get();
+        $atributos = Atributo::select('atributo.Id','atributo.Nombre','ValorReferencia','tipomoneda.Simbolo','Enabled')
+        ->join('tipomoneda','tipomoneda.Id','=','TipoMonedaId')
+        ->get();
+
+        $tiposMoneda = TipoMoneda::select('Id','Simbolo')->get();
 
         Log::info('Ingreso vista movimiento-atributo');
 
@@ -63,6 +68,7 @@ class MovimientoAtributoController extends Controller
                         'atributos' => $atributos,
                         'flujos' => $flujos,
                         'grupos' => $grupos,
+                        'tiposMoneda' => $tiposMoneda,
                         'credenciales' => $credenciales,
                         'accesoLayout' => $accesoLayout
                     ]);
@@ -117,8 +123,9 @@ class MovimientoAtributoController extends Controller
             if (!$movimientoExiste) {
                 throw new Exception('Movimiento no encontrado');
             }
-            $movimientoAtributo = MovimientoAtributo::select('movimiento_atributo.Id', 'atributo.Nombre', 'atributo.ValorReferencia', 'atributo.Caracteristica')
+            $movimientoAtributo = MovimientoAtributo::select('movimiento_atributo.Id', 'atributo.Nombre', 'tipomoneda.Simbolo', 'atributo.ValorReferencia', 'atributo.Caracteristica')
                                         ->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
+                                        ->join('tipomoneda','tipomoneda.Id','=','atributo.TipoMonedaId')
                                         ->where('movimiento_atributo.MovimientoId', $movimientoId)
                                         ->where('atributo.Enabled', 1)
                                         ->get();

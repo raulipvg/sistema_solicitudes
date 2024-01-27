@@ -15,7 +15,9 @@ class AtributoController extends Controller
         $titulo = 'Atributo';
         //$atributos = Atributo::all();
 
-        $atributos = Atributo::select('Id','Nombre','ValorReferencia','Enabled')->get();
+        $atributos = Atributo::select('Id','Nombre','ValorReferencia','TipoMoneda','Enabled')
+                    ->join('tipomoneda','tipomoneda.Id', '=', 'TipoMonedaId')
+                    ->get();
 
         Log::info('');
         return View('atributo.atributo')->with([
@@ -72,7 +74,7 @@ class AtributoController extends Controller
         $request = $request->input('data');
 
         try{
-            $atributo = Atributo::find($request);
+            $atributo = Atributo::with('tipomoneda')->find($request);
 
             if(!$atributo) {
                 throw new Exception('Atributo no encontrado');
@@ -126,6 +128,7 @@ class AtributoController extends Controller
                 'atributo'=>[[
                     'Id'=> $atributoEdit->Id,
                     'Nombre'=>$atributoEdit->Nombre,
+                    'Simbolo' =>$atributoEdit->TipoMoneda->Simbolo,
                     'ValorReferencia'=>$atributoEdit->ValorReferencia,
                     'Enabled'=>$atributoEdit->Enabled
                 ]],

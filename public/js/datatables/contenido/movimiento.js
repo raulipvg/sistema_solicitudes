@@ -22,19 +22,20 @@ function format(data,movimiento) {
                     `;
 
     for(const elemento of data) {
-        html = html + AgregarTR(elemento.Id, elemento.Nombre, elemento.ValorReferencia);   
+        html = html + AgregarTR(elemento.Id, elemento.Nombre,elemento.Simbolo, elemento.ValorReferencia);   
     }
 
     html=  html+'</tbody></table></div></div>';
     return html;   
 }
 
-function AgregarTR(id, nombre, valRef){
+function AgregarTR(id, nombre,simbolo, valRef){
 
     var html =  '<tr>'+
                     '<td>'+id+'</td>'+
                     '<td class="text-gray-700 text-capitalize">'+nombre+'</td>'+
-                    '<td class="text-gray-700 text-capitalize">'+Intl.NumberFormat("es-CL",{style:"currency",currency:"CLP"}).format(valRef)+'</td>'+
+//                    '<td class="text-gray-700 text-capitalize">'+Intl.NumberFormat("es-CL",{style:"currency",currency:"CLP"}).format(valRef)+'</td>'+
+                    '<td class="text-gray-700 text-capitalize">'+simbolo+valRef.toLocaleString()+'</td>'
                 '</tr>';
     return html;
 }

@@ -22,7 +22,7 @@
                     <div id="AlertaErrorAtr" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-12 mb-2">
                             <div class="form-floating fv-row">
                                 <input type="text" class="form-control text-capitalize " placeholder="Ingrese el Nombre" id="NombreAtInput" name="Nombre" />
                                 <label for="NombreAtInput" class="form-label">Nombre</label>
@@ -30,7 +30,21 @@
 
                             </div>
                         </div>
-                        <div class="col-md-6 mb-2">
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <div class="form-floating fv-row">
+                                <select id="TipoMonedaIdAtInput" name="TipoMonedaId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                    <option></option>
+                                    @foreach($tiposMoneda as $tipoMoneda)
+                                    <option value="{{$tipoMoneda->Id}}">{{$tipoMoneda->Simbolo}}</option>
+                                    @endforeach
+                                </select>
+                                <label for="TipoMonedaIdAtInput" class="form-label">Tipo de moneda</label>
+                            </div>
+                        </div>
+                        <div class="col-md-8 mb-2">
                             <div class="form-floating fv-row">
                                 <input type="number" class="form-control" autocomplete="off" placeholder="Ingrese el valor" id="ValorReferenciaInput" name="ValorReferencia" />
                                 <label for="ValorReferenciaInput" class="form-label">Valor de referencia</label>

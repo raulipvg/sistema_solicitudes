@@ -46,6 +46,16 @@ $(document).ready(function() {
                                 }
                             }
                         },
+                        'TipoMonedaId': {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Requerido'
+                                },
+                                digits: {
+                                    message: 'Digitos'
+                                }
+                            }
+                        },
                     },
 
                     plugins: {
@@ -203,6 +213,7 @@ $(document).ready(function() {
                         $("#NombreAtInput").val(data.Nombre);
                         $("#ValorReferenciaInput").val(data.ValorReferencia);
                         $('#EstadoIdAtInput').val(data.Enabled).trigger("change");
+                        $('#TipoMonedaIdAtInput').val(data.TipoMonedaId).trigger("change");
                     }else{
                         Swal.fire({
                                 text: "Error de Carga",

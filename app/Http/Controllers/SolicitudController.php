@@ -43,12 +43,8 @@ class SolicitudController extends Controller
                                     ->get();
 
             $personas = Persona::select('Id','Rut',
-                                DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"))
-                                ->where('Enabled',1)
-                                ->orderBy('NombreCompleto','asc')
-                                ->get();
-            $personas = Persona::select('Id','Rut',
-                                DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"))
+                                DB::raw("CONCAT(UCASE(SUBSTRING(persona.Nombre, 1, 1)), LCASE(SUBSTRING(persona.Nombre FROM 2)), ' ', UCASE(SUBSTRING(persona.Apellido, 1, 1)), LCASE(SUBSTRING(persona.Apellido FROM 2))) AS NombreCompleto"),
+                                'CentroCostoId')
                                 ->where('Enabled',1)
                                 ->orderBy('NombreCompleto','asc')
                                 ->get();

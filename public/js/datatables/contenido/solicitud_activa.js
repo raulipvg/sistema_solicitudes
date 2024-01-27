@@ -44,11 +44,11 @@ const cargarDataActiva= function(){
                     }
                     var col0 = `<div class="position-relative ps-6">
                                     <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 ${claseEstado}"></div>
-                                    <a href="#" class="mb-1 text-gray-900 text-hover-primary fw-bold text-capitalize">#${data[key].Id} ${data[key].NombreCompleto}</a>
+                                    <span class="mb-1 text-gray-900 text-hover-primary fw-bold text-capitalize">#${data[key].Id} ${data[key].NombreCompleto}</span>
                                     <div class="fs-7 text-muted fw-bold">Creada ${formatearFecha(data[key].FechaCreado)}</div>
                                 </div>`;
                     var col1 = `<div class="d-flex gap-2">
-                                    <a href="#" class="text-gray-900 text-hover-primary fw-bold text-capitalize">${data[key].Movimiento}</a>
+                                    <span class="text-gray-900 text-hover-primary fw-bold text-capitalize">${data[key].Movimiento}</span>
                                 </div>
                                 <div class="fs-7 text-muted fw-bold text-capitalize">${data[key].Atributos}</div>`;
                     
@@ -61,12 +61,12 @@ const cargarDataActiva= function(){
                                 <div class="fs-7 fw-bold text-muted">Rango de Fecha</div>`;
 
                     var col4 = `<div class="d-flex gap-2">
-                                    <a href="#" class="text-gray-900 fw-bold text-capitalize">${data[key].CentroCosto}</a>
+                                    <span class="text-gray-900 fw-bold text-capitalize">${data[key].CentroCosto}</span>
                                 </div>
                                 <div class="fs-7 fw-bold text-muted">Centro de Costo asociado</div>`;
 
                     var col5= `<div class="d-flex gap-2">
-                                    <a href="#" class="text-gray-900 fw-bold">${data[key].UsuarioNombre}</a>
+                                    <span class="text-gray-900 text-capitalize fw-bold">${data[key].UsuarioNombre}</span>
                                 </div>
                                 <div class="fs-7 fw-bold text-muted">Solicitado por</div>`;
 

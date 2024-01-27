@@ -11,7 +11,6 @@ $('#tabla-solicitudes').on('click','.historial',function(e){
     var solicitudId = $(this).parent().parent().attr('a');        //Id de la solicitud
     var historialId = $(this).parent().parent().attr('b');        //Id del historial
     var flujoId = $(this).parent().parent().attr('c');            //Id del flujo asociado al movimiento
-
     
     cargarHistorial(solicitudId,historialId,flujoId, e,tablaSolicitudes);
 
@@ -38,11 +37,11 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
                     <span class="path1"></span>
                     <span class="path2"></span>
                 </i>`
-    solicitante = tempDiv.querySelector('.fs-7').textContent + ' ' +tempDiv.querySelector('a').textContent;
+    solicitante = tempDiv.querySelector('.fs-7').textContent + ': ' +tempDiv.querySelector('span').textContent.toUpperCase();
     $('#Solicitante').html(pill+solicitante);
     
     tempDiv.innerHTML = row.cell(row,tabla.column(0)).data();
-    receptor = 'Solicitud para: ' +tempDiv.querySelector('a').textContent;
+    receptor = 'Solicitud para: ' +tempDiv.querySelector('span').textContent.toUpperCase().replace(/^[^\s]+/, '');
     $('#Receptor').html(pill+receptor);
 
     tempDiv.innerHTML = row.cell(row,tabla.column(3)).data();
@@ -69,14 +68,14 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
                 $('#modal-titulo-historialSolicitud').empty().html("Historial Solicitud "+solicitudId);
                 $('#titulo-flujo').empty().html("Flujo: "+data.data.flujoNombre);
                 data = data.data;
-                $('#ValorReal').empty().html(pill+'Costo: $'+data.costoSolicitud);
+                $('#ValorReal').empty().html(pill+'Costo: $'+data.costoSolicitud.toLocaleString());
                 var valorRef = 0;
                 data.costoPorAtributo.forEach((atr)=>{
                     valorRef += atr.ValorReferencia;
                     $('#tabla-atributos-solicitud tbody').append(`
                         <tr>
                             <td class="text-capitalize p-1"> ${atr.Nombre} </td>
-                            <td class="p-1"> $ ${atr.ValorReferencia} </td>
+                            <td class="p-1"> ${atr.Simbolo} ${atr.ValorReferencia.toLocaleString()} </td>
                         </tr>
                     `);
                 });

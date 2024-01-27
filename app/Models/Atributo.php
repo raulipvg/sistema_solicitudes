@@ -19,6 +19,7 @@ use Illuminate\Validation\ValidationException;
  * @property int $Id
  * @property string $Nombre
  * @property int $ValorReferencia
+ * @property int $TipoMonedaId
  * @property int $Enabled
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
@@ -43,7 +44,7 @@ class Atributo extends Model
 	protected $fillable = [
 		'Nombre',
 		'ValorReferencia',
-        'Caracteristica',
+        'TipoMonedaId',
 		'Enabled'
 	];
 
@@ -53,6 +54,11 @@ class Atributo extends Model
 					->withPivot('Id')
 					->withTimestamps();
 	}
+
+    public function tipoMoneda()
+{
+    return $this->belongsTo(TipoMoneda::class, 'TipoMonedaId');
+}
 
 	public function validate(array $data)
     {

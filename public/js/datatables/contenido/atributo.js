@@ -84,7 +84,7 @@ const cargarData= function(){
                     var rowNode =  tablaAtributo.row.add( {
                                         "0": data[key].Id,
                                         "1": data[key].Nombre,
-                                        "2": '$ '+(data[key].ValorReferencia).toLocaleString(),
+                                        "2": data[key].Simbolo+(data[key].ValorReferencia).toLocaleString(),
                                         "3": btnEstado,
                                         "4":(credenciales.puedeEditar)?botonAccion('registrar-atributo',data[key].Id):null
                                     } ).node();

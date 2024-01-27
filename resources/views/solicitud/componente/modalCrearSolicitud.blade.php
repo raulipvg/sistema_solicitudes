@@ -5,7 +5,7 @@
                 <h2 id="modal-titulo" class="modal-title text-uppercase">Realizar Solicitud</h2>
 
                 <!--begin::Close-->
-                <div class="btn btn-icon btn-sm btn-active-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                <div class="btn btn-icon btn-sm btn-active-secondary ms-2 cerrar" data-bs-dismiss="modal" aria-label="Close">
                     <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
                     <span class="svg-icon svg-icon-3x">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -27,7 +27,7 @@
                                 <select id="PersonaIdInput" name="PersonaId" class="form-select" data-control="select2" data-placeholder="Seleccione a la persona" data-hide-search="false" data-dropdown-parent="#crearSolicitud">
                                     <option></option>
                                     @foreach ( $personas as $persona )
-                                    <option value="{{ $persona->Id }}">{{ $persona->NombreCompleto }}</option>
+                                    <option value="{{ $persona->Id }}" info="{{$persona->CentroCostoId}}">{{ $persona->NombreCompleto }}</option>
                                     @endforeach
                                     
                                 </select>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <select id="CentroCostoIdInput" name="CentroCostoId" class="form-select" data-control="select2" data-placeholder="Seleccione el centro de costo asociado" data-hide-search="false" data-dropdown-parent="#crearSolicitud">
+                                <select id="CentroCostoIdInput" name="CentroCostoId" class="form-select text-capitalize " data-control="select2" data-placeholder="Seleccione el centro de costo asociado" data-hide-search="false" data-dropdown-parent="#crearSolicitud">
                                     <option></option>
                                     @foreach ( $centrocostos as $centrocosto )
                                     <option value="{{ $centrocosto->Id }}">{{ $centrocosto->Nombre }}</option>
@@ -144,7 +144,7 @@
 
                 </div>
                 <div class="modal-footer bg-light p-2">
-                    <button type="button" class="btn btn-light-dark" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-light-dark cerrar" data-bs-dismiss="modal">Cerrar</button>
                     <button id="AddSubmitSolicitud" type="button" class="btn btn-success">
                         <div class="indicator-label">Solicitar</div>
                         <div class="indicator-progress">Espere...

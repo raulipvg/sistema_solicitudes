@@ -81,6 +81,28 @@ $(document).ready(function() {
                 }
         );
 
+        const unoNoVacio = function(){
+            return {
+                validate: function(input){
+                    var caracteristica = input.element.form.querySelector('[name="Caracteristica' + input.field.match(/\[\d+\]/) + '"]').value;
+                    var costoReal = input.element.form.querySelector('[name="CostoReal' + input.field.match(/\[\d+\]/) + '"]').value;
+                    // Verifica si al menos uno de los campos no está vacío
+                    if (caracteristica.trim() !== '' || costoReal.trim() !== '') {
+                        return {
+                            valid: true
+                        };
+                    } else {
+                        return {
+                            valid: false,
+                            message: 'Debe completar al menos uno de los campos'
+                        };
+                    }
+                }
+            }
+        }
+
+        validator.registerValidator('alMenosUnoNoVacio', unoNoVacio);
+
         let movId= 0;
         //EVENTO SELECT2 PARA SELECCIONAR EL MOVIMIENTO Y APAREZCAN LOS MOVIMIENTOS ATRIBUTOS A SELECCIONAR
         $('#MovimientoInput').on('select2:select', function (e) {
@@ -127,6 +149,7 @@ $(document).ready(function() {
                     });
                 $(".btn-cerrar").on("click", function () {
                         //console.log("Error");
+                        fecha.clear();
                         $('#kt_modal_update_role').modal('toggle');
                     })
                 }
@@ -147,6 +170,7 @@ $(document).ready(function() {
                         });
                 $(".btn-cerrar").on("click", function () {
                             //console.log("Error");
+                            fecha.clear();
                             $('#kt_modal_update_role').modal('toggle');
                         });
             },
@@ -163,6 +187,9 @@ $(document).ready(function() {
         var MovAtributoId= $(this).attr("data-id");
         if( $(this).hasClass("active") ){
             $(this).removeClass("active");
+            validator.removeField('Caracteristica['+MovAtributoId+']');
+            validator.removeField('CostoReal['+MovAtributoId+']');
+            console.log(validator)
             $('#Mov'+MovAtributoId+'').remove();
             //console.log("ta activo")
         }else{
@@ -182,19 +209,45 @@ $(document).ready(function() {
                                 </div>
                                 <div class="col-md-4 mb-2">
                                     <div class="form-floating fv-row">
-                                        <input type="text" class="form-control" placeholder="Ingrese el detalle" id="CaracteristicaInput" name="Caracteristica" value="`+Caracteristica+`" />
+                                        <input type="text" class="form-control" placeholder="Ingrese el detalle" id="CaracteristicaInput" name="Caracteristica[${MovAtributoId}]" value="`+Caracteristica+`" />
                                         <label for="NombreInput" class="form-label">Detalle</label>
                                     </div>
                                 </div>
                                 <div class="col-md-2 mb-2">
                                     <div class="form-floating fv-row">
-                                        <input type="number" class="form-control" placeholder="Ingrese el Costo" id="CostoRealInput" name="CostoReal" value="`+Costo+`" />
+                                        <input type="number" class="form-control" placeholder="Ingrese el Costo" id="CostoRealInput" name="CostoReal[${MovAtributoId}]" value="`+Costo+`" />
                                         <label for="CostoRealInput" class="form-label">Costo</label>
                                     </div>
                                 </div>
                             </div>`;
-
+            
         $("#contenedor-movimiento-2").append(html);
+            
+            validaCaract = {
+                validators:{
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9 -ñáéíóú\s]+$/,
+                        message: 'Solo letras y números'
+                    },
+                    alMenosUnoNoVacio: {
+                        message: 'Debe completar al menos uno de los campos'
+                    }
+                }
+            }
+
+            validaCosto = {
+                validators:{
+                    digits: {
+                        message: 'Digitos'
+                    },
+                    alMenosUnoNoVacio: {
+                        message: 'Debe completar al menos uno de los campos'
+                    }
+                }
+            }
+            validator.addField(`Caracteristica[${MovAtributoId}]`, validaCaract);
+            validator.addField( `CostoReal[${MovAtributoId}]`, validaCosto);
+            console.log(validator.fields)
         }
         
         });
@@ -203,9 +256,10 @@ $(document).ready(function() {
         //BEGIN::EVENTO BTN DE REALIZAR SOLICITUD QUE LIMPIA LOS INPUTS Y SELECT2
         $('#NuevaSolicitud').on('click', function(e) {
             e.preventDefault();
-            e.stopPropagation()
+            e.stopPropagation();
             $("#crearSolicitud input").val('').prop("disabled",false);
             $('#crearSolicitud .form-select').val("").trigger("change").prop("disabled",false);
+            //fecha.clear();
             validator.resetForm();
             actualizarValidSelect2();
             $("#AlertaErrorSolicitud").hide();
@@ -251,8 +305,8 @@ $(document).ready(function() {
                         $("#contenedor-movimiento-2 .compuesta").each(function (index) {
                             
                             var MovimientoAtributoId =  $(this).find('[name="MovimientoAtributoId"]').val();
-                            var Caracteristica = $(this).find('[name="Caracteristica"]').val();
-                            var CostoReal = $(this).find('[name="CostoReal"]').val();
+                            var Caracteristica = $(this).find('[name^="Caracteristica"]').val();
+                            var CostoReal = $(this).find('[name^="CostoReal"]').val();
                             CostoSolicitud = CostoSolicitud+ parseInt(CostoReal);
 
                             var obj = {
@@ -293,6 +347,7 @@ $(document).ready(function() {
                                     //console.log(data);
                                     cargarDataActiva.init(data);
                                     $('#crearSolicitud').modal('toggle');
+                                    fecha.clear();
                                     toastr.success("Solicitud Realizada!");
                                 }else{
                                     Swal.fire({
@@ -306,6 +361,7 @@ $(document).ready(function() {
                                     });
                                     $(".btn-cerrar").on("click", function () {
                                         //console.log("Error");
+                                        fecha.clear();
                                         $('#crearSolicitud').modal('toggle');
                                     })
                                 }                        
@@ -322,6 +378,7 @@ $(document).ready(function() {
                                         });
                                 $(".btn-cerrar").on("click", function () {
                                             //console.log("Error");
+                                            fecha.clear();
                                             $('#crearSolicitud').modal('toggle');
                                         });
                             },
@@ -336,6 +393,24 @@ $(document).ready(function() {
             }   
         });
         //END::EVENTO
-    }
 
+        //BEGIN::EVENTO PARA CARGAR SELECT2 DE CENTRO DE COSTO SEGÚN PERSONA
+        $('#PersonaIdInput').on('select2:select', function(e){
+            bloquear();
+            KTApp.showPageLoading();
+            var ccId = $(e.params.data.element).attr('info');
+
+            $('#CentroCostoIdInput').val(ccId).trigger('change.select2');
+
+            KTApp.hidePageLoading();
+            loadingEl.remove();
+        })
+        //END::EVENTO
+
+        //BEGIN::EVENTO PARA LIMPIAR CAMPO DE FECHA SIN PASAR POR VALIDATOR
+        $(".cerrar").on("click", function(){
+            fecha.clear();
+        })
+        //BEGIN::EVENTO
+    }
 });
