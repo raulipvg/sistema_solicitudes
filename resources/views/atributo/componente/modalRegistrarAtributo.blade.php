@@ -32,8 +32,8 @@
                         </div>
                         
                     </div>
-                    <div class="row">
-                        <div class="col-md-4 mb-2">
+                    <div class="row">                        
+                        <div class="col-4 mb-2">
                             <div class="form-floating fv-row">
                                 <select id="TipoMonedaIdAtInput" name="TipoMonedaId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
@@ -41,23 +41,24 @@
                                     <option value="{{$tipoMoneda->Id}}">{{$tipoMoneda->Simbolo}}</option>
                                     @endforeach
                                 </select>
-                                <label for="TipoMonedaIdAtInput" class="form-label">Tipo de moneda</label>
+                                <label for="TipoMonedaIdAtInput" class="form-label">Moneda</label>
                             </div>
                         </div>
-                        <div class="col-md-8 mb-2">
+                        <div class="col-8 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="number" class="form-control" autocomplete="off" placeholder="Ingrese el valor" id="ValorReferenciaInput" name="ValorReferencia" />
+                                <input type="number" class="form-control" autocomplete="off" placeholder="Ingrese el valor" id="ValorReferenciaInput" name="ValorReferencia" style="min-height: 57.55px;"/>
                                 <label for="ValorReferenciaInput" class="form-label">Valor de referencia</label>
                             </div>
                         </div>
+                        
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-12 mb-2">
                             <div class="form-floating fv-row">
                                 <select id="EstadoIdAtInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
-                                    <option value="1">Activo</option>
-                                    <option value="0">Inactivo</option>
+                                    <option value="1">Habilitado</option>
+                                    <option value="0">Deshabilitado</option>
                                 </select>
                                 <label for="EstadoIdAtInput" class="form-label">Estado</label>
                             </div>

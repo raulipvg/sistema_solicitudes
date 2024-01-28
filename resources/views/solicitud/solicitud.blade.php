@@ -7,6 +7,13 @@
 .flujo{
 	cursor: pointer;
 }
+.btn-group button{
+	min-width: 43.55px; 
+	min-height: 39px;
+}
+.input-size{
+	min-height: 57.55px!important;
+}
 </style>
 
 @endpush
@@ -85,10 +92,7 @@
 		const solicitudeActivas = JSON.parse('{!! $solicitudes !!}');
 
 		const credenciales= {!! json_encode($credenciales) !!};
-		//msg = 'Etapa ya gestionada, recargue la pagina';
 		//console.log(msg.length)
-	
-		
 
 		//console.log( solicitudeActivas)
 

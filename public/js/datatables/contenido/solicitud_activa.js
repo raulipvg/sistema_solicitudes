@@ -75,15 +75,15 @@ const cargarDataActiva= function(){
 
                     var col6 = `<div class="btn-group btn-group-sm" role="group" a="${data[key].Id}" b="${data[key].HistorialId}" c="${data[key].FlujoIdd}" >
                                     <button class="${credenciales.aprobador && estaEnElArray?
-                                        `aceptar`:`disabled`
-                                    } btn btn-light-success p-1"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Aprobar">
+                                        `aceptar btn-light-success`:`btn-secondary disabled`
+                                    } btn p-1"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Aprobar">
                                         <i class="ki-duotone ki-check-circle fs-2hx"> 
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                         </i>
                                     </button>
                                     <button class="${credenciales.aprobador && estaEnElArray?
-                                        `rechazar`:`disabled`
+                                        `rechazar btn-light-danger`:`btn-secondary disabled`
                                     } btn btn-light-danger p-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Rechazar">
                                         <i class="ki-duotone ki-cross-circle fs-2hx"> 
                                             <span class="path1"></span>
@@ -91,8 +91,8 @@ const cargarDataActiva= function(){
                                         </i>
                                     </button>
                                     <div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
-                                        <button class="historial btn btn-bg-light btn-active-color-dark p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud" style="min-width: 43.55px;">
-                                            <i class="ki-duotone ki-watch fs-2">
+                                        <button class="historial btn btn-light-primary p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud">
+                                            <i class="ki-duotone ki-watch fs-2x p-0">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                             </i>
@@ -110,13 +110,13 @@ const cargarDataActiva= function(){
                                         "6": col6,
                                         "7": data[key].Id
                                     } ).node();
-                    $(rowNode).find('td:eq(0)').addClass('min-w-175px p-1');
-                    $(rowNode).find('td:eq(1)').addClass('p-1');
-                    $(rowNode).find('td:eq(2)').addClass('p-0 flujo').attr("abierto",0);
-                    $(rowNode).find('td:eq(3)').addClass('min-w-150px p-1');
-                    $(rowNode).find('td:eq(4)').addClass('min-w-125px p-1');
-                    $(rowNode).find('td:eq(5)').addClass('min-w-125px p-1');
-                    $(rowNode).find('td:eq(6)').addClass('text-end p-1');
+                    $(rowNode).find('td:eq(0)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(1)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(2)').addClass('col-1 p-0 flujo').attr("abierto",0);
+                    $(rowNode).find('td:eq(3)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(4)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(5)').addClass('col-1 min-w-100px p-1');
+                    $(rowNode).find('td:eq(6)').addClass('col-2 text-end p-1');
                     $(rowNode).find('td:eq(7)').addClass('d-none');
                     
                     cantActiva= cantActiva+1;
@@ -133,7 +133,7 @@ const cargarDataActiva= function(){
 KTUtil.onDOMContentLoaded((function() {
     bloquear();
     KTApp.showPageLoading();
-    console.log(solicitudeActivas)
+    //console.log(solicitudeActivas)
     cargarDataActiva.init(solicitudeActivas);
     KTApp.hidePageLoading();
     loadingEl.remove();

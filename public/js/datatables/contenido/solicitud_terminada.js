@@ -64,8 +64,8 @@ const cargarDataTerminada= function(){
 
                     var col6 = `<div class="btn-group btn-group-sm" role="group" a="${data[key].Id}" b="${data[key].HistorialId}" c="${data[key].FlujoIdd}" >                                    
                                     <div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
-                                        <button class="historial btn btn-bg-light btn-active-color-dark p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud" style="min-width: 43.55px;">
-                                            <i class="ki-duotone ki-watch fs-2">
+                                        <button class="historial btn btn-light-primary p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud">
+                                            <i class="ki-duotone ki-watch fs-2x p-0">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                             </i>
@@ -83,13 +83,13 @@ const cargarDataTerminada= function(){
                                         "6": col6,
                                         "7": data[key].Id
                                     } ).node();
-                    $(rowNode).find('td:eq(0)').addClass('min-w-175px p-1');
-                    $(rowNode).find('td:eq(1)').addClass('p-1');
-                    $(rowNode).find('td:eq(2)').addClass('p-0 flujo').attr("abierto",0);
-                    $(rowNode).find('td:eq(3)').addClass('min-w-150px p-1');
-                    $(rowNode).find('td:eq(4)').addClass('min-w-125px p-1');
-                    $(rowNode).find('td:eq(5)').addClass('min-w-125px p-1');
-                    $(rowNode).find('td:eq(6)').addClass('text-end p-1');
+                    $(rowNode).find('td:eq(0)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(1)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(2)').addClass('col-1 p-0 flujo').attr("abierto",0);
+                    $(rowNode).find('td:eq(3)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(4)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(5)').addClass('col-2 min-w-100px p-1');
+                    $(rowNode).find('td:eq(6)').addClass('col-1 text-end p-1');
                     $(rowNode).find('td:eq(7)').addClass('d-none');
                     
                     cantTerminada= cantTerminada+1;

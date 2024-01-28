@@ -75,7 +75,6 @@ class Movimiento extends Model
         $rules = [
             'Nombre' => [
                 'required',
-                'regex:/^[A-Za-z0-9-\s]+$/',
                 'max:255',
                 Rule::unique('movimiento','Nombre')->ignore($id, 'Id'),
             ],

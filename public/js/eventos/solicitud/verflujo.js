@@ -107,11 +107,11 @@ function llamaTabla(solicitudId, historialId, flujoId, row){
 function format(data) {   
     var html=
             `<div class="d-flex justify-content-center">
-                <div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 80%;">
-                <table id="services_table" class="table table-row-dashed">
+                <div class="card hover-elevate-up shadow-sm parent-hover border border-gray-500" style=" width: 80%;">
+                <table id="services_table">
                     <thead class="services-info">
-                        <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase justify-content-center gs-0">
-                            <th class="p-0 ps-3">Flujo: ${data.nombreFlujo}</th>
+                        <tr class="text-gray-700 fw-bold fs-7 text-uppercase text-center">
+                            <th class="p-0 pt-2 ps-3">Flujo: ${data.nombreFlujo}</th>
                         </tr>
                     </thead>
                     <tbody class="fw-bold text-gray-600">`;
@@ -125,14 +125,16 @@ function format(data) {
 function AgregarTR(data){
     var historial = data.historial;
     var ordenFlujos = data.ordenFlujos
-    var html = `<td>
-                    <ul class="step-wizard-list">`;
+    var html = `<td class="p-0">
+                    <ul class="step-wizard-list mb-0 p-2">`;
     var contar = 1;
     var usuario;
     ordenFlujos.forEach((orden) => {
         usuario = '-';
         estado = '';
         currentItem = '';
+        classNamePulse = '';
+        divPulse = '';
         hist = historial.find(h => h.EstadoFlujoId == orden.Id);
         if(hist){
             // Si el tipo/estado es aprobado
@@ -150,14 +152,18 @@ function AgregarTR(data){
             // Si el tipo/estado es en curso
             else if(hist.estadoEtapa == 3){
                 currentItem = 'current-item';
+                classNamePulse = 'pulse pulse-success';
+                divPulse = `<span class="pulse-ring border-5"></span>`;
             }
         }
         
         html +=
                         `<li class="step-wizard-item ${currentItem}">
                             <span class="text-capitalize">${usuario}</span>
-                            <span class="${estado} progress-count">${contar}</span>
-                            <span class="progress-label text-capitalize"">${orden.Nombre}</span>
+                            <span class="${estado} progress-count ${classNamePulse}">${contar}
+                                ${divPulse}
+                            </span>
+                            <span class="progress-label text-capitalize mt-0">${orden.Nombre}</span>
                         </li>`;
         contar++;
     });

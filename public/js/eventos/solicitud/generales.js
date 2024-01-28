@@ -134,7 +134,7 @@ $(document).ready(function() {
 
     //BEGIN::EVENTO RECHAZAR ETAPA DEL FLUJO
     $('#tabla-solicitudes').on('click','.rechazar',function(e){
-        console.log('Rechazar');
+        //console.log('Rechazar');
         let obj = $(this).parent();
         //let a = obj.attr("a");
         let b = obj.attr("b");

@@ -89,7 +89,7 @@ $(document).ready(function() {
 
             validator.resetForm();
             actualizarValidSelect2();
-        });
+        });        
 
 
         // Manejador al presionar el submit de Registrar
@@ -340,10 +340,10 @@ $(document).ready(function() {
                     if(data.success){
                         if(btn.hasClass('btn-light-success')){
                             btn.removeClass('btn-light-success').addClass('btn-light-warning');
-                            btn.find("span.indicator-label").first().text('INACTIVO')
+                            btn.find("span.indicator-label").first().text('DESHABILITADO')
                         }else{
                             btn.removeClass('btn-light-warning').addClass('btn-light-success');
-                            btn.find("span.indicator-label").first().text('ACTIVO')
+                            btn.find("span.indicator-label").first().text('HABILITADO')
                         }   
                     }else{
                         Swal.fire({

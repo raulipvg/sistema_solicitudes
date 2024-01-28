@@ -148,7 +148,7 @@ $(document).ready(function() {
                                     $('#MovimientoIdInput').next().children().children().removeClass("is-invalid");
                                     actualizarValidSelect2();
                                     data.data.forEach(fila =>{
-                                        tbody.append(AgregarTR(fila.Id, fila.Nombre, fila.ValorReferencia));
+                                        tbody.append(AgregarTR(fila.Id, fila.Nombre,fila.Simbolo, fila.ValorReferencia));
                                         tbody.find('[data-bs-toggle="tooltip"]').tooltip();
                                     
                                     })

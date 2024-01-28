@@ -70,12 +70,12 @@ class SolicitudFlujoHistorialController extends Controller
         $costoPorAtributo = Compuesta::select('AtributoId as Atributo',
                                             'atributo.Nombre as Nombre',
                                             'atributo.ValorReferencia',
-                                            'tipomoneda.Simbolo',
+                                            'tipo_moneda.Simbolo',
                                             'compuesta.CostoReal',
                                         )
                                         ->join('movimiento_atributo','movimiento_atributo.Id','=','compuesta.MovimientoAtributoId')
                                         ->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
-                                        ->join('tipomoneda','tipomoneda.Id','=','atributo.TipoMonedaId')
+                                        ->join('tipo_moneda','tipo_moneda.Id','=','atributo.TipoMonedaId')
                                         ->where('compuesta.SolicitudId',$request['solicitudId'])
                                         ->get();
         $costoSolicitud = Solicitud::select('CostoSolicitud')

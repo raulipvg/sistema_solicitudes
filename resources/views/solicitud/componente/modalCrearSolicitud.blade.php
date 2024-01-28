@@ -53,7 +53,7 @@
                                 <select id="MovimientoInput" name="MovimientoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#crearSolicitud">
                                     <option></option>
                                     @foreach ( $movimientos as $movimiento )
-                                    <option value="{{ $movimiento->Id }}">{{ $movimiento->Nombre }}</option>
+                                    <option value="{{ $movimiento->Id }}">{{ ucwords($movimiento->Nombre) }}</option>
                                     @endforeach
                                     
                                 </select>
@@ -64,19 +64,19 @@
                         <div class="col-md-6 mb-2">
                             <!--begin::Flatpickr-->
                             <div class="form-floating fv-row">
-                                <input id="Fecha" class="form-control" name="Fecha" placeholder="Pick date range"  />
+                                <input id="Fecha" class="form-control input-size" name="Fecha" placeholder="Pick date range"  />
                                 <label for="MovimientoInput" class="form-label">Rango de Fecha</label>
                             </div>
 							<!--end::Flatpickr-->
                         </div>
                     </div>
                     <div class="row mb-2">
-                        <div id="elegir-movimientos" class="col border rounded mx-3 p-2">
+                        <div id="elegir-movimientos" class="col border rounded mx-3 p-2 border-gray-300">
                             <div class="card">
                                 <div class="fs-7 text-gray-700 ps-2">
                                     Atributos a elegir
                                 </div>
-                                <div class="card-body hover-scroll-y p-0 mh-45px">                                    
+                                <div class="card-body hover-scroll-y p-0 mh-50px">                                    
                                     <div id="contenedor-movimiento">
                                         <!--
                                         <button type="button" class="btn btn-light-dark movimiento-atributo mx-1 mb-2">ATRIBUTO</button>

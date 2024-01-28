@@ -53,8 +53,8 @@ class MovimientoAtributoController extends Controller
                     ->where('Enabled','=',1)
                     ->get();
 
-        $atributos = Atributo::select('atributo.Id','atributo.Nombre','ValorReferencia','tipomoneda.Simbolo','Enabled')
-        ->join('tipomoneda','tipomoneda.Id','=','TipoMonedaId')
+        $atributos = Atributo::select('atributo.Id','atributo.Nombre','ValorReferencia','tipo_moneda.Simbolo','Enabled')
+        ->join('tipo_moneda','tipo_moneda.Id','=','TipoMonedaId')
         ->get();
 
         $tiposMoneda = TipoMoneda::select('Id','Simbolo')->get();
@@ -86,11 +86,17 @@ class MovimientoAtributoController extends Controller
             DB::beginTransaction();
             
             foreach($request['AtributoId'] as $atributoId){
-                $atributo = Atributo::find($atributoId);
+                //$atributo = Atributo::with('TipoMoneda')->find($atributoId);
+                $atributo = Atributo::select('atributo.Id', 'atributo.Nombre', 'atributo.ValorReferencia', 'tipo_moneda.Simbolo')
+                                    ->join('tipo_moneda','tipo_moneda.Id','=','atributo.TipoMonedaId')
+                                    ->where('atributo.Id', $atributoId)
+                                    ->with('tipoMoneda')
+                                    ->first();
+
                 if(!$atributo) throw new Exception('Error: uno de los atributos no fue encontrado');
                 $movimientoAtr = new MovimientoAtributo();
-                $movimientoAtr['AtributoId'] = $atributoId;
-                $movimientoAtr['MovimientoId'] = $request['MovimientoId'];
+                $movimientoAtr->AtributoId = $atributoId;
+                $movimientoAtr->MovimientoId = $request['MovimientoId'];
                 $movimientoAtr->save();
                 $atributos[] = $atributo;
             }
@@ -123,17 +129,20 @@ class MovimientoAtributoController extends Controller
             if (!$movimientoExiste) {
                 throw new Exception('Movimiento no encontrado');
             }
-            $movimientoAtributo = MovimientoAtributo::select('movimiento_atributo.Id', 'atributo.Nombre', 'tipomoneda.Simbolo', 'atributo.ValorReferencia', 'atributo.Caracteristica')
+            $movimientoAtributo = MovimientoAtributo::select('movimiento_atributo.Id', 'atributo.Nombre', 
+                                                    'atributo.TipoMonedaId', 'atributo.ValorReferencia')
                                         ->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
-                                        ->join('tipomoneda','tipomoneda.Id','=','atributo.TipoMonedaId')
                                         ->where('movimiento_atributo.MovimientoId', $movimientoId)
                                         ->where('atributo.Enabled', 1)
                                         ->get();
+            $tipoMoneda = TipoMoneda::select('Id','Simbolo')->get();
+
             Log::info('Ver atributos del movimiento');
             return response()->json([
                 'success' => true,
                 'data' => $movimientoAtributo,
-                'movimiento'=> $movimientoExiste->Id 
+                'movimiento'=> $movimientoExiste->Id,
+                'tipomoneda' => $tipoMoneda 
             ]);
 
         }catch(Exception $e){

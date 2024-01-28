@@ -20,6 +20,7 @@ use Illuminate\Validation\ValidationException;
  * @property int $MovimientoAtributoId
  * @property int $SolicitudId
  * @property int $CostoReal
+ * @property int $TipoMonedaId
  * @property int $Caracteristica
  * 
  * @property MovimientoAtributo $movimiento_atributo
@@ -39,12 +40,14 @@ class Compuesta extends Model
 		'MovimientoAtributoId' => 'int',
 		'SolicitudId' => 'int',
 		'CostoReal'=> 'int',
+		'TipoMonedaId'=> 'int',
 	];
 
 	protected $fillable = [
 		'MovimientoAtributoId',
 		'SolicitudId',
 		'CostoReal',
+		'TipoMonedaId',
 		'Caracteristica',
 	];
 
@@ -58,13 +61,18 @@ class Compuesta extends Model
 		return $this->belongsTo(Solicitud::class, 'SolicitudId');
 	}
 
+	public function tipo_moneda()
+	{
+		return $this->belongsTo(TipoMoneda::class, 'TipoMonedaId');
+	}
+
 	public function validate(array $data){
 		$id = isset($data['Id']) ? $data['Id'] : null;
 
 		$rules = [
 			'MovimientoAtributoId' => 'required|numeric',
-			'CostoReal' => 'required|numeric',
-			'Caracteristica' => 'required|string',
+			'CostoReal' => 'nullable|numeric',
+			'Caracteristica' => 'nullable|string',
 			'SolicitudId' => 'required|numeric',
 		];
 

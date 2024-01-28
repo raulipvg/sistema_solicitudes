@@ -79,6 +79,7 @@ var loadingEl = document.createElement("div");
         }
     }
 
+    
     function botonEstado(tooltip, className, estado){
         var btn = `
                     <button class="btn btn-sm ${className} fs-7 text-uppercase justify-content-center p-1" 

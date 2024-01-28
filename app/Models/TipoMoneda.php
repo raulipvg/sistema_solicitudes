@@ -12,15 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  * Class Log
  * 
  * @property int $Id
- * @property string $Nivel
- * @property string $Mensaje
- * @property string $Contexto
+ * @property string $Nombre
+ * @property string $Simbolo
  *
  * @package App\Models
  */
 class TipoMoneda extends Model
 {
-	protected $table = 'tipomoneda';
+	protected $table = 'tipo_moneda';
 	protected $primaryKey = 'Id';
 	public $incrementing = true;
 	public $timestamps = true;
@@ -30,5 +29,7 @@ class TipoMoneda extends Model
 	];
 
 	protected $fillable = [
+		'Nombre',
+		'Simbolo'
 	];
 }

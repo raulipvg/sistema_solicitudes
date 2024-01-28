@@ -111,6 +111,7 @@ class SolicitudController extends Controller
                 $obj->MovimientoAtributoId = $compuesta['MovimientoAtributoId'];
                 $obj->SolicitudId = $solicitud->Id;
                 $obj->CostoReal = $compuesta['CostoReal'];
+                $obj->TipoMonedaId = $compuesta['TipoMonedaId'];
                 $obj->Caracteristica = $compuesta['Caracteristica'];
 
                 $obj->validate([
