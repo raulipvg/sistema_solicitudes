@@ -30,9 +30,11 @@ $(document).ready(function() {
         }
 
         const form = document.getElementById('FormularioSolicitud');
+        let validator;
         $("#AlertaError").hide();
             // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
-        const validator = FormValidation.formValidation(
+        function initializeValidator(form) { 
+            return FormValidation.formValidation(
                 form,
                 {
                     fields: {
@@ -91,7 +93,14 @@ $(document).ready(function() {
                         })
                     }
                 }
-        );
+            )
+        }
+        function destroyValidator(validator) {
+            if (validator) {
+                validator.destroy();
+            }
+        }
+       
 
         const unoNoVacio = function(){
             return {
@@ -112,8 +121,7 @@ $(document).ready(function() {
                 }
             }
         }
-
-        validator.registerValidator('alMenosUnoNoVacio', unoNoVacio);
+        
 
         let tipoMoneda;
         let movId= 0;
@@ -209,7 +217,7 @@ $(document).ready(function() {
                 $(`#Mov${MovAtributoId}`).remove();
             }else{
                 $(this).addClass("active");                    
-                console.log(tipoMoneda)
+                //console.log(tipoMoneda)
                 var html =       `<div id="Mov${MovAtributoId}" class="col-md-10 row compuesta justify-content-center">
                                         <div class="col-md-4 mb-2">
                                             <div class="form-floating fv-row">
@@ -234,7 +242,7 @@ $(document).ready(function() {
                                         </div>
                                         <div class="col-md-2 mb-2">
                                             <div class="form-floating fv-row">
-                                                <input class="form-control costos-reales input-size" placeholder="Ingrese el Costo" id="CostoReal[${MovAtributoId}]" inputmode="decimal" style="text-align: right;" name="CostoReal[${MovAtributoId}]" value="${Costo}" />
+                                                <input class="form-control costos-reales input-size pe-10" placeholder="Ingrese el Costo" id="CostoReal[${MovAtributoId}]" inputmode="decimal" style="text-align: right;" name="CostoReal[${MovAtributoId}]" value="${Costo}" />
                                                 <label for="CostoReal[${MovAtributoId}]" class="form-label">Costo</label>
                                             </div>
                                         </div>
@@ -311,10 +319,12 @@ $(document).ready(function() {
         $('#NuevaSolicitud').on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            destroyValidator(validator);
+            validator = initializeValidator(form);
+            validator.resetForm();
+            validator.registerValidator('alMenosUnoNoVacio', unoNoVacio);
             $("#crearSolicitud input").val('').prop("disabled",false);
             $('#crearSolicitud .form-select').val("").trigger("change").prop("disabled",false);
-            //fecha.clear();
-            validator.resetForm();
             actualizarValidSelect2();
             $("#AlertaErrorSolicitud").hide();
             $("#AlertaErrorSolicitud").empty();

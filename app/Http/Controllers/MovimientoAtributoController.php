@@ -130,8 +130,9 @@ class MovimientoAtributoController extends Controller
                 throw new Exception('Movimiento no encontrado');
             }
             $movimientoAtributo = MovimientoAtributo::select('movimiento_atributo.Id', 'atributo.Nombre', 
-                                                    'atributo.TipoMonedaId', 'atributo.ValorReferencia')
+                                                    'atributo.TipoMonedaId', 'atributo.ValorReferencia','tipo_moneda.Simbolo')
                                         ->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
+                                        ->join('tipo_moneda', 'tipo_moneda.Id','=','atributo.TipoMonedaId')
                                         ->where('movimiento_atributo.MovimientoId', $movimientoId)
                                         ->where('atributo.Enabled', 1)
                                         ->get();
