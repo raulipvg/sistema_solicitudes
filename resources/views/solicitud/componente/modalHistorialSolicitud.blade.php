@@ -74,6 +74,7 @@
 									<thead class="border-gray-200 fs-6 fw-semibold bg-lighten">
 										<tr>
 											<th class="p-1">Atributo</th>
+											<th class="p-1">Característica</th>
 											<th class="p-1">Costo</th>
 										</tr>
 									</thead>

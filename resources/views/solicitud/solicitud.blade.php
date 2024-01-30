@@ -114,7 +114,7 @@
 	<script src="{{ asset('js/flatpickr/es.js') }}"></script>
 	<script src="{{ asset('js/eventos/solicitud/crearsolicitud.js?id=3') }}"></script>
 	@endif
-	<script src="{{ asset('js/eventos/solicitud/historialSolicitud.js')}}"></script>
+	<script src="{{ asset('js/eventos/solicitud/historialsolicitud.js')}}"></script>
     <script src="{{ asset('js/eventos/solicitud/verflujo.js')}}"></script>
 
     <!--end::Eventos de la pagina-->

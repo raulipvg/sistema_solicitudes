@@ -69,13 +69,12 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
                 $('#titulo-flujo').empty().html("Flujo: "+data.data.flujoNombre);
                 data = data.data;
                 $('#ValorReal').empty().html(pill+'Costo: $'+data.costoSolicitud.toLocaleString());
-                var valorRef = 0;
                 data.costoPorAtributo.forEach((atr)=>{
-                    valorRef += atr.ValorReferencia;
                     $('#tabla-atributos-solicitud tbody').append(`
                         <tr>
                             <td class="text-capitalize p-1"> ${atr.Nombre} </td>
-                            <td class="p-1"> ${atr.Simbolo} ${atr.ValorReferencia.toLocaleString()} </td>
+                            <td class="text-capitalize p-1"> ${atr.Caracteristica == null ? "-" : atr.Caracteristica}</td>
+                            <td class="p-1"> ${atr.Simbolo} ${atr.CostoReal.toLocaleString()} </td>
                         </tr>
                     `);
                 });

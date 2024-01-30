@@ -72,6 +72,7 @@ class SolicitudFlujoHistorialController extends Controller
                                             'atributo.ValorReferencia',
                                             'tipo_moneda.Simbolo',
                                             'compuesta.CostoReal',
+                                            'compuesta.Caracteristica'
                                         )
                                         ->join('movimiento_atributo','movimiento_atributo.Id','=','compuesta.MovimientoAtributoId')
                                         ->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')

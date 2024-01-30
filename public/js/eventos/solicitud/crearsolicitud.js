@@ -83,7 +83,6 @@ $(document).ready(function() {
                             },
                         }
                     },
-
                     plugins: {
                         trigger: new FormValidation.plugins.Trigger(),
                         bootstrap: new FormValidation.plugins.Bootstrap5({
@@ -91,7 +90,7 @@ $(document).ready(function() {
                             eleInvalidClass: 'is-invalid',
                             eleValidClass: 'is-valid'
                         })
-                    }
+                    },
                 }
             )
         }
@@ -102,25 +101,6 @@ $(document).ready(function() {
         }
        
 
-        const unoNoVacio = function(){
-            return {
-                validate: function(input){
-                    var caracteristica = input.element.form.querySelector('[name="Caracteristica' + input.field.match(/\[\d+\]/) + '"]').value;
-                    var costoReal = input.element.form.querySelector('[name="CostoReal' + input.field.match(/\[\d+\]/) + '"]').value;
-                    // Verifica si al menos uno de los campos no está vacío
-                    if (caracteristica.trim() !== '' || costoReal.trim() !== '') {
-                        return {
-                            valid: true
-                        };
-                    } else {
-                        return {
-                            valid: false,
-                            message: 'Debe completar al menos uno de los campos'
-                        };
-                    }
-                }
-            }
-        }
         
 
         let tipoMoneda;
@@ -256,8 +236,23 @@ $(document).ready(function() {
                             regexp: /^[a-zA-Z0-9 -ñáéíóú\s]+$/,
                             message: 'Solo letras y números'
                         },
-                        alMenosUnoNoVacio: {
-                            message: 'Debe completar al menos uno de los campos'
+                        callback: {
+                            callback: function(input){
+                                console.log('hola')
+                                var caracteristica = input.element.form.querySelector('[name="Caracteristica' + input.field.match(/\[\d+\]/) + '"]').value;
+                                var costoReal = input.element.form.querySelector('[name="CostoReal' + input.field.match(/\[\d+\]/) + '"]').value;
+                                // Verifica si al menos uno de los campos no está vacío
+                                if (caracteristica.trim() == '' && costoReal.trim() == '') {
+                                    return {
+                                        valid: false,
+                                        message: 'Debe completar al menos uno de los campos'
+                                    }
+                                }
+                                return {
+                                    valid: true
+                                };
+                            
+                            }
                         }
                     }
                 };
@@ -265,10 +260,30 @@ $(document).ready(function() {
                 validaCosto = {
                     validators:{
                         digits: {
-                            message: 'Digitos'
+                            message: 'Digitos',
                         },
-                        alMenosUnoNoVacio: {
-                            message: ' '
+                        callback:{
+                            callback : function(input){
+                                var caracteristica = input.element.form.querySelector('[name="Caracteristica' + input.field.match(/\[\d+\]/) + '"]').value;
+                                var costoReal = input.element.form.querySelector('[name="CostoReal' + input.field.match(/\[\d+\]/) + '"]').value;
+                                // Verifica si al menos uno de los campos no está vacío
+                                if (caracteristica.trim() == '' && costoReal.trim() == '') {
+                                    
+                                    return {
+                                        valid: false,
+                                        message: 'Debe completar al menos uno de los campos'
+                                    }
+                                } else if(caracteristica.trim() == '' && costoReal.trim() <=0){            //característica vacía y costo real cero (o menor)
+                                    
+                                    return {
+                                        valid: false,
+                                        message: 'El costo real debe ser mayor a 0'
+                                    };
+                                }
+                                return {
+                                    valid: true
+                                };
+                            }
                         }
                     }
                 };
@@ -322,7 +337,6 @@ $(document).ready(function() {
             destroyValidator(validator);
             validator = initializeValidator(form);
             validator.resetForm();
-            validator.registerValidator('alMenosUnoNoVacio', unoNoVacio);
             $("#crearSolicitud input").val('').prop("disabled",false);
             $('#crearSolicitud .form-select').val("").trigger("change").prop("disabled",false);
             actualizarValidSelect2();
