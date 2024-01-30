@@ -16,6 +16,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MovimientoAtributoController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\SolicitudFlujoHistorialController;
+use App\Http\Controllers\ConsolidadoController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Monolog\Handler\RotatingFileHandler;
@@ -150,6 +151,7 @@ Route::group(['prefix' => '/error'], function () {
     Route::get('/500', function () {return view('error.error500');})->name('Error500');
 });
 
+Route::get('/consolidado',[ConsolidadoController::class,'Index'])->name('Consolidado');
 
 Route::get('/test', ['middleware' => 'auth', function () {
     try {
