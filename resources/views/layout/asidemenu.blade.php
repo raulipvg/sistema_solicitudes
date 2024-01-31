@@ -7,7 +7,7 @@
 									<div class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6" id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
 										<!--begin:Menu link-->
 										<div class="menu-item">
-											<a class="menu-link " href="{{route('Solicitud')}}">
+											<a class="menu-link  {{ request()->routeIs('Home') || request()->routeIs('Solicitud') ? 'active' : '' }}" href="{{route('Solicitud')}}">
 												<span class="menu-icon">
 													<i class="ki-duotone ki-home fs-2">
 													</i>
