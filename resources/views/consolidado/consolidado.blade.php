@@ -66,6 +66,8 @@
     <script>
         /* BEGIN::RUTAS */
        
+		const VerTerminadas = '{{ route("VerTerminadas") }}';
+
         /* END:RUTAS */
         //const data =  {!! '' !!};
         //const credenciales= {!! json_encode('') !!};
@@ -81,6 +83,7 @@
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/language/language_es.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/contenido/consolidado_detalle.js?id=2') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/solicitud_terminada.js?id=2') }}"></script>
     <!--end::Datatables y Configuracion de la Tabla-->
 
     <!--begin::Eventos de la pagina-->

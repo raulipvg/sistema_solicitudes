@@ -18,9 +18,7 @@
             </div>
             <div class="modal-body py-1">
 			
-				<div class="row">
-					
-				</div>
+				@include('solicitud.componente.tablaSolicitudesTerminadas')
 				
 			</div>
 			<div class="modal-footer bg-light p-2">

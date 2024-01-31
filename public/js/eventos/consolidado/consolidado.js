@@ -203,4 +203,59 @@ $(document).ready(function() {
 
         
     });
+
+    $("#contenedor-cc").on('click','.ver-solicitudes',function(e){
+        console.log('ver solicitues')
+        $.ajax({
+            type: 'GET',
+            url: VerTerminadas,
+            data: {
+                _token: csrfToken 
+            },
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function() { 
+                bloquear();
+                KTApp.showPageLoading();
+                tablaSolicitudesTerminadas.clear();
+            },
+            success: function (data) {
+                if(data.success){
+                    //data= data.data;             
+                    //console.log(data);
+                    cantTerminada = 0;
+                    cargarDataTerminada.init(data.solicitudes);                        
+                }else{
+                    Swal.fire({
+                        text: "Error al Cargar Solicitudes Terminadas",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger"
+                        }
+                    });
+                }
+            },
+            error: function () {;
+                Swal.fire({
+                        text: "Error al Cargar Solicitudes Terminadas",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger"
+                        }
+                    });
+            },
+            complete: function(){
+                KTApp.hidePageLoading();
+                loadingEl.remove();
+            }
+        });
+        tablaSolicitudesTerminadas.column(6).visible(false)
+        tablaSolicitudesTerminadas.column(7).visible(false)
+    })
+
+    
 })

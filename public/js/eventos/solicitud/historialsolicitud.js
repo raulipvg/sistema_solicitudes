@@ -68,7 +68,8 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
                 $('#modal-titulo-historialSolicitud').empty().html("Historial Solicitud "+solicitudId);
                 $('#titulo-flujo').empty().html("Flujo: "+data.data.flujoNombre);
                 data = data.data;
-                $('#ValorReal').empty().html(pill+'Costo: $'+data.costoSolicitud.toLocaleString());
+                $('#ValorReal').empty();
+                //$('#ValorReal').html(pill+'Costo: $'+data.costoSolicitud.toLocaleString());
                 data.costoPorAtributo.forEach((atr)=>{
                     $('#tabla-atributos-solicitud tbody').append(`
                         <tr>

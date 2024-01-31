@@ -1,4 +1,4 @@
-<div class="modal modal-lg fade" tabindex="-1" id="historialSolicitud" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+<div class="modal modal-xl fade" tabindex="-1" id="historialSolicitud" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog mt-20">
         <div class="modal-content" id="div-bloquear">
             <div class="modal-header bg-light p-2 ps-5">
@@ -74,7 +74,7 @@
 									<thead class="border-gray-200 fs-6 fw-semibold bg-lighten">
 										<tr>
 											<th class="p-1">Atributo</th>
-											<th class="p-1">Característica</th>
+											<th class="p-1">Detalle</th>
 											<th class="p-1">Costo</th>
 										</tr>
 									</thead>
