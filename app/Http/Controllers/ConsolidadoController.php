@@ -6,6 +6,7 @@ use App\Models\CentroDeCosto;
 use App\Models\Empresa;
 use Illuminate\Http\Request;
 use App\Models\Movimiento;
+use Exception;
 
 class ConsolidadoController extends Controller
 {
@@ -33,5 +34,32 @@ class ConsolidadoController extends Controller
 
     public function getConsolidados(Request $request){
 
+    }
+    public function VerCompuesta(Request $request){
+    
+        try{
+
+            return response()->json([
+                'success' => true,
+                'data'=> [
+                    [
+                        'Id' => 1,                    
+                        'Nombre'=> 'Detalle 1',
+                    ],
+                    [
+                        'Id'=> 2,
+                        'Nombre'=> 'Detalle 2',
+                    ]
+            ],
+                'message' => 'Empresa Guardada'
+            ],201);
+        }catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);  
+        }
+
+    
     }
 }

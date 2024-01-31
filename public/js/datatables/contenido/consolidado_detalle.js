@@ -1,22 +1,20 @@
 //CREACION SUBTABLLA
-function format(data,usuario) {   
+function format(data) {   
     var html=`
             <div class="d-flex justify-content-center">
-                <div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">
+                <div class="card shadow-sm" style=" width: 50%;">
                 <table id="services_table" class="table table-row-dashed">
                     <thead class="services-info">
                     <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                            <th class="p-0 ps-3">Flujo</th>
-                            <th class="p-0 ps-3">Fecha</th>
-                            <th class="text-center col-3 p-0 ps-2">ESTADO
-                            </th>
+                            <th class="p-0 ps-3">Solicitud</th>
+                            <th class="p-0 ps-3">Detalle</th>
                         </tr>
                     </thead>
                     <tbody class="fw-bold text-gray-600">
             `;
 
     for(const elemento of data) {
-        html = html + AgregarTR(elemento.Nombre, elemento.Id, elemento.created_at, "Deshabilitar Flujo");   
+        html = html + AgregarTR(elemento.Nombre,elemento.Id);   
     }
 
     html=  html+'</tbody></table></div></div>';
@@ -24,25 +22,12 @@ function format(data,usuario) {
 }
 
 //TR A SUB TABLA
-function AgregarTR(nombre, id, fecha, titulo){
+function AgregarTR(Nombre, Id){
 
-    var fechaFormateada = formatearFecha(fecha);
-    var className = (credenciales2.puedeEliminar)? 'editar-flujo': 'disabled';
     var html =`
                 <tr>
-                    <td class="text-gray-700 text-capitalize">${nombre}</td>
-                    <td>${fechaFormateada}</td>
-                    <td class="text-center p-0">
-                        <div class="btn-group btn-group-sm" role="group">
-                            <button class="btn btn-sm btn-light-success ${className} fs-7 text-uppercase estado justify-content-center p-1 w-100px" 
-                                    data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" info="${id}" title="${titulo}">
-                                <span class="indicator-label">HABILITADO</span>
-                                <span class="indicator-progress">
-                                    <span class="spinner-border spinner-border-sm align-middle"></span>
-                                </span>
-                            </button>
-                        </div>
-                    </td>
+                    <td>#${Id}</td>
+                    <td class="text-gray-700 text-capitalize">${Nombre}</td>                                  
                 </tr>
             `;
     return html;

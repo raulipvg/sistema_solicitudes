@@ -98,15 +98,15 @@ $(document).ready(function() {
 
 
     $("#contenedor-cc").on('click', '.ver-detalle', function(e) {
-        console.log("wea")
+        //console.log("wea")
         var data= [
             {
-                Nombre: 'Atributo 1 Nombre',
+                Nombre: 'Nombre Atributo 1',
                 Cantidad: 5,
                 Total: 100000
             },
             {
-                Nombre: 'Atributo 2 Nombre',
+                Nombre: 'Nombre Atributo 2',
                 Cantidad: 50,
                 Total: 900000 
             }
@@ -118,4 +118,89 @@ $(document).ready(function() {
         miTablaDetalle.draw();
 
     })
+
+    miTablaDetalle.on('click', 'td.dt-control', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var tr = e.target.closest('tr');
+        var row = miTablaDetalle.row(tr);
+        var cell = row.cell(tr, 3); // Elegir bien el numero de colmuna que está el boton + (parte de la col 0)
+        var boton= $(cell.node()).find('button');
+        var userId= 1;
+        //$(this).prev().find('a.ver').attr("info")
+
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            boton.removeClass('active')
+            row.child.hide();
+            return;
+        }
+        else {
+            // Open this row             
+            $.ajax({
+                type: 'POST',
+                url: VerCompuesta,
+                data: {
+                    _token: csrfToken,
+                    data: userId},
+                //content: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function() {
+                    bloquear();
+                    KTApp.showPageLoading();
+                    boton.children().eq(0).hide();
+                    boton.attr("data-kt-indicator", "on");
+                },
+                success: function (data) {
+                    if(data.success){                            
+                        boton.children().eq(0).show();
+                        boton.addClass('active')
+                        console.log(data)
+                        //empresa=data.empresa;         
+                        data = data.data;
+                        
+                        row.child(format(data)).show();
+
+                        var tbody = boton.closest('table').find('tbody');
+                        tbody.find('[data-bs-toggle="tooltip"]').tooltip();
+                    }else{
+                        boton.children().eq(0).show();
+                        boton.removeClass('active');                        
+                        Swal.fire({
+                            text: "Error: "+ data.message,
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    boton.children().eq(0).show();
+                    boton.removeClass('active');
+                    Swal.fire({
+                        text: "Error",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
+                },
+                complete: function(){
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+                    boton.removeAttr("data-kt-indicator");
+                    //boton.children().eq(0).show();
+                    //boton.addClass('active')
+                }
+            });
+        }
+
+        
+    });
 })

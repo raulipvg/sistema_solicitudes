@@ -151,7 +151,11 @@ Route::group(['prefix' => '/error'], function () {
     Route::get('/500', function () {return view('error.error500');})->name('Error500');
 });
 
-Route::get('/consolidado',[ConsolidadoController::class,'Index'])->name('Consolidado');
+Route::group(['prefix'=> '/consolidado', 'middleware' => 'auth'], function () {
+    Route::get('/',[ConsolidadoController::class,'Index'])->name('Consolidado');
+    Route::post('/vercompuesta', [ConsolidadoController::class,'VerCompuesta'])->name('VerCompuesta');
+});
+
 
 Route::get('/test', ['middleware' => 'auth', function () {
     try {

@@ -70,6 +70,7 @@
         //const data =  {!! '' !!};
         //const credenciales= {!! json_encode('') !!};
         //const credenciales2= {!! json_encode('') !!};
+        const VerCompuesta ="{{ route('VerCompuesta')}}";
         
         const layout= {!! json_encode($accesoLayout) !!};
 

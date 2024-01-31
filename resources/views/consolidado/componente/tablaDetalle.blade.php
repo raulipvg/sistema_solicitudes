@@ -2,7 +2,7 @@
                                     <table id="tabla-detalle-consolidado" class="table table-row-dashed table-hover rounded gy-2 gs-md-3 nowrap">
                                         <thead>
                                             <tr class="fw-bolder text-uppercase">
-                                                <th scope="col" class="p-2">Movimiento Nombre</th>
+                                                <th scope="col" class="p-2">Nombre</th>
                                                 <th scope="col" class="p-2">Cantidad</th>
                                                 <th scope="col" class="p-2">Total</th>
                                                 <th></th>
