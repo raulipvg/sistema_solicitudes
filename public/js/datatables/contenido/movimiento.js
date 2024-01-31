@@ -1,7 +1,7 @@
 function format(data,movimiento) {   
     var html=`
             <div class="d-flex justify-content-center">
-                <div class="card hover-elevate-up shadow-sm parent-hover" style=" width: 50%;">
+                <div class="card shadow-sm" style=" width: 50%;">
                 <table id="services_table" class="table table-row-dashed">
                     <thead class="services-info">
                     <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
