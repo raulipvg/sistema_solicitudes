@@ -11,7 +11,7 @@ use Exception;
 class ConsolidadoController extends Controller
 {
     public function Index (Request $request){
-        $titulo= "Consolidado de solicitudes";
+        $titulo= "Consolidado Mensual de solicitudes";
         //$usuarios = Usuario::all();
 
         //BEGIN::PRIVILEGIOS

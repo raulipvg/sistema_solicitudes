@@ -83,7 +83,7 @@ let miTablaDetalle = $('#tabla-detalle-consolidado').DataTable({
             }
         }
     ],
-    "pageLength": 10,
+    "pageLength": 20,
     "columnDefs": [
         { "targets": 1, "responsivePriority": 1 },
         { "targets": 0, "responsivePriority": 2 },
@@ -129,7 +129,7 @@ const cargarData= function(){
                     //$(rowNode).find('td:eq(3)').addClass('text-center p-1');          
                 }
             }
-            miTablaDetalle.order([1, 'asc']).draw();
+            miTablaDetalle.order([0, 'asc']).draw();
             $('[data-bs-toggle="tooltip"]').tooltip();
         }
     }

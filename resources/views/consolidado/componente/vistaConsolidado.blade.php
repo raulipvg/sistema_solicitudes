@@ -7,7 +7,7 @@
                             <div class="w-md-200px w-150px my-1 mx-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Empresa">
                                 <select id="EmpresaIdInput" name="EmpresaId" class="form-select" data-control="select2" data-placeholder="Seleccione Empresa" data-hide-search="true">
                                     <option selected></option>
-                                    <option value="1">TODAS 1</option>
+                                    <option value="1">TODAS</option>
                                     @foreach ($empresas as $empresa )
                                     <option value="{{ $empresa->Id}}">{{$empresa->Nombre}}</option>
                                     @endforeach
@@ -23,18 +23,20 @@
                             </div>
                         </div>
                         <div id="contenedor-cc" class="card">
+                                <h3 class="mx-3 mb-0">Centros de Costos - Movimiento 1</h3>
                             <div class="card-body card-scroll p-2" style="max-height: 300px;">
                                 <ul class="nav nav-pills d-flex justify-content-between nav-pills-custom gap-3" role="tablist">
                                 
                                     @foreach ($centrocostos as $cc )
                                     <!--begin::Item-->
                                     <li class="nav-item position-relative me-0" role="presentation">
-                                        <div data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Solicitudes">
+                                        <div data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="left" title="Ver Solicitudes Asociadas">
 
-                                        </div>
+                                        
                                         <button type="button" class="btn-plus btn ver-solicitudes btn-icon btn-color-danger btn-active-light btn-active-color-primary position-absolute m-1" data-bs-toggle="modal" data-bs-target="#solicitudes" >
                                             <i class="ki-outline ki-plus-square fs-2"></i>
                                         </button>
+                                        </div>
                                         <div data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="bottom" title="Ver Cobros" >
                                             <!--begin::Nav link-->
                                             <a class="nav-link nav-link-border-solid ver-detalle btn btn-outline btn-flex btn-active-color-primary bg-light p-1 page-bg justify-content-center"
@@ -57,8 +59,9 @@
                                 </ul>
                             </div> 
                         </div>
-                        <div class="tab-content m-2 p-5">
-                            <div id="detalle-cc" class="tab-pane fade">
+                        <div class="tab-content m-4">
+                            <div id="detalle-cc" class="tab-pane fade border border-2 p-4 rounded">
+                                <h3 class="card-title text-uppercase">Movimiento 1 - Detalle de Cobros</h3>
                                @include('consolidado.componente.tablaDetalle')
                             </div>
 
