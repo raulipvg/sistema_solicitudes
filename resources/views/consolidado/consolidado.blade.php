@@ -3,7 +3,7 @@
 @section('main-content')
 
 @push('css')
-<link href='' rel='stylesheet' type="text/css"/>
+<link href="{{ asset('css/datatables/datatables.bundle.css?id=2') }}" rel='stylesheet' type="text/css" />
 <style>
 .rounded-bottom-1 {
     border-top-left-radius: 0;
@@ -28,8 +28,17 @@
     top: -665px;
   }
 }
-
-
+.nav-link{
+	color: var(--bs-text-gray-500);
+}
+.btn-check:active+.btn.btn-active-color-primary, .btn-check:checked+.btn.btn-active-color-primary, .btn.btn-active-color-primary.active, .btn.btn-active-color-primary.show, .btn.btn-active-color-primary:active:not(.btn-active), .btn.btn-active-color-primary:focus:not(.btn-active), .btn.btn-active-color-primary:hover:not(.btn-active), .show>.btn.btn-active-color-primary {
+    color: var(--bs-text-dark);
+}
+.btn-plus{
+    z-index: 2;
+    height: 25px!important;
+    width: 25px!important;
+}
 
 </style>
 @endpush
@@ -40,7 +49,7 @@
         <div class="card-header bg-dark">
             <h3 class="card-title text-uppercase text-white">{{$titulo}}</h3>                
         </div>
-        <div class="card-body">
+        <div class="card-body p-1">
                 @include('consolidado.componente.vistaConsolidado')
         </div>
     </div>
@@ -49,6 +58,7 @@
 
 
 
+@include('consolidado.componente.modalSolicitud')
 
 @endsection
 
@@ -69,6 +79,7 @@
     <!--begin::Datatables y Configuracion de la Tabla-->
     <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
     <script src="{{ asset('js/datatables/language/language_es.js?id=2') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/consolidado_detalle.js?id=2') }}"></script>
     <!--end::Datatables y Configuracion de la Tabla-->
 
     <!--begin::Eventos de la pagina-->

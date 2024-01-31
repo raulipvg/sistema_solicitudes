@@ -34672,7 +34672,7 @@ textarea.form-control-lg {
 }
 
 .nav.nav-pills.nav-pills-custom .nav-link.nav-link-border-solid.active,.nav.nav-pills.nav-pills-custom .show>.nav-link.nav-link-border-solid.active {
-    border: 3px solid var(--bs-primary)
+    border: 3px solid var(--bs-dark);
 }
 
 .nav.nav-pills.nav-pills-custom .nav-link .nav-icon img,.nav.nav-pills.nav-pills-custom .show>.nav-link .nav-icon img {

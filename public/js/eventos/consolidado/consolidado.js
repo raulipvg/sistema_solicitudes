@@ -95,4 +95,27 @@ $(document).ready(function() {
 
     html = cabecera + cuerpo;
     $('#centroscostos').empty().html(html);
+
+
+    $("#contenedor-cc").on('click', '.ver-detalle', function(e) {
+        console.log("wea")
+        var data= [
+            {
+                Nombre: 'Atributo 1 Nombre',
+                Cantidad: 5,
+                Total: 100000
+            },
+            {
+                Nombre: 'Atributo 2 Nombre',
+                Cantidad: 50,
+                Total: 900000 
+            }
+        ]
+        
+        
+        miTablaDetalle.clear();
+        cargarData.init(data);
+        miTablaDetalle.draw();
+
+    })
 })

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CentroDeCosto;
+use App\Models\Empresa;
 use Illuminate\Http\Request;
 use App\Models\Movimiento;
 
@@ -16,11 +18,16 @@ class ConsolidadoController extends Controller
         $accesoLayout= $user->todoPuedeVer();
 
         $movimientos = Movimiento::select('Id','Nombre','Enabled')->get();
+        $empresas = Empresa::select('Id','Nombre','Enabled')->get();
+
+        $centrocostos = CentroDeCosto::select('Id','Nombre','Enabled')->get(); 
 
         return view('consolidado.consolidado')->with([
             'accesoLayout'=>$accesoLayout,
             'titulo' => $titulo,
-            'movimientos' => $movimientos
+            'movimientos' => $movimientos,
+            'empresas'=> $empresas,
+            'centrocostos'=> $centrocostos,
         ]);
     }
 
