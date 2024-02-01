@@ -114,20 +114,20 @@
         
     </script>
     <!--begin::Datatables y Configuracion de la Tabla-->
-    <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
-    <script src="{{ asset('js/datatables/language/language_es.js?id=2') }}"></script>
-    <script src="{{ asset('js/datatables/contenido/movimiento.js?id=2') }}"></script>
-    <script src="{{ asset('js/datatables/contenido/atributo.js?id=2') }}"></script>
+    <script src="{{ asset('js/datatables/datatables.bundle.js?id=3') }}"></script>
+    <script src="{{ asset('js/datatables/language/language_es.js?id=3') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/movimiento.js?id=3') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/atributo.js?id=3') }}"></script>
 
 
 
     <!--end::Datatables y Configuracion de la Tabla-->
     <!--begin::Eventos de la pagina-->
-    <script src="{{ asset('js/global/main.js?id=3') }}"></script>
+    <script src="{{ asset('js/global/main.js?id=4') }}"></script>
     
-    <script src="{{ asset('js/eventos/movimientoatributo/movimientoatributo.js') }}"></script>
-    <script src="{{ asset('js/eventos/movimiento/movimiento.js?id=3') }}"></script>
-    <script src="{{ asset('js/eventos/atributo/atributo.js?id=3') }}"></script>
+    <script src="{{ asset('js/eventos/movimientoatributo/movimientoatributo.js?id=4') }}"></script>
+    <script src="{{ asset('js/eventos/movimiento/movimiento.js?id=4') }}"></script>
+    <script src="{{ asset('js/eventos/atributo/atributo.js?id=4') }}"></script>
 
     
     <!--end::Eventos de la pagina-->
