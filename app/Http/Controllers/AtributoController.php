@@ -50,6 +50,7 @@ class AtributoController extends Controller
                 'atributo'=>[[
                     'Id'=> $atributo->Id,
                     'Nombre'=>$atributo->Nombre,
+                    'Simbolo' =>$atributo->tipoMoneda->Simbolo,
                     'ValorReferencia'=>$atributo->ValorReferencia,
                     'Enabled'=>$atributo->Enabled
                 ]],

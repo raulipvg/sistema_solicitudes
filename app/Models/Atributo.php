@@ -25,6 +25,7 @@ use Illuminate\Validation\ValidationException;
  * @property Carbon|null $updated_at
  * 
  * @property Collection|Movimiento[] $movimientos
+ * @property TipoMoneda $tipoMoneda
  *
  * @package App\Models
  */
