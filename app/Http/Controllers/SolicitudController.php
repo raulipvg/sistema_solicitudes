@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CentroDeCosto;
 use App\Models\Compuesta;
+use App\Models\ConsolidadoMe;
 use App\Models\Flujo;
 use App\Models\HistorialSolicitud;
 use App\Models\Movimiento;
@@ -99,6 +100,7 @@ class SolicitudController extends Controller
             $request = $request->input('data');
             $userId = auth()->user()->Id;
             $request['solicitud']['UsuarioSolicitanteId'] = $userId;
+            $request['solicitud']['ConsolidadoMesId'] = ConsolidadoMe::where('EstadoConsolidadoId','=', 1)->pluck('Id')->first();
             $solicitud = new Solicitud();
             $solicitud->validate($request['solicitud']);
             $solicitud->fill($request['solicitud']);

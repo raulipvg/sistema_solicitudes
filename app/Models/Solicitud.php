@@ -135,7 +135,7 @@ class Solicitud extends Model
 																	'solicitud.created_at as FechaCreado','historial_solicitud.EstadoSolicitudId',
 																	'estado_flujo.Nombre as EstadoFlujo', 'movimiento.Nombre as Movimiento',
 																	'flujo.Nombre as NombreFlujo','flujo.Id as FlujoIdd','orden_flujo.GrupoId as GrupoAprobadorId',
-																	'historial_solicitud.Id as HistorialId',
+																	'historial_solicitud.Id as HistorialId', 'historial_solicitud.EstadoEtapaFlujoId',
 																	DB::raw('GROUP_CONCAT(atributo.Nombre) as Atributos'),
 																	DB::raw('(
 																		SELECT CONCAT(persona_solicitante.Nombre, " ", persona_solicitante.Apellido)
@@ -165,7 +165,7 @@ class Solicitud extends Model
 															->join('orden_flujo','orden_flujo.FlujoId','=','flujo.Id')
 															->where('orden_flujo.EstadoFlujoId', '=', DB::raw('estado_flujo.Id'))
 															->groupBy('solicitud.Id', 'NombreCompleto', 'CentroCosto', 'FechaDesde', 'FechaHasta', 'FechaCreado', 'EstadoSolicitudId', 
-															'EstadoFlujo', 'Movimiento', 'NombreFlujo', 'HistorialId','FlujoIdd','UsuarioSolicitanteId','GrupoAprobadorId');
+															'EstadoFlujo', 'Movimiento', 'NombreFlujo', 'HistorialId','FlujoIdd','UsuarioSolicitanteId','GrupoAprobadorId','EstadoEtapaFlujoId');
 															//->get();
 															
 										

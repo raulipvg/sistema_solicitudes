@@ -70,7 +70,8 @@ class ConsolidadoController extends Controller
         $movimientoId = $request['Movimiento'];
         $consolidadoId = $request['Consolidado'];
 
-        $tipoCambio = TipoCambio::select('ToCLP','TipoMonedaId')
+        $tipoCambio = TipoCambio::select('ToCLP','TipoMonedaId','Simbolo','Nombre')
+                                ->join('tipo_moneda','tipo_moneda.Id','=', 'tipo_cambio.TipoMonedaId')       
                                 ->where('ConsolidadoId', $consolidadoId)
                                 ->get();
 
@@ -100,9 +101,21 @@ class ConsolidadoController extends Controller
         if($empresaId != null && $ccId ==null && $movimientoId ==null) {
             $querySolicitud =$querySolicitud->where('empresa.Id', $empresaId)->get();                          
         }
-        else if ($ccId != null && $movimientoId == null) {
-            if ($empresaId == null || $empresaId != null) {
+        else if ($ccId != null) {
+            if($movimientoId == null){
                 $querySolicitud = $querySolicitud->where('solicitud.CentroCostoId', '=', $ccId)->get();
+            }else{
+                $querySolicitud = $querySolicitud
+                                    ->where('solicitud.CentroCostoId', '=', $ccId)
+                                    ->where('movimiento_atributo.MovimientoId','=', $movimientoId)->get();
+            }
+        }else if($movimientoId !=null){
+            if( $empresaId !=null){
+                $querySolicitud = $querySolicitud
+                                        ->where('empresa.Id', $empresaId)
+                                        ->where('movimiento_atributo.MovimientoId', '=',$movimientoId)->get();
+            }else{
+                $querySolicitud = $querySolicitud->where('movimiento_atributo.MovimientoId', '=',$movimientoId)->get();
             }
         }
 
@@ -159,6 +172,8 @@ class ConsolidadoController extends Controller
             $ccId= $request['a']; 
             $atributo = $request['b']; 
             $consolidadoId = $request['c'];
+            $movId = $request['d'];
+
             $querySolicitud = Solicitud::select( 'solicitud.Id as SolicitudId', 'movimiento.Nombre as Movimiento','compuesta.Caracteristica as Detalle') 
                                     ->join('consolidado_mes', 'consolidado_mes.Id', '=', 'solicitud.ConsolidadoMesId')
                                     ->join('centro_de_costo', 'centro_de_costo.Id', '=', 'solicitud.CentroCostoId')
@@ -173,8 +188,14 @@ class ConsolidadoController extends Controller
                                     ->where('solicitud.ConsolidadoMesId', $consolidadoId)
                                     ->where('solicitud.CentroCostoId', '=', $ccId)
                                     ->where('movimiento_atributo.AtributoId','=', $atributo)
-                                    ->orderBy('solicitud.Id','asc')
-                                    ->get();            
+                                    ->orderBy('solicitud.Id','asc');
+
+            if($movId == null){
+                $querySolicitud = $querySolicitud->get();
+            }else{
+                $querySolicitud = $querySolicitud->where('movimiento_atributo.MovimientoId','=', $movId )->get();  
+            }
+                                              
         
             return response()->json([
                 'success' => true,
@@ -198,8 +219,9 @@ class ConsolidadoController extends Controller
             $request = $request->input('data');
             $consolidadoId = $request['ConsolidadoId'];
             $ccId = $request['a'];
+            $movId = $request['MovId'];
 
-            $solicitudes= $this->getSolicitudesAprobadas($consolidadoId,$ccId);
+            $solicitudes= $this->getSolicitudesAprobadas($consolidadoId,$ccId, $movId);
             
             return response()->json([
                 'success' => true,
@@ -214,7 +236,7 @@ class ConsolidadoController extends Controller
         }
     }
 
-    public function getSolicitudesAprobadas($consolidadoId,$ccId){
+    public function getSolicitudesAprobadas($consolidadoId,$ccId, $movId){
         
         $solicitudes= Solicitud::select('solicitud.Id',DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"),
 																	'centro_de_costo.Nombre as CentroCosto','FechaDesde','FechaHasta',
@@ -254,8 +276,12 @@ class ConsolidadoController extends Controller
                                                             ->where('historial_solicitud.EstadoEtapaFlujoId','=', 1) //Flujo Aprobado
                                                             ->where('solicitud.ConsolidadoMesId','=', $consolidadoId)
                                                             ->where('solicitud.CentroCostoId','=',$ccId)
-                                                            ->orderBy('solicitud.Id','asc')
-										                    ->get();
+                                                            ->orderBy('solicitud.Id','asc');
+        if($movId != null) {
+            $solicitudes = $solicitudes->where('movimiento_atributo.MovimientoId','=', $movId)->get();
+        }else{
+            $solicitudes = $solicitudes->get();
+        }
         return $solicitudes;
     }
 }

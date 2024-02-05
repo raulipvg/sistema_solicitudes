@@ -1,14 +1,23 @@
 //Evento en el clic en la columna donde está el flujo de la tabla en solicitudes activas
-$('#tabla-solicitudes').on('click','.flujo',function(e){
+$('#tabla-solicitudes, #tabla-solicitudes-terminadas').on('click','tr td.flujo',function(e){
+    //console.log("Ver Flujo");
+    
     var tr = e.target.closest('tr');
-    var row = tablaSolicitudes.row(tr);
+    var row;
+    if ($(this).closest('#tabla-solicitudes').length > 0) {
+        row = tablaSolicitudes.row(tr);
+    }else if($(this).closest('#tabla-solicitudes-terminadas').length > 0) {
+        row = tablaSolicitudesTerminadas.row(tr);
+    } 
     //Si no está abierta la fila con el estado de flujo, la abrirá.
     if($(this).attr('abierto') == '0'){
         $(this).attr('abierto','1');
-        
-        var solicitudId = $(this).parent().find('.btn-group').attr('a');        //Id de la solicitud
-        var historialId = $(this).parent().find('.btn-group').attr('b');        //Id del historial
-        var flujoId = $(this).parent().find('.btn-group').attr('c');            //Id del flujo asociado al movimiento
+        dataColumna=  row.data();
+        dataColumna = dataColumna[6];
+        var solicitudId = $(dataColumna).attr('a');        //Id de la solicitud
+        var historialId = $(dataColumna).attr('b');        //Id del historial
+        var flujoId = $(dataColumna).attr('c'); //Id del flujo asociado al movimiento
+
         llamaTabla(solicitudId,historialId,flujoId, row);
     }
     else{
@@ -16,29 +25,6 @@ $('#tabla-solicitudes').on('click','.flujo',function(e){
         row.child.hide();
         return;
     }
-});
-
-//Evento en el clic en la columna donde está el flujo de la tabla en solicitudes terminadas
-$('#tabla-solicitudes-terminadas').on('click','.flujo',function(e){
-    var tr = e.target.closest('tr');
-    var row = tablaSolicitudesTerminadas.row(tr);
-    //Si no está abierta la fila con el estado de flujo, la abrirá.
-    if($(this).attr('abierto') == '0'){
-        $(this).attr('abierto','1');
-        
-        var solicitudId = $(this).parent().find('.btn-group').attr('a');        //Id de la solicitud
-        var historialId = $(this).parent().find('.btn-group').attr('b');        //Id del historial
-        var flujoId = $(this).parent().find('.btn-group').attr('c');            //Id del flujo asociado al movimiento
-
-        llamaTabla(solicitudId,historialId,flujoId, row);
-
-    }
-    else{
-        $(this).attr('abierto','0');
-        row.child.hide();
-        return;
-    }
-
 });
 
 //Evento en el clic en la columna donde está el botón de aceptar/rechazar/historial de la tabla en solicitudes activas

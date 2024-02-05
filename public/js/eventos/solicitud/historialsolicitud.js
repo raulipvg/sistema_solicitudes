@@ -7,23 +7,17 @@ var formatoFecha={
     minute: '2-digit'
 };
 //
-$('#tabla-solicitudes').on('click','.historial',function(e){
-    var solicitudId = $(this).parent().parent().attr('a');        //Id de la solicitud
-    var historialId = $(this).parent().parent().attr('b');        //Id del historial
-    var flujoId = $(this).parent().parent().attr('c');            //Id del flujo asociado al movimiento
+$('#tabla-solicitudes, #tabla-solicitudes-terminadas').on('click','tr td button.historial',function(e){
+    obj =$(this).parent().parent();
+    var solicitudId = obj.attr('a');        //Id de la solicitud
+    var historialId = obj.attr('b');        //Id del historial
+    var flujoId = obj.attr('c');            //Id del flujo asociado al movimiento
     
-    cargarHistorial(solicitudId,historialId,flujoId, e,tablaSolicitudes);
-
-});
-
-$('#tabla-solicitudes-terminadas').on('click','.historial',function(e){
-    var solicitudId = $(this).parent().parent().attr('a');        //Id de la solicitud
-    var historialId = $(this).parent().parent().attr('b');        //Id del historial
-    var flujoId = $(this).parent().parent().attr('c');            //Id del flujo asociado al movimiento
-
-    
-    cargarHistorial(solicitudId,historialId,flujoId,e,tablaSolicitudesTerminadas);
-
+    if ($(this).closest('#tabla-solicitudes').length > 0) {
+        cargarHistorial(solicitudId,historialId,flujoId, e,tablaSolicitudes);
+    }else if($(this).closest('#tabla-solicitudes-terminadas').length > 0) {
+        cargarHistorial(solicitudId,historialId,flujoId,e,tablaSolicitudesTerminadas);
+    } 
 });
 
 function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
@@ -95,14 +89,14 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
                         fecha = new Date(hist.creacion).toLocaleDateString('es-CL',formatoFecha);
                         titulo = 'Iniciado';
                         texto = 'Fecha de creación:'
-                        html += cabecera(fecha,titulo,texto)+'<div class="timeline">';
+                        html += cabecera(fecha,titulo,texto,1)+'<div class="timeline">';
                     }
                     //Si el estado de la solicitud es 3, creará el footer de terminado y se agrega una vez fuera del forEach
                     if(hist.EstadoSolicitudId == 3){
                         fecha = new Date(hist.actualizacion).toLocaleDateString('es-CL',formatoFecha);
                         titulo = 'Terminado';
                         texto = 'Fecha de cierre:'
-                        footer = '</div>'+cabecera(fecha,titulo,texto);
+                        footer = '</div>'+cabecera(fecha,titulo,texto,2);
                     }
 
                     if(hist.EstadoEtapaFlujoId == 1){
@@ -176,12 +170,22 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
     })
 }
 
-function cabecera(fecha,titulo,texto){
+function cabecera(fecha,titulo,texto,flag){
+
+    //header
+    if(flag ===1){
+        className1= `bg-success`;
+        className2= `ki-to-right`;
+    //footer
+    }else{
+        className1= `bg-dark`;
+        className2= `ki-abstract-5`;
+    }
     html= `
                 <div class="d-flex align-items-sm-center mb-1">
-                    <div class="symbol symbol-45px me-4">
-                        <span class="symbol-label bg-primary">
-                        <i class="ki-duotone ki-ship text-inverse-primary fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                    <div class="symbol symbol-40px me-4">
+                        <span class="symbol-label ${className1}">
+                            <i class="ki-duotone ${className2} text-white fs-3x"><span class="path1"></span><span class="path2"></span></i>
                         </span>
                     </div>
                     <div class="d-flex align-items-center flex-row-fluid flex-wrap">

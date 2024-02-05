@@ -1,5 +1,6 @@
 $(document).ready(function() {   
     let ConsolidadoId =0;
+    let MovId =0;
 
     $("#ConsultarBtn").on('click', function(e){
         TotalCC= [];
@@ -35,6 +36,15 @@ $(document).ready(function() {
                     miTablaDetalle.clear();
                     cargarData.init(data.querySolicitud, data.tipoCambio)
                     ConsolidadoId = Consolidado;
+                    MovId = Movimiento;
+                    var html = ``;
+
+                    data.tipoCambio.forEach( (item) => {
+                            html+= `<span class="card-label fw-bold text-gray-800">${item.Simbolo}: </span>
+                            <span class="text-gray-500 mt-1 fw-semibold fs-6">${item.ToCLP.toLocaleString()} </span>`
+                    });
+                
+                    $("#tipo-cambio").empty().prepend(html);
                 }else{
                     Swal.fire({
                         text: "Error",
@@ -77,6 +87,7 @@ $(document).ready(function() {
         var a= boton.attr('data-a');
         var b= boton.attr('data-b');
         var c= boton.attr('data-c');
+        var d = MovId;
         //$(this).prev().find('a.ver').attr("info")
 
         if (row.child.isShown()) {
@@ -92,7 +103,7 @@ $(document).ready(function() {
                 url: VerDetallesAsociados,
                 data: {
                     _token: csrfToken,
-                    data: { a,b,c }
+                    data: { a,b,c, d}
                 },
                 //content: "application/json; charset=utf-8",
                 dataType: "json",
@@ -153,9 +164,9 @@ $(document).ready(function() {
 
     miTablaDetalle.on('click','tr.group td button.ver-solicitudes', function(e) {
 
-        console.log('Solicitudes Asociadas');
+        console.log('Solicitudes Aprobadas');
         var a = $(e.currentTarget).attr("data-a");
-        $("#modal-titulo-historialSolicitud").text('Solicitudes Asociadas al Centro de Costo');
+        $("#modal-titulo-historialSolicitud").text('Solicitudes Aprobadas al Centro de Costo');
         tablaSolicitudesTerminadas.clear().draw();
         $.ajax({
             type: 'POST',
@@ -163,7 +174,7 @@ $(document).ready(function() {
             data: {
                 _token: csrfToken,
                 data: {
-                    a, ConsolidadoId
+                    a, ConsolidadoId, MovId
                 } 
             },
             //content: "application/json; charset=utf-8",
@@ -178,7 +189,7 @@ $(document).ready(function() {
                     //data= data.data;             
                     //console.log(data);
                     cantTerminada = 0;
-                    $("#modal-titulo-historialSolicitud").text('Solicitudes Asociadas al CC: '+data.solicitudes[0].CentroCosto)
+                    $("#modal-titulo-historialSolicitud").text('Solicitudes Aprobadas al CC: '+data.solicitudes[0].CentroCosto)
                     cargarDataTerminada.init(data.solicitudes);                        
                 }else{
                     Swal.fire({

@@ -26,6 +26,17 @@ let tablaSolicitudesTerminadas = $('#tabla-solicitudes-terminadas').DataTable({
     //"scrollX": true
 });
 
+function BtnEstadoSolicitud(EstadoEtapaFlujoId){
+
+    var html = `<div class="d-flex p-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="${ (EstadoEtapaFlujoId== 1)?`Solicitud Aprobada`: `Solicitud Rechazada` }">                                    
+                    <i class="ki-duotone fs-2hx ${ (EstadoEtapaFlujoId== 1)?`text-success ki-check-circle`: `text-danger ki-cross-circle`}"> 
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                </div>`;
+
+    return html;
+}
 let cantTerminada = 0;
 const cargarDataTerminada= function(){
     return {
@@ -35,7 +46,7 @@ const cargarDataTerminada= function(){
                             //console.log("Nombre:", data[persona].username);
                     
                     var col0 = `<div class="position-relative ps-6">
-                                    <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-danger"></div>
+                                    <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-dark"></div>
                                     <span class="mb-1 text-gray-900 text-hover-primary fw-bold text-capitalize">#${data[key].Id} ${data[key].NombreCompleto}</span>
                                     <div class="fs-7 text-muted fw-bold">Creada ${formatearFecha(data[key].FechaCreado)}</div>
                                 </div>`;
@@ -62,15 +73,16 @@ const cargarDataTerminada= function(){
                                 </div>
                                 <div class="fs-7 fw-bold text-muted">Solicitado por</div>`;
 
-                    var col6 = `<div class="btn-group btn-group-sm" role="group" a="${data[key].Id}" b="${data[key].HistorialId}" c="${data[key].FlujoIdd}" >                                    
-                                    <div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
-                                        <button class="historial btn btn-light-primary p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud">
-                                            <i class="ki-duotone ki-watch fs-2x p-0">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                        </button>
-                                    </div>
+                    var col6 = `<div class="d-flex flex-row justify-content-end align-items-center" role="group" a="${data[key].Id}" b="${data[key].HistorialId}" c="${data[key].FlujoIdd}" >
+                                        ${BtnEstadoSolicitud(data[key].EstadoEtapaFlujoId)}
+                                        <div class="btn-group btn-group-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ver Historial">
+                                            <button class="historial btn btn-light-primary p-1" data-bs-toggle="modal" data-bs-target="#historialSolicitud">
+                                                <i class="ki-duotone ki-watch fs-2x p-0">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </button>                                            
+                                        </div>
                                 </div>`;
                         
                     var rowNode =  tablaSolicitudesTerminadas.row.add( {

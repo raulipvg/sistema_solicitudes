@@ -160,10 +160,12 @@ Route::group(['prefix'=> '/consolidado', 'middleware' => 'auth'], function () {
 
 });
 
+/*
 Route::group(['prefix'=> '/consolidados6', 'middleware' => 'auth'], function () {
     Route::get('/',[ConsolidadoController::class,'Indexs6'])->name('Consolidado');
     Route::post('/verdetallesasociados', [ConsolidadoController::class,'VerDetallesAsociados'])->name('VerDetallesAsociados');
 });
+*/
 
 
 Route::get('/test', ['middleware' => 'auth', function () {

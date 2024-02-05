@@ -55,13 +55,15 @@ var miTablaDetalle = $("#tablaConsolidado").DataTable({
     "dom":
         `
         <'d-flex flex-md-row flex-column justify-content-md-between justify-content-start align-items-center'
-        <'#btnExport' B >
-        <'#filtro'f>
+            <'#btnExport' B >
+            <'#filtro.d-flex flex-row align-items-center'
+                <'#tipo-cambio.flex-row'> f
+            >
         >
         <'table-responsive'tr>
         <'d-flex flex-md-row flex-column justify-content-md-between'
-        <'d-flex align-items-center justify-content-center'li>
-        <'d-flex align-items-center justify-content-center'p>
+            <'d-flex align-items-center justify-content-center'li>
+            <'d-flex align-items-center justify-content-center'p>
         >
         `
     ,    
