@@ -20,7 +20,12 @@
 
     <div class="card mx-5">
         <div class="card-header bg-dark">
-            <h3 class="card-title text-uppercase text-white">{{$titulo}}</h3>                
+            <h3 class="card-title text-uppercase text-white">{{$titulo}}</h3>
+            <div class="m-1">                
+                <button id="CerrarMesBtn" type="button" class="btn btn-sm btn-success">
+                    Cerrar mes
+                </button>
+            </div>   
         </div>
         <div class="card-body p-1">
                 @include('consolidado.componente.vistaConsolidado')
@@ -41,6 +46,7 @@
         const VerConsolidados = "{{ route('VerConsolidados') }}"       
         const VerDetallesAsociados ="{{ route('VerDetallesAsociados')}}";
         const VerSolicitudesAsociadas = "{{ route('VerSolicitudesAsociadas') }}";
+        const CerrarMes = "{{ route('CerrarMes') }}";
        
 
         /* END:RUTAS */        

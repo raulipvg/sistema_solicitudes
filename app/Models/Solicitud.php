@@ -21,6 +21,7 @@ use Illuminate\Validation\ValidationException;
  * @property int $CentroCostoId
  * @property int $ConsolidadoMesId
  * @property int $UsuarioSolicitanteId
+ * @property int $TipoMonedaId
  * 
  * @property CentroDeCosto $centro_de_costo
  * @property ConsolidadoMe $consolidado_me
@@ -46,6 +47,7 @@ class Solicitud extends Model
 		'FechaDesde'=> 'date',
 		'FechaHasta'=> 'date',
 		'UsuarioSolicitanteId'=> 'int',
+		'TipoMonedaId' => 'int',
 	];
 
 	protected $fillable = [

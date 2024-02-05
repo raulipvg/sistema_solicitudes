@@ -234,4 +234,59 @@ $(document).ready(function() {
         tablaSolicitudesTerminadas.column(6).visible(false)
         tablaSolicitudesTerminadas.column(7).visible(false)
     })
+
+    $("#CerrarMesBtn").on('click', function(e){
+        $.ajax({
+            type: 'POST',
+            url: CerrarMes,
+            data: {
+                _token: csrfToken,
+                data: null
+            },
+            //content: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function() {
+                bloquear();
+                KTApp.showPageLoading();
+            },
+            success: function (data) {                                    
+                if(data.success){
+                    Swal.fire({
+                        text: data.mensaje,
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
+                }else{
+                    Swal.fire({
+                        text: "Error",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-danger btn-cerrar"
+                        }
+                    });
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    text: "Error",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "btn btn-danger btn-cerrar"
+                    }
+                });
+            },
+            complete: function(){
+                KTApp.hidePageLoading();
+                loadingEl.remove();
+            }
+        });
+    })
 })

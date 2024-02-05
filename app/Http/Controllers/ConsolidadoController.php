@@ -9,8 +9,11 @@ use Illuminate\Http\Request;
 use App\Models\Movimiento;
 use App\Models\Solicitud;
 use App\Models\TipoCambio;
+use App\Models\Compuesta;
+use Illuminate\Support\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ConsolidadoController extends Controller
 {
@@ -283,5 +286,103 @@ class ConsolidadoController extends Controller
             $solicitudes = $solicitudes->get();
         }
         return $solicitudes;
+    }
+
+    public function CerrarMes(Request $request){
+        //fecha actual para el valor de la moneda
+        $fecha = date('d-m-Y');
+        //Busca el consolidado abierto (EstadoConsolidadoId = 1)
+        $consolidado = ConsolidadoMe::where('EstadoConsolidadoId',1)
+                                    ->first();
+        try{
+            DB::beginTransaction();
+            //obtiene valor del dolar y uf desde miindicador.cl
+            $dolar = TipoCambio::CreaMoneda('/dolar/'.$fecha , 2, $consolidado->Id);
+            $uf = TipoCambio::CreaMoneda('/uf/'.$fecha , 3, $consolidado->Id);
+
+            if(!$dolar  || !$uf){
+                throw new Exception('Error al capturar el valor de las monedas');
+            }
+
+            //Recibe las solicitudes correspondientes al mes
+            $solicitudes = Solicitud::with('compuesta')
+                                    ->where('solicitud.ConsolidadoMesId',$consolidado->Id)
+                                    ->get();
+            /*
+            $compuestas = Compuesta::select('compuesta.Id','compuesta.SolicitudId','compuesta.CostoReal','compuesta.TipoMonedaId')
+                                    ->where('solicitud.ConsolidadoMesId', $consolidado->Id)
+                                    ->join('solicitud','solicitudId','=','compuesta.SolicitudId')
+                                    ->orderBy('compuesta.SolicitudId')
+                                    ->get();
+            $solicitudId = null;
+            $suma=0;
+            foreach($compuestas as $compuesta){
+                if(isset($solicitudId)){
+                    $solicitudId = $compuesta->SolicitudId;
+                }
+                if($solicitudId != $compuesta->SolicitudId){
+                    $solicitudEdit = Solicitud::find($solicitudId);
+                    $solicitudEdit->CostoSolicitud = $suma;
+                    $solicitudEdit->TipoMonedaId = 1;
+                    $solicitudEdit->update();
+                    $solicitudId = $compuesta->SolicitudId;
+                    
+                    $suma = 0;
+                }
+                if($compuesta->TipoMonedaId == 1 && $compuesta->CostoReal != null){
+                    $suma += $compuesta->CostoReal;
+                }else if($compuesta->TipoMonedaId == 2 && $compuesta->CostoReal != null){
+                    $suma += $compuesta->CostoReal * $dolar->ToCLP;
+                }else if($compuesta->TipoMonedaId == 3 && $compuesta->CostoReal != null){
+                    $suma += $compuesta->CostoReal * $uf->ToCLP;
+                }
+
+            }*/
+
+            //Realiza la sumatoria de cada solicitud, transformando la moneda a CLP$
+            foreach($solicitudes as $solicitudEdit){
+                $suma = 0;
+                $solicitudEdit = Solicitud::find($solicitudEdit->Id);
+                foreach($solicitudEdit->compuesta as $compuesta){
+                    if($compuesta->TipoMonedaId == 1 && $compuesta->CostoReal != null){
+                        $suma += $compuesta->CostoReal;
+                    }else if($compuesta->TipoMonedaId == 2 && $compuesta->CostoReal != null){
+                        $suma += $compuesta->CostoReal * $dolar->ToCLP;
+                    }else if($compuesta->TipoMonedaId == 3 && $compuesta->CostoReal != null){
+                        $suma += $compuesta->CostoReal * $uf->ToCLP;
+                    }
+                }
+                $solicitudEdit->CostoSolicitud = $suma;
+                $solicitudEdit->TipoMonedaId = 1;
+                $solicitudEdit->update();
+            }
+
+            //Cierra el mes cambiando de estado y agregando la fecha de término
+            $consolidado->EstadoConsolidadoId = 0;
+            $consolidado->FechaTermino = Carbon::now();
+            $consolidado->update();
+
+            //Crea un nuevo mes con la fecha y hora actual, con un estado abierto
+            $nuevoMes = new ConsolidadoMe();
+            $nuevoMes->EstadoConsolidadoId = 1;
+            $nuevoMes->save();
+            
+            Log::info('Mes cerrado');
+            DB::commit();
+            return response()->json([
+                'success'=>true,
+                'dolar' => $dolar->ToCLP,
+                'uf' => $uf->ToCLP,
+                'mensaje'=>'Mes cerrado correctamente'
+            ]);
+        }
+        catch(Exception $e){
+            DB::rollBack();
+            Log::error('Error al cerrar mes',[$e]);
+            return response()->json([
+                'success' => false,
+                'mensaje' =>$e->getMessage()
+            ]);
+        }
     }
 }
