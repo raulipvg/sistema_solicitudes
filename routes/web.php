@@ -153,7 +153,16 @@ Route::group(['prefix' => '/error'], function () {
 
 Route::group(['prefix'=> '/consolidado', 'middleware' => 'auth'], function () {
     Route::get('/',[ConsolidadoController::class,'Index'])->name('Consolidado');
-    Route::post('/vercompuesta', [ConsolidadoController::class,'VerCompuesta'])->name('VerCompuesta');
+    Route::post('/verconsolidados', [ConsolidadoController::class, 'VerConsolidados'])->name('VerConsolidados');
+    Route::post('/verdetalles', [ConsolidadoController::class,'VerDetallesAsociados'])->name('VerDetallesAsociados');
+    Route::post('/Versolicitudes', [ConsolidadoController::class, 'VerSolicitudesAsociadas'])->name('VerSolicitudesAsociadas');
+    //Route::post('/verconsolidadoempresa', [ConsolidadoController::class,'VerConsolidadoEmpresa'])->name('VerConsolidadoEmpresa');
+
+});
+
+Route::group(['prefix'=> '/consolidados6', 'middleware' => 'auth'], function () {
+    Route::get('/',[ConsolidadoController::class,'Indexs6'])->name('Consolidado');
+    Route::post('/verdetallesasociados', [ConsolidadoController::class,'VerDetallesAsociados'])->name('VerDetallesAsociados');
 });
 
 

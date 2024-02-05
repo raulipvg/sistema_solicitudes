@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Collection|Interno[] $internos
  * @property Collection|OrdenDeCompra[] $orden_de_compras
  * @property Collection|Solicitud[] $solicituds
+ * @property Collection|TipoCambio[] $tipo_cambio
  *
  * @package App\Models
  */
@@ -61,5 +62,10 @@ class ConsolidadoMe extends Model
 	public function solicituds()
 	{
 		return $this->hasMany(Solicitud::class, 'ConsolidadoMesId');
+	}
+
+	public function tipo_cambios()
+	{
+		return $this->hasMany(TipoCambio::class,'ConsolidadoId');
 	}
 }

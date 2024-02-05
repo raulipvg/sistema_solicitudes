@@ -76,9 +76,10 @@ class SolicitudFlujoHistorialController extends Controller
                                         )
                                         ->join('movimiento_atributo','movimiento_atributo.Id','=','compuesta.MovimientoAtributoId')
                                         ->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
-                                        ->join('tipo_moneda','tipo_moneda.Id','=','atributo.TipoMonedaId')
+                                        ->join('tipo_moneda','tipo_moneda.Id','=','compuesta.TipoMonedaId')
                                         ->where('compuesta.SolicitudId',$request['solicitudId'])
                                         ->get();
+                                        
         $costoSolicitud = Solicitud::select('CostoSolicitud')
                                         ->where('Id',$request['solicitudId'])
                                         ->first();

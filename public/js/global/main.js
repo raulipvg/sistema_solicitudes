@@ -128,8 +128,27 @@ var loadingEl = document.createElement("div");
         var btn =   `
                     <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px" 
                             data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="${tooltip}">
-                        <i class="ki-duotone ki-plus fs-3 m-0 toggle-off"></i>
-                        <i class="ki-duotone ki-minus fs-3 m-0 toggle-on"></i>
+                        <i class="ki-duotone ki-down fs-2x m-0 toggle-off"></i>
+                        <i class="ki-duotone ki-up fs-2x m-0 toggle-on"></i>  
+                        <span class="indicator-label"></span>
+                        <span class="indicator-progress">
+                            <span class="spinner-border spinner-border-sm align-middle"></span>
+                        </span>
+                    </button>
+                    `;
+        return btn;
+    }
+
+    function botonVerDetalle(tooltip,a,b,c){
+        //a CentroCosto ID
+        //b Atributo ID
+        //c Consolidado ID
+        var btn =   `
+                    <button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px" 
+                            data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="${tooltip}"
+                            data-a="${a}" data-b="${b}" data-c="${c}" ">
+                        <i class="ki-duotone ki-down fs-2x m-0 toggle-off"></i>
+                        <i class="ki-duotone ki-up fs-2x m-0 toggle-on"></i>                       
                         <span class="indicator-label"></span>
                         <span class="indicator-progress">
                             <span class="spinner-border spinner-border-sm align-middle"></span>

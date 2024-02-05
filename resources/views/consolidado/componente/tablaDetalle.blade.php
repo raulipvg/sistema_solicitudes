@@ -1,24 +1,36 @@
                                 <div class="table-responsive">
-                                    <table id="tabla-detalle-consolidado" class="table table-row-dashed table-hover rounded gy-2 gs-md-3 nowrap">
+                                    <table id="tablaConsolidado" class="table table-row-dashed table-hover table-row-bordered gy-5 gs-7 border rounded w-100">
                                         <thead>
                                             <tr class="fw-bolder text-uppercase">
-                                                <th scope="col" class="p-2">Nombre</th>
-                                                <th scope="col" class="p-2">Cantidad</th>
-                                                <th scope="col" class="p-2">Total</th>
+                                                <th class="p-2">Centro de Costo</th>
+                                                <th class="p-2 ps-7">Atributo</th>
+                                                <th class="p-2">Cantidad</th>                                                
+                                                <th class="p-2">Total</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tbody class="fw-bold text-gray-600 fs-6">
-                                                                                             
-                                        </tbody>
-                                        <thead>
-                                            <tr class="text-gray-800 fw-bold fs-5 text-uppercase gs-0 table-light">
-                                                <th colspan="3" class="text-end p-2">Total del movimiento</th>
-                                                <th colspan="1" class="p-2">
-                                                    <span class="text-start">CLP$</span>
-                                                    <span class="float-end">1.000.000</span>
-                                                </th>
+                                            <!--
+                                            <tr>
+                                                <td class="py-0">Centro de Costo 1</td>
+                                                <td class="py-0">Atributo 1</td>
+                                                <td class="py-0">5</td>                                                
+                                                <td class="py-0">$320.800</td>
                                             </tr>
-                                        </thead>
-                                    </table>
+                                            <tr>
+                                                <td class="py-0">Centro de Costo 1</td>
+                                                <td class="py-0">Atributo 2</td>                                               
+                                                <td class="py-0">10</td>
+                                                <td class="py-0">$420,800</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-0">Centro de Costo 2</td>
+                                                <td class="py-0">Atributo 2</td>                                                
+                                                <td class="py-0">63</td>
+                                                <td class="py-0">$170.750</td>
+                                            </tr> -->
+                                        </tbody>
+                                </table>
                                 </div>
+
+                                
