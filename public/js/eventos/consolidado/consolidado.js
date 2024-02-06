@@ -2,6 +2,13 @@ $(document).ready(function() {
     let ConsolidadoId =0;
     let MovId =0;
 
+    llenarSelect2(empresas, $('#EmpresaIdInput'));
+    llenarSelect2(consolidados, $('#ConsolidadoIdInput'),1);
+    if(credenciales.VerMov)llenarSelect2(movimientos, $('#MovimientoIdInput')); 
+    if(credenciales.VerCC )llenarSelect2(centrocostos, $('#CentroCostoIdInput'));
+    
+   
+    
     $("#ConsultarBtn").on('click', function(e){
         TotalCC= [];
         console.log('Consultar')
@@ -235,32 +242,45 @@ $(document).ready(function() {
         tablaSolicitudesTerminadas.column(7).visible(false)
     })
 
-    $("#CerrarMesBtn").on('click', function(e){
-        $.ajax({
-            type: 'POST',
-            url: CerrarMes,
-            data: {
-                _token: csrfToken,
-                data: null
-            },
-            //content: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend: function() {
-                bloquear();
-                KTApp.showPageLoading();
-            },
-            success: function (data) {                                    
-                if(data.success){
-                    Swal.fire({
-                        text: data.mensaje,
-                        icon: "success",
-                        buttonsStyling: false,
-                        confirmButtonText: "OK",
-                        customClass: {
-                            confirmButton: "btn btn-danger btn-cerrar"
-                        }
-                    });
-                }else{
+    if(credenciales.CerrarMes){
+        $("#CerrarMesBtn").on('click', function(e){
+            $.ajax({
+                type: 'POST',
+                url: CerrarMes,
+                data: {
+                    _token: csrfToken,
+                    data: null
+                },
+                //content: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function() {
+                    bloquear();
+                    KTApp.showPageLoading();
+                },
+                success: function (data) {                                    
+                    if(data.success){
+                        Swal.fire({
+                            text: data.mensaje,
+                            icon: "success",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+                    }else{
+                        Swal.fire({
+                            text: "Error",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn btn-danger btn-cerrar"
+                            }
+                        });
+                    }
+                },
+                error: function () {
                     Swal.fire({
                         text: "Error",
                         icon: "error",
@@ -270,23 +290,13 @@ $(document).ready(function() {
                             confirmButton: "btn btn-danger btn-cerrar"
                         }
                     });
+                },
+                complete: function(){
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
                 }
-            },
-            error: function () {
-                Swal.fire({
-                    text: "Error",
-                    icon: "error",
-                    buttonsStyling: false,
-                    confirmButtonText: "OK",
-                    customClass: {
-                        confirmButton: "btn btn-danger btn-cerrar"
-                    }
-                });
-            },
-            complete: function(){
-                KTApp.hidePageLoading();
-                loadingEl.remove();
-            }
-        });
-    })
+            });
+        })
+    }
+
 })

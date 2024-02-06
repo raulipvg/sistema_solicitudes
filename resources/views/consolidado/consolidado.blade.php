@@ -1,3 +1,4 @@
+@if ($crendeciales['Ver'])
 @extends('layout.main')
 
 @section('main-content')
@@ -21,11 +22,14 @@
     <div class="card mx-5">
         <div class="card-header bg-dark">
             <h3 class="card-title text-uppercase text-white">{{$titulo}}</h3>
-            <div class="m-1">                
-                <button id="CerrarMesBtn" type="button" class="btn btn-sm btn-success">
-                    Cerrar mes
-                </button>
-            </div>   
+            @if($crendeciales['CerrarMes'])
+                <div class="m-1">                
+                    <button id="CerrarMesBtn" type="button" class="btn btn-sm btn-success">
+                        Cerrar mes
+                    </button>
+                </div>
+            @endif
+               
         </div>
         <div class="card-body p-1">
                 @include('consolidado.componente.vistaConsolidado')
@@ -53,7 +57,11 @@
         
         const layout= {!! json_encode($accesoLayout) !!};
 
-        
+        const consolidados = {!!json_encode($consolidados) !!};
+        const movimientos = {!!json_encode($movimientos) !!};
+        const centrocostos  = {!!json_encode($centrocostos) !!};
+        const empresas  = {!!json_encode($empresas) !!};
+        const credenciales = {!!json_encode($crendeciales) !!};
     </script>
 
     <!--begin::Datatables y Configuracion de la Tabla-->
@@ -69,3 +77,9 @@
     <!--end::Eventos de la pagina-->
 
 @endpush
+    
+@else
+    <script>
+        window.location = '{{ route('Error404') }}';
+    </script>
+@endif

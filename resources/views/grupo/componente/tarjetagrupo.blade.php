@@ -41,17 +41,45 @@
 															@php
 																$aux= $privilegio->pivot->Ver+$privilegio->pivot->Registrar+$privilegio->pivot->Editar+$privilegio->pivot->Eliminar;
 																$text='';
-																if($privilegio->pivot->Ver == 1){
-																	$text='Ver ';
-																}
-																if($privilegio->pivot->Registrar == 1){
-																	$text= $text.' Registrar';
-																}
-																if($privilegio->pivot->Editar == 1){
-																	$text= $text.' Editar';
-																}
-																if($privilegio->pivot->Eliminar == 1){
-																	$text= $text.' Eliminar';
+																if( $privilegio->Id < 12 ){
+																	if($privilegio->pivot->Ver == 1){
+																		$text='-Ver. ';
+																	}
+																	if($privilegio->pivot->Registrar == 1){
+																		$text= $text.'-Registrar. ';
+																	}
+																	if($privilegio->pivot->Editar == 1){
+																		$text= $text.'-Editar. ';
+																	}
+																	if($privilegio->pivot->Eliminar == 1){
+																		$text= $text.'-Eliminar. ';
+																	}
+																}else if( $privilegio->Id == 12){
+																	if($privilegio->pivot->Ver == 1){
+																		$text='-Ver Grupos. ';
+																	}
+																	if($privilegio->pivot->Registrar == 1){
+																		$text= $text.'-Ver Todas. ';
+																	}
+																	if($privilegio->pivot->Editar == 1){
+																		$text= $text.'-Realizar Solicitud. ';
+																	}
+																	if($privilegio->pivot->Eliminar == 1){
+																		$text= $text.'-Aprobador. ';
+																	}
+																}else if( $privilegio->Id == 13){
+																	if($privilegio->pivot->Ver == 1){
+																		$text='-Ver Consolidado. ';
+																	}
+																	if($privilegio->pivot->Registrar == 1){
+																		$text= $text.'-Ver por Centro de Costo. ';
+																	}
+																	if($privilegio->pivot->Editar == 1){
+																		$text= $text.'-Ver por Movimiento. ';
+																	}
+																	if($privilegio->pivot->Eliminar == 1){
+																		$text= $text.'-Cerrar Mes. ';
+																	}
 																}																
 															@endphp
 															@if( $aux >0 )

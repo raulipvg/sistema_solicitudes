@@ -2,16 +2,19 @@ let tabulador =1;
 let tablaSolicitudes = $('#tabla-solicitudes').DataTable({
     "language": languageConfig,
     "dom":
-        `<'d-flex flex-md-row flex-column justify-content-md-between justify-content-start align-items-center'
-        <''f>
+        `
+        <'d-flex flex-md-row flex-column justify-content-md-end justify-content-center align-items-center'
+            <'#filtro'f>
         > 
         <'table-responsive'tr>
-        <'row'
-        <'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>
-        <'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>
-        >`
+        <'d-flex flex-md-row flex-column justify-content-md-between'
+            <'d-flex align-items-center justify-content-center'li>
+            <'d-flex align-items-center justify-content-center'p>
+        >
+        `
     ,
-    "pageLength": 30,
+    "pageLength": 25,
+    "displayLength": 25,
     "columnDefs": [
         { targets: 6, responsivePriority: 3,searchable: false},
         { targets: 0, responsivePriority: 1 },   
@@ -21,8 +24,16 @@ let tablaSolicitudes = $('#tabla-solicitudes').DataTable({
     ],
     "responsive": true,
     "initComplete": function() {
-        //$('.filtro').children().addClass('btn-group-sm')
-        $('.dataTables_filter').addClass('p-0')
+        $('#tabla-solicitudes_filter').addClass('py-1');
+        $('#tabla-solicitudes_length').addClass('p-0');
+        $('#tabla-solicitudes_info').addClass('p-0');
+        $('#tabla-solicitudes_paginate').addClass('p-0');
+        var icon = `<i class="ki-duotone ki-magnifier fs-1 position-absolute m-2">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>`;
+        $('#tabla-solicitudes_filter label').prepend(icon);
+        $('#tabla-solicitudes_filter input').addClass('ps-9');
     }
     //"scrollX": true
 });

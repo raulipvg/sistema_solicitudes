@@ -68,14 +68,15 @@ var loadingEl = document.createElement("div");
         return fechaFormateada;
     }
 
-    function llenarSelect2(data,select){
+    function llenarSelect2(data,select,flag){
         select.empty();
         var option = new Option('','');
         select.append(option);
         for (const key in data) {
             var textoCapitalizado = (data[key].Nombre).toUpperCase();
             var option = new Option(textoCapitalizado, data[key].Id);
-            select.append(option);                        
+            select.append(option);
+            (flag ==1)? select.val(data[key].Id).trigger('change.select2'): flag=0;                        
         }
     }
 

@@ -23,24 +23,35 @@ class ConsolidadoController extends Controller
 
         //BEGIN::PRIVILEGIOS
         $user = auth()->user();
+
+        $credenciales = [
+            'Ver'=> $user->puedeVer(13),                
+            'VerCC'=> $user->puedeRegistrar(13),
+            'VerMov'=> $user->puedeEditar(13),
+            'CerrarMes'=> $user->puedeEliminar(13)
+        ];
+
         $accesoLayout= $user->todoPuedeVer();
+
 
         $movimientos = Movimiento::select('Id','Nombre','Enabled')->get();
         $empresas = Empresa::select('Id','Nombre','Enabled')->get();
         $centrocostos = CentroDeCosto::select('Id','Nombre','Enabled')->get();
         $consolidados = ConsolidadoMe::select('Id',
-                                                DB::raw('DATE_FORMAT(created_at, "%m - %Y") AS Mes')
+                                                DB::raw('DATE_FORMAT(created_at, "%m - %Y") AS Nombre')
                                             )
-                                            ->orderBy('Mes','desc')
+                                            ->where('EstadoConsolidadoId','=', 0) //Consolidado Cerrado
+                                            ->orderBy('Nombre','desc')
                                             ->get(); 
 
         return view('consolidado.consolidado')->with([
-            'accesoLayout'=>$accesoLayout,
             'titulo' => $titulo,
             'movimientos' => $movimientos,
             'empresas'=> $empresas,
             'centrocostos'=> $centrocostos,
-            'consolidados'=> $consolidados
+            'consolidados'=> $consolidados,
+            'crendeciales' => $credenciales,
+            'accesoLayout' => $accesoLayout
         ]);
     }
 
@@ -69,8 +80,8 @@ class ConsolidadoController extends Controller
     public function VerConsolidados(Request $request){
         $request = $request->input('data');
         $empresaId = $request['Empresa'];
-        $ccId = $request['CC'];
-        $movimientoId = $request['Movimiento'];
+        $ccId = isset($request['CC'])?$request['CC']:null;
+        $movimientoId = isset($request['Movimiento'])?$request['Movimiento']:null;
         $consolidadoId = $request['Consolidado'];
 
         $tipoCambio = TipoCambio::select('ToCLP','TipoMonedaId','Simbolo','Nombre')
