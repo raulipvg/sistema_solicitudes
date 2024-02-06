@@ -22,10 +22,10 @@
     <div class="card mx-5">
         <div class="card-header bg-dark">
             <h3 class="card-title text-uppercase text-white">{{$titulo}}</h3>
-            @if($crendeciales['CerrarMes'])
+            @if($crendeciales['CerrarMes'] && $mostrarBoton)
                 <div class="m-1">                
-                    <button id="CerrarMesBtn" type="button" class="btn btn-sm btn-success">
-                        Cerrar mes
+                    <button id="CerrarMesBtn" type="button" class="btn btn-sm btn-success text-uppercase " data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="bottom" title="Cerrar mes">
+                        Cerrar mes de {{$mesNombre}}
                     </button>
                 </div>
             @endif

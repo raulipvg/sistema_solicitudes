@@ -267,6 +267,9 @@ $(document).ready(function() {
                             customClass: {
                                 confirmButton: "btn btn-danger btn-cerrar"
                             }
+                        }).then(function(){
+                            location.reload();
+                            //$("#CerrarMesBtn").parent().empty();
                         });
                     }else{
                         Swal.fire({

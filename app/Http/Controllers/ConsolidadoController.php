@@ -20,7 +20,6 @@ class ConsolidadoController extends Controller
     public function Index (Request $request){
         $titulo= "Consolidado Mensual de solicitudes";
         //$usuarios = Usuario::all();
-
         //BEGIN::PRIVILEGIOS
         $user = auth()->user();
 
@@ -32,6 +31,7 @@ class ConsolidadoController extends Controller
         ];
 
         $accesoLayout= $user->todoPuedeVer();
+        $mostrarBoton = false;
 
 
         $movimientos = Movimiento::select('Id','Nombre','Enabled')->get();
@@ -43,6 +43,17 @@ class ConsolidadoController extends Controller
                                             ->where('EstadoConsolidadoId','=', 0) //Consolidado Cerrado
                                             ->orderBy('Nombre','desc')
                                             ->get(); 
+        
+        $ultimoConsolidado = ConsolidadoMe::select('Id','created_at','EstadoConsolidadoId')
+                                            ->orderBy('Id','desc')
+                                            ->first();
+        $fechaConsolidado = Carbon::create($ultimoConsolidado['created_at']);
+        $mesNombre = $fechaConsolidado->locale('es')->monthName;
+
+        //Si la fecha actual es después de 7 días antes de fin de mes, y se encuentra el consoliado abierto. gt() verifica "mayor qué"
+        if(Carbon::now()->gt($fechaConsolidado->endOfMonth()->subDays(7)) && $ultimoConsolidado->EstadoConsolidadoId == 1) {
+            $mostrarBoton = true;
+        }
 
         return view('consolidado.consolidado')->with([
             'titulo' => $titulo,
@@ -51,7 +62,9 @@ class ConsolidadoController extends Controller
             'centrocostos'=> $centrocostos,
             'consolidados'=> $consolidados,
             'crendeciales' => $credenciales,
-            'accesoLayout' => $accesoLayout
+            'accesoLayout' => $accesoLayout,
+            'mostrarBoton' => $mostrarBoton,
+            'mesNombre'=> $mesNombre
         ]);
     }
 
@@ -376,6 +389,7 @@ class ConsolidadoController extends Controller
             //Crea un nuevo mes con la fecha y hora actual, con un estado abierto
             $nuevoMes = new ConsolidadoMe();
             $nuevoMes->EstadoConsolidadoId = 1;
+            $nuevoMes->created_at = Carbon::create($consolidado->created_at)->addMonth()->startOfMonth();
             $nuevoMes->save();
             
             Log::info('Mes cerrado');
@@ -389,7 +403,7 @@ class ConsolidadoController extends Controller
         }
         catch(Exception $e){
             DB::rollBack();
-            Log::error('Error al cerrar mes',[$e]);
+            Log::error('Error al cerrar mes',[$e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'mensaje' =>$e->getMessage()
