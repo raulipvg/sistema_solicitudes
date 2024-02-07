@@ -16,6 +16,21 @@
 											</a>
 										<!--end:Menu link-->
 										</div>
+										<!--begin:Menu link-->
+										<div class="menu-item">
+											<a class="menu-link  {{ request()->routeIs('Consolidado')? 'active' : '' }}" href="{{route('Consolidado')}}">
+												<span class="menu-icon">
+													<i class="ki-duotone ki-sort fs-2">
+														<span class="path1"></span>
+														<span class="path2"></span>
+														<span class="path3"></span>
+														<span class="path4"></span>
+													</i>
+												</span>
+												<span class="menu-title">Consolidado</span>
+											</a>
+										<!--end:Menu link-->
+										</div>
 										@if( collect($accesoLayout)->where('PrivilegioId', 10)->pluck('Ver')->first() == 1 || collect($accesoLayout)->where('PrivilegioId', 7)->pluck('Ver')->first())
 										<!--begin:Menu item-->
 										<div data-kt-menu-trigger="click" class="menu-item menu-accordion pt-2 {{ request()->routeIs('Flujo') || 
