@@ -2,7 +2,7 @@ CREATE TABLE serviciosgenerales.tipo_cambio (
     Id int(11) auto_increment NOT NULL,
     ToCLP int(11) NOT NULL,
     TipoMonedaId int(11) NOT NULL,
-    ConsolidadoId int(11) NOT NULL
+    ConsolidadoId int(11) NOT NULL,
     CONSTRAINT Tipo_Cambio_pk PRIMARY KEY (Id),
     CONSTRAINT Tipo_Cambio_Tipo_Cambio_FK FOREIGN KEY (TipoMonedaId) REFERENCES serviciosgenerales.tipo_cambio(Id) ON DELETE RESTRICT ON UPDATE RESTRICT,
     CONSTRAINT tipo_cambio_consolidado_mes_FK FOREIGN KEY (ConsolidadoId) REFERENCES serviciosgenerales.consolidado_mes(Id) ON DELETE RESTRICT ON UPDATE RESTRICT
