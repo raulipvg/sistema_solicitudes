@@ -120,7 +120,6 @@
 
 
         const credenciales= {!! json_encode($credenciales) !!}; //observacion, arreglar
-        console.log(credenciales);
     </script>
 
     <!--begin::Datatables y Configuracion de la Tabla-->

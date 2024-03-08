@@ -8,7 +8,7 @@
 													<!--end::Card title-->
 													<div class="card-toolbar">
 													@php
-														$className = ($credencialesGrupo['puedeEliminar'])? 'estado-grupo': 'disabled';
+														$className = ($credenciales['Grupo']['puedeEliminar'])? 'estado-grupo': 'disabled';
 													@endphp
 
 													@if($grupo->Enabled ==1 )
@@ -94,9 +94,9 @@
 												<!--end::Card body-->
 												<!--begin::Card footer-->
 												<div class="d-flex justify-content-center card-footer flex-wrap pt-0">
-                                                    @if ($flag == 1 && $credencialesGrupo['puedeEditar'])
+                                                    @if ($flag == 1 && $credenciales['Grupo']['puedeEditar'])
                                                     <button type="button" class="btn btn-light btn-active-light-warning my-1 editar-grupo" data-bs-toggle="modal" data-bs-target="#kt_modal_update_role" data-info="{{ $grupo->Id }}">Editar Grupo</button>
-                                                    @elseif ($flag == 2 && $credencialesGrupo['puedeEditar'])
+                                                    @elseif ($flag == 2 && $credenciales['Grupo']['puedeEditar'])
                                                     <a href="{{route('VerGrupo', ['id' => $grupo->Id]) }}" class="btn btn-light btn-active-dark my-1 me-2" data-info="{{ $grupo->Id }}">Ver Grupo</a>
 													<button type="button" class="btn btn-light btn-active-light-warning my-1 editar-grupo" data-bs-toggle="modal" data-bs-target="#kt_modal_update_role" data-info="{{ $grupo->Id }}">Editar Grupo</button>
                                                     @endif

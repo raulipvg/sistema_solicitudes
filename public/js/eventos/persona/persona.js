@@ -1,7 +1,7 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
     let validator;
-    if(credenciales.puedeRegistrar || credenciales.puedeEditar || credenciales.puedeVer){
+    if(credenciales['Persona'].puedeRegistrar || credenciales['Persona'].puedeEditar || credenciales['Persona'].puedeVer){
         const form = document.getElementById('FormularioPersona');
         $("#AlertaError").hide();
             // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
@@ -106,7 +106,7 @@ $(document).ready(function() {
         );
     }
     let validatorAcceso; 
-    if(credenciales2.puedeRegistrar){
+    if(credenciales['Usuario'].puedeRegistrar){
         const form2 = document.getElementById('FormularioAccesoSistema');
             // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
         validatorAcceso = FormValidation.formValidation(
@@ -173,7 +173,7 @@ $(document).ready(function() {
 
     //const target = document.querySelector("#div-bloquear");
     //const blockUI = new KTBlockUI(target)
-    if(credenciales.puedeRegistrar){
+    if(credenciales['Persona'].puedeRegistrar){
         // Evento al presionar el Boton de Registrar Persona
         $("#AddBtn").on("click", function (e) {
             //Inicializacion
@@ -320,7 +320,7 @@ $(document).ready(function() {
     }
 
     
-    if(credenciales.puedeEditar){
+    if(credenciales['Persona'].puedeEditar){
         var tr;
         var row;
         //Evento al presionar el Boton Editar
@@ -469,7 +469,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credenciales.puedeVer){
+    if(credenciales['Persona'].puedeVer){
         //Evento al presionar el Boton VER
         $("#tabla-persona tbody").on("click",'.ver', function (e) {
             e.preventDefault();
@@ -550,7 +550,7 @@ $(document).ready(function() {
         });
     }
     
-    if(credenciales.puedeEliminar){
+    if(credenciales['Persona'].puedeEliminar){
         // Evento al Boton que cambia el estado de la empresa
         $("#tabla-persona tbody").on("click", '.estado-persona', function (e) {
             e.preventDefault();
@@ -576,10 +576,10 @@ $(document).ready(function() {
                     if(data.success){
                         if(btn.hasClass('btn-light-success')){
                             btn.removeClass('btn-light-success').addClass('btn-light-warning');
-                            btn.find("span.indicator-label").first().text('INACTIVO')
+                            btn.find("span.indicator-label").first().text('DESHABILITADO')
                         }else{
                             btn.removeClass('btn-light-warning').addClass('btn-light-success');
-                            btn.find("span.indicator-label").first().text('ACTIVO')
+                            btn.find("span.indicator-label").first().text('HABILITADO')
                         }   
                     }else{
                         Swal.fire({
@@ -613,7 +613,7 @@ $(document).ready(function() {
         });
     }
     
-    if(credenciales2.puedeRegistrar){
+    if(credenciales['Usuario'].puedeRegistrar){
             // Evento al presionar el Boton de Dar Acceso (Crear Usuario)
         $("#tabla-persona tbody").on("click", '.dar-acceso' , function (e) {
                 e.preventDefault();

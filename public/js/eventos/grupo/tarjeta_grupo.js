@@ -1,11 +1,11 @@
 let t,n;
-if(credencialesGrupo.puedeEditar){
+if(credenciales['Grupo'].puedeEditar){
     t = document.getElementById("kt_modal_update_role");
     n = new bootstrap.Modal(t);
 }
 
 $(document).ready(function() {
-    if(credencialesGrupo.puedeEditar){
+    if(credenciales['Grupo'].puedeEditar){
         //Evento al presionar el Boton Editar
         $("#contenedor").on("click",'.editar-grupo', function (e) {
             e.preventDefault();
@@ -93,7 +93,7 @@ $(document).ready(function() {
             
         });
     }
-    if(credencialesGrupo.puedeEliminar){
+    if(credenciales['Grupo'].puedeEliminar){
         // Evento al Boton que cambia el estado del usuario
         $("#contenedor").on("click", '.estado-grupo', function (e) {
             e.preventDefault();

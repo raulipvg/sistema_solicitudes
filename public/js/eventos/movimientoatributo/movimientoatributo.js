@@ -1,6 +1,6 @@
 $(document).ready(function() {
     let validator;
-    if(credenciales.puedeRegistrar ){
+    if(credenciales['MovimientoAtributo'].puedeRegistrar ){
         var form = document.getElementById('form-movimiento-atributo');
             validator = FormValidation.formValidation(
             form,

@@ -23,11 +23,11 @@ class MovimientoAtributoController extends Controller
         //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 10 Privilegios de Movimiento
-        $credenciales = [
-                'puedeVer'=> $user->puedeVer(10),
-                'puedeRegistrar'=> $user->puedeRegistrar(10),
-                'puedeEditar'=> $user->puedeEditar(10),
-                'puedeEliminar'=> $user->puedeEliminar(10),
+        $credenciales['MovimientoAtributo'] = [
+                'puedeVer'=> $user->can('ver-movimientoatributo'),
+                'puedeRegistrar'=> $user->can('registrar-movimientoatributo'),
+                'puedeEditar'=> $user->can('editar-movimientoatributo'),
+                'puedeEliminar'=> $user->can('eliminar-movimientoatributo'),
         ];
         $accesoLayout= $user->todoPuedeVer();
         //END::PRIVILEGIOS

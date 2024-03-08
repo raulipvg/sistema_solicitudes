@@ -21,24 +21,24 @@ class FlujoController extends Controller
         $user = auth()->user();
         // 7 Privilegios de Flujo
         $credenciales['Flujo']=  [
-                'puedeVer'=> $user->puedeVer(7),
-                'puedeRegistrar'=> $user->puedeRegistrar(7),
-                'puedeEditar'=> $user->puedeEditar(7),
-                'puedeEliminar'=> $user->puedeEliminar(7),
+                'puedeVer'=> $user->can('ver-flujo'),
+                'puedeRegistrar'=> $user->can('registrar-flujo'),
+                'puedeEditar'=> $user->can('editar-flujo'),
+                'puedeEliminar'=> $user->can('eliminar-flujo'),
         ];
         // 6 Privilegios de Area
         $credenciales['Area']= [
-            'puedeVer'=> $user->puedeVer(6),
-            'puedeRegistrar'=> $user->puedeRegistrar(6),
-            'puedeEditar'=> $user->puedeEditar(6),
-            'puedeEliminar'=> $user->puedeEliminar(6),
+            'puedeVer'=> $user->can('ver-area'),
+            'puedeRegistrar'=> $user->can('registrar-area'),
+            'puedeEditar'=> $user->can('editar-area'),
+            'puedeEliminar'=> $user->can('eliminar-area'),
         ];
         // 8 Privilegios de Estado de Flujo
         $credenciales['EstadoFlujo'] = [
-            'puedeVer'=> $user->puedeVer(8),
-            'puedeRegistrar'=> $user->puedeRegistrar(8),
-            'puedeEditar'=> $user->puedeEditar(8),
-            'puedeEliminar'=> $user->puedeEliminar(8),
+            'puedeVer'=> $user->can('ver-estadoflujo'),
+            'puedeRegistrar'=> $user->can('registrar-estadoflujo'),
+            'puedeEditar'=> $user->can('editar-estadoflujo'),
+            'puedeEliminar'=> $user->can('eliminar-estadoflujo'),
         ];
 
         $accesoLayout= $user->todoPuedeVer();
@@ -125,14 +125,10 @@ class FlujoController extends Controller
     }
     public function Registrar(){
 
-        //BEGIN::PRIVILEGIOS
         $user = auth()->user();
-        // 7 Privilegios de Empresa
-        $credenciales = [
-                'puedeVer'=> $user->puedeVer(7),
-                'puedeRegistrar'=> $user->puedeRegistrar(7),
-                'puedeEditar'=> $user->puedeEditar(7),
-                'puedeEliminar'=> $user->puedeEliminar(7),
+        // 7 Privilegios de Flujo
+        $credenciales['Flujo']=  [
+                'puedeRegistrar'=> $user->can('registrar-flujo')
         ];
         $accesoLayout= $user->todoPuedeVer();
         //END::PRIVILEGIOS

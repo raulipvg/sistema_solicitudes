@@ -1,7 +1,7 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
     let validator;
-    if(credenciales.puedeRegistrar || credenciales.puedeEditar || credenciales.puedeVer){
+    if(credenciales['MovimientoAtributo'].puedeRegistrar || credenciales['MovimientoAtributo'].puedeEditar || credenciales['MovimientoAtributo'].puedeVer){
         const form = document.getElementById('FormularioMovimiento');
         $("#AlertaError").hide();
             // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
@@ -70,7 +70,7 @@ $(document).ready(function() {
         );
     }
 
-    if(credenciales.puedeRegistrar){
+    if(credenciales['MovimientoAtributo'].puedeRegistrar){
         // Evento al presionar el Boton de Registrar
         $("#addBtnMovimiento").on("click", function (e) {
             //Inicializacion
@@ -222,7 +222,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credenciales.puedeEditar){
+    if(credenciales['MovimientoAtributo'].puedeEditar){
         //Evento al presionar el Boton Editar
         $("#tabla-movimiento tbody").on("click",'.editar', function (e) {
             e.preventDefault();
@@ -375,7 +375,7 @@ $(document).ready(function() {
             }
         });
     }
-    if(credenciales.puedeVer){ 
+    if(credenciales['MovimientoAtributo'].puedeVer){ 
         //Evento al presionar el Boton VER
         $("#tabla-movimiento tbody").on("click",'.ver', function (e) {
             e.preventDefault();
@@ -463,7 +463,7 @@ $(document).ready(function() {
         });
     }
     
-    if(credenciales.puedeEliminar){
+    if(credenciales['MovimientoAtributo'].puedeEliminar){
         // Evento al Boton que cambia el estado del "Movimiento"
         $("#tabla-movimiento tbody").on("click", '.estado-movimiento', function (e) {
             e.preventDefault();
@@ -525,7 +525,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credenciales.puedeVer){ 
+    if(credenciales['MovimientoAtributo'].puedeVer){ 
         //EVENTO DEL BOTON + DE LA TABLA Y CREA SUBTABLA
         tablaMovimiento.on('click', 'td.dt-control', function (e) {
             e.preventDefault();

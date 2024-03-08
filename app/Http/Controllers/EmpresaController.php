@@ -18,18 +18,18 @@ class EmpresaController extends Controller
         //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 3 Privilegios de Empresa
-        $credenciales = [
-                'puedeVer'=> $user->puedeVer(3),
-                'puedeRegistrar'=> $user->puedeRegistrar(3),
-                'puedeEditar'=> $user->puedeEditar(3),
-                'puedeEliminar'=> $user->puedeEliminar(3)
+        $credenciales['Empresa'] = [
+            'puedeVer'=> $user->can('ver-empresa'),
+            'puedeRegistrar'=> $user->can('registrar-empresa'),
+            'puedeEditar'=> $user->can('editar-empresa'),
+            'puedeEliminar'=> $user->can('eliminar-empresa'),
         ];
         // 4 Privilegios Centro de Costo
-        $credenciales2 = [
-            'puedeVer'=> $user->puedeVer(4),
-            'puedeRegistrar'=> $user->puedeRegistrar(4),
-            'puedeEditar'=> $user->puedeEditar(4),
-            'puedeEliminar'=> $user->puedeEliminar(4),
+        $credenciales['CC'] = [
+            'puedeVer'=> $user->can('ver-cc'),
+            'puedeRegistrar'=> $user->can('registrar-cc'),
+            'puedeEditar'=> $user->can('editar-cc'),
+            'puedeEliminar'=> $user->can('eliminar-cc'),
         ];
         $accesoLayout= $user->todoPuedeVer();
         //END::PRIVILEGIOS
@@ -47,7 +47,6 @@ class EmpresaController extends Controller
                         'titulo'=> $titulo,
                         'empresas'=> $empresas,
                         'credenciales' => $credenciales,
-                        'credenciales2' => $credenciales2,
                         'accesoLayout' => $accesoLayout                        
                     ]);
     

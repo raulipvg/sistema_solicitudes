@@ -9,7 +9,7 @@ function format(data,usuario) {
                             <th class="p-0 ps-3">Centro de Costo</th>
                             <th class="p-0 ps-3">Fecha</th>
                             <th class="text-center col-3 p-0 ps-2">ESTADO${
-                                credenciales2.puedeRegistrar
+                                credenciales['CC'].puedeRegistrar
                                     ? `<span class="dar-acceso" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Registrar un Centro de Costo">
                                         <button type="button" data-info="${usuario}" class="registrar-cc btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-cc">
                                             <i class="ki-outline ki-plus-square fs-2"></i>
@@ -39,7 +39,7 @@ function AgregarTR(nombre, id, fecha, titulo){
     // Formatear la fecha como "DD-MM-YYYY"
     var fechaFormateada = dia + "-" + (mes < 10 ? "0" : "") + mes + "-" + anio;
 
-    var className = (credenciales2.puedeEliminar)? 'editar-acceso': 'disabled';
+    var className = (credenciales['CC'].puedeEliminar)? 'editar-acceso': 'disabled';
     var html =`<tr>
                     <td class="text-gray-700 text-capitalize">${nombre}</td>
                     <td>${fechaFormateada}</td>
@@ -135,7 +135,7 @@ const cargarData= function(){
                 init: function(data){
                     for (const key in data) {
                         if (data.hasOwnProperty(key)) {                            
-                            var className = (credenciales.puedeEliminar)? 'estado-empresa': 'disabled';
+                            var className = (credenciales['Empresa'].puedeEliminar)? 'estado-empresa': 'disabled';
 
                             var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Empresa','btn-light-success w-115px '+className,'HABILITADO')
                                                                      :botonEstado('Habilitar Empresa','btn-light-warning w-115px '+className,'DESHABILITADO');
@@ -146,8 +146,8 @@ const cargarData= function(){
                                                 "2": data[key].Rut,
                                                 "3": data[key].Email,
                                                 "4": btnEstado,
-                                                "5": botonAcciones('registrar',data[key].Id),
-                                                "6": (credenciales2.puedeVer)?botonVerDetalle('Centros de Costos Asociados'):null
+                                                "5": botonAcciones('registrar',data[key].Id,'Empresa'),
+                                                "6": (credenciales['CC'].puedeVer)?botonVerDetalle('Centros de Costos Asociados'):null
                                             } ).node();
                             $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
                             $(rowNode).find('td:eq(3)').addClass('fw-bold text-gray-600');
@@ -163,5 +163,5 @@ const cargarData= function(){
 
 KTUtil.onDOMContentLoaded((function() {
     
-    (credenciales.puedeVer)?cargarData.init(data):null;
+    (credenciales['Empresa'].puedeVer)?cargarData.init(data):null;
 })); 

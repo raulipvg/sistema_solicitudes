@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
     let validator;
-    if(credencialesGrupo.puedeRegistrar){
+    if(credenciales['Grupo'].puedeRegistrar){
         const form = document.getElementById('FormularioGrupo');
         $("#AlertaError").hide();
             // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/

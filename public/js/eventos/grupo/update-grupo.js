@@ -1,6 +1,5 @@
-
 //console.log(t)
-if(credencialesGrupo.puedeEditar){
+if(credenciales['Grupo'].puedeEditar){
     var KTUsersUpdatePermissions = (function () {
         
         e = t.querySelector("#kt_modal_update_role_form")

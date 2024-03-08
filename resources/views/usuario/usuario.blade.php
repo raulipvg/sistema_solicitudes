@@ -1,4 +1,4 @@
-@if ($credencialesUsuario['puedeVer'])
+@if ($credenciales['Usuario']['puedeVer'])
 @extends('layout.main')
 
 @push('css')
@@ -21,7 +21,7 @@
     <div class="card mx-5">
         <div class="card-header bg-dark">
             <h3 class="card-title text-uppercase text-white">Usuarios</h3>
-            @if ($credencialesUsuario['puedeRegistrar'])
+            @if ($credenciales['Usuario']['puedeRegistrar'])
                 <div class="m-1">
                     <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                         Registrar
@@ -38,13 +38,13 @@
     
 </div>
 <!--end::Content-->
-@if ($credencialesUsuario['puedeRegistrar'] || $credencialesUsuario['puedeEditar'] || $credencialesUsuario['puedeVer'])
+@if ($credenciales['Usuario']['puedeRegistrar'] || $credenciales['Usuario']['puedeEditar'] || $credenciales['Usuario']['puedeVer'])
     <!--begin::modal - Registrar Usuario-->
     @include('usuario.componente.modalRegistrarUsuario')
     <!--end::modal - Registrar Usuario-->
 @endif
 
-@if ($credencialesGrupo['puedeRegistrar'])
+@if ($credenciales['Grupo']['puedeRegistrar'])
     <!--begin::modal -Asignar Grupo-->
     @include('usuario.componente.modalAsignarGrupo')
     <!--end::modal - Asignar Grupo-->
@@ -68,8 +68,7 @@
         /* END:RUTAS */
 
         const data =  {!! $usuarios2 !!};
-        const credencialesUsuario= {!! json_encode($credencialesUsuario) !!};
-        const credencialesGrupo= {!! json_encode($credencialesGrupo) !!};
+        const credenciales= {!! json_encode($credenciales) !!};
     </script>
 
     <!--begin::Datatables y Configuracion de la Tabla-->

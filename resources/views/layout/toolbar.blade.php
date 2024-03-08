@@ -21,7 +21,7 @@
         <!--end::Page title-->
         <!--begin::Action group-->
         <div class="d-flex align-items-center flex-wrap">         
-             @if(isset($vista) && $vista == 1 && $credencialesGrupo['puedeRegistrar'])                
+             @if(isset($vista) && $vista == 1 && $credenciales['Grupo']['puedeRegistrar'])                
                     <button id="AddBtnGrupo" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrarGrupo" style="position: relative;z-index: 10;">
                         Registrar
                     </button>

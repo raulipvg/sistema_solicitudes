@@ -1,4 +1,4 @@
-@if ($credenciales['puedeVer'])
+@if ($credenciales['Empresa']['puedeVer'])
 @extends('layout.main')
 
 @push('css')
@@ -23,7 +23,7 @@
     <div class="card mx-5">
         <div class="card-header bg-dark">
             <h3 class="card-title text-uppercase text-white">Empresa</h3>
-            @if ($credenciales['puedeRegistrar'])
+            @if ($credenciales['Empresa']['puedeRegistrar'])
             <div class="m-1">                
                 <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                     Registrar
@@ -40,13 +40,13 @@
     
 </div>
 <!--end::Content-->
-@if ($credenciales['puedeRegistrar'] || $credenciales['puedeEditar'] || $credenciales['puedeVer'])
+@if ($credenciales['Empresa']['puedeRegistrar'] || $credenciales['Empresa']['puedeEditar'] || $credenciales['Empresa']['puedeVer'])
     <!--begin::modal - Registrar Empresa-->
     @include('empresa.componente.modalRegistrarEmpresa')
     <!--end::modal - Registrar Empresa-->
 @endif
 
-@if ($credenciales2['puedeRegistrar'])
+@if ($credenciales['CC']['puedeRegistrar'])
     <!--begin::modal - Asignar Centro de Costo-->
     @include('empresa.componente.modalRegistrarCentroCosto')
     <!--end::modal-->
@@ -68,10 +68,8 @@
         /* END:RUTAS */
         const data =  {!! $empresas !!};
         const credenciales= {!! json_encode($credenciales) !!};
-        const credenciales2= {!! json_encode($credenciales2) !!};
         
         const layout= {!! json_encode($accesoLayout) !!};
-        console.log(layout)
         
     </script>
 

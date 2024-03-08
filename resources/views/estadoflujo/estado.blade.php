@@ -15,8 +15,4 @@
         <!--end::modal-->
     @endif
 
-@else
-    <script>
-        window.location = '{{ route('Error404') }}';
-    </script>
 @endif

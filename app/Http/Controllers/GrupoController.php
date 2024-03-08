@@ -23,11 +23,11 @@ class GrupoController extends Controller
         //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 2 Privilegios de Grupo
-        $credencialesGrupo = [
-                'puedeVer'=> $user->puedeVer(2),
-                'puedeRegistrar'=> $user->puedeRegistrar(2),
-                'puedeEditar'=> $user->puedeEditar(2),
-                'puedeEliminar'=> $user->puedeEliminar(2),
+        $credenciales['Grupo'] = [
+            'puedeVer'=> $user->can('ver-grupo'),
+            'puedeRegistrar'=> $user->can('registrar-grupo'),
+            'puedeEditar'=> $user->can('editar-grupo'),
+            'puedeEliminar'=> $user->can('eliminar-grupo'),
         ];
         $accesoLayout= $user->todoPuedeVer();
         //END::PRIVILEGIOS
@@ -46,7 +46,7 @@ class GrupoController extends Controller
             'datosgrupo'=> $datosgrupo,
             'privilegios'=> $privilegios,
             'flag'=> 2, //significa que es para la vista /grupo/
-            'credencialesGrupo' => $credencialesGrupo,
+            'credenciales' => $credenciales,
             'accesoLayout' => $accesoLayout 
         ]);
     }
@@ -104,18 +104,18 @@ class GrupoController extends Controller
              //BEGIN::PRIVILEGIOS
             $user = auth()->user();
             // 2 Privilegios de Grupo
-            $credencialesGrupo = [
-                    'puedeVer'=> $user->puedeVer(2),
-                    'puedeRegistrar'=> $user->puedeRegistrar(2),
-                    'puedeEditar'=> $user->puedeEditar(2),
-                    'puedeEliminar'=> $user->puedeEliminar(2),
+            $credenciales['Grupo'] = [
+                'puedeVer'=> $user->can('ver-grupo'),
+                'puedeRegistrar'=> $user->can('registrar-grupo'),
+                'puedeEditar'=> $user->can('editar-grupo'),
+                'puedeEliminar'=> $user->can('eliminar-grupo'),
             ];
-            // 1 Privilegios de Grupo
-            $credencialesUsuario = [
-                    'puedeVer'=> $user->puedeVer(1),
-                    'puedeRegistrar'=> $user->puedeRegistrar(1),
-                    'puedeEditar'=> $user->puedeEditar(1),
-                    'puedeEliminar'=> $user->puedeEliminar(1),
+            // 1 Privilegios de Usuario
+            $credenciales['Usuario'] = [
+                'puedeVer'=> $user->can('ver-usuario'),
+                'puedeRegistrar'=> $user->can('registrar-usuario'),
+                'puedeEditar'=> $user->can('editar-usuario'),
+                'puedeEliminar'=> $user->can('eliminar-usuario'),
             ];
             $accesoLayout= $user->todoPuedeVer();
             //END::PRIVILEGIOS
@@ -159,8 +159,7 @@ class GrupoController extends Controller
                 'usuarios'=> $usuarios,
                 'centrocostos'=> $centrocostos,
                 'flag' => 1, //significa que es para la vista /grupo/ver
-                'credencialesGrupo' => $credencialesGrupo,
-                'credencialesUsuario'=> $credencialesUsuario,
+                'credenciales' => $credenciales,
                 'accesoLayout' => $accesoLayout 
             ]);
         }catch(Exception $e){

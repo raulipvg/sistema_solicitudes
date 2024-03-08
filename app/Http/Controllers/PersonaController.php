@@ -20,18 +20,18 @@ class PersonaController extends Controller
          //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 5 Privilegios de Persona
-        $credenciales = [
-            'puedeVer'=> $user->puedeVer(5),
-            'puedeRegistrar'=> $user->puedeRegistrar(5),
-            'puedeEditar'=> $user->puedeEditar(5),
-            'puedeEliminar'=> $user->puedeEliminar(5),
+        $credenciales['Persona'] = [
+            'puedeVer'=> $user->can('ver-persona'),
+            'puedeRegistrar'=> $user->can('registrar-persona'),
+            'puedeEditar'=> $user->can('editar-persona'),
+            'puedeEliminar'=> $user->can('eliminar-persona'),
         ];
         // 1 Privilegios de Usuario
-        $credenciales2 = [
-            'puedeVer'=> $user->puedeVer(1),
-            'puedeRegistrar'=> $user->puedeRegistrar(1),
-            'puedeEditar'=> $user->puedeEditar(1),
-            'puedeEliminar'=> $user->puedeEliminar(1),
+        $credenciales['Usuario'] = [
+            'puedeVer'=> $user->can('ver-usuario'),
+            'puedeRegistrar'=> $user->can('registrar-usuario'),
+            'puedeEditar'=> $user->can('editar-usuario'),
+            'puedeEliminar'=> $user->can('eliminar-usuario'),
         ];
         $accesoLayout= $user->todoPuedeVer();
         //END::PRIVILEGIOS
@@ -59,7 +59,6 @@ class PersonaController extends Controller
                         'personas'=> $personas,
                         'centrocostos'=> $centrocostos,
                         'credenciales'=> $credenciales,
-                        'credenciales2'=> $credenciales2,
                         'accesoLayout' => $accesoLayout
                     ]);
     

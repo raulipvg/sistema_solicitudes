@@ -80,8 +80,8 @@
                             <div class="form-floating fv-row">
                                 <select id="EstadoIdInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
-                                    <option value="1">ACTIVO</option>
-                                    <option value="0">INACTIVO</option>
+                                    <option value="1">HABILITADO</option>
+                                    <option value="0">DESHABILITADO</option>
                                 </select>
                                 <label for="EstadoIdInput" class="form-label">Estado</label>
                             </div>

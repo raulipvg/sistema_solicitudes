@@ -1,4 +1,4 @@
-@if ($credenciales['puedeVer'])
+@if ($credenciales['MovimientoAtributo']['puedeVer'])
 @extends('layout.main')
 
 @push('css')
@@ -47,27 +47,27 @@
 
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade active show" id="panel-movimiento" role="tabpanel">
-                    @if ($credenciales['puedeRegistrar'])
+                    @if ($credenciales['MovimientoAtributo']['puedeRegistrar'])
                         <button id="addBtnMovimiento" type="button" class="btn btn-sm btn-success float-end mx-2" data-bs-toggle="modal" data-bs-target="#registrar-movimiento" style="z-index: 10; position: relative;">
                             Registrar
                         </button>
                     @endif
                     @include('movimiento.componente.tablaMovimiento')
 
-                    @if ($credenciales['puedeRegistrar'] || $credenciales['puedeEditar'] || $credenciales['puedeVer'])
+                    @if ($credenciales['MovimientoAtributo']['puedeRegistrar'] || $credenciales['MovimientoAtributo']['puedeEditar'] || $credenciales['MovimientoAtributo']['puedeVer'])
                         @include('movimiento.componente.modalRegistrarMovimiento')
                     @endif
                 </div>
 
                 <div class="tab-pane fade" id="panel-atributo" role="tabpanel">
-                    @if ($credenciales['puedeRegistrar'])
+                    @if ($credenciales['MovimientoAtributo']['puedeRegistrar'])
                         <button id="AddBtnAtr" type="button" class="btn btn-sm btn-success float-end mx-2" data-bs-toggle="modal" data-bs-target="#registrar-atributo" style="z-index: 10; position: relative;">
                             Registrar
                         </button>
                     @endif
                     @include('atributo.componente.tablaAtributo')
 
-                    @if ($credenciales['puedeRegistrar'] || $credenciales['puedeEditar'] || $credenciales['puedeVer'])
+                    @if ($credenciales['MovimientoAtributo']['puedeRegistrar'] || $credenciales['MovimientoAtributo']['puedeEditar'] || $credenciales['MovimientoAtributo']['puedeVer'])
                         @include('atributo.componente.modalRegistrarAtributo')
                     @endif
                 </div>
@@ -81,7 +81,7 @@
     </div>
 </div>
 <!--end::Content-->
-@if ($credenciales['puedeRegistrar'])
+@if ($credenciales['MovimientoAtributo']['puedeRegistrar'])
     @include('movimientoatributo.componente.crearMovimientoAtributo')
 @endif
 

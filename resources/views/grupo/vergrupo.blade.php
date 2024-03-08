@@ -1,4 +1,4 @@
-@if ($credencialesGrupo['puedeVer'])
+@if ($credenciales['Grupo']['puedeVer'])
     @extends('layout.main')
 
     @push('css')
@@ -49,7 +49,7 @@
     </div>
     <!--end::Content-->
 
-    @if($credencialesGrupo['puedeEditar'])
+    @if($credenciales['Grupo']['puedeEditar'])
         <!--begin::Modal - Update role-->
         @include('grupo.componente.modalEditarGrupo')
         <!--end::Modal - Update role-->
@@ -83,8 +83,7 @@
             const CambiarEstadoGrupo = '{{route("CambiarEstadoGrupo")}}';
 
             const data =  {!! $usuarios !!};
-            const credencialesGrupo= {!! json_encode($credencialesGrupo) !!};
-            const credencialesUsuario= {!! json_encode($credencialesUsuario) !!};
+            const credenciales= {!! json_encode($credenciales) !!};
 
         </script>
 

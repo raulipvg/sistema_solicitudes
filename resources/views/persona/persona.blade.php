@@ -1,4 +1,4 @@
-@if ($credenciales['puedeVer'])
+@if ($credenciales['Persona']['puedeVer'])
 @extends('layout.main')
 
 @push('css')
@@ -24,7 +24,7 @@
     <div class="card mx-5">
         <div class="card-header bg-dark">
             <h3 class="card-title text-uppercase text-white">{{$titulo}}</h3>
-            @if ($credenciales['puedeRegistrar'])
+            @if ($credenciales['Persona']['puedeRegistrar'])
             <div class="m-1">
                 <button id="AddBtn" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registrar">
                     Registrar
@@ -42,13 +42,13 @@
 </div>
 <!--end::Content-->
 
-@if ($credenciales['puedeRegistrar'] || $credenciales['puedeEditar'] || $credenciales['puedeVer'])
+@if ($credenciales['Persona']['puedeRegistrar'] || $credenciales['Persona']['puedeEditar'] || $credenciales['Persona']['puedeVer'])
     <!--begin::modal - Registrar Persona-->
     @include('persona.componente.modalRegistrarPersona')
     <!--end::modal - Registrar Persona-->
 @endif
 
-@if ($credenciales2['puedeRegistrar'])
+@if ($credenciales['Usuario']['puedeRegistrar'])
     <!--begin::modal - Asignar Usuario-->
     @include('persona.componente.modalRegistrarUsuario')
     <!--end::modal - Asignar Usuario-->
@@ -68,7 +68,6 @@
         
         const data = {!! $personas !!};
         const credenciales= {!! json_encode($credenciales) !!};
-        const credenciales2= {!! json_encode($credenciales2) !!};
 
 
     </script>

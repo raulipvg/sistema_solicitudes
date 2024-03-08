@@ -24,19 +24,18 @@ class UsuarioController extends Controller
         //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 1 Privilegios de Usuario
-        $credencialesUsuario = [
-                'puedeVer'=> $user->puedeVer(1),
-                'puedeRegistrar'=> $user->puedeRegistrar(1),
-                'puedeEditar'=> $user->puedeEditar(1),
-                'puedeEliminar'=> $user->puedeEliminar(1),
+        $credenciales['Usuario'] = [
+            'puedeVer'=> $user->can('ver-usuario'),
+            'puedeRegistrar'=> $user->can('registrar-usuario'),
+            'puedeEditar'=> $user->can('editar-usuario'),
+            'puedeEliminar'=> $user->can('eliminar-usuario'),
         ];
-
          // 2 Privilegios de Grupo
-        $credencialesGrupo = [
-            'puedeVer'=> $user->puedeVer(2),
-            'puedeRegistrar'=> $user->puedeRegistrar(2),
-            'puedeEditar'=> $user->puedeEditar(2),
-            'puedeEliminar'=> $user->puedeEliminar(2),
+        $credenciales['Grupo'] = [
+            'puedeVer'=> $user->can('ver-grupo'),
+            'puedeRegistrar'=> $user->can('registrar-grupo'),
+            'puedeEditar'=> $user->can('editar-grupo'),
+            'puedeEliminar'=> $user->can('eliminar-grupo'),
         ];
         $accesoLayout= $user->todoPuedeVer();
          //END::PRIVILEGIOS
@@ -59,8 +58,7 @@ class UsuarioController extends Controller
                         'titulo'=> $titulo,
                         'usuarios2'=> json_encode($usuarios2),
                         'centrocostos'=> $centrocostos,
-                        'credencialesUsuario'=> $credencialesUsuario,
-                        'credencialesGrupo'=> $credencialesGrupo,
+                        'credenciales'=> $credenciales,
                         'accesoLayout' => $accesoLayout   
                     ]);
     }

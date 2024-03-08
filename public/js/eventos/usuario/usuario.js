@@ -1,7 +1,7 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
     let validator;
-    if(credencialesUsuario.puedeRegistrar || credencialesUsuario.puedeEditar || credencialesUsuario.puedeVer){
+    if(credenciales['Usuario'].puedeRegistrar || credenciales['Usuario'].puedeEditar || credenciales['Usuario'].puedeVer){
         const form = document.getElementById('Formulario1');
         $("#AlertaError").hide();
             // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
@@ -143,7 +143,7 @@ $(document).ready(function() {
     }
 
     let validator2;
-    if(credencialesGrupo.puedeRegistrar ){
+    if(credenciales['Grupo'].puedeRegistrar ){
         const form2 = document.getElementById('Formulario-Acceso');
             // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
             validator2 = FormValidation.formValidation(
@@ -173,7 +173,7 @@ $(document).ready(function() {
         );
     }
 
-    if(credencialesUsuario.puedeRegistrar){
+    if(credenciales['Usuario'].puedeRegistrar){
         // Evento al presionar el Boton de Registrar
         $("#AddBtn").on("click", function (e) {
             //Inicializacion
@@ -322,7 +322,7 @@ $(document).ready(function() {
         });
     }
     
-    if(credencialesUsuario.puedeEditar){
+    if(credenciales['Usuario'].puedeEditar){
         var tr;
         var row;
         //Evento al presionar el Boton Editar
@@ -482,7 +482,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credencialesUsuario.puedeVer){
+    if(credenciales['Usuario'].puedeVer){
         //Evento al presionar el Boton VER
         $("#tabla-usuario tbody").on("click",'.ver', function (e) {
             e.preventDefault();
@@ -572,7 +572,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credencialesUsuario.puedeEliminar){
+    if(credenciales['Usuario'].puedeEliminar){
         // Evento al Boton que cambia el estado del usuario
         $("#tabla-usuario tbody").on("click", '.estado-usuario', function (e) {
             e.preventDefault();
@@ -634,7 +634,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credencialesGrupo.puedeVer){
+    if(credenciales['Grupo'].puedeVer){
         //EVENTO DEL BOTON + DE LA TABLA Y CREA SUBTABLA
         miTabla.on('click', 'td.dt-control', function (e) {
             e.preventDefault();
@@ -725,7 +725,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credencialesGrupo.puedeRegistrar){
+    if(credenciales['Grupo'].puedeRegistrar){
         const target2 = document.querySelector("#div-bloquear2");
         const blockUI2 = new KTBlockUI(target2);
         var btnRegistrarAcceso;
@@ -878,7 +878,7 @@ $(document).ready(function() {
             }
         });
     }
-    if(credencialesGrupo.puedeEliminar){
+    if(credenciales['Grupo'].puedeEliminar){
         //Evento al presionar el Boton de cambiar estado en la subtabla 
         $("#tabla-usuario tbody").on("click", '.editar-acceso', function(e){
             e.preventDefault();

@@ -1,7 +1,7 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
     let validator;
-    if(credenciales.puedeRegistrar || credenciales.puedeEditar || credenciales.puedeVer){
+    if(credenciales['Empresa'].puedeRegistrar || credenciales['Empresa'].puedeEditar || credenciales['Empresa'].puedeVer){
         const form = document.getElementById('FormularioEmpresa');
         $("#AlertaError").hide();
             // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
@@ -16,11 +16,11 @@ $(document).ready(function() {
                                 },
                                 stringLength: {
                                     min: 3,
-                                    max: 20,
-                                    message: 'Entre 3 y 20 caracteres'
+                                    max: 100,
+                                    message: 'Entre 3 y 100 caracteres'
                                 },
                                 regexp: {
-                                    regexp: /^[a-z0-9ñáéíóú\s]+$/i,
+                                    regexp: /^[a-z0-9.-ñáéíóú\s]+$/i,
                                     message: 'Solo letras y numeros'
                                 }
                             }
@@ -96,7 +96,7 @@ $(document).ready(function() {
     }
 
     let validator2;
-    if(credenciales2.puedeRegistrar ){
+    if(credenciales['CC'].puedeRegistrar ){
         const form2 = document.getElementById('Formulario-CC');
             // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
         validator2 = FormValidation.formValidation(
@@ -133,7 +133,7 @@ $(document).ready(function() {
     }
 
     
-    if(credenciales.puedeRegistrar){
+    if(credenciales['Empresa'].puedeRegistrar){
         // Evento al presionar el Boton de Registrar Empresa
         $("#AddBtn").on("click", function (e) {
             //Inicializacion
@@ -226,7 +226,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credenciales.puedeEditar){
+    if(credenciales['Empresa'].puedeEditar){
         var tr;
         var row;
         //Evento al presionar el Boton Editar
@@ -370,7 +370,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credenciales.puedeVer){
+    if(credenciales['Empresa'].puedeVer){
         //Evento al presionar el Boton VER
         $("#tabla-empresa tbody").on("click",'.ver', function (e) {
             e.preventDefault();
@@ -452,7 +452,7 @@ $(document).ready(function() {
         });
     }
     
-    if(credenciales.puedeEliminar){
+    if(credenciales['Empresa'].puedeEliminar){
         // Evento al Boton que cambia el estado de la empresa
         $("#tabla-empresa tbody").on("click", '.estado-empresa', function (e) {
             e.preventDefault();
@@ -515,7 +515,7 @@ $(document).ready(function() {
         });
     }
     
-    if(credenciales2.puedeVer){
+    if(credenciales['CC'].puedeVer){
         //EVENTO DEL BOTON + DE LA TABLA Y CREA SUBTABLA
         miTabla.on('click', 'td.dt-control', function (e) {
             e.preventDefault();
@@ -601,7 +601,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credenciales2.puedeRegistrar){
+    if(credenciales['CC'].puedeRegistrar){
         const target2 = document.querySelector("#div-bloquear2");
         const blockUI2 = new KTBlockUI(target2);
         var btnRegistrarAcceso;
@@ -691,7 +691,7 @@ $(document).ready(function() {
             }
         });
     }
-    if(credenciales2.puedeEliminar){
+    if(credenciales['CC'].puedeEliminar){
         //Evento al presionar el Boton de cambiar estado en la subtabla 
         $("#tabla-empresa tbody").on("click", '.editar-acceso', function(e){
             e.preventDefault();

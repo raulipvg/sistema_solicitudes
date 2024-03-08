@@ -78,9 +78,9 @@ const cargarData= function(){
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
                             //console.log("Nombre:", data[persona].username);
-                    var className = (credenciales.puedeEliminar)? 'estado-persona': 'disabled'
-                    var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Persona','btn-light-success w-70px '+className,'ACTIVO')
-                                                            :botonEstado('Habilitar Persona','btn-light-warning w-70px '+className,'INACTIVO');
+                    var className = (credenciales['Persona'].puedeEliminar)? 'estado-persona': 'disabled'
+                    var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Persona','btn-light-success w-115px '+className,'HABILITADO')
+                                                            :botonEstado('Habilitar Persona','btn-light-warning w-115px '+className,'DESHABILITADO');
                   
                     var rowNode =  miTabla.row.add( {
                                         "0": data[key].Id,
@@ -89,8 +89,8 @@ const cargarData= function(){
                                         "3": data[key].NombreEmpresa,
                                         "4": data[key].NombreCC,
                                         "5": btnEstado,
-                                        "6": botonAcciones('registrar',data[key].Id),
-                                        "7": (data[key].UsuarioId == null && credenciales2.puedeRegistrar)?botonModal('#registrar-acceso-sistema','Dar Acceso al Sistema',data[key].Id):null
+                                        "6": botonAcciones('registrar',data[key].Id,'Persona'),
+                                        "7": (data[key].UsuarioId == null && credenciales['Usuario'].puedeRegistrar)?botonModal('#registrar-acceso-sistema','Dar Acceso al Sistema',data[key].Id):null
                                     } ).node();
                     $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
                     $(rowNode).find('td:eq(3)').addClass('text-capitalize fw-bold text-gray-600');
@@ -106,5 +106,5 @@ const cargarData= function(){
 }();
 
 KTUtil.onDOMContentLoaded((function() {
-    (credenciales.puedeVer)?cargarData.init(data):null;
+    (credenciales['Persona'].puedeVer)?cargarData.init(data):null;
 }));

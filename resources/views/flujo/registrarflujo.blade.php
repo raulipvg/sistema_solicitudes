@@ -1,4 +1,4 @@
-@if ($credenciales['puedeRegistrar'])
+@if ($credenciales['Flujo']['puedeRegistrar'])
 
 @extends('layout.main')
 

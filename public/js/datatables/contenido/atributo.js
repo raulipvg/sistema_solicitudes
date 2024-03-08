@@ -76,7 +76,7 @@ const cargarData= function(){
         init: function(data){
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
-                    var className = (credenciales.puedeEliminar)? 'estado-atributo': 'disabled';
+                    var className = (credenciales['MovimientoAtributo'].puedeEliminar)? 'estado-atributo': 'disabled';
 
                     var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Atributo','btn-light-success w-115px '+className,'HABILITADO')
                                                             :botonEstado('Habilitar Atributo','btn-light-warning w-115px '+className,'DESHABILITADO');
@@ -86,7 +86,7 @@ const cargarData= function(){
                                         "1": data[key].Nombre,
                                         "2": data[key].Simbolo+(data[key].ValorReferencia).toLocaleString(),
                                         "3": btnEstado,
-                                        "4":(credenciales.puedeEditar)?botonAccion('registrar-atributo',data[key].Id):null
+                                        "4":(credenciales['MovimientoAtributo'].puedeEditar)?botonAccion('registrar-atributo',data[key].Id,'MovimientoAtributo'):null
                                     } ).node();
                     $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
                     (credenciales.puedeEditar)?$(rowNode).find('td:eq(4)').addClass('text-center p-0'):null;          
@@ -100,7 +100,7 @@ const cargarData= function(){
 }();
 
 KTUtil.onDOMContentLoaded((function() {
-    (credenciales.puedeVer)?cargarData.init(dataAtributos):null;
+    (credenciales['MovimientoAtributo'].puedeVer)?cargarData.init(dataAtributos):null;
 }));
 
 

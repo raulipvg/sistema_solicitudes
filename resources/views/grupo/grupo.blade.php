@@ -1,4 +1,4 @@
-@if ($credencialesGrupo['puedeVer'])
+@if ($credenciales['Grupo']['puedeVer'])
 	@extends('layout.main')
 
 	@push('css')
@@ -33,13 +33,13 @@
 	</div>
 	<!--end::Content-->
 
-	@if ($credencialesGrupo['puedeRegistrar'])
+	@if ($credenciales['Grupo']['puedeRegistrar'])
 		<!--begin::Modal - Registrar Grupo-->
 		@include('grupo.componente.modalRegistrarGrupo')
 		<!--end::Modal - Registrar Grupo-->
 	@endif
 
-	@if($credencialesGrupo['puedeEditar'])
+	@if($credenciales['Grupo']['puedeEditar'])
 		<!--begin::Modal - Update role-->
 		@include('grupo.componente.modalEditarGrupo')
 		<!--end::Modal - Update role-->
@@ -54,7 +54,7 @@
 			const EditarGrupoPrivilegio = '{{route("EditarGrupoPrivilegio")}}';
 			const CambiarEstadoGrupo = '{{route("CambiarEstadoGrupo")}}';
 			
-			const credencialesGrupo= {!! json_encode($credencialesGrupo) !!};
+			const credenciales= {!! json_encode($credenciales) !!};
 		</script>
 
 		<!--begin::Eventos de la pagina-->

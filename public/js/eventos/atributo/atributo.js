@@ -1,7 +1,7 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
     let validator;
-    if(credenciales.puedeRegistrar || credenciales.puedeEditar || credenciales.puedeVer){
+    if(credenciales['MovimientoAtributo'].puedeRegistrar || credenciales['MovimientoAtributo'].puedeEditar || credenciales['MovimientoAtributo'].puedeVer){
         const form = document.getElementById('FormularioAtributo');
         $("#AlertaErrorAtr").hide();
             // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
@@ -70,7 +70,7 @@ $(document).ready(function() {
         );
     }
 
-    if(credenciales.puedeRegistrar){
+    if(credenciales['MovimientoAtributo'].puedeRegistrar){
         // Evento al presionar el Boton de Registrar
         $("#AddBtnAtr").on("click", function (e) {
             //Inicializacion
@@ -167,7 +167,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credenciales.puedeEditar){
+    if(credenciales['MovimientoAtributo'].puedeEditar){
         var tr;
         var row;
         //Evento al presionar el Boton Editar
@@ -315,7 +315,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credenciales.puedeEliminar){
+    if(credenciales['MovimientoAtributo'].puedeEliminar){
         // Evento al Boton que cambia el estado del "Atributo"
         $("#tabla-atributo tbody").on("click", '.estado-atributo', function (e) {
             e.preventDefault();

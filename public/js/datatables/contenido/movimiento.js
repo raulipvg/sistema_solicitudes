@@ -8,7 +8,7 @@ function format(data,movimiento) {
                             <th class="p-0 ps-3" info=${movimiento}>Id</th>
                             <th class="p-0 ps-3">Nombre Atributo</th>
                             <th class="p-0 ps-3">Valor de Referencia${
-                                credenciales.puedeRegistrar
+                                credenciales['MovimientoAtributo'].puedeRegistrar
                                     ?`<span class="asignar-movAtributo" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Asignar Atributo">
                                         <button type="button" data-info="${movimiento}" class="registrar-movAtributo btn btn-sm btn-icon btn-color-dark btn-active-light btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#registrar-movAtributo">
                                             <i class="ki-outline ki-plus-square fs-2"></i>
@@ -118,7 +118,7 @@ const cargarDataMovimiento= function(){
         init: function(data){
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
-                    var className = (credenciales.puedeEliminar)? 'estado-movimiento': 'disabled';
+                    var className = (credenciales['MovimientoAtributo'].puedeEliminar)? 'estado-movimiento': 'disabled';
 
                     var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Movimiento','btn-light-success w-115px '+className,'HABILITADO')
                                                             :botonEstado('Habilitar Movimiento','btn-light-warning w-115px '+className,'DESHABILITADO');
@@ -129,7 +129,7 @@ const cargarDataMovimiento= function(){
                                         "2": data[key].Grupo,
                                         "3": data[key].Flujo,
                                         "4": btnEstado,
-                                        "5": botonAcciones('registrar-movimiento',data[key].Id),
+                                        "5": botonAcciones('registrar-movimiento',data[key].Id,'MovimientoAtributo'),
                                         "6" :botonVerDetalle('Atributos Asociados')
                                     } ).node();
                     $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');

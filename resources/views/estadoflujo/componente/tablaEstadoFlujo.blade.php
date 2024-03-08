@@ -4,7 +4,7 @@
             <th scope="col">#</th>
             <th scope="col">Nombre</th>
             <th scope="col">Estado</th>
-            <th class="text-center @if(!$credenciales['EstadoFlujo']['puedeEditar']) d-none @endif" scope="col">Accion</th>
+            <th class="text-center" scope="col">Accion</th>
         </tr>
     </thead>
     <tbody>
