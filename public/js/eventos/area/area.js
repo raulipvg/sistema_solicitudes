@@ -1,7 +1,7 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
     let validator;
-    if(credenciales.puedeRegistrar || credenciales.puedeEditar || credenciales.puedeVer){
+    if(credenciales['Area'].puedeRegistrar || credenciales['Area'].puedeEditar || credenciales['Area'].puedeVer){
         const form = document.getElementById('FormularioArea');
         $("#AlertaErrorArea").hide();
             // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
@@ -65,7 +65,7 @@ $(document).ready(function() {
         );
     }
 
-    if(credenciales.puedeRegistrar){
+    if(credenciales['Area'].puedeRegistrar){
         // Evento al presionar el Boton de Registrar
         $("#AddBtn").on("click", function (e) {
             //Inicializacion
@@ -164,7 +164,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credenciales.puedeEditar){
+    if(credenciales['Area'].puedeEditar){
         var tr;
         var row;
         //Evento al presionar el Boton Editar
@@ -315,7 +315,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credenciales.puedeVer){
+    if(credenciales['Area'].puedeVer){
         //Evento al presionar el Boton VER
         $("#tabla-area tbody").on("click",'.ver', function (e) {
             e.preventDefault();
@@ -398,7 +398,7 @@ $(document).ready(function() {
         });
     }
     
-    if(credenciales.puedeEliminar){
+    if(credenciales['Area'].puedeEliminar){
         // Evento al Boton que cambia el estado del area
         $("#tabla-area tbody").on("click", '.estado-area', function (e) {
             e.preventDefault();
@@ -461,7 +461,7 @@ $(document).ready(function() {
         });
     }
     
-    if(credenciales2.puedeVer){
+    if(credenciales['Flujo'].puedeVer){
         //EVENTO DEL BOTON + DE LA TABLA Y CREA SUBTABLA
         miTablaArea.on('click', 'td.dt-control', function (e) {
             e.preventDefault();
@@ -530,7 +530,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credenciales2.puedeEliminar){
+    if(credenciales['Flujo'].puedeEliminar){
     //Evento al presionar el Boton de cambiar estado en la subtabla 
     $("#tabla-area tbody").on("click", '.estado-flujo', function(e){
         e.preventDefault();

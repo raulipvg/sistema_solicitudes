@@ -94,11 +94,12 @@ var loadingEl = document.createElement("div");
         return btn;
     }
 
-    function botonAcciones(modal,id){
+    function botonAcciones(modal,id,privilegio){
+
         var btn =   `
                     <div class="btn-group btn-group-sm" role="group">
-                        ${credenciales.puedeVer ? `<a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#${modal}" info="${id}">Ver</a>` : ''}
-                        ${credenciales.puedeEditar ? `<a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#${modal}" info="${id}">Editar</a>` : ''}
+                        ${credenciales[privilegio].puedeVer ? `<a class="ver btn btn-success" data-bs-toggle="modal" data-bs-target="#${modal}" info="${id}">Ver</a>` : ''}
+                        ${credenciales[privilegio].puedeEditar ? `<a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#${modal}" info="${id}">Editar</a>` : ''}
                     </div>
                     `;
         return btn;
@@ -116,10 +117,10 @@ var loadingEl = document.createElement("div");
 
     
 
-    function botonAccion(modal,id){
+    function botonAccion(modal,id,privilegio){
         var btn =   `
                     <div class="btn-group btn-group-sm" role="group">
-                        ${credenciales.puedeEditar ? `<a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#${modal}" info="${id}">Editar</a>` : ''}
+                        ${credenciales[privilegio].puedeEditar ? `<a class="editar btn btn-warning" data-bs-toggle="modal" data-bs-target="#${modal}" info="${id}">Editar</a>` : ''}
                     </div>
                     `;
         return btn;

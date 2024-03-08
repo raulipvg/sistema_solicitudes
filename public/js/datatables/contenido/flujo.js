@@ -70,7 +70,7 @@ const cargarDataFlujo= function(){
         init: function(data){
                 for (const key in data) {
                     if (data.hasOwnProperty(key)) {
-                        var className = (credenciales.puedeEliminar)? 'estado-flujo': 'disabled';
+                        var className = (credenciales['Flujo'].puedeEliminar)? 'estado-flujo': 'disabled';
 
                         var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Flujo','btn-light-success w-115px '+className,'HABILITADO')
                                                                 :botonEstado('Habilitar Flujo','btn-light-warning w-115px '+className,'DESHABILITADO');
@@ -87,10 +87,10 @@ const cargarDataFlujo= function(){
                                             "2": data[key].AreaNombre,
                                             "3": html,
                                             "4": btnEstado,
-                                            "5": (credenciales.puedeEditar)?botonAcciones('editar-flujo',data[key].Id):null
+                                            "5": botonAcciones('editar-flujo',data[key].Id,'Flujo')
                                         } ).node();
                         $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
-                        (credenciales.puedeEditar)?$(rowNode).find('td:eq(5)').addClass('text-center p-0'):null;          
+                        (credenciales['Flujo'].puedeEditar)?$(rowNode).find('td:eq(5)').addClass('text-center p-0'):null;          
                     }
                 }
                 miTablaFlujo.order([1, 'asc']).draw();

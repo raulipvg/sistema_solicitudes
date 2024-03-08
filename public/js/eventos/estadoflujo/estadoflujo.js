@@ -1,7 +1,7 @@
 // Realizado por Raul Muñoz raul.munoz@virginiogomez.cl
 $(document).ready(function() {
     let validator;
-    if(credenciales.puedeRegistrar || credenciales.puedeEditar || credenciales.puedeVer){
+    if(credenciales['EstadoFlujo'].puedeRegistrar || credenciales['EstadoFlujo'].puedeEditar || credenciales['EstadoFlujo'].puedeVer){
         const form = document.getElementById('FormularioEstadoFlujo');
         $("#AlertaError").hide();
             // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
@@ -50,7 +50,7 @@ $(document).ready(function() {
         );
     }
 
-    if(credenciales.puedeRegistrar){
+    if(credenciales['EstadoFlujo'].puedeRegistrar){
         // Evento al presionar el Boton de Registrar
         $("#AddBtnEstado").on("click", function (e) {
             //Inicializacion
@@ -146,7 +146,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credenciales.puedeEditar){
+    if(credenciales['EstadoFlujo'].puedeEditar){
         var tr;
         var row;
         //Evento al presionar el Boton Editar
@@ -291,7 +291,7 @@ $(document).ready(function() {
         });
     }
 
-    if(credenciales.puedeEliminar){
+    if(credenciales['EstadoFlujo'].puedeEliminar){
         // Evento al Boton que cambia el estado del "Estado"
         $("#tabla-estado tbody").on("click", '.estado-estado', function (e) {
             e.preventDefault();

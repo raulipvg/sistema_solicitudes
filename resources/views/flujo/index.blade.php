@@ -120,7 +120,6 @@
 
 
         const credenciales= {!! json_encode($credenciales) !!}; //observacion, arreglar
-        const credenciales2= {!! json_encode($credenciales) !!}; //observacion, arreglar
         console.log(credenciales);
     </script>
 

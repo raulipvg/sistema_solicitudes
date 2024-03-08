@@ -3,11 +3,11 @@ $(document).ready(function() {
     GetFlujos();
 
     $("#tab-flujo").on('click', function(e){
-        console.log('flujo');
+        //console.log('flujo');
         GetFlujos();
     });
     $("#tab-estado").on('click', function(e){
-        console.log('estado');
+        //console.log('estado');
         $.ajax({
             type: 'GET',
             url: VerTodoEstado,
@@ -58,7 +58,7 @@ $(document).ready(function() {
         });
     });
     $("#tab-area").on('click', function(e){
-        console.log('area');
+        //console.log('area');
         $.ajax({
             type: 'GET',
             url: VerTodoArea,

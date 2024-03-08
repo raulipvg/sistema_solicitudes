@@ -27,7 +27,7 @@ function format(data,usuario) {
 function AgregarTR(nombre, id, fecha, titulo){
 
     var fechaFormateada = formatearFecha(fecha);
-    var className = (credenciales2.puedeEliminar)? 'estado-flujo': 'disabled';
+    var className = (credenciales['Flujo'].puedeEliminar)? 'estado-flujo': 'disabled';
     var html =`
                 <tr>
                     <td class="text-gray-700 text-capitalize">${nombre}</td>
@@ -129,7 +129,7 @@ const cargarDataArea= function(){
                 if (data.hasOwnProperty(key)) {
                             //console.log("Nombre:", data[persona].username);
 
-                    var className = (credenciales.puedeEliminar)? 'estado-area': 'disabled';
+                    var className = (credenciales['Area'].puedeEliminar)? 'estado-area': 'disabled';
 
                     var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Area','btn-light-success w-115px '+className,'HABILITADO')
                                                              :botonEstado('Habilitar Area','btn-light-warning w-115px '+className,'DESHABILITADO');
@@ -140,8 +140,8 @@ const cargarDataArea= function(){
                                         "2": data[key].Descripcion,
                                         "3": formatearFecha(data[key].created_at),
                                         "4": btnEstado,
-                                        "5": botonAcciones('registrar',data[key].Id),
-                                        "6": (credenciales2.puedeVer)?botonVerDetalle('Flujos Asociados'):null
+                                        "5": botonAcciones('registrar',data[key].Id,'Area'),
+                                        "6": (credenciales['Area'].puedeVer)?botonVerDetalle('Flujos Asociados'):null
                                     } ).node();
                     $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
                     $(rowNode).find('td:eq(2)').addClass('text-capitalize');

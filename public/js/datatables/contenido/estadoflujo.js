@@ -77,7 +77,7 @@ const cargarDataEstado= function(){
         init: function(data){
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
-                    var className = (credenciales.puedeEliminar)? 'estado-estado': 'disabled';
+                    var className = (credenciales['EstadoFlujo'].puedeEliminar)? 'estado-estado': 'disabled';
 
                     var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Estado','btn-light-success w-115px '+className,'HABILITADO')
                                                             :botonEstado('Habilitar Estado','btn-light-warning w-115px '+className,'DESHABILITADO');
@@ -86,10 +86,10 @@ const cargarDataEstado= function(){
                                         "0": data[key].Id,
                                         "1": data[key].Nombre,
                                         "2": btnEstado,
-                                        "3": (credenciales.puedeEditar)?botonAccion('registrarEstado',data[key].Id):null
+                                        "3": botonAccion('registrarEstado',data[key].Id,'EstadoFlujo')
                                     } ).node();
                     $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
-                    (credenciales.puedeEditar)?$(rowNode).find('td:eq(3)').addClass('text-center p-0'):null;          
+                    (credenciales['EstadoFlujo'].puedeEditar)?$(rowNode).find('td:eq(3)').addClass('text-center p-0'):null;          
                 }
             }
             miTablaEstado.order([1, 'asc']).draw();

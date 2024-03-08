@@ -46,7 +46,6 @@ class FlujoController extends Controller
         return view('flujo.index')->with([
             'titulo'=> 'Flujos',
             'credenciales'=> $credenciales,
-            //'credenciales2'=> $credenciales2,
             'accesoLayout' => $accesoLayout 
         ]);
     }
