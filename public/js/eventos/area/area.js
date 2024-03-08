@@ -3,7 +3,7 @@ $(document).ready(function() {
     let validator;
     if(credenciales.puedeRegistrar || credenciales.puedeEditar || credenciales.puedeVer){
         const form = document.getElementById('FormularioArea');
-        $("#AlertaError").hide();
+        $("#AlertaErrorArea").hide();
             // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
         validator = FormValidation.formValidation(
                 form,
@@ -75,12 +75,12 @@ $(document).ready(function() {
             $("#modal-titulo").empty().html("Registrar Area");
             $("input").val('').prop("disabled",false);
             $('.form-select').val("").trigger("change").prop("disabled",false);
-            //$('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
+            //$('#EstadoIdAreaInput').val("").trigger("change").prop("disabled",false);
 
             $("#AddSubmit").show();
             $("#EditSubmit").hide();
-            $("#IdInput").prop("disabled",true);
-            $("#AlertaError").hide();
+            $("#IdAreaInput").prop("disabled",true);
+            $("#AlertaErrorArea").hide();
 
             validator.resetForm();
             actualizarValidSelect2();
@@ -93,8 +93,8 @@ $(document).ready(function() {
             e.preventDefault();
             e.stopPropagation();
 
-            $("#AlertaError").hide();
-            $("#AlertaError").empty();
+            $("#AlertaErrorArea").hide();
+            $("#AlertaErrorArea").empty();
             
             // Validate form before submit
             if (validator) {
@@ -130,13 +130,13 @@ $(document).ready(function() {
                                     if(data.success){
                                         //console.log("exito");
                                         //location.reload();
-                                        cargarData.init(data.area);
+                                        cargarDataArea.init(data.area);
                                         $('#registrar').modal('toggle');
                                     }else{
                                         //console.log(data.error);
                                             html = '<ul><li style="">'+data.message+'</li></ul>';
-                                            $("#AlertaError").append(html);                                    
-                                            $("#AlertaError").show();
+                                            $("#AlertaErrorArea").append(html);                                    
+                                            $("#AlertaErrorArea").show();
                                     }
                                 },
                                 error: function (e) {
@@ -178,11 +178,11 @@ $(document).ready(function() {
 
             $("#AddSubmit").hide();
             $("#EditSubmit").show();
-            $("#IdInput").prop("disabled",false);
-            $("#AlertaError").hide();
+            $("#IdAreaInput").prop("disabled",false);
+            $("#AlertaErrorArea").hide();
 
             tr = e.target.closest('tr');
-            row = miTabla.row(tr);
+            row = miTablaArea.row(tr);
             validator.resetForm();
             actualizarValidSelect2();
 
@@ -207,10 +207,10 @@ $(document).ready(function() {
                         
                         data=data.data;
                         
-                        $("#IdInput").val(data.Id);
-                        $("#NombreInput").val(data.Nombre);
-                        $("#DescripcionInput").val(data.Descripcion);                
-                        $('#EstadoIdInput').val(data.Enabled).trigger("change");
+                        $("#IdAreaInput").val(data.Id);
+                        $("#NombreAreaInput").val(data.Nombre);
+                        $("#DescripcionAreaInput").val(data.Descripcion);                
+                        $('#EstadoIdAreaInput').val(data.Enabled).trigger("change");
                     }else{
                         Swal.fire({
                                 text: "Error de Carga",
@@ -256,8 +256,8 @@ $(document).ready(function() {
                 
                 e.preventDefault();
                 e.stopPropagation();
-                $("#AlertaError").hide();
-                $("#AlertaError").empty();
+                $("#AlertaErrorArea").hide();
+                $("#AlertaErrorArea").empty();
                 // Validate form before submit
                 if (validator) {
                     validator.validate().then(function (status) {
@@ -283,14 +283,14 @@ $(document).ready(function() {
                                     success: function (data) {                                    
                                         if(data.success){
                                             //console.log(data)
-                                            miTabla.row(row).remove();
-                                            cargarData.init(data.area);
+                                            miTablaArea.row(row).remove();
+                                            cargarDataArea.init(data.area);
                                             $('#registrar').modal('toggle');
                                             //location.reload();
                                         }else{
                                             html = '<ul><li style="">'+data.message+'</li></ul>';
-                                            $("#AlertaError").append(html);
-                                            $("#AlertaError").show();
+                                            $("#AlertaErrorArea").append(html);
+                                            $("#AlertaErrorArea").show();
                                         }
                                     },
                                     error: function () {
@@ -326,8 +326,8 @@ $(document).ready(function() {
             $('.form-select').val("").trigger("change").prop("disabled",true);
             $("#AddSubmit").hide();
             $("#EditSubmit").hide();
-            $("#IdInput").prop("disabled",false);
-            $("#AlertaError").hide();
+            $("#IdAreaInput").prop("disabled",false);
+            $("#AlertaErrorArea").hide();
 
             validator.resetForm();
             actualizarValidSelect2();
@@ -352,10 +352,10 @@ $(document).ready(function() {
                     if(data){
                         data=data.data;
             
-                        $("#IdInput").val(data.Id);
-                        $("#NombreInput").val(data.Nombre);
-                        $("#DescripcionInput").val(data.Descripcion);           
-                        $('#EstadoIdInput').val(data.Enabled).trigger("change");
+                        $("#IdAreaInput").val(data.Id);
+                        $("#NombreAreaInput").val(data.Nombre);
+                        $("#DescripcionAreaInput").val(data.Descripcion);           
+                        $('#EstadoIdAreaInput').val(data.Enabled).trigger("change");
                     }else{
                         Swal.fire({
                                 text: "Error de Carga",
@@ -463,12 +463,12 @@ $(document).ready(function() {
     
     if(credenciales2.puedeVer){
         //EVENTO DEL BOTON + DE LA TABLA Y CREA SUBTABLA
-        miTabla.on('click', 'td.dt-control', function (e) {
+        miTablaArea.on('click', 'td.dt-control', function (e) {
             e.preventDefault();
             e.stopPropagation();
 
             var tr = e.target.closest('tr');
-            var row = miTabla.row(tr);
+            var row = miTablaArea.row(tr);
             var cell = row.cell(tr, 6); // Elegir bien el numero de colmuna que está el boton + (parte de la col 0)
             var boton= $(cell.node()).find('button');
             var userId= $(this).prev().find('a.ver').attr("info")
@@ -502,7 +502,7 @@ $(document).ready(function() {
                             area=data.area;             
                             data = data.data;
                             row.child(format(data,area)).show();
-                            $(".editar-flujo").tooltip();
+                            $(".estado-flujo").tooltip();
                         }
                     },
                     error: function () {
@@ -532,7 +532,7 @@ $(document).ready(function() {
 
     if(credenciales2.puedeEliminar){
     //Evento al presionar el Boton de cambiar estado en la subtabla 
-    $("#tabla-area tbody").on("click", '.editar-flujo', function(e){
+    $("#tabla-area tbody").on("click", '.estado-flujo', function(e){
         e.preventDefault();
         e.stopPropagation();
         //console.log("click")
@@ -542,7 +542,7 @@ $(document).ready(function() {
         btn.attr("data-kt-indicator", "on");
         $.ajax({
             type: 'POST',
-            url: EliminarFlujo,
+            url: CambiarEstadoFlujo,
             data: {
                 _token: csrfToken,
                 data: accesoId

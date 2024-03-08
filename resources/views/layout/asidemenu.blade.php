@@ -7,7 +7,7 @@
 									<div class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6" id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
 										<!--begin:Menu link-->
 										<div class="menu-item">
-											<a class="menu-link  {{ request()->routeIs('Home') || request()->routeIs('Solicitud') ? 'active' : '' }}" href="{{route('Solicitud')}}">
+											<a class="menu-link  {{ request()->routeIs('Home','Solicitud') ? 'active' : '' }}" href="{{route('Solicitud')}}">
 												<span class="menu-icon">
 													<i class="ki-duotone ki-home fs-2">
 													</i>
@@ -33,8 +33,7 @@
 										</div>
 										@if( collect($accesoLayout)->where('PrivilegioId', 10)->pluck('Ver')->first() == 1 || collect($accesoLayout)->where('PrivilegioId', 7)->pluck('Ver')->first())
 										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion pt-2 {{ request()->routeIs('Flujo') || 
-																													request()->routeIs('InicioMovimientoAtributo') ? 'here show' : '' }}">
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion pt-2 {{ request()->routeIs('Flujo', 'RegistrarFlujo','InicioMovimientoAtributo') ? 'here show' : '' }}">
 											
 																													<!--begin:Menu link-->
 											<span class="menu-link">
@@ -58,7 +57,7 @@
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
-													<a class="menu-link {{ request()->routeIs('Flujo') ? 'active' : '' }}" href="{{route('Flujo')}}">
+													<a class="menu-link {{ request()->routeIs('Flujo','RegistrarFlujo') ? 'active' : '' }}" href="{{route('Flujo')}}">
 														<span class="menu-bullet">
 															<span class="bullet bullet-dot"></span>
 														</span>
@@ -103,8 +102,7 @@
 										<!--end:Menu item-->
 										@if( collect($accesoLayout)->where('PrivilegioId', 1)->pluck('Ver')->first() == 1 || collect($accesoLayout)->where('PrivilegioId', 2)->pluck('Ver')->first())
 										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('Usuario') || 
-																											request()->routeIs('Grupo') ? 'here show' : '' }}">
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('Usuario','Grupo') ? 'here show' : '' }}">
 											<!--begin:Menu link-->
 											<span class="menu-link">
 												<span class="menu-icon">
@@ -158,10 +156,7 @@
 										collect($accesoLayout)->where('PrivilegioId', 6)->pluck('Ver')->first() == 1 ||
 										collect($accesoLayout)->where('PrivilegioId', 8)->pluck('Ver')->first() == 1)
 										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('Empresa') || 
-																											request()->routeIs('Persona') || 
-																											request()->routeIs('Area') ||
-																											request()->routeIs('EstadoFlujo')  ? 'here show' : '' }}">
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('Empresa','Persona')? 'here show' : '' }}">
 											<!--begin:Menu link-->
 											<span class="menu-link">
 												<span class="menu-icon">
@@ -200,34 +195,6 @@
 															<span class="bullet bullet-dot"></span>
 														</span>
 														<span class="menu-title">Persona</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												@endif
-												@if( collect($accesoLayout)->where('PrivilegioId', 6)->pluck('Ver')->first() == 1 )
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link {{ request()->routeIs('Area') ? 'active' : '' }}" href="{{route('Area') }}">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Area</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												@endif
-												@if( collect($accesoLayout)->where('PrivilegioId', 8)->pluck('Ver')->first() == 1 )
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link {{ request()->routeIs('EstadoFlujo') ? 'active' : '' }}" href="{{route('EstadoFlujo') }}">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Estado Flujo</span>
 													</a>
 													<!--end:Menu link-->
 												</div>

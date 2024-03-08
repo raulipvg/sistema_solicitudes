@@ -23,7 +23,7 @@
                     <ul class="nav nav-tabs row border-bottom-0">
                         <li class="nav-item col-md-6" role="presentation">
                             <a class="nav-link w-100 btn btn-flex btn-active-dark justify-content-center active" data-bs-toggle="tab" href="#panel-movimiento" aria-selected="true" role="tab">
-                                <i class="ki-duotone ki-icons/duotune/general/gen001.svg fs-2 text-primary me-3"></i>
+                                <i class="fs-2 text-primary me-3"></i>
                                 <span class="d-flex flex-column align-items-start align-items-center">
                                     <span class="fs-4 fw-bold text-capitalize">MOVIMIENTOS</span>
                                     <span class="fs-7">Administrar movimientos</span>
@@ -32,7 +32,7 @@
                         </li>
                         <li class="nav-item col-md-6" role="presentation">
                                 <a class="nav-link w-100 btn btn-flex btn-active-dark justify-content-center" data-bs-toggle="tab" href="#panel-atributo" aria-selected="false" role="tab" tabindex="-1">
-                                    <i class="ki-duotone ki-icons/duotune/general/gen003.svg fs-2 text-primary"></i>
+                                    <i class="fs-2 text-primary"></i>
                                     <span class="d-flex flex-column align-items-start align-items-center">
                                         <span class="fs-4 fw-bold text-capitalize">ATRIBUTOS</span>
                                         <span class="fs-7">Administrar atributos</span>

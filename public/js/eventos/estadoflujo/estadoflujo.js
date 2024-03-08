@@ -52,7 +52,7 @@ $(document).ready(function() {
 
     if(credenciales.puedeRegistrar){
         // Evento al presionar el Boton de Registrar
-        $("#AddBtn").on("click", function (e) {
+        $("#AddBtnEstado").on("click", function (e) {
             //Inicializacion
             //console.log("AddBtn")
             e.preventDefault();
@@ -62,8 +62,8 @@ $(document).ready(function() {
             $('.form-select').val("").trigger("change").prop("disabled",false);
             //$('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
 
-            $("#AddSubmit").show();
-            $("#EditSubmit").hide();
+            $("#AddSubmitEstado").show();
+            $("#EditSubmitEstado").hide();
             $("#IdInput").prop("disabled",true);
             $("#AlertaError").hide();
 
@@ -72,7 +72,7 @@ $(document).ready(function() {
         });
 
         // Manejador al presionar el submit de Registrar
-        const submitButton = document.getElementById('AddSubmit');
+        const submitButton = document.getElementById('AddSubmitEstado');
         submitButton.addEventListener('click', function (e) {
             // Prevent default button action
             e.preventDefault();
@@ -112,8 +112,8 @@ $(document).ready(function() {
                                     if(data.success){
                                         //console.log("exito");
                                         //location.reload();
-                                        cargarData.init(data.estadosFlujo);
-                                        $('#registrar').modal('toggle');
+                                        cargarDataEstado.init(data.estadosFlujo);
+                                        $('#registrarEstado').modal('toggle');
                                     }else{
                                         //console.log(data.error);
                                         html = '<ul><li style="">'+data.message+'</li></ul>';
@@ -158,13 +158,13 @@ $(document).ready(function() {
             $("input").val('').prop("disabled",false);
             $('.form-select').val("").trigger("change").prop("disabled",false);
 
-            $("#AddSubmit").hide();
-            $("#EditSubmit").show();
+            $("#AddSubmitEstado").hide();
+            $("#EditSubmitEstado").show();
             $("#IdInput").prop("disabled",false);
             $("#AlertaError").hide();
 
             tr = e.target.closest('tr');
-            row = miTabla.row(tr);
+            row = miTablaEstado.row(tr);
             validator.resetForm();
             actualizarValidSelect2();
 
@@ -201,7 +201,7 @@ $(document).ready(function() {
                                 }
                             });
                         $(".btn-cerrar").on("click", function () {
-                            $('#registrar').modal('toggle');
+                            $('#registrarEstado').modal('toggle');
                         });
                     }
                 },
@@ -217,7 +217,7 @@ $(document).ready(function() {
                             });
                     $(".btn-cerrar").on("click", function () {
                                 //console.log("Error");
-                        $('#registrar').modal('toggle');
+                        $('#registrarEstado').modal('toggle');
                     });
                 },
                 complete: function(){
@@ -229,7 +229,7 @@ $(document).ready(function() {
         });
 
         // Manejador al presionar el submit de Editar
-        const submitEditButton = document.getElementById('EditSubmit');
+        const submitEditButton = document.getElementById('EditSubmitEstado');
         submitEditButton.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -260,9 +260,9 @@ $(document).ready(function() {
                                     success: function (data) {                                    
                                         if(data.success){
                                             //location.reload();
-                                            miTabla.row(row).remove();
-                                            cargarData.init(data.estadosFlujo);
-                                            $('#registrar').modal('toggle');
+                                            miTablaEstado.row(row).remove();
+                                            cargarDataEstado.init(data.estadosFlujo);
+                                            $('#registrarEstado').modal('toggle');
                                         }else{
                                             html = '<ul><li style="">'+data.message+'</li></ul>';
                                             $("#AlertaError").append(html);
@@ -298,7 +298,7 @@ $(document).ready(function() {
             e.stopPropagation();
 
             tr = e.target.closest('tr');
-            row = miTabla.row(tr).data();
+            row = miTablaEstado.row(tr).data();
             const userId =  row[0];
             var btn = $(this);
 

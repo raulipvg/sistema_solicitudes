@@ -1,5 +1,5 @@
 
-let miTablaEstado = $('#tabla-estado').DataTable({
+let miTablaFlujo = $('#tabla-flujo').DataTable({
     "language": languageConfig,
             "dom":
                 "<'d-flex flex-md-row flex-column justify-content-md-between justify-content-start align-items-center'" +
@@ -53,14 +53,7 @@ let miTablaEstado = $('#tabla-estado').DataTable({
             "columnDefs": [
                 { "targets": 1, "responsivePriority": 1 },
                 { "targets": 0, "responsivePriority": 3,"searchable": false },
-                { 
-                    targets: -1,
-                    responsivePriority: 1,
-                    className: 'dt-control',
-                    orderable: false,
-                    searchable: false,
-                    
-                },      
+                { "targets": -1,"responsivePriority": 1,"className": 'dt-control',"orderable": false,"searchable": false},      
                 { "targets": 2, "responsivePriority": 4 },
                 { "targets": 3, "responsivePriority": 5 }
             ],
@@ -72,28 +65,36 @@ let miTablaEstado = $('#tabla-estado').DataTable({
             //"scrollX": true
 });
       
-const cargarDataEstado= function(){
+const cargarDataFlujo= function(){
     return {
         init: function(data){
-            for (const key in data) {
-                if (data.hasOwnProperty(key)) {
-                    var className = (credenciales.puedeEliminar)? 'estado-estado': 'disabled';
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        var className = (credenciales.puedeEliminar)? 'estado-flujo': 'disabled';
 
-                    var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Estado','btn-light-success w-115px '+className,'HABILITADO')
-                                                            :botonEstado('Habilitar Estado','btn-light-warning w-115px '+className,'DESHABILITADO');
-                    
-                    var rowNode =  miTablaEstado.row.add( {
-                                        "0": data[key].Id,
-                                        "1": data[key].Nombre,
-                                        "2": btnEstado,
-                                        "3": (credenciales.puedeEditar)?botonAccion('registrarEstado',data[key].Id):null
-                                    } ).node();
-                    $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
-                    (credenciales.puedeEditar)?$(rowNode).find('td:eq(3)').addClass('text-center p-0'):null;          
+                        var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Flujo','btn-light-success w-115px '+className,'HABILITADO')
+                                                                :botonEstado('Habilitar Flujo','btn-light-warning w-115px '+className,'DESHABILITADO');
+                        var etapas = JSON.parse(data[key].Etapa);
+                        
+                        var html=``;
+                        etapas.forEach( (item,key) => {
+                            html+= `${(key !=0)?`->`:``}<span class="badge badge-dark">${item.Nombre}</span>`
+                        });
+
+                        var rowNode =  miTablaFlujo.row.add( {
+                                            "0": data[key].Id,
+                                            "1": data[key].Nombre,
+                                            "2": data[key].AreaNombre,
+                                            "3": html,
+                                            "4": btnEstado,
+                                            "5": (credenciales.puedeEditar)?botonAcciones('editar-flujo',data[key].Id):null
+                                        } ).node();
+                        $(rowNode).find('td:eq(1)').addClass('text-capitalize ftext-gray-800 fw-bolder');
+                        (credenciales.puedeEditar)?$(rowNode).find('td:eq(5)').addClass('text-center p-0'):null;          
+                    }
                 }
-            }
-            miTablaEstado.order([1, 'asc']).draw();
-            $('[data-bs-toggle="tooltip"]').tooltip();
+                miTablaFlujo.order([1, 'asc']).draw();
+                $('[data-bs-toggle="tooltip"]').tooltip();     
         }
     }
 

@@ -15,6 +15,7 @@ class EstadoFlujoController extends Controller
     {
         $titulo = 'Estados de Flujo';
 
+        
         //BEGIN::PRIVILEGIOS
         $user = auth()->user();
         // 8 Privilegios de Estado Flujo
@@ -30,6 +31,7 @@ class EstadoFlujoController extends Controller
 
         $estadosFlujo = EstadoFlujo::select('Id','Nombre','Enabled')->get();
         Log::info('Ingreso vista estado flujo');
+
         return View('estadoflujo.estadoflujo')->with([
                     'titulo'=>$titulo,
                     'estadosFlujo'=>$estadosFlujo,
@@ -38,6 +40,35 @@ class EstadoFlujoController extends Controller
                 ]);
     }
 
+    public function Ver(Request $request)
+    {
+        try{
+            //BEGIN::PRIVILEGIOS
+            $user = auth()->user();
+            // 8 Privilegios de Estado Flujo
+            $credenciales = [
+                    'puedeVer'=> $user->puedeVer(8),
+                    'puedeRegistrar'=> $user->puedeRegistrar(8),
+                    'puedeEditar'=> $user->puedeEditar(8),
+                    'puedeEliminar'=> $user->puedeEliminar(8),
+            ];
+            //END::PRIVILEGIOS
+            $estadosFlujo = EstadoFlujo::select('Id','Nombre','Enabled')->get();
+            Log::info('Ingreso vista estado flujo');
+
+            return response()->json([
+                        'success' => true,
+                        'data'=>$estadosFlujo,
+                        'credenciales'=>$credenciales
+                    ]);
+        }catch(Exception $e){
+            Log::error('Error al ver estado de flujo',[$e->getMessage()]);
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */

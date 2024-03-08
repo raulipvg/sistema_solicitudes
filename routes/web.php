@@ -63,16 +63,17 @@ Route::group(['prefix' => '/grupo', 'middleware' => 'auth'], function () {
 });
 
 
-Route::group(['prefix' => '/estadoflujo', 'middleware' => 'auth'], function () {
-    Route::get('/', [EstadoFlujoController::class, 'Index'])->name('EstadoFlujo');
-    Route::post('/registrar', [EstadoFlujoController::class, 'Guardar'])->name('GuardarEstado');
-    Route::post('/ver', [EstadoFlujoController::class, 'VerId'])->name('VerEstado');
-    Route::post('/editar', [EstadoFlujoController::class, 'Editar'])->name('EditarEstado');
-    Route::post('/editarEstado', [EstadoFlujoController::class, 'CambiarEstado'])->name('CambiarEstadoEstado');
+
+//** BEGIN::SECCION MOVIMIENTOS **///
+Route::group(['prefix'=> '/movimientos', 'middleware' => 'auth'], function () {
+    Route::get('/', [MovimientoAtributoController::class, 'Index'])->name('InicioMovimientoAtributo');
+    Route::post('/registrar', [MovimientoAtributoController::class, 'Guardar'])->name('GuardarMovimientoAtributo');
+    Route::post('/ver', [MovimientoAtributoController::class, 'Ver'])->name('VerMovimientoAtributo');
+    Route::post('/verAtributos', [MovimientoAtributoController::class, 'AtributosFaltantes'])->name('VerAtributosFaltantes');
 });
 
 Route::group(['prefix' => '/atributo', 'middleware' => 'auth'], function () {
-    Route::get('/', [AtributoController::class, 'Index'])->name('Atributo');
+    //Route::get('/', [AtributoController::class, 'Index'])->name('Atributo');
     Route::post('/registrar', [AtributoController::class, 'Guardar'])->name('GuardarAtributo');
     Route::post('/ver', [AtributoController::class, 'VerId'])->name('VerAtributo');
     Route::post('/editar', [AtributoController::class, 'Editar'])->name('EditarAtributo');
@@ -80,28 +81,48 @@ Route::group(['prefix' => '/atributo', 'middleware' => 'auth'], function () {
 });
 
 Route::group(['prefix' => '/movimiento', 'middleware' => 'auth'], function () {
-    Route::get('/', [MovimientoController::class, 'Index'])->name('Movimiento');
+    //Route::get('/', [MovimientoController::class, 'Index'])->name('Movimiento');
     Route::post('/registrar', [MovimientoController::class, 'Guardar'])->name('GuardarMovimiento');
     Route::post('/ver', [MovimientoController::class, 'VerId'])->name('VerMovimiento');
     Route::post('/editar', [MovimientoController::class, 'Editar'])->name('EditarMovimiento');
     Route::post('/editarEstado', [MovimientoController::class, 'CambiarEstado'])->name('CambiarEstadoMovimiento');
     Route::post('/flujosGrupos', [MovimientoController::class, 'VerGruposFlujos'])->name('VerGruposFlujosMovimiento');
 });
+//** END::SECCION MOVIMIENTOS **//
+
+
+//** BEGIN::SECCION FLUJOS **//
+Route::group(['prefix'=> '/flujo', 'middleware' => 'auth'], function () {
+    Route::get('/', [FlujoController::class,'Index'])->name('Flujo');
+    Route::get('/ver', [FlujoController::class,'Ver'])->name('VerTodoFlujo');
+    Route::post('/ver', [FlujoController::class, 'VerId'])->name('VerFlujoId');
+    Route::get('/registrar', [FlujoController::class,'Registrar'])->name('RegistrarFlujo');
+    Route::post('/registrar', [FlujoController::class, 'Guardar'])->name('GuardarFlujo');
+    Route::post('/editar', [FlujoController::class, 'Editar'])->name('EditarFlujo');
+    Route::post('/cambiarestado', [FlujoController::class, 'CambiarEstado'])->name('CambiarEstadoFlujo');
+});
+
+Route::group(['prefix' => '/estadoflujo', 'middleware' => 'auth'], function () {
+    //Route::get('/', [EstadoFlujoController::class, 'Index'])->name('EstadoFlujo');
+    Route::get('/ver', [EstadoFlujoController::class, 'Ver'])->name('VerTodoEstado');
+    Route::post('/ver', [EstadoFlujoController::class, 'VerId'])->name('VerEstado');
+    Route::post('/registrar', [EstadoFlujoController::class, 'Guardar'])->name('GuardarEstado');
+    Route::post('/editar', [EstadoFlujoController::class, 'Editar'])->name('EditarEstado');
+    Route::post('/cambiarestado', [EstadoFlujoController::class, 'CambiarEstado'])->name('CambiarEstadoEstado');
+});
 
 Route::group(['prefix'=> '/area', 'middleware' => 'auth'], function () {
-    Route::get('/', [AreaController::class,'Index'])->name('Area');
-    Route::post('/registrar', [AreaController::class, 'Guardar'])->name('GuardarArea');
+    //Route::get('/', [AreaController::class,'Index'])->name('Area');
+    Route::get('/ver', [AreaController::class, 'Ver'])->name('VerTodoArea');
     Route::post('/ver', [AreaController::class, 'VerId'])->name('VerArea');
+    Route::post('/registrar', [AreaController::class, 'Guardar'])->name('GuardarArea');
     Route::post('/editar', [AreaController::class, 'Editar'])->name('EditarArea');
     Route::post('/cambiarestado', [AreaController::class, 'CambiarEstado'])->name('CambiarEstadoArea');
     Route::post('/verflujos', [AreaController::class, 'VerFlujos'])->name('VerFlujos');
 });
 
-Route::group(['prefix'=> '/flujo', 'middleware' => 'auth'], function () {
-    Route::get('/', [FlujoController::class,'Index'])->name('Flujo');
-    Route::post('/eliminar', [FlujoController::class, 'Eliminar'])->name('EliminarFlujo');
-    Route::post('/registrar', [FlujoController::class, 'Guardar'])->name('GuardarFlujo');
-});
+//** END::SECCION FLUJOS **//
+
 
 Route::group(['prefix'=> '/empresa', 'middleware' => 'auth'], function () {
     Route::get('/', [EmpresaController::class,'Index'])->name('Empresa');
@@ -128,12 +149,7 @@ Route::group(['prefix'=> '/persona', 'middleware' => 'auth'], function () {
 
 });
 
-Route::group(['prefix'=> '/movimientoatributo', 'middleware' => 'auth'], function () {
-    Route::get('/', [MovimientoAtributoController::class, 'Index'])->name('InicioMovimientoAtributo');
-    Route::post('/registrar', [MovimientoAtributoController::class, 'Guardar'])->name('GuardarMovimientoAtributo');
-    Route::post('/ver', [MovimientoAtributoController::class, 'Ver'])->name('VerMovimientoAtributo');
-    Route::post('/verAtributos', [MovimientoAtributoController::class, 'AtributosFaltantes'])->name('VerAtributosFaltantes');
-});
+
 
 Route::group(['prefix'=> '/solicitud', 'middleware' => 'auth'], function () {
     Route::get('/', [SolicitudController::class,'Index'])->name('Solicitud');

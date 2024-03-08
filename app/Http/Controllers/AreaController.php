@@ -46,6 +46,24 @@ class AreaController extends Controller
                     ]);
     
     }
+    public function Ver(Request $request){
+        try {
+            $areas = Area::select('Id','Nombre','Descripcion','created_at','Enabled')->get();
+            
+            Log::info('Ver información del área');
+            return response()->json([
+                'success' => true,
+                'data' => $areas
+            ],200);
+        } catch (Exception $e) {
+            Log::error('Error al ver información del área',[$e->getMessage()]);
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ],400);
+        }
+
+    }
       /**
      * Show the form for creating a new resource.
      */
@@ -204,6 +222,7 @@ class AreaController extends Controller
         //POR HACER::CUANDO ESTEN LISTOS LOS FLUJOS
         $flujos = Flujo::select('Id','Nombre','created_at')
                             ->where('AreaId','=', $request)
+                            ->where('Enabled','=', 1)
                             ->get();
         return response()->json([
             'success' => true,

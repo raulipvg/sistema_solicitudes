@@ -19,33 +19,33 @@
             </div>
             <form id="FormularioArea" action="" method="post">
                 <div class="modal-body">
-                    <div id="AlertaError" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
+                    <div id="AlertaErrorArea" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="text" class="form-control" placeholder="Ingrese el nombre" id="NombreInput" name="Nombre" />
-                                <label for="NombreInput" class="form-label">Nombre</label>
-                                <input hidden type="number" id="IdInput" name="Id" />
+                                <input type="text" class="form-control" placeholder="Ingrese el nombre" id="NombreAreaInput" name="Nombre" />
+                                <label for="NombreAreaInput" class="form-label">Nombre</label>
+                                <input hidden type="number" id="IdAreaInput" name="Id" />
 
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-floating fv-row">
-                                <input type="text" class="form-control" autocomplete="off" placeholder="Ingrese la descripcion" id="DescripcionInput" name="Descripcion" />
-                                <label for="DescripcionInput" class="form-label">Descripcion</label>
+                                <input type="text" class="form-control" autocomplete="off" placeholder="Ingrese la descripcion" id="DescripcionAreaInput" name="Descripcion" />
+                                <label for="DescripcionAreaInput" class="form-label">Descripcion</label>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col mb-2">
                             <div class="form-floating fv-row">
-                                <select id="EstadoIdInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
+                                <select id="EstadoIdAreaInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
                                     <option value="1">Habilitado</option>
                                     <option value="0">Deshabilitado</option>
                                 </select>
-                                <label for="EstadoIdInput" class="form-label">Estado</label>
+                                <label for="EstadoIdAreaInput" class="form-label">Estado</label>
                             </div>
                         </div>
                     </div>

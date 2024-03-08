@@ -27,7 +27,7 @@ function format(data,usuario) {
 function AgregarTR(nombre, id, fecha, titulo){
 
     var fechaFormateada = formatearFecha(fecha);
-    var className = (credenciales2.puedeEliminar)? 'editar-flujo': 'disabled';
+    var className = (credenciales2.puedeEliminar)? 'estado-flujo': 'disabled';
     var html =`
                 <tr>
                     <td class="text-gray-700 text-capitalize">${nombre}</td>
@@ -48,7 +48,7 @@ function AgregarTR(nombre, id, fecha, titulo){
     return html;
 }
 
-let miTabla = $('#tabla-area').DataTable({
+const miTablaArea = $('#tabla-area').DataTable({
     "language": languageConfig,
     "dom":
         "<'d-flex flex-md-row flex-column justify-content-md-between justify-content-start align-items-center'" +
@@ -122,7 +122,7 @@ let miTabla = $('#tabla-area').DataTable({
 });
 
 //CARGAR DATA TABLA
-const cargarData= function(){
+const cargarDataArea= function(){
     return {
         init: function(data){
             for (const key in data) {
@@ -134,7 +134,7 @@ const cargarData= function(){
                     var btnEstado = (data[key].Enabled == 1)? botonEstado('Deshabilitar Area','btn-light-success w-115px '+className,'HABILITADO')
                                                              :botonEstado('Habilitar Area','btn-light-warning w-115px '+className,'DESHABILITADO');
                     
-                    var rowNode =  miTabla.row.add( {
+                    var rowNode =  miTablaArea.row.add( {
                                         "0": data[key].Id,
                                         "1": data[key].Nombre,
                                         "2": data[key].Descripcion,
@@ -149,7 +149,7 @@ const cargarData= function(){
                     $(rowNode).find('td:eq(5)').addClass('text-center p-0');          
                 }
             }
-            miTabla.order([1, 'asc']).draw();
+            miTablaArea.order([1, 'asc']).draw();
             $('[data-bs-toggle="tooltip"]').tooltip();
         }
     }
@@ -157,5 +157,5 @@ const cargarData= function(){
 }();
 
 KTUtil.onDOMContentLoaded((function() {
-    (credenciales.puedeVer)?cargarData.init(data):null;
+    //(credenciales.puedeVer)?cargarDataArea.init(data):null;
 }));
