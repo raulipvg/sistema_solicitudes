@@ -7,41 +7,47 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Recurso
+ * Class GrupoOperacion
  * 
  * @property int $Id
- * @property string $Nombre
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
+ * @property int $GrupoId
  * @property int $MovimientoId
  * 
- * @property Collection|Grupo[] $grupos
+ * @property Grupo $grupo
+ * @property Movimiento $movimiento
  *
  * @package App\Models
  */
-class Operacion extends Model
+class GrupoMovimiento extends Model
 {
-	protected $table = 'operacion';
+	protected $table = 'grupo_movimiento';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
+	public $incrementing = true;
+	public $timestamps = true;
+
 
 	protected $casts = [
 		'Id' => 'int',
+		'GrupoId' => 'int',
+		'MovimientoId' => 'int',
+		'Enabled'=> 'int'
 	];
 
 	protected $fillable = [
-		'Nombre',
+		'GrupoId',
+		'MovimientoId',
+		'OperacionId',
+		'Enabled'
 	];
 
-	public function grupos()
+	public function grupo()
 	{
-		return $this->belongsToMany(Grupo::class, 'grupo_operacion', 'OperacionId', 'GrupoId')
-					->withPivot('Id')
-					->withTimestamps();
+		return $this->belongsTo(Grupo::class, 'GrupoId');
 	}
 
 	public function movimiento()

@@ -25,7 +25,7 @@ use Illuminate\Validation\ValidationException;
  * 
  * @property Collection|Flujo[] $flujos
  * @property Collection|Privilegio[] $privilegios
- * @property Collection|Operacion[] $recursos
+ * @property Collection|Movimiento[] $grupo_movimientos
  * @property Collection|Movimiento[] $movimientos
  * @property Collection|OrdenFlujo[] $orden_flujos
  * @property Collection|Usuario[] $usuarios
@@ -62,10 +62,10 @@ class Grupo extends Model
 					->withTimestamps();
 	}
 
-	public function recursos()
+	public function grupo_movimientos()
 	{
-		return $this->belongsToMany(Operacion::class, 'grupo_recurso', 'GrupoId', 'PrivilegioId')
-					->withPivot('Id')
+		return $this->belongsToMany(GrupoMovimiento::class, 'grupo_movimiento', 'GrupoId', 'MovimientoId')
+					->withPivot('Id','Enabled')
 					->withTimestamps();
 	}
 

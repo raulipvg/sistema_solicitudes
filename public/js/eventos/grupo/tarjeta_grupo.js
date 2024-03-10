@@ -32,8 +32,15 @@ $(document).ready(function() {
                 },
                 success: function (data) {
                     if(data.success){
+                        console.log(data);
+                        llenarSelect2(data.movimientos,$("#MovimientoId"))
+                        llenarSelect2(data.grupos,$("#GrupoId"))
+                        
+                        $('#MovimientoId').val(data.gruposmovimientos).trigger("change");
+                        $('#GrupoId').val(data.gruposaut).trigger("change");
+                        //$('#MovimientoId').val(13).trigger("change");
                         data= data.data; 
-                        //console.log(data);
+                        
                         $("#NombreGrupoInput").val(data.Nombre);
                         $("#IdGrupoInput").val(data.Id);
 

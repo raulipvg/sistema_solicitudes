@@ -95,6 +95,8 @@
 		//console.log(msg.length)
 
 		//console.log( solicitudeActivas)
+		const personas = {!! json_encode($personas) !!} ;
+		console.log(personas)
 
     </script>    
      <!--begin::Datatables y Configuracion de la Tabla-->

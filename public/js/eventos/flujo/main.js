@@ -26,9 +26,7 @@ $(document).ready(function() {
                     miTablaEstado.draw();
                 },
                 success: function (data) {
-                    if(data.success){
-                        console.log(data);
-                        //location.reload();                    
+                    if(data.success){                   
                         cargarDataEstado.init(data.data);
                     }else{
                         Swal.fire({
@@ -81,7 +79,6 @@ $(document).ready(function() {
                 },
                 success: function (data) {
                     if(data.success){
-                        console.log(data);
                         //location.reload();                    
                         cargarDataArea.init(data.data);
                     }else{
@@ -132,9 +129,7 @@ $(document).ready(function() {
                 miTablaFlujo.draw();
             },
             success: function (data) {
-                if(data.success){
-                    //console.log(data);
-                    //location.reload();                    
+                if(data.success){                   
                     cargarDataFlujo.init(data.data);                
                 }else{
                     Swal.fire({

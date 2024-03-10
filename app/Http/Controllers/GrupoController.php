@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\CentroDeCosto;
 use App\Models\Grupo;
+use App\Models\GrupoMovimiento;
 use App\Models\GrupoPrivilegio;
+use App\Models\GrupoSolicitud;
+use App\Models\Movimiento;
 use App\Models\Privilegio;
 use App\Models\Usuario;
 use App\Models\UsuarioGrupo;
@@ -182,15 +185,22 @@ class GrupoController extends Controller
             if (!$grupo) {
                 throw new Exception('Grupo no encontrado');
             }
+            //Inicio::Movimientos Autorizados
+            $movimientos = Movimiento::select('Id','Nombre')->where('Enabled','=', 1)->orderBy('Nombre','asc')->get();
+            $gruposMovimientos=GrupoMovimiento::select('MovimientoId')->where('GrupoId','=',$request)->pluck('MovimientoId')->toArray();
+            //Fin::Movimientos Autorizados
 
-            $privilegios = Privilegio::select('Id','Nombre')
-                                        ->where('Enabled','=',1)
-                                        ->get();
+            $grupos= Grupo::select('Id','Nombre')->where('Enabled','=',1)->orderBy('Nombre','asc')->get();
+            $gruposAutorizados = GrupoSolicitud::select('GrupoAccedidoId')->where('GrupoAutorizadoId','=',$request)->pluck('GrupoAccedidoId')->toArray();
 
             Log::info('Ver información del grupo');
             return response()->json([
                 'success' => true,
-                'data' => $grupo
+                'data' => $grupo,
+                'movimientos'=> $movimientos,
+                'gruposmovimientos'=> $gruposMovimientos,
+                'grupos'=> $grupos,
+                'gruposaut'=> $gruposAutorizados
             ]);
         }catch(Exception $e){
             Log::error('Error al ver grupo',[$e->getMessage()]);
@@ -243,6 +253,37 @@ class GrupoController extends Controller
                 ]);*/
                 //$grupoPrivilegioEdit->save();                 
             }
+            //INICO::SECCION DE EDICION DE ACCESO A MOVIMIENTOS
+            $gruposMovimientosEliminar=GrupoMovimiento::where('GrupoId','=',$grupoEdit->Id)->pluck('Id');
+            if($gruposMovimientosEliminar){
+                GrupoMovimiento::whereIn('Id', $gruposMovimientosEliminar)->delete();
+            }
+            
+            foreach($request['GrupoMovimiento'] as $movimientoId){
+                $grupoMovimiento= new GrupoMovimiento();
+                $grupoMovimiento->fill([
+                    'GrupoId'=> $grupoEdit->Id,
+                    'MovimientoId' => $movimientoId
+                ]);
+                $grupoMovimiento->save();
+            }
+            //FIN::SECCION DE EDICION DE ACCESO A MOVIMIENTOS
+
+            //INICO::SECCION DE EDICION DE ACCESO A REALIZAR A GRUPOS UNA SOLICITUD 
+            $gruposAutorizadosEliminar=GrupoSolicitud::where('GrupoAutorizadoId','=',$grupoEdit->Id)->pluck('Id');
+            if($gruposAutorizadosEliminar){
+                GrupoSolicitud::whereIn('Id', $gruposAutorizadosEliminar)->delete();
+            }
+            
+            foreach($request['GrupoAut'] as $grupoAccedidoId){
+                $grupoSolicitud= new GrupoSolicitud();
+                $grupoSolicitud->fill([
+                    'GrupoAutorizadoId'=> $grupoEdit->Id,
+                    'GrupoAccedidoId' => $grupoAccedidoId
+                ]);
+                $grupoSolicitud->save();
+            }
+            //FIN::SECCION DE EDICION DE ACCESO A REALIZAR A GRUPOS UNA SOLICITUD 
 
             DB::commit();
             Log::info('Privilegios del grupo actualizados');

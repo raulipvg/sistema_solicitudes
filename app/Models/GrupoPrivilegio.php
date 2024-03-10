@@ -17,6 +17,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  * @property int $GrupoId
  * @property int $PrivilegioId
+ * @property int $Enabled
+ * @property int $Ver
+ * @property int $Registrar
+ * @property int $Editar
+ * @property int $Eliminar
  * 
  * @property Grupo $grupo
  * @property Privilegio $privilegio

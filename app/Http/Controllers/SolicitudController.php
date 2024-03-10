@@ -6,6 +6,7 @@ use App\Models\CentroDeCosto;
 use App\Models\Compuesta;
 use App\Models\ConsolidadoMe;
 use App\Models\Flujo;
+use App\Models\Grupo;
 use App\Models\HistorialSolicitud;
 use App\Models\Movimiento;
 use App\Models\Persona;
@@ -38,17 +39,22 @@ class SolicitudController extends Controller
         $accesoLayout= $user->todoPuedeVer();
        
         if( $credenciales['realizar']){
-            $movimientos = Movimiento::select('Id','Nombre')
+
+            $movimientos = $user->movimientosPuedeVer();
+                            
+            /* $movimientos2 = Movimiento::select('Id','Nombre')
                                     ->where('Enabled',1)
                                     ->orderBy('Nombre','desc')
                                     ->get();
-
+            
             $personas = Persona::select('Id','Rut',
                                 DB::raw("CONCAT(UCASE(SUBSTRING(persona.Nombre, 1, 1)), LCASE(SUBSTRING(persona.Nombre FROM 2)), ' ', UCASE(SUBSTRING(persona.Apellido, 1, 1)), LCASE(SUBSTRING(persona.Apellido FROM 2))) AS NombreCompleto"),
                                 'CentroCostoId')
                                 ->where('Enabled',1)
                                 ->orderBy('NombreCompleto','asc')
                                 ->get();
+            */
+            $personas = $user->personasPuedeVer();
 
             $centrocostos = CentroDeCosto::select('centro_de_costo.Id', DB::raw("CONCAT(empresa.Nombre, ' - ', centro_de_costo.Nombre) AS Nombre"))
                                 ->join('empresa','empresa.Id','=','centro_de_costo.EmpresaId')
@@ -71,7 +77,8 @@ class SolicitudController extends Controller
             'centrocostos'=> $centrocostos,
             'solicitudes'=> json_encode($solicitudes),
             'credenciales' => $credenciales,
-            'accesoLayout' => $accesoLayout   
+            'accesoLayout' => $accesoLayout
+
 
         ]);
     }

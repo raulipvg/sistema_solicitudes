@@ -125,16 +125,16 @@ if(credenciales['Grupo'].puedeEditar){
         const persona = {};
 
         formData.forEach((valor, clave) => {
-        const matches = clave.match(/Privilegio\[(\d+)\]\[(\w+)\]/);
-        if (matches && matches.length === 3) {
-            const [, indice, propiedad] = matches;
-            if (!persona[indice]) {
-            persona[indice] = {};
-            persona[indice]["PrivilegioId"]= indice;
+            const matches = clave.match(/Privilegio\[(\d+)\]\[(\w+)\]/);
+            if (matches && matches.length === 3) {
+                const [, indice, propiedad] = matches;
+                if (!persona[indice]) {
+                persona[indice] = {};
+                persona[indice]["PrivilegioId"]= indice;
+                }
+                if(valor == "" && propiedad != "Id")valor=1;
+                persona[indice][propiedad] = valor;
             }
-            if(valor == "" && propiedad != "Id")valor=1;
-            persona[indice][propiedad] = valor;
-        }
         });
 
         // Agregar los objetos Persona al array personas
@@ -149,6 +149,8 @@ if(credenciales['Grupo'].puedeEditar){
         console.log($("#IdGrupoInput").val())
         grupo.Id= $("#IdGrupoInput").val();
         grupo.GrupoPrivilegio = personas;
+        grupo.GrupoMovimiento = $("#MovimientoId").val();
+        grupo.GrupoAut = $("#GrupoId").val();
 
         personas.Nombre= $("#NombreGrupoInput").val()
         personas.Id =$("#IdGrupoInput").val()

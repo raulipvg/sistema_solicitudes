@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -153,6 +154,70 @@ class Usuario extends Authenticatable
         return $query;
 	}
 
+    public function movimientosPuedeVer(){
+        $query =Usuario::select([
+                                'movimiento.Id',
+                                'movimiento.Nombre',
+                             ])
+                            ->join('usuario_grupo','usuario_grupo.UsuarioId','=','usuario.Id')
+                            ->join('grupo','grupo.Id','=','usuario_grupo.GrupoId')
+                            ->join('grupo_movimiento','grupo_movimiento.GrupoId','=','grupo.Id')
+                            ->join('movimiento','movimiento.Id','=','grupo_movimiento.MovimientoId')
+                            ->where('usuario.Id','=', $this->Id)
+                            ->where('usuario_grupo.Enabled','=', 1)                            
+                            ->where('grupo.Enabled','=',1)
+                            ->where('movimiento.Enabled','=',1)  
+                            ->groupBy('movimiento.Id', 'movimiento.Nombre')
+                            ->get();
+        return $query;
+    }
+
+    public function personasPuedeVer(){
+
+        
+
+        $personasExternas = Persona::select('Id','Rut',
+                                DB::raw("CONCAT(UCASE(SUBSTRING(persona.Nombre, 1, 1)), LCASE(SUBSTRING(persona.Nombre FROM 2)), ' ', UCASE(SUBSTRING(persona.Apellido, 1, 1)), LCASE(SUBSTRING(persona.Apellido FROM 2))) AS NombreCompleto"),
+                                'CentroCostoId')
+                                ->where('Enabled',1)
+                                ->whereNull('persona.UsuarioId')
+                                ->orderBy('NombreCompleto','asc')
+                                ->get();
+
+        $accesoGrupos =Usuario::select(
+                                'grupo_solicitud.GrupoAccedidoId',
+                             )
+                            ->join('usuario_grupo','usuario_grupo.UsuarioId','=','usuario.Id')
+                            ->join('grupo','grupo.Id','=','usuario_grupo.GrupoId')
+                            ->join('grupo_solicitud','grupo_solicitud.GrupoAutorizadoId','=','grupo.Id')
+                            ->where('usuario.Id','=', $this->Id)
+                            ->where('usuario_grupo.Enabled','=', 1)                            
+                            ->where('grupo.Enabled','=',1)
+                            ->groupBy('grupo_solicitud.GrupoAccedidoId') 
+                            ->pluck('GrupoAccedidoId')->toArray();
+
+        $PersonasPosibles = Persona::select('persona.Id','persona.Rut',
+                                    DB::raw("CONCAT(UCASE(SUBSTRING(persona.Nombre, 1, 1)), LCASE(SUBSTRING(persona.Nombre FROM 2)), ' ', UCASE(SUBSTRING(persona.Apellido, 1, 1)), LCASE(SUBSTRING(persona.Apellido FROM 2))) AS NombreCompleto"),
+                                    'persona.CentroCostoId')
+                    ->join('usuario','usuario.Id','=','persona.UsuarioId')
+                    ->join('usuario_grupo','usuario_grupo.UsuarioId','=','usuario.Id')
+                    ->join('grupo','grupo.Id','=','usuario_grupo.GrupoId')
+                    ->where('persona.Enabled',1)
+                    ->where('usuario_grupo.Enabled','=',1)
+                    ->where('grupo.Enabled','=',1)
+                    ->orderBy('NombreCompleto','asc')
+                    ->where(function ($query) use ($accesoGrupos) {
+                        $query->whereIn('grupo.Id', $accesoGrupos);
+                    })
+                    ->groupBy('persona.Id','persona.Rut','NombreCompleto','persona.CentroCostoId') 
+                    ->get();
+
+        $personas = $personasExternas->merge($PersonasPosibles);
+
+
+
+        return $personas;
+    }
     public function puedeVer($privilegioId){
        //$flag=  $this->gruposEnabled()->get();
        $flag=  $this->gruposPrivilegios($privilegioId)

@@ -121,6 +121,40 @@
 																	<!--end::Table wrapper-->
 																</div>
 																<!--end::Permissions-->
+																<div class="fv-row mb-2 px-1">
+																	<label class="fs-5 fw-bold form-label mb-2" for="MovimientoId"> 
+																		<span>Movimientos Autorizados</span>
+																		<span class="ms-1" data-bs-toggle="tooltip" title="Movimientos que puede solicitar el grupo">
+																			<i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+																				<span class="path1"></span>
+																				<span class="path2"></span>
+																				<span class="path3"></span>
+																			</i>
+																		</span>
+																	</label>
+																	<select id="MovimientoId" name="MovimientoIdInput" class="form-select form-select-solid" data-control="select2" data-placeholder="Seleccione" data-close-on-select="false" data-hide-search="false" data-allow-clear="false" multiple="multiple"> 
+																		<option></option>																			
+																	</select>																	
+																</div>
+
+																<div class="fv-row mb-2 px-1">
+																	<label class="fs-5 fw-bold form-label mb-2" for="GrupoId">
+																		<span>Grupos Autorizados</span>
+																		<span class="ms-1" data-bs-toggle="tooltip" title="Grupos a los cuales le puede realizar una solicitud">
+																			<i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+																				<span class="path1"></span>
+																				<span class="path2"></span>
+																				<span class="path3"></span>
+																			</i>
+																		</span>
+																	</label>
+																	<select id="GrupoId" name="GrupoIdInput" class="form-select form-select-solid" data-control="select2" data-placeholder="Seleccione" data-close-on-select="false" data-hide-search="false" data-allow-clear="false" multiple="multiple"> 
+																		<option></option>																			
+																	</select>																	
+																</div>
+
+
+
 															</div>
 															<!--end::Scroll-->
 														</div>
