@@ -440,8 +440,6 @@ class ConsolidadoController extends Controller
             DB::commit();
             return response()->json([
                 'success'=>true,
-                'dolar' => $dolar->ToCLP,
-                'uf' => $uf->ToCLP,
                 'mensaje'=>'Mes cerrado correctamente'
             ]);
         }
