@@ -5,7 +5,7 @@ ALTER TABLE serviciosgenerales.grupo_movimiento ADD CONSTRAINT grupo_movimiento_
 ALTER TABLE serviciosgenerales.grupo_movimiento MODIFY COLUMN Enabled tinyint(1) DEFAULT 0 NOT NULL;
 
 CREATE TABLE serviciosgenerales.grupo_solicitud (
-	Id int(11) PRIMARY KEY,
+	Id int(11) NOT NULL,
 	GrupoAutorizadoId int(11) NOT NULL,
 	GrupoAccedidoId int(11) NOT NULL,
 	created_at datetime NOT NULL,
@@ -21,3 +21,7 @@ ALTER TABLE serviciosgenerales.grupo_solicitud MODIFY COLUMN created_at datetime
 ALTER TABLE serviciosgenerales.grupo_solicitud ADD CONSTRAINT grupo_solicitud_grupo_autorizado_FK FOREIGN KEY (GrupoAutorizadoId) REFERENCES serviciosgenerales.grupo(Id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE serviciosgenerales.grupo_solicitud ADD CONSTRAINT grupo_solicitud_grupo_accedido_FK FOREIGN KEY (GrupoAccedidoId) REFERENCES serviciosgenerales.grupo(Id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+
+
+ALTER TABLE serviciosgenerales.tipo_cambio ADD created_at datetime DEFAULT current_timestamp() NOT NULL;
+ALTER TABLE serviciosgenerales.tipo_cambio ADD updated_at datetime NULL;

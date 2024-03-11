@@ -109,7 +109,7 @@ class ConsolidadoController extends Controller
             if(!$consolidado){throw new Exception('Consolidado no encontrado');}
             $flag=true;
             //SI EL ESTADO CONSOLIDADO ESTA ABIERTO  LLAMO A LA API DE INDICADORES
-            if($consolidado->EstadoConsolidadoId == 1){ $flag = $this->CerrarMesPrev($consolidado);}
+            if($consolidado->EstadoConsolidadoId == 1){$flag = $this->Calcular($consolidado);}
             if(!$flag){throw new Exception('Error Indicadores API');}
 
                 $tipoCambio = TipoCambio::select('ToCLP','TipoMonedaId','Simbolo','Nombre')
@@ -159,8 +159,7 @@ class ConsolidadoController extends Controller
                         }else{
                             $querySolicitud = $querySolicitud->where('movimiento_atributo.MovimientoId', '=',$movimientoId)->get();
                         }
-                    }            
-
+                    } 
             return response()->json([
                 'success' => true,
                 'query' => $querySolicitud,
@@ -337,12 +336,13 @@ class ConsolidadoController extends Controller
         return $solicitudes;
     }
 
-    public function CerrarMesPrev(ConsolidadoMe $consolidado){
+    public function Calcular(ConsolidadoMe $consolidado){
         //fecha actual para el valor de la moneda
         $fecha = date('d-m-Y');
         // Obtener el número del día de la semana (0 para domingo, 1 para lunes, ..., 6 para sábado)
         $dia_semana = date('w', strtotime($fecha));
         // Si es sábado (6) o domingo (0), ajustar la fecha al próximo lunes
+        //Limitancia Sabado o Domingo, se elije el dia lunes
         if ($dia_semana == 6 || $dia_semana == 0) {
             $fecha = date('d-m-Y', strtotime('next Monday', strtotime($fecha)));
         }
@@ -350,6 +350,7 @@ class ConsolidadoController extends Controller
         try{
             DB::beginTransaction();
             //obtiene valor del dolar y uf desde miindicador.cl
+            //Llamada API obtencion de valores dolar y uf
             $dolar = TipoCambio::CreaMoneda('/dolar/'.$fecha , 2, $consolidado->Id);
             $uf = TipoCambio::CreaMoneda('/uf/'.$fecha , 3, $consolidado->Id);
 
@@ -385,11 +386,11 @@ class ConsolidadoController extends Controller
                         $suma += $compuesta->CostoReal * $uf->ToCLP;
                     }
                 }
-                $solicitudEdit = Solicitud::where( 'Id', $solicitud->Id)
-                                            ->update([
-                                                'CostoSolicitud' => $suma,
-                                                'TipoMonedaId' => 1
-                                            ]);
+               Solicitud::where( 'Id', $solicitud->Id)
+                            ->update([
+                                'CostoSolicitud' => $suma,
+                                'TipoMonedaId' => 1
+                            ]);
             
             }                           
             DB::commit();
@@ -403,63 +404,15 @@ class ConsolidadoController extends Controller
         }
     }
 
-    public function CerrarMes(Request $request){
-        //fecha actual para el valor de la moneda
-        $fecha = date('d-m-Y');
-        // Obtener el número del día de la semana (0 para domingo, 1 para lunes, ..., 6 para sábado)
-        $dia_semana = date('w', strtotime($fecha));
-        // Si es sábado (6) o domingo (0), ajustar la fecha al próximo lunes
-        if ($dia_semana == 6 || $dia_semana == 0) {
-            $fecha = date('d-m-Y', strtotime('next Monday', strtotime($fecha)));
-        }
- 
+    public function CerrarMes(Request $request){ 
         try{
             //Busca el consolidado abierto (EstadoConsolidadoId = 1)
             $consolidado = ConsolidadoMe::where('EstadoConsolidadoId',1)
                             ->first();
             DB::beginTransaction();
-            //obtiene valor del dolar y uf desde miindicador.cl
-            $dolar = TipoCambio::CreaMoneda('/dolar/'.$fecha , 2, $consolidado->Id);
-            $uf = TipoCambio::CreaMoneda('/uf/'.$fecha , 3, $consolidado->Id);
-
-            if(!$dolar || !$uf){
-                throw new Exception('Error al capturar el valor de las monedas');
-            }
-
-            //Recibe las solicitudes terminadas correspondientes al mes que esten y aprobadas
-            $solicitudes = Solicitud::select('solicitud.Id',
-                                        DB::raw('CONCAT("[", GROUP_CONCAT(JSON_OBJECT("CostoReal", compuesta.CostoReal, "TipoMonedaId", compuesta.TipoMonedaId)), "]") as compuesta')
-                                    )
-                                    ->join('compuesta','compuesta.SolicitudId','=','solicitud.Id')
-                                    ->join('historial_solicitud','historial_solicitud.SolicitudId','=','solicitud.Id')          
-                                    ->where('solicitud.ConsolidadoMesId',$consolidado->Id)
-                                    ->where('historial_solicitud.EstadoSolicitudId','=',3) //Solicitud Terminada
-                                    ->where('historial_solicitud.EstadoEtapaFlujoId','=', 1) //Etapada Aprobada
-                                    ->groupBy('solicitud.Id')
-                                    ->orderBy('solicitud.Id','asc')
-                                    ->get();
-
-            //Realiza la sumatoria de cada solicitud, transformando la moneda a CLP$
-            foreach($solicitudes as $solicitud){
-                $suma = 0;
-                $solicitud->compuesta = json_decode($solicitud->compuesta);
-               
-                foreach($solicitud->compuesta as $compuesta){
-                    if($compuesta->TipoMonedaId == 1 && $compuesta->CostoReal != null){
-                        $suma += $compuesta->CostoReal;
-                    }else if($compuesta->TipoMonedaId == 2 && $compuesta->CostoReal != null){
-                        $suma += $compuesta->CostoReal * $dolar->ToCLP;
-                    }else if($compuesta->TipoMonedaId == 3 && $compuesta->CostoReal != null){
-                        $suma += $compuesta->CostoReal * $uf->ToCLP;
-                    }
-                }
-                Solicitud::where( 'Id', $solicitud->Id)
-                            ->update([
-                                'CostoSolicitud' => $suma,
-                                'TipoMonedaId' => 1
-                            ]);
-            }
-            //Cierra el mes cambiando de estado y agregando la fecha de término
+            if( !$this->Calcular($consolidado) ){ throw new Exception('Error al Calcular');};
+            
+                //Cierra el mes cambiando de estado y agregando la fecha de término
             $consolidado->EstadoConsolidadoId = 0;
             $consolidado->FechaTermino = Carbon::now();
             $consolidado->update();
@@ -470,6 +423,7 @@ class ConsolidadoController extends Controller
             $nuevoConsolidadoMes->created_at = Carbon::create($consolidado->created_at)->addMonth()->startOfMonth();
             $nuevoConsolidadoMes->save();
 
+            //Buscar Solicitudes Pendientes para pasarlas al siguiente consolidado
             $solicitudesPendientes = Solicitud::select('solicitud.Id')
                                             ->join('historial_solicitud','historial_solicitud.SolicitudId','=','solicitud.Id')          
                                             ->where('solicitud.ConsolidadoMesId',$consolidado->Id)
@@ -481,9 +435,7 @@ class ConsolidadoController extends Controller
                             ->update([
                                 'ConsolidadoMesId' => $nuevoConsolidadoMes->Id
                             ]);               
-
-
-            
+          
             Log::info('Mes cerrado');
             DB::commit();
             return response()->json([

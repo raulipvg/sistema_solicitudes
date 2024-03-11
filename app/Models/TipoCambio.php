@@ -9,6 +9,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 use Exception;
+use Illuminate\Support\Carbon;
 /**
  * Class Log
  * 
@@ -24,7 +25,7 @@ class TipoCambio extends Model
 	protected $table = 'tipo_cambio';
 	protected $primaryKey = 'Id';
 	public $incrementing = true;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'Id' => 'int',
@@ -38,6 +39,7 @@ class TipoCambio extends Model
 		'ToCLP',
 		'TipoMonedaId',
         'ConsolidadoId',
+		'updated_at'
 	];
 
 	static function CreaMoneda($url,$tipoMoneda,$consolidado){
@@ -61,11 +63,10 @@ class TipoCambio extends Model
 			[
 				'ToCLP'=> $valor,
 				'TipoMonedaId' => $tipoMoneda,
-				'ConsolidadoId' => $consolidado
+				'ConsolidadoId' => $consolidado,
+				'updated_at' => Carbon::now()
 			]
 		);
-
-		;
 		return $moneda;
 	}
 }

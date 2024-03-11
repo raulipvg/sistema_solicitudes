@@ -78,7 +78,7 @@ const cargarDataFlujo= function(){
                         
                         var html=``;
                         etapas.forEach( (item,key) => {
-                            html+= `${(key !=0)?`->`:``}<span class="badge badge-dark">${item.Nombre}</span>`
+                            html+= `${(key !=0)?`->`:``}<span class="badge badge-dark text-capitalize">${item.Nombre}</span>`
                         });
 
                         var rowNode =  miTablaFlujo.row.add( {
