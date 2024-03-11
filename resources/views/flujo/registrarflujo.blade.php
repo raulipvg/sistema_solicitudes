@@ -376,9 +376,9 @@
     </script>
     <!--begin::Eventos de la pagina-->
     
-    <script src="{{ asset('js/draggable/draggable.bundle.js?id=3') }}"></script>
-    <script src="{{ asset('js/global/main.js?id=3') }}"></script>
-    <script src="{{ asset('js/eventos/flujo/registrar.js?id=3') }}"></script>
+    <script src="{{ asset('js/draggable/draggable.bundle.js?id=4') }}"></script>
+    <script src="{{ asset('js/global/main.js?id=4') }}"></script>
+    <script src="{{ asset('js/eventos/flujo/registrar.js?id=4') }}"></script>
 
     <script>
 

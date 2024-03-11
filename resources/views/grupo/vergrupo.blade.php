@@ -88,16 +88,16 @@
         </script>
 
         <!--begin::Datatables y Configuracion de la Tabla-->
-        <script src="{{ asset('js/datatables/datatables.bundle.js?id=2') }}"></script>
-        <script src="{{ asset('js/datatables/language/language_es.js?id=2') }}"></script>
-        <script src="{{ asset('js/datatables/contenido/usuario.js?id=2') }}"></script>
+        <script src="{{ asset('js/datatables/datatables.bundle.js?id=7') }}"></script>
+        <script src="{{ asset('js/datatables/language/language_es.js?id=7') }}"></script>
+        <script src="{{ asset('js/datatables/contenido/usuario.js?id=7') }}"></script>
         <!--end::Datatables y Configuracion de la Tabla-->
 
         <!--begin::Eventos de la pagina-->
-        <script src="{{ asset('js/global/main.js?id=3') }}"></script>
-        <script src="{{ asset('js/eventos/usuario/usuario.js?id=3') }}"></script>
-        <script src="{{ asset('js/eventos/grupo/tarjeta_grupo.js?id=3') }}"></script>
-        <script src="{{ asset('js/eventos/grupo/update-grupo.js?id=8') }}"></script>
+        <script src="{{ asset('js/global/main.js?id=7') }}"></script>
+        <script src="{{ asset('js/eventos/usuario/usuario.js?id=7') }}"></script>
+        <script src="{{ asset('js/eventos/grupo/tarjeta_grupo.js?id=7') }}"></script>
+        <script src="{{ asset('js/eventos/grupo/update-grupo.js?id=9') }}"></script>
 
         <!--end::Eventos de la pagina-->
 
