@@ -37,56 +37,38 @@
 													<!--end::Users-->
 													<!--begin::Permissions-->
 													<div class="d-flex flex-column text-gray-600">
+														@php	
+															if (!function_exists('DivHtml')) {
+																function DivHtml($texto){ return '<div class="bullet-dot bg-success mx-1"></div><span class="me-2">'.$texto.'</span>'; }
+															}
+														@endphp
                                                         @foreach ($grupo->Privilegios as $privilegio )
-															@php
-																$aux= $privilegio->pivot->Ver+$privilegio->pivot->Registrar+$privilegio->pivot->Editar+$privilegio->pivot->Eliminar;
-																$text='';
-																if( $privilegio->Id < 12 ){
-																	if($privilegio->pivot->Ver == 1){
-																		$text='-Ver. ';
-																	}
-																	if($privilegio->pivot->Registrar == 1){
-																		$text= $text.'-Registrar. ';
-																	}
-																	if($privilegio->pivot->Editar == 1){
-																		$text= $text.'-Editar. ';
-																	}
-																	if($privilegio->pivot->Eliminar == 1){
-																		$text= $text.'-Eliminar. ';
-																	}
-																}else if( $privilegio->Id == 12){
-																	if($privilegio->pivot->Ver == 1){
-																		$text='-Ver Grupos. ';
-																	}
-																	if($privilegio->pivot->Registrar == 1){
-																		$text= $text.'-Ver Todas. ';
-																	}
-																	if($privilegio->pivot->Editar == 1){
-																		$text= $text.'-Realizar Solicitud. ';
-																	}
-																	if($privilegio->pivot->Eliminar == 1){
-																		$text= $text.'-Aprobador. ';
-																	}
-																}else if( $privilegio->Id == 13){
-																	if($privilegio->pivot->Ver == 1){
-																		$text='-Ver Consolidado. ';
-																	}
-																	if($privilegio->pivot->Registrar == 1){
-																		$text= $text.'-Ver por Centro de Costo. ';
-																	}
-																	if($privilegio->pivot->Editar == 1){
-																		$text= $text.'-Ver por Movimiento. ';
-																	}
-																	if($privilegio->pivot->Eliminar == 1){
-																		$text= $text.'-Cerrar Mes. ';
-																	}
-																}																
+															@php 
+																$aux= $privilegio->pivot->Ver+$privilegio->pivot->Registrar+$privilegio->pivot->Editar+$privilegio->pivot->Eliminar;															
 															@endphp
-															@if( $aux >0 )
-																<div class="d-flex align-items-center py-2">
-																	<span class="bullet bg-dark me-3"></span>{{ $privilegio->Nombre}} : {{$text}}
+
+															@if( $aux >0 )																
+																<div class="d-flex align-items-center mb-1">
+																	<div class="bullet bg-dark me-3"></div>
+																	<div class="text-gray-800 fw-bold  me-4">{{ $privilegio->Nombre}}:</div>
+																	 	@if($privilegio->Id < 12)  
+																				{!! ($privilegio->pivot->Ver === 1 )? DivHtml('Ver'): null !!}
+																				{!! ($privilegio->pivot->Registrar === 1)?  DivHtml('Registrar'):null !!}
+																				{!! ($privilegio->pivot->Editar === 1)? DivHtml('Editar'):null !!}
+																				{!! ($privilegio->pivot->Eliminar === 1)? DivHtml('Eliminar'):null !!}
+																		@elseif ($privilegio->Id === 12 )
+																				{!! ($privilegio->pivot->Ver === 1 )? DivHtml('Ver Grupos'): null !!}
+																				{!! ($privilegio->pivot->Registrar === 1)?  DivHtml('Ver Todas'):null !!}
+																				{!! ($privilegio->pivot->Editar === 1)? DivHtml('Realizar Solicitud'):null !!}
+																				{!! ($privilegio->pivot->Eliminar === 1)? DivHtml('Aprobador'):null !!}
+																		@elseif ($privilegio->Id === 13 )
+																				{!! ($privilegio->pivot->Ver === 1 )? DivHtml('Ver Consolidado'): null !!}
+																				{!! ($privilegio->pivot->Registrar === 1)?  DivHtml('Ver por Centro de Costo'):null !!}
+																				{!! ($privilegio->pivot->Editar === 1)? DivHtml('Ver por Movimiento'):null !!}
+																				{!! ($privilegio->pivot->Eliminar === 1)? DivHtml('Cerrar Mes'):null !!}
+																		@endif
 																</div>
-															@endif
+															@endif															
                                                         @endforeach
 													</div>
 													<!--end::Permissions-->

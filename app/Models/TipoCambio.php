@@ -54,13 +54,18 @@ class TipoCambio extends Model
 		$valor = json_decode($valor);
 		$valor = round($valor->serie['0']->valor);
 
-		$moneda = new TipoCambio();
-		$moneda->fill([
-			'ToCLP'=> $valor,
+		$moneda = TipoCambio::updateOrCreate([
 			'TipoMonedaId' => $tipoMoneda,
 			'ConsolidadoId' => $consolidado
-		]);
-		$moneda->save();
+			], // Busca por el ID proporcionado
+			[
+				'ToCLP'=> $valor,
+				'TipoMonedaId' => $tipoMoneda,
+				'ConsolidadoId' => $consolidado
+			]
+		);
+
+		;
 		return $moneda;
 	}
 }

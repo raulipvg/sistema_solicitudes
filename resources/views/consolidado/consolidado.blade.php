@@ -51,12 +51,11 @@
         const VerDetallesAsociados ="{{ route('VerDetallesAsociados')}}";
         const VerSolicitudesAsociadas = "{{ route('VerSolicitudesAsociadas') }}";
         const CerrarMes = "{{ route('CerrarMes') }}";
+        const CerrarMesPrev = "{{ route('CerrarMesPrev') }}";
        
 
-        /* END:RUTAS */        
-        
+        /* END:RUTAS */                
         const layout= {!! json_encode($accesoLayout) !!};
-
         const consolidados = {!!json_encode($consolidados) !!};
         const movimientos = {!!json_encode($movimientos) !!};
         const centrocostos  = {!!json_encode($centrocostos) !!};

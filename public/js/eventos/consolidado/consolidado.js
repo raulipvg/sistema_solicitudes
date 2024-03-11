@@ -4,6 +4,8 @@ $(document).ready(function() {
 
     llenarSelect2(empresas, $('#EmpresaIdInput'));
     llenarSelect2(consolidados, $('#ConsolidadoIdInput'),1);
+    $('#ConsolidadoIdInput').val(consolidados[0].Id).trigger("change");
+    console.log(consolidados)
     if(credenciales.VerMov)llenarSelect2(movimientos, $('#MovimientoIdInput')); 
     if(credenciales.VerCC )llenarSelect2(centrocostos, $('#CentroCostoIdInput'));
     
@@ -11,7 +13,7 @@ $(document).ready(function() {
     
     $("#ConsultarBtn").on('click', function(e){
         TotalCC= [];
-        console.log('Consultar')
+        //console.log('Consultar')
         var Empresa = $('#EmpresaIdInput').val();
         var CC = $('#CentroCostoIdInput').val();
         var Movimiento = $('#MovimientoIdInput').val();
@@ -37,21 +39,27 @@ $(document).ready(function() {
             },
             success: function (data) {                                    
                 if(data.success){
-                    console.log(data)
+                    //console.log(data)
                     //var a = data.querySolicitud[2].CostoMoneda;
                     //console.log(JSON.parse(a));
                     miTablaDetalle.clear();
-                    cargarData.init(data.querySolicitud, data.tipoCambio)
-                    ConsolidadoId = Consolidado;
+                    cargarDataDetalle.init(data.query, data.tipoCambio)
+                    ConsolidadoId = data.consolidado.Id;
                     MovId = Movimiento;
                     var html = ``;
+                    
+                    //totales = sumCCTotals(obj);
+                    //console.log('TOTAL: '+TotalCC);
 
                     data.tipoCambio.forEach( (item) => {
                             html+= `<span class="card-label fw-bold text-gray-800">${item.Simbolo}: </span>
                             <span class="text-gray-500 mt-1 fw-semibold fs-6">${item.ToCLP.toLocaleString()} </span>`
-                    });
-                
+                    });                
                     $("#tipo-cambio").empty().prepend(html);
+                    var text = (data.consolidado.EstadoConsolidadoId == 1) ? 'MES ABIERTO' : 'MES CERRADO';
+                    var className = (data.consolidado.EstadoConsolidadoId == 1) ? 'badge-light-warning' : 'badge-light-success';
+
+                    $("#ConsolidadoEstado").removeClass('badge-light-success badge-light-warning').addClass(className).text(text).show();
                 }else{
                     Swal.fire({
                         text: "Error",
@@ -300,6 +308,7 @@ $(document).ready(function() {
                 }
             });
         })
+
     }
 
 })

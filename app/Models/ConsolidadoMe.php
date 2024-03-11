@@ -30,8 +30,8 @@ class ConsolidadoMe extends Model
 {
 	protected $table = 'consolidado_mes';
 	protected $primaryKey = 'Id';
-	public $incrementing = false;
-	public $timestamps = false;
+	public $incrementing = true;
+	public $timestamps = true;
 
 	protected $casts = [
 		'Id' => 'int',

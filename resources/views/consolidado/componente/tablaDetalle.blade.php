@@ -5,7 +5,7 @@
                                                 <th class="p-2">Centro de Costo</th>
                                                 <th class="p-2 ps-7">Atributo</th>
                                                 <th class="p-2">Cantidad</th>                                                
-                                                <th class="p-2">Total</th>
+                                                <th class="p-2 fs-5">Total <span id="totales" class="float-end"> </span></th>
                                                 <th></th>
                                             </tr>
                                         </thead>

@@ -176,7 +176,7 @@ var miTablaDetalle = $("#tablaConsolidado").DataTable({
 });
 
 //CARGAR DATA TABLA
-const cargarData= function(){
+const cargarDataDetalle= function(){
     return {
         init: function(data,tipoCambio){
             //var CostoTotalCC = 0;            
@@ -215,7 +215,7 @@ const cargarData= function(){
                     //console.log(costos);
                     //console.log('TOTAL CLP: '+ costoTotalCLP)
                     //console.log(tipoCambio)
-                    var html= `<span class="float-start ps-10">CLP$</span>
+                    var html= `<span class="float-start ms-11 ps-11">CLP$</span>
                                 <span class="float-end">${costoTotalCLP.toLocaleString()}</span>`;
 
                     var rowNode =  miTablaDetalle.row.add( {
@@ -238,7 +238,9 @@ const cargarData= function(){
                 Total: ccTotal
             }
             TotalCC.push(obj);
-            //console.log(TotalCC)
+            total1= sumCCTotals(TotalCC);
+            //console.log('CLP$ '+total1);
+            $("#totales").text('CLP$ '+total1.toLocaleString());
             miTablaDetalle.order([0, 'asc']).draw();
             $('[data-bs-toggle="tooltip"]').tooltip();
         }
@@ -246,6 +248,9 @@ const cargarData= function(){
 
 }();
 
+function sumCCTotals(ccObjects) {
+    return ccObjects.reduce((total, obj) => total + obj.Total, 0);
+  }
 // Función para buscar por TipoMonedaId
 function buscarPorTipoMonedaId(tipoCambio, tipoMonedaId) {
     return tipoCambio.find(function(elemento) {

@@ -12,6 +12,7 @@ use App\Models\TipoCambio;
 use App\Models\Compuesta;
 use Illuminate\Support\Carbon;
 use Exception;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -40,13 +41,14 @@ class ConsolidadoController extends Controller
         $consolidados = ConsolidadoMe::select('Id',
                                                 DB::raw('DATE_FORMAT(created_at, "%m - %Y") AS Nombre')
                                             )
-                                            ->where('EstadoConsolidadoId','=', 0) //Consolidado Cerrado
-                                            ->orderBy('Nombre','desc')
+                                            //->where('EstadoConsolidadoId','=', 0) //Consolidado Cerrado
+                                            ->orderBy('Id','desc')
                                             ->get(); 
         
         $ultimoConsolidado = ConsolidadoMe::select('Id','created_at','EstadoConsolidadoId')
                                             ->orderBy('Id','desc')
                                             ->first();
+
         $fechaConsolidado = Carbon::create($ultimoConsolidado['created_at']);
         $mesNombre = $fechaConsolidado->locale('es')->monthName;
 
@@ -91,69 +93,91 @@ class ConsolidadoController extends Controller
     }
 
     public function VerConsolidados(Request $request){
+
         $request = $request->input('data');
         $empresaId = $request['Empresa'];
         $ccId = isset($request['CC'])?$request['CC']:null;
         $movimientoId = isset($request['Movimiento'])?$request['Movimiento']:null;
         $consolidadoId = $request['Consolidado'];
 
-        $tipoCambio = TipoCambio::select('ToCLP','TipoMonedaId','Simbolo','Nombre')
-                                ->join('tipo_moneda','tipo_moneda.Id','=', 'tipo_cambio.TipoMonedaId')       
-                                ->where('ConsolidadoId', $consolidadoId)
-                                ->get();
+        try{
+            //Busca el consolidado 
+            $consolidado = ConsolidadoMe::select('Id','EstadoConsolidadoId')
+                                        ->where('Id','=',$consolidadoId)
+                                        ->first();
 
-        $querySolicitud = Solicitud::select('empresa.Id as EmpresaId', 'empresa.Nombre as EmpresaNombre',
-                                            'centro_de_costo.Id as CcId', 
-                                            'centro_de_costo.Nombre as CcNombre', 
-                                            'atributo.Nombre as AtributoNombre',
-                                            'atributo.Id as AtributoId',
-                                            'consolidado_mes.Id as ConsolidadoId', 
-                                            DB::raw('CONCAT("[", GROUP_CONCAT(JSON_OBJECT("CostoReal", compuesta.CostoReal, "TipoMonedaId", compuesta.TipoMonedaId)), "]") as CostoMoneda'),
-                                            DB::raw('COUNT(*) as Cantidad')
-                                            )
-                                    ->join('consolidado_mes', 'consolidado_mes.Id', '=', 'solicitud.ConsolidadoMesId')
-                                    ->join('centro_de_costo', 'centro_de_costo.Id', '=', 'solicitud.CentroCostoId')
-                                    ->join('empresa', 'empresa.Id', '=', 'centro_de_costo.EmpresaId')
-                                    ->join('historial_solicitud', 'historial_solicitud.SolicitudId','=','solicitud.Id')
-                                    ->join('compuesta', 'compuesta.SolicitudId','=','solicitud.Id')
-                                    ->join('movimiento_atributo', 'movimiento_atributo.Id','=','compuesta.MovimientoAtributoId')
-                                    ->join('atributo', 'atributo.Id','=','movimiento_atributo.AtributoId')
-                                    ->where('historial_solicitud.EstadoEtapaFlujoId','=', 1)
-                                    ->where('historial_solicitud.EstadoSolicitudId','=', 3)
-                                    ->where('solicitud.ConsolidadoMesId', $consolidadoId)
-                                    //->where('empresa.Id', $empresaId)
-                                    ->groupBy('empresa.Id', 'empresa.Nombre','centro_de_costo.Id','centro_de_costo.Nombre','atributo.Nombre', 'atributo.Id','consolidado_mes.Id')
-                                    ->orderBy('centro_de_costo.Nombre','asc');
+            if(!$consolidado){throw new Exception('Consolidado no encontrado');}
+            $flag=true;
+            //SI EL ESTADO CONSOLIDADO ESTA ABIERTO  LLAMO A LA API DE INDICADORES
+            if($consolidado->EstadoConsolidadoId == 1){ $flag = $this->CerrarMesPrev($consolidado);}
+            if(!$flag){throw new Exception('Error Indicadores API');}
 
-        if($empresaId != null && $ccId ==null && $movimientoId ==null) {
-            $querySolicitud =$querySolicitud->where('empresa.Id', $empresaId)->get();                          
+                $tipoCambio = TipoCambio::select('ToCLP','TipoMonedaId','Simbolo','Nombre')
+                                        ->join('tipo_moneda','tipo_moneda.Id','=', 'tipo_cambio.TipoMonedaId')       
+                                        ->where('ConsolidadoId', $consolidadoId)
+                                        ->get();
+                                
+                $querySolicitud = Solicitud::select('empresa.Id as EmpresaId', 'empresa.Nombre as EmpresaNombre',
+                                                        'centro_de_costo.Id as CcId', 
+                                                        'centro_de_costo.Nombre as CcNombre', 
+                                                        'atributo.Nombre as AtributoNombre',
+                                                        'atributo.Id as AtributoId',
+                                                        'consolidado_mes.Id as ConsolidadoId', 
+                                                        DB::raw('CONCAT("[", GROUP_CONCAT(JSON_OBJECT("CostoReal", compuesta.CostoReal, "TipoMonedaId", compuesta.TipoMonedaId)), "]") as CostoMoneda'),
+                                                        DB::raw('COUNT(*) as Cantidad')
+                                                        )
+                                                ->join('consolidado_mes', 'consolidado_mes.Id', '=', 'solicitud.ConsolidadoMesId')
+                                                ->join('centro_de_costo', 'centro_de_costo.Id', '=', 'solicitud.CentroCostoId')
+                                                ->join('empresa', 'empresa.Id', '=', 'centro_de_costo.EmpresaId')
+                                                ->join('historial_solicitud', 'historial_solicitud.SolicitudId','=','solicitud.Id')
+                                                ->join('compuesta', 'compuesta.SolicitudId','=','solicitud.Id')
+                                                ->join('movimiento_atributo', 'movimiento_atributo.Id','=','compuesta.MovimientoAtributoId')
+                                                ->join('atributo', 'atributo.Id','=','movimiento_atributo.AtributoId')
+                                                ->where('historial_solicitud.EstadoEtapaFlujoId','=', 1)
+                                                ->where('historial_solicitud.EstadoSolicitudId','=', 3)
+                                                ->where('solicitud.ConsolidadoMesId', $consolidadoId)
+                                                //->where('empresa.Id', $empresaId)
+                                                ->groupBy('empresa.Id', 'empresa.Nombre','centro_de_costo.Id','centro_de_costo.Nombre','atributo.Nombre', 'atributo.Id','consolidado_mes.Id')
+                                                ->orderBy('centro_de_costo.Nombre','asc');
+
+                    if($empresaId != null && $ccId ==null && $movimientoId ==null) {
+                        $querySolicitud =$querySolicitud->where('empresa.Id', $empresaId)->get();                          
+                    }
+                    else if ($ccId != null) {
+                        if($movimientoId == null){
+                            $querySolicitud = $querySolicitud->where('solicitud.CentroCostoId', '=', $ccId)->get();
+                        }else{
+                            $querySolicitud = $querySolicitud
+                                                ->where('solicitud.CentroCostoId', '=', $ccId)
+                                                ->where('movimiento_atributo.MovimientoId','=', $movimientoId)->get();
+                        }
+                    }else if($movimientoId !=null){
+                        if( $empresaId !=null){
+                            $querySolicitud = $querySolicitud
+                                                    ->where('empresa.Id', $empresaId)
+                                                    ->where('movimiento_atributo.MovimientoId', '=',$movimientoId)->get();
+                        }else{
+                            $querySolicitud = $querySolicitud->where('movimiento_atributo.MovimientoId', '=',$movimientoId)->get();
+                        }
+                    }            
+
+            return response()->json([
+                'success' => true,
+                'query' => $querySolicitud,
+                'tipoCambio'=> $tipoCambio,
+                'consolidado'=> $consolidado,
+                ]);
         }
-        else if ($ccId != null) {
-            if($movimientoId == null){
-                $querySolicitud = $querySolicitud->where('solicitud.CentroCostoId', '=', $ccId)->get();
-            }else{
-                $querySolicitud = $querySolicitud
-                                    ->where('solicitud.CentroCostoId', '=', $ccId)
-                                    ->where('movimiento_atributo.MovimientoId','=', $movimientoId)->get();
-            }
-        }else if($movimientoId !=null){
-            if( $empresaId !=null){
-                $querySolicitud = $querySolicitud
-                                        ->where('empresa.Id', $empresaId)
-                                        ->where('movimiento_atributo.MovimientoId', '=',$movimientoId)->get();
-            }else{
-                $querySolicitud = $querySolicitud->where('movimiento_atributo.MovimientoId', '=',$movimientoId)->get();
-            }
-        }
-
-        return response()->json([
-            'success' => true,
-            'querySolicitud' => $querySolicitud,
-            'tipoCambio'=> $tipoCambio
+        catch(Exception $e){
+            Log::error('Error Ver Consolidado ',[$e->getMessage()]);
+            return response()->json([
+                'success' => false,
+                'mensaje' =>$e->getMessage()
             ]);
-
+        }
 
     }
+    /*
     public function VerConsolidadoEmpresa(Request $request){
         $request = $request->input('data');
         $empresa = $request['empresa'];
@@ -190,7 +214,8 @@ class ConsolidadoController extends Controller
                         'movimientosEmpresa' => $movimientosEmpresa,
                         'consolidado' => $consolidado
                         ]);
-    }
+    } 
+    */
     public function VerDetallesAsociados(Request $request){
         //DETALLES ASOCIADOS
         $request = $request->input('data');
@@ -312,62 +337,46 @@ class ConsolidadoController extends Controller
         return $solicitudes;
     }
 
-    public function CerrarMes(Request $request){
+    public function CerrarMesPrev(ConsolidadoMe $consolidado){
         //fecha actual para el valor de la moneda
         $fecha = date('d-m-Y');
-        //Busca el consolidado abierto (EstadoConsolidadoId = 1)
-        $consolidado = ConsolidadoMe::where('EstadoConsolidadoId',1)
-                                    ->first();
+        // Obtener el número del día de la semana (0 para domingo, 1 para lunes, ..., 6 para sábado)
+        $dia_semana = date('w', strtotime($fecha));
+        // Si es sábado (6) o domingo (0), ajustar la fecha al próximo lunes
+        if ($dia_semana == 6 || $dia_semana == 0) {
+            $fecha = date('d-m-Y', strtotime('next Monday', strtotime($fecha)));
+        }
+        
         try{
             DB::beginTransaction();
             //obtiene valor del dolar y uf desde miindicador.cl
             $dolar = TipoCambio::CreaMoneda('/dolar/'.$fecha , 2, $consolidado->Id);
             $uf = TipoCambio::CreaMoneda('/uf/'.$fecha , 3, $consolidado->Id);
 
-            if(!$dolar  || !$uf){
+            if(!$dolar || !$uf){
                 throw new Exception('Error al capturar el valor de las monedas');
             }
 
-            //Recibe las solicitudes correspondientes al mes
-            $solicitudes = Solicitud::with('compuesta')
-                                    ->where('solicitud.ConsolidadoMesId',$consolidado->Id)
-                                    ->get();
-            /*
-            $compuestas = Compuesta::select('compuesta.Id','compuesta.SolicitudId','compuesta.CostoReal','compuesta.TipoMonedaId')
-                                    ->where('solicitud.ConsolidadoMesId', $consolidado->Id)
-                                    ->join('solicitud','solicitudId','=','compuesta.SolicitudId')
-                                    ->orderBy('compuesta.SolicitudId')
-                                    ->get();
-            $solicitudId = null;
-            $suma=0;
-            foreach($compuestas as $compuesta){
-                if(isset($solicitudId)){
-                    $solicitudId = $compuesta->SolicitudId;
-                }
-                if($solicitudId != $compuesta->SolicitudId){
-                    $solicitudEdit = Solicitud::find($solicitudId);
-                    $solicitudEdit->CostoSolicitud = $suma;
-                    $solicitudEdit->TipoMonedaId = 1;
-                    $solicitudEdit->update();
-                    $solicitudId = $compuesta->SolicitudId;
-                    
-                    $suma = 0;
-                }
-                if($compuesta->TipoMonedaId == 1 && $compuesta->CostoReal != null){
-                    $suma += $compuesta->CostoReal;
-                }else if($compuesta->TipoMonedaId == 2 && $compuesta->CostoReal != null){
-                    $suma += $compuesta->CostoReal * $dolar->ToCLP;
-                }else if($compuesta->TipoMonedaId == 3 && $compuesta->CostoReal != null){
-                    $suma += $compuesta->CostoReal * $uf->ToCLP;
-                }
+            ///Recibe las solicitudes terminadas correspondientes al mes que esten y aprobadas
+            $solicitudes = Solicitud::select('solicitud.Id',
+                                        DB::raw('CONCAT("[", GROUP_CONCAT(JSON_OBJECT("CostoReal", compuesta.CostoReal, "TipoMonedaId", compuesta.TipoMonedaId)), "]") as compuesta'),
 
-            }*/
+                                    )
+                                    ->join('compuesta','compuesta.SolicitudId','=','solicitud.Id')
+                                    ->join('historial_solicitud','historial_solicitud.SolicitudId','=','solicitud.Id')          
+                                    ->where('solicitud.ConsolidadoMesId',$consolidado->Id)
+                                    ->where('historial_solicitud.EstadoSolicitudId','=',3) //Solicitud Terminada
+                                    ->where('historial_solicitud.EstadoEtapaFlujoId','=', 1) //Etapada Aprobada
+                                    ->groupBy('solicitud.Id')
+                                    ->orderBy('solicitud.Id','asc')
+                                    ->get();
 
             //Realiza la sumatoria de cada solicitud, transformando la moneda a CLP$
-            foreach($solicitudes as $solicitudEdit){
+            foreach($solicitudes as $solicitud){
                 $suma = 0;
-                $solicitudEdit = Solicitud::find($solicitudEdit->Id);
-                foreach($solicitudEdit->compuesta as $compuesta){
+                $solicitud->compuesta = json_decode($solicitud->compuesta);
+               
+                foreach($solicitud->compuesta as $compuesta){
                     if($compuesta->TipoMonedaId == 1 && $compuesta->CostoReal != null){
                         $suma += $compuesta->CostoReal;
                     }else if($compuesta->TipoMonedaId == 2 && $compuesta->CostoReal != null){
@@ -376,21 +385,104 @@ class ConsolidadoController extends Controller
                         $suma += $compuesta->CostoReal * $uf->ToCLP;
                     }
                 }
-                $solicitudEdit->CostoSolicitud = $suma;
-                $solicitudEdit->TipoMonedaId = 1;
-                $solicitudEdit->update();
+                $solicitudEdit = Solicitud::where( 'Id', $solicitud->Id)
+                                            ->update([
+                                                'CostoSolicitud' => $suma,
+                                                'TipoMonedaId' => 1
+                                            ]);
+            
+            }                           
+            DB::commit();
+            return true;
+        }
+        catch(Exception $e){
+            DB::rollBack();
+            //Log::error('Error al previsualizar el cierre de mes',[$e->getMessage()]);
+            return false;
+            
+        }
+    }
+
+    public function CerrarMes(Request $request){
+        //fecha actual para el valor de la moneda
+        $fecha = date('d-m-Y');
+        // Obtener el número del día de la semana (0 para domingo, 1 para lunes, ..., 6 para sábado)
+        $dia_semana = date('w', strtotime($fecha));
+        // Si es sábado (6) o domingo (0), ajustar la fecha al próximo lunes
+        if ($dia_semana == 6 || $dia_semana == 0) {
+            $fecha = date('d-m-Y', strtotime('next Monday', strtotime($fecha)));
+        }
+ 
+        try{
+            //Busca el consolidado abierto (EstadoConsolidadoId = 1)
+            $consolidado = ConsolidadoMe::where('EstadoConsolidadoId',1)
+                            ->first();
+            DB::beginTransaction();
+            //obtiene valor del dolar y uf desde miindicador.cl
+            $dolar = TipoCambio::CreaMoneda('/dolar/'.$fecha , 2, $consolidado->Id);
+            $uf = TipoCambio::CreaMoneda('/uf/'.$fecha , 3, $consolidado->Id);
+
+            if(!$dolar || !$uf){
+                throw new Exception('Error al capturar el valor de las monedas');
             }
 
+            //Recibe las solicitudes terminadas correspondientes al mes que esten y aprobadas
+            $solicitudes = Solicitud::select('solicitud.Id',
+                                        DB::raw('CONCAT("[", GROUP_CONCAT(JSON_OBJECT("CostoReal", compuesta.CostoReal, "TipoMonedaId", compuesta.TipoMonedaId)), "]") as compuesta')
+                                    )
+                                    ->join('compuesta','compuesta.SolicitudId','=','solicitud.Id')
+                                    ->join('historial_solicitud','historial_solicitud.SolicitudId','=','solicitud.Id')          
+                                    ->where('solicitud.ConsolidadoMesId',$consolidado->Id)
+                                    ->where('historial_solicitud.EstadoSolicitudId','=',3) //Solicitud Terminada
+                                    ->where('historial_solicitud.EstadoEtapaFlujoId','=', 1) //Etapada Aprobada
+                                    ->groupBy('solicitud.Id')
+                                    ->orderBy('solicitud.Id','asc')
+                                    ->get();
+
+            //Realiza la sumatoria de cada solicitud, transformando la moneda a CLP$
+            foreach($solicitudes as $solicitud){
+                $suma = 0;
+                $solicitud->compuesta = json_decode($solicitud->compuesta);
+               
+                foreach($solicitud->compuesta as $compuesta){
+                    if($compuesta->TipoMonedaId == 1 && $compuesta->CostoReal != null){
+                        $suma += $compuesta->CostoReal;
+                    }else if($compuesta->TipoMonedaId == 2 && $compuesta->CostoReal != null){
+                        $suma += $compuesta->CostoReal * $dolar->ToCLP;
+                    }else if($compuesta->TipoMonedaId == 3 && $compuesta->CostoReal != null){
+                        $suma += $compuesta->CostoReal * $uf->ToCLP;
+                    }
+                }
+                Solicitud::where( 'Id', $solicitud->Id)
+                            ->update([
+                                'CostoSolicitud' => $suma,
+                                'TipoMonedaId' => 1
+                            ]);
+            }
             //Cierra el mes cambiando de estado y agregando la fecha de término
             $consolidado->EstadoConsolidadoId = 0;
             $consolidado->FechaTermino = Carbon::now();
             $consolidado->update();
 
             //Crea un nuevo mes con la fecha y hora actual, con un estado abierto
-            $nuevoMes = new ConsolidadoMe();
-            $nuevoMes->EstadoConsolidadoId = 1;
-            $nuevoMes->created_at = Carbon::create($consolidado->created_at)->addMonth()->startOfMonth();
-            $nuevoMes->save();
+            $nuevoConsolidadoMes = new ConsolidadoMe();
+            $nuevoConsolidadoMes->EstadoConsolidadoId = 1;
+            $nuevoConsolidadoMes->created_at = Carbon::create($consolidado->created_at)->addMonth()->startOfMonth();
+            $nuevoConsolidadoMes->save();
+
+            $solicitudesPendientes = Solicitud::select('solicitud.Id')
+                                            ->join('historial_solicitud','historial_solicitud.SolicitudId','=','solicitud.Id')          
+                                            ->where('solicitud.ConsolidadoMesId',$consolidado->Id)
+                                            ->where('historial_solicitud.EstadoEtapaFlujoId','=', 3) //Etapada Pendiente
+                                            ->orderBy('solicitud.Id','asc')
+                                            ->pluck('solicitud.Id')->toArray();
+
+            Solicitud::whereIn( 'Id', $solicitudesPendientes)
+                            ->update([
+                                'ConsolidadoMesId' => $nuevoConsolidadoMes->Id
+                            ]);               
+
+
             
             Log::info('Mes cerrado');
             DB::commit();
