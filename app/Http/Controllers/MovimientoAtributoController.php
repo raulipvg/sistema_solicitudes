@@ -147,7 +147,7 @@ class MovimientoAtributoController extends Controller
                                         ->where('movimiento_atributo.MovimientoId', $movimientoId)
                                         ->where('atributo.Enabled', 1)
                                         ->orderBy('atributo.Nombre','asc')
-                                        ->orderBy('atributo_tipo.TipoId','asc')
+                                        //->orderBy('atributo_tipo.TipoId','asc')
                                         ->groupBy('movimiento_atributo.Id', 'atributo.Nombre','atributo.ValorReferencia', 
                                                     'atributo.TipoMonedaId','atributo.Descripcion','tipo_moneda.Simbolo')
                                         ->get();
