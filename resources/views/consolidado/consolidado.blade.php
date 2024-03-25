@@ -64,15 +64,15 @@
     </script>
 
     <!--begin::Datatables y Configuracion de la Tabla-->
-    <script src="{{ asset('js/datatables/datatables.bundle.js?id=5') }}"></script>
-    <script src="{{ asset('js/datatables/language/language_es.js?id=5') }}"></script>
-    <script src="{{ asset('js/datatables/contenido/consolidado_detalle.js?id=5') }}"></script>
-    <script src="{{ asset('js/datatables/contenido/solicitud_terminada.js?id=5') }}"></script>
+    <script src="{{ asset('js/datatables/datatables.bundle.js?id=6') }}"></script>
+    <script src="{{ asset('js/datatables/language/language_es.js?id=6') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/consolidado_detalle.js?id=6') }}"></script>
+    <script src="{{ asset('js/datatables/contenido/solicitud_terminada.js?id=6') }}"></script>
     <!--end::Datatables y Configuracion de la Tabla-->
 
     <!--begin::Eventos de la pagina-->
-    <script src="{{ asset('js/global/main.js?id=5') }}"></script>
-    <script src="{{ asset('js/eventos/consolidado/consolidado.js?id=5') }}"></script>
+    <script src="{{ asset('js/global/main.js?id=6') }}"></script>
+    <script src="{{ asset('js/eventos/consolidado/consolidado.js?id=6') }}"></script>
     <!--end::Eventos de la pagina-->
 
 @endpush
