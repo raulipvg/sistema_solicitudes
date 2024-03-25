@@ -124,7 +124,7 @@ $(document).ready(function() {
             });
     });
 
-    var row;
+    let row;
     miTablaFlujo.on("click",'.editar', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -140,11 +140,11 @@ $(document).ready(function() {
         $("#nuevoFlujo").empty()
 
         tr = e.target.closest('tr');
-        row = miTablaFlujo.row(tr).data();
+        row = miTablaFlujo.row(tr);
         validator.resetForm();
         actualizarValidSelect2();
-
-        let id = Number(row[0]);
+        var aux = row.data();
+        let id = Number(aux[0]);
         
         $.ajax({
             type: 'POST',
@@ -359,7 +359,7 @@ $(document).ready(function() {
     submitButton.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('editar flujo');
+        //console.log('editar flujo');
 
         $("#AlertaErrorFlujo").hide();
         $("#AlertaErrorFlujoPaso2").hide(); 
