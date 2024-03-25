@@ -135,7 +135,8 @@ $(document).ready(function() {
 
         $("#IdFlujoInput").prop("disabled",false);
         $("#AlertaErrorFlujo").hide();
-        $("#AlertaErrorFlujoPaso2").hide();        
+        $("#AlertaErrorFlujoPaso2").hide();
+        $("#EditSubmitFlujo").show();      
         $("#nuevoFlujo").empty()
 
         tr = e.target.closest('tr');
@@ -251,7 +252,8 @@ $(document).ready(function() {
 
         $("#IdFlujoInput").prop("disabled",false);
         $("#AlertaErrorFlujo").hide();
-        $("#AlertaErrorFlujoPaso2").hide();        
+        $("#AlertaErrorFlujoPaso2").hide();
+        $("#EditSubmitFlujo").hide();        
         $("#nuevoFlujo").empty()
 
         tr = e.target.closest('tr');
