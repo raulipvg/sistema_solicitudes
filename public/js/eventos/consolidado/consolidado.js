@@ -5,7 +5,7 @@ $(document).ready(function() {
     llenarSelect2(empresas, $('#EmpresaIdInput'));
     llenarSelect2(consolidados, $('#ConsolidadoIdInput'),1);
     $('#ConsolidadoIdInput').val(consolidados[0].Id).trigger("change");
-    console.log(consolidados)
+    //console.log(consolidados)
     if(credenciales.VerMov)llenarSelect2(movimientos, $('#MovimientoIdInput')); 
     if(credenciales.VerCC )llenarSelect2(centrocostos, $('#CentroCostoIdInput'));
     

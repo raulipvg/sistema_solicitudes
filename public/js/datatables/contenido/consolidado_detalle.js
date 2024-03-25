@@ -17,7 +17,7 @@ var optionsExport=
 function format(data) {   
     var html=`
             <div class="d-flex justify-content-center">
-                <div class="card shadow-sm" style=" width: 50%;">
+                <div class="card shadow-sm" style=" width: 90%;">
                 <table id="services_table" class="table table-row-dashed">
                     <thead class="services-info">
                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">

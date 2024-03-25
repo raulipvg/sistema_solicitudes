@@ -200,9 +200,11 @@ class SolicitudController extends Controller
             $historial->save();
             unset($historial);
             unset($flujo);
+
             $this->enviarCorreo($emails, $solicitud->Id,$movExiste->Nombre,1);
+            
             DB::commit();
-            Log::info('Solicitud generada');
+            Log::info('Solicitud generada #'.$solicitud->Id);
 
             $solicitud = Solicitud::getSolicitudesId($solicitud->Id);
                            
@@ -276,6 +278,7 @@ class SolicitudController extends Controller
                                     ->movimiento->Nombre;
                 
                 $this->enviarCorreo($emails, $historialEdit->SolicitudId,$mov,2);
+               
 
             //SI ES UNA ETAPA FINAL DEL FLUJO
             }else{
@@ -434,7 +437,11 @@ class SolicitudController extends Controller
    
     public function enviarCorreo($emails, $solicitudId, $movimiento,$tipoMail){
         //$destinatario = 'cado.rfmr@gmail.com';
-        Mail::to($emails)->send(new Correo($solicitudId, $movimiento,$tipoMail));
+        try{
+            Mail::to($emails)->send(new Correo($solicitudId, $movimiento,$tipoMail));
+        }catch(Exception $e){
+            Log::info('Error Envio Email Solicitud #'.$solicitudId);
+        }
     }
 }
 
