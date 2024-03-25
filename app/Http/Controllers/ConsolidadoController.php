@@ -95,7 +95,7 @@ class ConsolidadoController extends Controller
     public function VerConsolidados(Request $request){
 
         $request = $request->input('data');
-        $empresaId = isset($request['Empresa'])?:null;
+        $empresaId = isset($request['Empresa'])?$request['Empresa']:null;
         $ccId = isset($request['CC'])?$request['CC']:null;
         $movimientoId = isset($request['Movimiento'])?$request['Movimiento']:null;
         $consolidadoId = $request['Consolidado'];
