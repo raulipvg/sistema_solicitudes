@@ -157,7 +157,7 @@ class Usuario extends Authenticatable
     public function movimientosPuedeVer(){
         $query =Usuario::select([
                                 'movimiento.Id',
-                                'movimiento.Nombre',
+                                'movimiento.Nombre'
                              ])
                             ->join('usuario_grupo','usuario_grupo.UsuarioId','=','usuario.Id')
                             ->join('grupo','grupo.Id','=','usuario_grupo.GrupoId')

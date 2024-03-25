@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AtributoTipo;
+use App\Models\ConfigAtributo;
 use Illuminate\Http\Request;
 use App\Models\Atributo;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Stmt\Else_;
 
 class AtributoController extends Controller
 {
@@ -36,12 +39,34 @@ class AtributoController extends Controller
         $request['Nombre'] = strtolower($request['Nombre']);
         
         try{
+            DB::beginTransaction();
+
             $atributo = new Atributo();
             $atributo->validate($request);
-            $atributo->fill($request);
-
-            DB::beginTransaction();
+            $atributo->fill($request);         
             $atributo->save();
+
+            /*
+            foreach($request['AtributoTipo'] as $key => $value){
+                $atributoTipo = new AtributoTipo();
+                $atributoTipo->AtributoId = $atributo->Id;
+                $atributoTipo->TipoId = $value['TipoId'];
+                $atributoTipo->save();
+            }
+            */
+            $atributoTipos = [];
+            $date = now();
+            foreach ($request['AtributoTipo'] as $key => $value) {
+                $atributoTipos[] = [
+                    'AtributoId' => $atributo->Id,
+                    'TipoId' => $value['TipoId'],
+                    'created_at' => $date, 
+                    'updated_at' => $date,
+                ];
+            }
+
+            // Realizar la inserción masiva
+            AtributoTipo::insert($atributoTipos);
 
             DB::commit();
             Log::info('Nuevo atributo');
@@ -75,13 +100,26 @@ class AtributoController extends Controller
         $request = $request->input('data');
 
         try{
-            $atributo = Atributo::with('tipomoneda')->find($request);
-
+            $atributo = Atributo::select('atributo.Id',
+                                        'atributo.Nombre', 
+                                        'atributo.ValorReferencia',
+                                        'atributo.TipoMonedaId',
+                                        'atributo.Descripcion',
+                                        'atributo.Enabled',
+                                        DB::raw('CONCAT("[", GROUP_CONCAT(JSON_OBJECT(
+                                                                            "Id", atributo_tipo.Id, 
+                                                                            "TipoId", atributo_tipo.TipoId
+                                                                        )), "]") as atributoTipo')
+                                    )
+                                    ->leftJoin('atributo_tipo','atributo_tipo.AtributoId','=','atributo.Id')
+                                    ->where('atributo.Id','=', $request)
+                                    ->groupBy('atributo.Id','atributo.Nombre','atributo.ValorReferencia',
+                                                'atributo.Descripcion','atributo.TipoMonedaId','atributo.Enabled')
+                                    ->first();
+            
             if(!$atributo) {
                 throw new Exception('Atributo no encontrado');
-            }
-
-            
+            }        
             Log::info('Ver información de atributo');
             return response()->json([
                 'success' => true,
@@ -108,19 +146,29 @@ class AtributoController extends Controller
         $request['Nombre'] = strtolower($request['Nombre']);
         
         try{
-            $atributo = new Atributo();
-            $atributo->validate($request);
-
-            DB::beginTransaction();
-
+            $atributo = new Atributo();     
             $atributoEdit = Atributo::find($request['Id']);
-
             if(!$atributoEdit){
                 throw new Exception('Atributo no encontrado');
+            }     
+            $atributo->validate($request);           
+            $atributoEdit->fill($request);     
+
+            AtributoTipo::where('AtributoId', $atributoEdit->Id)->delete();
+            $date = now();
+            foreach ($request['AtributoTipo'] as $key => $value) {
+                AtributoTipo::Create([
+                        'TipoId'=> $value['TipoId'],                        
+                        'AtributoId'=> $atributoEdit->Id,
+                        'updated_at'=> $date,
+                        ]
+                    
+                );
             }
 
-            $atributoEdit->fill($request);
+            DB::beginTransaction();
             $atributoEdit->save();
+           // $atributoEdit->configuracion->save();
 
             DB::commit();
             Log::info('Se modificó el atributo');

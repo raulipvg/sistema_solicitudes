@@ -21,7 +21,7 @@ $('#tabla-solicitudes, #tabla-solicitudes-terminadas').on('click','tr td button.
 });
 
 function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
-    $('#tabla-atributos-solicitud tbody').empty();
+    
     tr = f.target.closest('tr');
     row = tabla.row(tr);
     var tempDiv = document.createElement('div');
@@ -30,7 +30,7 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
     var pill = `<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
                     <span class="path1"></span>
                     <span class="path2"></span>
-                </i>`
+                </i>`;
     solicitante = tempDiv.querySelector('.fs-7').textContent + ': ' +tempDiv.querySelector('span').textContent.toUpperCase();
     $('#Solicitante').html(pill+solicitante);
     
@@ -42,7 +42,10 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
 
     fecha = tempDiv.querySelector('.fs-7').textContent + ': ' +tempDiv.querySelector('.fw-bold').textContent;
     $('#RangoFecha').html(pill+fecha);
-
+    $('#tabla-atributos-solicitud tbody').empty();
+    $('#modal-titulo-historialSolicitud').empty().html("Historial Solicitud "+solicitudId);
+    $('#ValorReal').empty();
+    $('#lineaTiempo').empty();
 
     $.ajax({
         type: 'POST',
@@ -58,26 +61,25 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
             KTApp.showPageLoading();
         },
         success: function (data) {
-            if(data.success){
-                $('#modal-titulo-historialSolicitud').empty().html("Historial Solicitud "+solicitudId);
-                $('#titulo-flujo').empty().html("Flujo: "+data.data.flujoNombre);
+            if(data.success){ 
                 data = data.data;
-                $('#ValorReal').empty();
+                console.log(data);                               
+                $('#titulo-flujo').empty().html("Flujo: "+data.flujoNombre);     
                 //$('#ValorReal').html(pill+'Costo: $'+data.costoSolicitud.toLocaleString());
-                data.costoPorAtributo.forEach((atr)=>{
+                data.compuesta.forEach((atr)=>{
                     $('#tabla-atributos-solicitud tbody').append(`
                         <tr>
                             <td class="text-capitalize p-1"> ${atr.Nombre} </td>
-                            <td class="text-capitalize p-1"> ${atr.Caracteristica == null ? "-" : atr.Caracteristica}</td>
-                            <td class="p-1"> ${atr.Simbolo} ${atr.CostoReal.toLocaleString()} </td>
+                            <td class="text-capitalize p-1"> ${(atr.Cantidad)? atr.Cantidad:''}</td>
+                            <td class="p-1"> ${(atr.Simbolo && atr.CostoReal)? atr.Simbolo+' '+atr.CostoReal.toLocaleString() : ''}</td>
+                            <td class="text-capitalize p-1"> ${(atr.Descripcion)? atr.Descripcion:''}</td>
+                            <td class="text-end p-1"> ${(atr.Fecha1)? atr.Fecha1:''} ${(atr.Fecha2)? '- '+atr.Fecha2: ''}</td>
                         </tr>
                     `);
                 });
 
                 estados = data.ordenFlujos;
-                footer = '';
-
-                $('#lineaTiempo').empty();
+                footer = '';         
                 var html,color,usuario = '';
                 var primerEstado = true;
                 html ='<div class="m-0">';

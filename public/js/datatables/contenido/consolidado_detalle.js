@@ -23,7 +23,10 @@ function format(data) {
                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                             <th class="p-0 ps-3">Solicitud</th>
                             <th class="p-0 ps-3">Movimiento</th>
+                            <th class="p-0 ps-3">Cant</th>
+                            <th class="p-0 ps-3">Costo</th>
                             <th class="p-0 ps-3">Detalle</th>
+                            <th class="p-0 ps-3 pe-2 text-end">Fecha</th>
                         </tr>
                     </thead>
                     <tbody class="fw-bold text-gray-600">
@@ -39,15 +42,27 @@ function format(data) {
 
 //TR A SUB TABLA
 function AgregarTR(elemento){
-
+console.log(tipoCambioActual)
     var html =`
                 <tr>
                     <td class="py-1">#${elemento.SolicitudId}</td>
                     <td class="py-1 text-capitalize">${elemento.Movimiento}</td>
-                    <td class="py-1 text-gray-700 text-capitalize">${ (elemento.Detalle ?? '-')}</td>                                                                    
+                    <td class="text-capitalize text-center p-1"> ${(elemento.Cantidad)? elemento.Cantidad:''}</td>
+                    <td class="p-1"> ${(elemento.CostoReal && elemento.TipoMonedaId)? 'CLP$ '+CalcularCLP(elemento.CostoReal, elemento.TipoMonedaId).toLocaleString() : ''}</td>
+                    <td class="py-1 text-gray-700 text-capitalize">${ (elemento.Detalle ?? '')}</td>
+                    <td class="text-end p-1"> ${(elemento.Fecha1)? elemento.Fecha1:''} ${(elemento.Fecha2)? '- '+elemento.Fecha2: ''}</td>                                                                    
                 </tr>
             `;
     return html;
+}
+
+function CalcularCLP(costo, tipoMonedaId){
+    var atributoTipoEs4 = tipoCambioActual.find(item => item.TipoMonedaId === tipoMonedaId);
+    if(atributoTipoEs4){
+        return atributoTipoEs4.ToCLP *costo;
+    }else if(tipoMonedaId ===1 ){
+        return costo;
+    }
 }
 
 var miTablaDetalle = $("#tablaConsolidado").DataTable({
@@ -186,18 +201,19 @@ const cargarDataDetalle= function(){
                 if (data.hasOwnProperty(key)) {
                             //console.log("Nombre:", data[persona].username);
                     var costos = JSON.parse(data[key].CostoMoneda);
-
                     var costoTotalCLP = 0;
-                    costos.forEach( (costo) => {
-                        if(costo.TipoMonedaId == 1){
-                            costoTotalCLP += costo.CostoReal;
-                        }else{
-                            var cambioCLP = buscarPorTipoMonedaId(tipoCambio,costo.TipoMonedaId)
-                            valorCLP= cambioCLP.ToCLP * costo.CostoReal;
-                            costoTotalCLP += valorCLP;
-                            //console.log(a)
-                        }
-                    });
+                    if(costos[0].CostoReal){                        
+                        costos.forEach( (costo) => {
+                            if(costo.TipoMonedaId == 1){
+                                costoTotalCLP += costo.CostoReal;
+                            }else{
+                                var cambioCLP = buscarPorTipoMonedaId(tipoCambio,costo.TipoMonedaId)
+                                valorCLP= cambioCLP.ToCLP * costo.CostoReal;
+                                costoTotalCLP += valorCLP;
+                                //console.log(a)
+                            }
+                        });
+                    }
                     if(ccIdAnterior == data[key].CcId || key ==0){
                         ccTotal+= costoTotalCLP;
                     }else{

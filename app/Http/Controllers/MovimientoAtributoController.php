@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Atributo;
+use App\Models\ConsolidadoMe;
 use Illuminate\Http\Request;
 use App\Models\Movimiento;
 use App\Models\Flujo;
@@ -129,21 +130,38 @@ class MovimientoAtributoController extends Controller
             if (!$movimientoExiste) {
                 throw new Exception('Movimiento no encontrado');
             }
-            $movimientoAtributo = MovimientoAtributo::select('movimiento_atributo.Id', 'atributo.Nombre', 
-                                                    'atributo.TipoMonedaId', 'atributo.ValorReferencia','tipo_moneda.Simbolo')
+            $movimientoAtributo = MovimientoAtributo::select(
+                                                    'movimiento_atributo.Id', 
+                                                    'atributo.Nombre',  
+                                                    'atributo.ValorReferencia',                                                    
+                                                    'atributo.TipoMonedaId',
+                                                    'atributo.Descripcion',
+                                                    'tipo_moneda.Simbolo',
+                                                    DB::raw('CONCAT("[", GROUP_CONCAT(JSON_OBJECT(
+                                                        "TipoId", atributo_tipo.TipoId
+                                                    ) ORDER BY atributo_tipo.TipoId ASC), "]") as atributoTipo')
+                                                    )
                                         ->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
                                         ->join('tipo_moneda', 'tipo_moneda.Id','=','atributo.TipoMonedaId')
+                                        ->leftJoin('atributo_tipo','atributo_tipo.AtributoId','=','atributo.Id')
                                         ->where('movimiento_atributo.MovimientoId', $movimientoId)
                                         ->where('atributo.Enabled', 1)
+                                        ->orderBy('atributo.Nombre','asc')
+                                        ->orderBy('atributo_tipo.TipoId','asc')
+                                        ->groupBy('movimiento_atributo.Id', 'atributo.Nombre','atributo.ValorReferencia', 
+                                                    'atributo.TipoMonedaId','atributo.Descripcion','tipo_moneda.Simbolo')
                                         ->get();
-            $tipoMoneda = TipoMoneda::select('Id','Simbolo')->get();
+
+            $tipoMoneda = TipoMoneda::select('Id','Simbolo') ->orderBy('Simbolo','asc')->get();
+            $consolidadoId= ConsolidadoMe::select('Id')->where('EstadoConsolidadoId',1)->pluck('Id')->first();
 
             Log::info('Ver atributos del movimiento');
             return response()->json([
                 'success' => true,
                 'data' => $movimientoAtributo,
                 'movimiento'=> $movimientoExiste->Id,
-                'tipomoneda' => $tipoMoneda 
+                'tipomoneda' => $tipoMoneda,
+                'consolidado'=> $consolidadoId 
             ]);
 
         }catch(Exception $e){
@@ -170,6 +188,7 @@ class MovimientoAtributoController extends Controller
         $atributosNoAsociados = Atributo::select('Id', 'Nombre')
                                     ->where('Enabled', 1)
                                     ->whereNotIn('Id', $atributosAsociados)
+                                    ->orderBy('Nombre','asc')
                                     ->get();
         $movimientos= Movimiento::select(
                                     'Id',

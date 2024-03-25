@@ -1,7 +1,7 @@
 $(document).ready(function() {   
     let ConsolidadoId =0;
     let MovId =0;
-
+    tipoCambioActual = {};
     llenarSelect2(empresas, $('#EmpresaIdInput'));
     llenarSelect2(consolidados, $('#ConsolidadoIdInput'),1);
     $('#ConsolidadoIdInput').val(consolidados[0].Id).trigger("change");
@@ -39,10 +39,12 @@ $(document).ready(function() {
             },
             success: function (data) {                                    
                 if(data.success){
-                    //console.log(data)
+                    
                     //var a = data.querySolicitud[2].CostoMoneda;
                     //console.log(JSON.parse(a));
                     miTablaDetalle.clear();
+                    tipoCambioActual= data.tipoCambio;
+                    console.log(tipoCambioActual)
                     cargarDataDetalle.init(data.query, data.tipoCambio)
                     ConsolidadoId = data.consolidado.Id;
                     MovId = Movimiento;
@@ -179,7 +181,7 @@ $(document).ready(function() {
 
     miTablaDetalle.on('click','tr.group td button.ver-solicitudes', function(e) {
 
-        console.log('Solicitudes Aprobadas');
+        //console.log('Solicitudes Aprobadas');
         var a = $(e.currentTarget).attr("data-a");
         $("#modal-titulo-historialSolicitud").text('Solicitudes Aprobadas al Centro de Costo');
         tablaSolicitudesTerminadas.clear().draw();

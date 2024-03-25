@@ -7,9 +7,11 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+
 
 /**
  * Class Compuesta
@@ -17,11 +19,14 @@ use Illuminate\Validation\ValidationException;
  * @property int $Id
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
+ * @property Carbon $Fecha1
+ * @property Carbon|null $Fecha2
  * @property int $MovimientoAtributoId
  * @property int $SolicitudId
  * @property int $CostoReal
  * @property int $TipoMonedaId
- * @property int $Caracteristica
+ * @property int $Cantidad
+ * @property int $Descripcion
  * 
  * @property MovimientoAtributo $movimiento_atributo
  * @property Solicitud $solicitud
@@ -41,6 +46,7 @@ class Compuesta extends Model
 		'SolicitudId' => 'int',
 		'CostoReal'=> 'int',
 		'TipoMonedaId'=> 'int',
+		'Cantidad'=> 'int',
 	];
 
 	protected $fillable = [
@@ -48,7 +54,10 @@ class Compuesta extends Model
 		'SolicitudId',
 		'CostoReal',
 		'TipoMonedaId',
-		'Caracteristica',
+		'Cantidad',
+		'Descripcion',
+		'Fecha1',
+		'Fecha2'
 	];
 
 	public function movimiento_atributo()
@@ -72,7 +81,8 @@ class Compuesta extends Model
 		$rules = [
 			'MovimientoAtributoId' => 'required|numeric',
 			'CostoReal' => 'nullable|numeric',
-			'Caracteristica' => 'nullable|string',
+			'Cantidad' => 'nullable|numeric',
+			'Descripcion' => 'nullable|string',
 			'SolicitudId' => 'required|numeric',
 		];
 

@@ -65,18 +65,20 @@ class SolicitudFlujoHistorialController extends Controller
                                         ->leftJoin('persona','persona.UsuarioId','=','historial_solicitud.UsuarioId')
                                         ->where('historial_solicitud.SolicitudId','=',$request['solicitudId'])
                                         ->get();
+
         $flujoNombre = Flujo::select('Nombre')->where('Id',$request['flujoId'])->first()->Nombre;  
         
-        $costoPorAtributo = Compuesta::select('AtributoId as Atributo',
-                                            'atributo.Nombre as Nombre',
-                                            'atributo.ValorReferencia',
+        $compuesta = Compuesta::select('atributo.Nombre as Nombre',
                                             'tipo_moneda.Simbolo',
                                             'compuesta.CostoReal',
-                                            'compuesta.Caracteristica'
+                                            'compuesta.Descripcion',
+                                            'compuesta.Cantidad',
+                                            DB::raw("DATE_FORMAT(compuesta.Fecha1, '%d/%m/%y') as Fecha1"),
+                                            DB::raw("DATE_FORMAT(compuesta.Fecha2, '%d/%m/%y') as Fecha2")
                                         )
                                         ->join('movimiento_atributo','movimiento_atributo.Id','=','compuesta.MovimientoAtributoId')
                                         ->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
-                                        ->join('tipo_moneda','tipo_moneda.Id','=','compuesta.TipoMonedaId')
+                                        ->leftJoin('tipo_moneda','tipo_moneda.Id','=','compuesta.TipoMonedaId')
                                         ->where('compuesta.SolicitudId',$request['solicitudId'])
                                         ->get();
                                         
@@ -90,7 +92,7 @@ class SolicitudFlujoHistorialController extends Controller
                 'ordenFlujos' => $ordenFlujo,
                 'historial' => $historial,
                 'flujoNombre' => $flujoNombre,
-                'costoPorAtributo' => $costoPorAtributo,
+                'compuesta' => $compuesta,
                 'costoSolicitud' => $costoSolicitud->CostoSolicitud,
             ]
         ]);

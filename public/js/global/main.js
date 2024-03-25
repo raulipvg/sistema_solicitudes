@@ -42,16 +42,86 @@ var loadingEl = document.createElement("div");
         return keyValueObject;
     }
     
-    function formatearFecha(fecha){
-        var date = new Date(fecha);
-        // Obtener el día, mes y año
-        var dia = date.getDate();
-        var mes = date.getMonth() + 1; // Nota: Los meses en JavaScript comienzan en 0
-        var anio = date.getFullYear();
-        // Formatear la fecha como "DD-MM-YYYY"
-        var fechaFormateada = dia + "-" + (mes < 10 ? "0" : "") + mes + "-" + anio;
+    function formMap2(fd) {
+        var pairs = fd.split('&');
+        var keyValueObject = {};
+        var groupedValues = {};
+        var index =0;
     
-        return fechaFormateada;
+        for (let i = 0; i < pairs.length; i++) {
+            var pair = pairs[i].split('=');
+            var key = decodeURIComponent(pair[0]);
+            var value = decodeURIComponent(pair[1]);
+            
+            // Si el nombre del campo comienza con "AtributoTipo"
+            if (key.startsWith('AtributoTipo')) {
+                // Extraer el nombre real del campo eliminando los corchetes
+                var fieldName = key.match(/\[([^)]+)\]/)[1];
+                // Si no hay un objeto para este campo aún, crearlo
+                if (!groupedValues['AtributoTipo']) {
+                    groupedValues['AtributoTipo'] = {};
+                }
+                // Agregar el valor al objeto con el índice dinámico
+                if (!groupedValues['AtributoTipo'][index]) {
+                    groupedValues['AtributoTipo'][index] = {};
+                }
+                groupedValues['AtributoTipo'][index].TipoId = value;
+                var data;
+                switch(value) {
+                    case "1": //Moneda  
+                        data = $('#CheckMoneda').attr('data-info');       
+                    break;
+                    case "2": // Cantidad
+                        data= $('#CheckCantidad').attr('data-info');
+                    break;
+                    case "3": //Descripcion
+                        data = $('#CheckDescripcion').attr('data-info');
+                        break;
+                    case "4": //Mes
+                        data = $('#radioMes').attr('data-info');  
+                        break;
+                    case "5": //Rango
+                        data = $('#radioRango').attr('data-info');
+                    break;
+                    case "6": //Ano
+                        data = $('#radioAno').attr('data-info');
+                        break;
+                    case "7": //Sin Fecha
+                        data = $('#radioFecha').attr('data-info');
+                        break;
+                }
+                groupedValues['AtributoTipo'][index].Id = data? data:null;
+                index++; // Incrementar el índice
+            } else {
+                // Para otros campos, simplemente asignar el valor al objeto principal
+                keyValueObject[key] = value;
+            }
+        }
+    
+        // Agregar los valores agrupados al objeto principal
+        for (var field in groupedValues) {
+            if (groupedValues.hasOwnProperty(field)) {
+                keyValueObject[field] = groupedValues[field];
+            }
+        }
+    
+        return keyValueObject;
+    }
+
+    function formatearFecha(fecha){
+        if(fecha){
+            var date = new Date(fecha);
+            // Obtener el día, mes y año
+            var dia = date.getDate();
+            var mes = date.getMonth() + 1; // Nota: Los meses en JavaScript comienzan en 0
+            var anio = date.getFullYear();
+            // Formatear la fecha como "DD-MM-YYYY"
+            var fechaFormateada = dia + "-" + (mes < 10 ? "0" : "") + mes + "-" + anio;
+    
+            return fechaFormateada;
+        }else{
+            return false;
+        }
     }
 
     function formatearFecha2(fecha) {
@@ -62,8 +132,13 @@ var loadingEl = document.createElement("div");
         var dia = date.getDate();
         var mes = mesesAbreviados[date.getMonth()]; // Obtener el mes abreviado
         var anio = date.getFullYear();
-        // Formatear la fecha como "DD-Mes-YYYY"
-        var fechaFormateada = dia+" "+mes+" "+anio;
+        
+         // Obtener la hora y los minutos
+        var hora = date.getHours();
+        var minutos = date.getMinutes();
+        minutos = minutos < 10 ? '0' + minutos : minutos;
+        // Formatear la fecha como "DD-Mes-YYYY HH:MM"
+        var fechaFormateada = dia + " " + mes + " " + anio + " " + hora + ":" + minutos;
     
         return fechaFormateada;
     }

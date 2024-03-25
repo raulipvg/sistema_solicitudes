@@ -17,7 +17,7 @@
                 </div>
                 <!--end::Close-->
             </div>
-            <form id="FormularioSolicitud" action="" method="post">
+            <form id="FormularioSolicitud" onsubmit="return false;" >
                 <div class="modal-body">
                     <div id="AlertaErrorSolicitud" class="alert alert-warning hidden validation-summary-valid" data-valmsg-summary="true">
                     </div>
@@ -39,7 +39,7 @@
                                 <select id="CentroCostoIdInput" name="CentroCostoId" class="form-select text-capitalize " data-control="select2" data-placeholder="Seleccione el centro de costo asociado" data-hide-search="false" data-dropdown-parent="#crearSolicitud">
                                     <option></option>
                                     @foreach ( $centrocostos as $centrocosto )
-                                    <option value="{{ $centrocosto->Id }}">{{ $centrocosto->Nombre }}</option>
+                                    <option value="{{ $centrocosto->Id }}">{{ ucwords($centrocosto->Nombre) }}</option>
                                     @endforeach
                                     
                                 </select>
@@ -61,14 +61,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 mb-2">
-                            <!--begin::Flatpickr-->
-                            <div class="form-floating fv-row">
-                                <input id="Fecha" class="form-control input-size" name="Fecha" placeholder="Pick date range"  />
-                                <label for="MovimientoInput" class="form-label">Rango de Fecha</label>
-                            </div>
-							<!--end::Flatpickr-->
-                        </div>
+                    
                     </div>
                     <div class="row mb-2">
                         <div id="elegir-movimientos" class="col border rounded mx-3 p-2 border-gray-300">
@@ -104,7 +97,7 @@
                         </div>
 
                     </div>
-                    <div id="contenedor-movimiento-2" class="mx-6 d-flex flex-column justify-content-center align-items-center">
+                    <div id="contenedor-movimiento-2" class="mx-6 d-flex flex-column">
                         <!--
                         <div class="row compuesta">
                             <div class="col-md-3 mb-2">
@@ -116,8 +109,8 @@
                             </div>
                             <div class="col-md-3 mb-2">
                                 <div class="form-floating fv-row">
-                                    <input type="text" class="form-control" placeholder="Ingrese el nombre" id="CaracteristicaInput" name="Caracteristica" />
-                                    <label for="NombreInput" class="form-label">Caracteristica</label>
+                                    <input type="text" class="form-control" placeholder="Ingrese el nombre" id="DescripcionInput" name="Descripcion" />
+                                    <label for="NombreInput" class="form-label">Descripcion</label>
                                 </div>
                             </div>
                             <div class="col-md-2 mb-2">
@@ -145,7 +138,7 @@
                 </div>
                 <div class="modal-footer bg-light p-2">
                     <button type="button" class="btn btn-light-dark cerrar" data-bs-dismiss="modal">Cerrar</button>
-                    <button id="AddSubmitSolicitud" type="button" class="btn btn-success">
+                    <button id="AddSubmitSolicitud" type="submit" class="btn btn-success">
                         <div class="indicator-label">Solicitar</div>
                         <div class="indicator-progress">Espere...
                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>

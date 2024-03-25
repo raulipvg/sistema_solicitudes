@@ -17,11 +17,11 @@ $(document).ready(function() {
                                 },
                                 stringLength: {
                                     min: 3,
-                                    max: 20,
-                                    message: 'Entre 3 y 20 caracteres'
+                                    max: 50,
+                                    message: 'Entre 3 y 50 caracteres'
                                 },
                                 regexp: {
-                                    regexp: /^[a-zñáéíóú\s]+$/i,
+                                    regexp: /^[a-z-ñáéíóú\s]+$/i,
                                     message: 'Solo letras de la A-Z '
                                 }
                             }
@@ -78,8 +78,10 @@ $(document).ready(function() {
             e.preventDefault();
             e.stopPropagation();
             $("#modal-titulo-atr").empty().html("Registrar Atributo");
-            $("input").val('').prop("disabled",false);
+            $("#NombreAtInput, #ValorReferenciaInput").val('').prop("disabled",false);
+            $("#CheckMoneda, #CheckCantidad, #CheckDescripcion").prop("checked",false);
             $('.form-select').val("").trigger("change").prop("disabled",false);
+            $("#radioFecha").prop("checked",true);
             //$('#EstadoIdAtInput').val("").trigger("change").prop("disabled",false);
 
             $("#AddSubmitAtr").show();
@@ -113,7 +115,7 @@ $(document).ready(function() {
                         // Show loading indication                       
                             let form1= $("#FormularioAtributo");
                             var fd = form1.serialize();
-                            var data = formMap(fd);                       
+                            var data = formMap2(fd);                       
                             $.ajax({
                                 type: 'POST',
                                 url: GuardarAtributo,
@@ -176,8 +178,10 @@ $(document).ready(function() {
             e.stopPropagation();
             //Inicializacion
             $("#modal-titulo-atr").empty().html("Editar Atributo");
-            $("input").val('').prop("disabled",false);
+            $("#NombreAtInput, #ValorReferenciaInput").val('').prop("disabled",false);
             $('.form-select').val("").trigger("change").prop("disabled",false);
+            $("#CheckMoneda, #CheckCantidad, #CheckDescripcion").prop("checked",false);
+            $("#radioFecha").prop("checked",true);
 
             $("#AddSubmitAtr").hide();
             $("#EditSubmitAtr").show();
@@ -214,6 +218,29 @@ $(document).ready(function() {
                         $("#ValorReferenciaInput").val(data.ValorReferencia);
                         $('#EstadoIdAtInput').val(data.Enabled).trigger("change");
                         $('#TipoMonedaIdAtInput').val(data.TipoMonedaId).trigger("change");
+
+                        data.atributoTipo= JSON.parse(data.atributoTipo);
+                        data.atributoTipo.forEach(element => {
+                            var input;                                
+                            if(element.TipoId ===1 ){
+                                input='#CheckMoneda';                               
+                            }else if(element.TipoId ===2){
+                                input='#CheckCantidad';
+                            }else if(element.TipoId === 3){
+                                input='#CheckDescripcion';
+                            }else if(element.TipoId === 4){
+                                input='#radioMes';
+                            }else if(element.TipoId === 5){
+                                input='#radioRango';
+                            }else if(element.TipoId === 6){
+                                input='#radioAno';
+                            }else if(element.TipoId === 7){
+                                input='#radioFecha';
+                            }
+                            $(input).prop("checked",true);
+                            $(input).attr("data-info",element.Id)
+                        });
+                        //console.log(data);
                     }else{
                         Swal.fire({
                                 text: "Error de Carga",
@@ -267,7 +294,7 @@ $(document).ready(function() {
                         if (status == 'Valid') {
                                 let form1= $("#FormularioAtributo");
                                 var fd = form1.serialize();
-                                var data= formMap(fd);                           
+                                var data = formMap2(fd);                            
 
                                 $.ajax({
                                     type: 'POST',

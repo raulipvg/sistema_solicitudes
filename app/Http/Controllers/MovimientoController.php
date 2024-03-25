@@ -90,7 +90,9 @@ class MovimientoController extends Controller
         $request = $request->input('data');
 
         try{
-            $movimiento = Movimiento::find($request);
+            $movimiento = Movimiento::select('Id','Nombre','GrupoId','FlujoId','Enabled')
+                                    ->where('Id','=',$request)
+                                    ->first();
 
             if(!$movimiento){
                 throw new Exception('Movimiento no encontrado');
@@ -166,8 +168,9 @@ class MovimientoController extends Controller
 
             DB::beginTransaction();
 
-            $movimientoEdit = Movimiento::find($request['Id']);
-
+            $movimientoEdit = Movimiento::select('Id','Nombre','GrupoId','FlujoId','Enabled')
+                                        ->where('Id','=',$request['Id'])
+                                        ->first();
             if(!$movimientoEdit){
                 throw new Exception('Movimiento no encontrado');
             }

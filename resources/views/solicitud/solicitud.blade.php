@@ -103,7 +103,8 @@
     <script src="{{ asset('js/datatables/language/language_es.js?id=7') }}"></script>
 	<script src="{{ asset('js/datatables/contenido/solicitud_activa.js?id=7') }}"></script>
 	<script src="{{ asset('js/datatables/contenido/solicitud_terminada.js?id=7') }}"></script>
-   
+
+
     <!--end::Datatables y Configuracion de la Tabla-->
 
 	<!--begin::Eventos de la pagina-->
@@ -113,6 +114,7 @@
 	@endif
 	@if ($credenciales['realizar'])
 	<script src="{{ asset('js/flatpickr/es.js?id=7') }}"></script>
+
 	<script src="{{ asset('js/eventos/solicitud/crearsolicitud.js?id=7') }}"></script>
 	@endif
 	<script src="{{ asset('js/eventos/solicitud/historialsolicitud.js?id=7')}}"></script>

@@ -74,8 +74,10 @@
 									<thead class="border-gray-200 fs-6 fw-semibold bg-lighten">
 										<tr>
 											<th class="p-1">Atributo</th>
-											<th class="p-1">Detalle</th>
+											<th class="p-1">Cant.</th>											
 											<th class="p-1">Costo</th>
+											<th class="p-1">Detalle</th>											
+											<th class="text-end p-1">Fecha</th>
 										</tr>
 									</thead>
 									<!--end::Thead-->

@@ -64,6 +64,48 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col rounded border mx-3 mb-2">
+                            <label class="form-label">Configuracion de Propiedades</label>
+                            <div class="d-flex justify-content-between p-1">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="1" id="CheckMoneda" name="AtributoTipo[TipoId]"/>
+                                        <label class="form-check-label text-gray-600 fw-bold" for="CheckMoneda">Moneda</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="2"  id="CheckCantidad" name="AtributoTipo[TipoId]" >
+                                        <label class="form-check-label text-gray-600 fw-bold" for="CheckCantidad">Cantidad</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="3" id="CheckDescripcion" name="AtributoTipo[TipoId]"/>
+                                        <label class="form-check-label text-gray-600 fw-bold" for="CheckDescripcion">Descripción</label>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col rounded border mx-3">
+                            <label class="form-label">Configuracion de Fecha</label>
+                            <div class="d-flex justify-content-between p-1">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="radioMes" name="AtributoTipo[TipoId]" value="4">
+                                        <label class="form-check-label text-gray-600 fw-bold" for="radioMes">Mes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio"  id="radioRango" name="AtributoTipo[TipoId]" value="5" >
+                                        <label class="form-check-label text-gray-600 fw-bold" for="radioRango">Rango</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="radioAno" name="AtributoTipo[TipoId]" value="6">
+                                        <label class="form-check-label text-gray-600 fw-bold" for="radioAno">Año</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="radioFecha" name="AtributoTipo[TipoId]" value="7" checked>
+                                        <label class="form-check-label text-gray-600 fw-bold" for="radioFecha">Sin Fecha</label>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="modal-footer bg-light p-2">

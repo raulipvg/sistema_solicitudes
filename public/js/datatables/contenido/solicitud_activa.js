@@ -68,8 +68,8 @@ const cargarDataActiva= function(){
                                 </div>
                                 <div class="ps-1 fs-7 fw-bold text-muted text-capitalize">${data[key].NombreFlujo}</div>`;
                     
-                    var col3 = `<div class="fw-bold">${formatearFecha2(data[key].FechaDesde)} - ${formatearFecha2(data[key].FechaHasta)}</div>
-                                <div class="fs-7 fw-bold text-muted">Rango de Fecha</div>`;
+                    var col3 = `<div class="fw-bold">${formatearFecha2(data[key].FechaUpdated)}</div>
+                                <div class="fs-7 fw-bold text-muted">Actualización</div>`;
 
                     var col4 = `<div class="d-flex gap-2">
                                     <span class="text-gray-900 fw-bold text-capitalize">${data[key].CentroCosto}</span>

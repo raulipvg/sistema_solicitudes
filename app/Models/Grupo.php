@@ -83,6 +83,7 @@ class Grupo extends Model
 	{
 		return $this->belongsToMany(Usuario::class, 'usuario_grupo', 'GrupoId', 'UsuarioId')
 					->withPivot('Id', 'Enabled')
+					->wherePivot('Enabled', 1)
 					->withTimestamps();
 	}
 

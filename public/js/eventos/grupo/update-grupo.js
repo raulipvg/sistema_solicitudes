@@ -85,9 +85,13 @@ if(credenciales['Grupo'].puedeEditar){
                                 o.validate().then(function (t) {
                                     //console.log("validated!"),
                                         "Valid" == t
-                                            ? (i.setAttribute("data-kt-indicator", "on"),
-                                            (i.disabled = !0),
-                                            Editar() 
+                                            ? (
+                                                i.setAttribute("data-kt-indicator", "on"),
+                                                (i.disabled = !0),
+                                                (!Editar()? (
+                                                    i.setAttribute("data-kt-indicator", "off"), 
+                                                    (i.disabled =0)
+                                                ):null ) 
                                             )
                                             : Swal.fire({
                                                 text: "Lo siento, parece que se han detectado algunos errores. Por favor, inténtalo de nuevo.",
@@ -118,7 +122,8 @@ if(credenciales['Grupo'].puedeEditar){
 
     function Editar(){
         //console.log("editamos");
-        let form1=document.getElementById('kt_modal_update_role_form');;
+        let form1=document.getElementById('kt_modal_update_role_form');
+        $("#AlertaErrorGrupo").empty();
 
         const formData = new FormData(form1);
         const personas = [];
@@ -174,15 +179,27 @@ if(credenciales['Grupo'].puedeEditar){
                 //$("#modal-update").html(data);
                 if(data.success){
                     location.reload();
+                    return true;
                 }else{
                     html = '<ul><li style="">'+data.message+'</li></ul>';
                     $("#AlertaErrorGrupo").append(html);                                    
-                    $("#AlertaErrorGrupo").show();
+                    $("#AlertaErrorGrupo").show(); 
+                    
+                    Swal.fire({
+                        text: "Lo siento, parece que se han detectado algunos errores. Por favor, inténtalo de nuevo.",
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn btn-dark"
+                            }
+                        }); 
+                    return false;
                 }
             },
-            error: function () {;
+            error: function () {
                 Swal.fire({
-                            text: "Error de Carga",
+                            text: "Error",
                             icon: "error",
                             buttonsStyling: false,
                             confirmButtonText: "OK",
@@ -195,6 +212,7 @@ if(credenciales['Grupo'].puedeEditar){
                             //console.log("Error");
                             $('#kt_modal_update_role').modal('toggle');
                     });
+                return false;
             },
             complete: function(){
                 KTApp.hidePageLoading();

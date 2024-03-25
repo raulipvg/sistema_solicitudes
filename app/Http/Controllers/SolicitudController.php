@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Correo;
 use App\Models\CentroDeCosto;
 use App\Models\Compuesta;
 use App\Models\ConsolidadoMe;
@@ -15,9 +16,11 @@ use App\Models\Usuario;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+use Illuminate\Support\Facades\Mail;
 use function Laravel\Prompts\select;
 
 class SolicitudController extends Controller
@@ -39,7 +42,6 @@ class SolicitudController extends Controller
         $accesoLayout= $user->todoPuedeVer();
        
         if( $credenciales['realizar']){
-
             $movimientos = $user->movimientosPuedeVer();
                             
             /* $movimientos2 = Movimiento::select('Id','Nombre')
@@ -115,22 +117,52 @@ class SolicitudController extends Controller
             DB::beginTransaction();
             $solicitud->save();
 
+            $compuestas = [];
+            /* Anterior
             foreach($request['compuesta'] as $compuesta){
                 $obj = new Compuesta();
                 $obj->MovimientoAtributoId = $compuesta['MovimientoAtributoId'];
                 $obj->SolicitudId = $solicitud->Id;
-                $obj->CostoReal = $compuesta['CostoReal'];
-                $obj->TipoMonedaId = $compuesta['TipoMonedaId'];
-                $obj->Caracteristica = $compuesta['Caracteristica'];
+                $obj->CostoReal = isset($compuesta['CostoReal'])?$compuesta['CostoReal']:null;
+                $obj->TipoMonedaId = isset($compuesta['TipoMonedaId'])?$compuesta['TipoMonedaId']:null;
+                $obj->Descripcion = isset($compuesta['Descripcion'])?$compuesta['Descripcion']:null;
+                $obj->Cantidad = isset($compuesta['Cantidad'])?$compuesta['Cantidad']:null;
+                $obj->Fecha1 = isset($compuesta['Fecha1'])?Carbon::createFromFormat('d-m-Y',$compuesta['Fecha1'])->format('Y-m-d'):null;
+                $obj->Fecha2 = isset($compuesta['Fecha2'])?Carbon::createFromFormat('d-m-Y',$compuesta['Fecha2'])->format('Y-m-d'):null;
 
                 $obj->validate([
                     'MovimientoAtributoId' => $obj->MovimientoAtributoId,
                     'CostoReal' => $obj->CostoReal,
-                    'Caracteristica' => $obj->Caracteristica,
+                    'Descripcion' => $obj->Descripcion,
                     'SolicitudId' => $obj->SolicitudId,
                 ]);
                 $obj->save();
+                
+
+                //$compuestas[] = $obj;
             }
+            */
+
+            //Optimizada
+            foreach($request['compuesta'] as $compuesta) {
+                $compuestas[] = [
+                    'MovimientoAtributoId' => $compuesta['MovimientoAtributoId'],
+                    'SolicitudId' => $solicitud->Id,
+                    'CostoReal' => $compuesta['CostoReal'] ?? null,
+                    'TipoMonedaId' => $compuesta['TipoMonedaId'] ?? null,
+                    'Descripcion' => $compuesta['Descripcion'] ?? null,
+                    'Cantidad' => $compuesta['Cantidad'] ?? 1,
+                    'Fecha1' => isset($compuesta['Fecha1']) ? Carbon::createFromFormat('d-m-Y', $compuesta['Fecha1'])->format('Y-m-d') : null,
+                    'Fecha2' => isset($compuesta['Fecha2']) ? Carbon::createFromFormat('d-m-Y', $compuesta['Fecha2'])->format('Y-m-d') : null,
+                ];
+                // Agregar el objeto al arreglo de objetos a validar
+                //$compuestas[] = $obj;
+            }
+
+            
+            // Insertar todas las Compuestas en un lote
+            Compuesta::insert($compuestas);
+            unset($compuestas);
             $movExiste= Movimiento::find($request['movimiento']);
             if (!$movExiste) {
                 throw new Exception('Movimiento no encontrado');
@@ -145,7 +177,11 @@ class SolicitudController extends Controller
                 throw new Exception('Orden Flujo Nivel 0 no encontrado');
             }
             $estadoFlujoId = $ordenFlujoNivel0->estado_flujo->Id;
-
+            $emails= $ordenFlujoNivel0->grupo->usuarios
+                            ->where('Enabled', 1)
+                            ->pluck('Email')
+                            ->toArray();
+    
             $historial = new HistorialSolicitud();
             $historial->EstadoFlujoId = $estadoFlujoId;
             $historial->EstadoEtapaFlujoId = 3; //Pendiente
@@ -162,6 +198,9 @@ class SolicitudController extends Controller
             ]);
 
             $historial->save();
+            unset($historial);
+            unset($flujo);
+            $this->enviarCorreo($emails, $solicitud->Id,$movExiste->Nombre,1);
             DB::commit();
             Log::info('Solicitud generada');
 
@@ -227,6 +266,17 @@ class SolicitudController extends Controller
 
                 $mensaje = 'Solicitud avanzó de etapa.';
 
+                $emails= $ordenFlujoNext->grupo->usuarios
+                            ->where('Enabled', 1)
+                            ->pluck('Email')
+                            ->toArray();
+                $mov= $historialEdit->solicitud
+                                    ->compuesta->first()
+                                    ->movimiento_atributo
+                                    ->movimiento->Nombre;
+                
+                $this->enviarCorreo($emails, $historialEdit->SolicitudId,$mov,2);
+
             //SI ES UNA ETAPA FINAL DEL FLUJO
             }else{
                 $historialEdit->update([
@@ -237,7 +287,7 @@ class SolicitudController extends Controller
                 $flag=false;
                 $mensaje = 'Solicitud aprobada y terminada.';
             }
-
+            
             DB::commit(); 
             Log::info($mensaje);
             return response()->json([
@@ -382,5 +432,9 @@ class SolicitudController extends Controller
         return $solicitudes;
     }
    
+    public function enviarCorreo($emails, $solicitudId, $movimiento,$tipoMail){
+        //$destinatario = 'cado.rfmr@gmail.com';
+        Mail::to($emails)->send(new Correo($solicitudId, $movimiento,$tipoMail));
+    }
 }
 

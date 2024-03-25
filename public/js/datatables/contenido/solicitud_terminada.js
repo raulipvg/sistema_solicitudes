@@ -19,7 +19,8 @@ let tablaSolicitudesTerminadas = $('#tabla-solicitudes-terminadas').DataTable({
         { targets: 0, responsivePriority: 1 },   
         { targets: 1, responsivePriority: 2 },                  
         { targets: 2, responsivePriority: 3 },
-        { targets: 5, responsivePriority: 4 }
+        { targets: 5, responsivePriority: 4 },
+        { targets: 3, type: "date" }
     ],
     "responsive": true,
     "initComplete": function() {
@@ -71,8 +72,8 @@ const cargarDataTerminada= function(){
                                 </div>
                                 <div class="ps-1 fs-7 fw-bold text-muted text-capitalize">${data[key].NombreFlujo}</div>`;
                     
-                    var col3 = `<div class="fw-bold">${formatearFecha2(data[key].FechaDesde)} - ${formatearFecha2(data[key].FechaHasta)}</div>
-                                <div class="fs-7 fw-bold text-muted">Rango de Fecha</div>`;
+                    var col3 = `<div class="fw-bold">${formatearFecha2(data[key].FechaUpdated)}</div>
+                                <div class="fs-7 fw-bold text-muted">Actualizacion</div>`;
 
                     var col4 = `<div class="d-flex gap-2">
                                     <span class="text-gray-900 fw-bold text-capitalize">${data[key].CentroCosto}</span>
@@ -104,7 +105,7 @@ const cargarDataTerminada= function(){
                                         "4": col4,
                                         "5": col5,
                                         "6": col6,
-                                        "7": data[key].Id
+                                        "7": data[key].FechaUpdated
                                     } ).node();
                     $(rowNode).find('td:eq(0)').addClass('col-2 min-w-175px p-1');
                     $(rowNode).find('td:eq(1)').addClass('col-2 min-w-175px p-1');

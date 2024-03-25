@@ -39,7 +39,7 @@
 													<div class="d-flex flex-column text-gray-600">
 														@php	
 															if (!function_exists('DivHtml')) {
-																function DivHtml($texto){ return '<div class="bullet-dot bg-success mx-1"></div><span class="me-2">'.$texto.'</span>'; }
+																function DivHtml($texto){ return "<div class=\"me-2\"><span class=\"bullet bullet-dot bg-success me-1\"></span>$texto</div>"; }
 															}
 														@endphp
                                                         @foreach ($grupo->Privilegios as $privilegio )
@@ -49,8 +49,11 @@
 
 															@if( $aux >0 )																
 																<div class="d-flex align-items-center mb-1">
-																	<div class="bullet bg-dark me-3"></div>
+																	<div class="d-flex flex-row">
+																	<div class="bullet bg-dark me-3 mt-2"></div>
 																	<div class="text-gray-800 fw-bold  me-4">{{ $privilegio->Nombre}}:</div>
+																	</div>
+																		<div class="d-flex flex-row flex-wrap">
 																	 	@if($privilegio->Id < 12)  
 																				{!! ($privilegio->pivot->Ver === 1 )? DivHtml('Ver'): null !!}
 																				{!! ($privilegio->pivot->Registrar === 1)?  DivHtml('Registrar'):null !!}
@@ -67,6 +70,7 @@
 																				{!! ($privilegio->pivot->Editar === 1)? DivHtml('Ver por Movimiento'):null !!}
 																				{!! ($privilegio->pivot->Eliminar === 1)? DivHtml('Cerrar Mes'):null !!}
 																		@endif
+																		</div>
 																</div>
 															@endif															
                                                         @endforeach

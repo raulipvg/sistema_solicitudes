@@ -20,13 +20,16 @@ use Illuminate\Validation\ValidationException;
  * @property string $Nombre
  * @property int $ValorReferencia
  * @property int $TipoMonedaId
+ * @property int $Descripcion
  * @property int $Enabled
+ * @property Collection|AtributoTipo[] $atributoTipo 
+ * 
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
  * 
  * @property Collection|Movimiento[] $movimientos
  * @property TipoMoneda $tipoMoneda
- *
+ * 
  * @package App\Models
  */
 class Atributo extends Model
@@ -46,6 +49,7 @@ class Atributo extends Model
 		'Nombre',
 		'ValorReferencia',
         'TipoMonedaId',
+        'Descripcion',
 		'Enabled'
 	];
 
@@ -57,9 +61,14 @@ class Atributo extends Model
 	}
 
     public function tipoMoneda()
-{
+    {
     return $this->belongsTo(TipoMoneda::class, 'TipoMonedaId');
-}
+    }
+
+    public function tipoAtributos(){
+        return $this->belongsToMany(AtributoTipo::class,'atributo_tipo','AtributoId','TipoId')
+                    ->withPivot('Id','Nombre');
+    }
 
 	public function validate(array $data)
     {
@@ -78,6 +87,8 @@ class Atributo extends Model
 			'Nombre.unique'=> 'El Nombre ya está en uso.',
             'ValorReferencia.required' => 'El valor de referencia no puede estar vacío.',
 			'ValorReferencia.min' => 'El valor de referencia no puede ser menor a cero.',
+            'ConfigId.required'=> 'Debe ingresar configuración',
+            'ConfigId.numeric'=> 'Debe ingresar configuración',
             '*' => 'Hubo un problema con el campo :attribute.'
             // Agrega más mensajes personalizados aquí según tus necesidades
         ];

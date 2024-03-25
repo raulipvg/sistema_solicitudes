@@ -17,7 +17,7 @@ use Illuminate\Support\Carbon;
  * @property int $ToCLP
  * @property int $TipoMonedaId
  * @property int $ConsolidadoId
- *
+ * 
  * @package App\Models
  */
 class TipoCambio extends Model
@@ -67,6 +67,6 @@ class TipoCambio extends Model
 				'updated_at' => Carbon::now()
 			]
 		);
-		return $moneda;
+		return $moneda->ToCLP;
 	}
 }

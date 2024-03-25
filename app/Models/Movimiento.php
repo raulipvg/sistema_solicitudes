@@ -39,16 +39,17 @@ class Movimiento extends Model
 
 	protected $casts = [
 		'Id' => 'int',
-		'Enabled' => 'int',
 		'FlujoId' => 'int',
-		'GrupoId' => 'int'
+		'GrupoId' => 'int',
+		'ConfigFecha'=> 'int',
+		'Enabled' => 'int',
 	];
 
 	protected $fillable = [
 		'Nombre',
-		'Enabled',
 		'FlujoId',
-		'GrupoId'
+		'GrupoId',
+		'Enabled',
 	];
 
 	public function flujo()

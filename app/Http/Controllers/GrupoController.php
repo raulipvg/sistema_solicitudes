@@ -224,12 +224,10 @@ class GrupoController extends Controller
             if (!$grupoEdit) {
                 throw new Exception('Grupo no encontrado');
             }
-            //$userEdit->Username
             $grupoEdit->fill($request);
             $grupoEdit->save();
 
-            foreach($request['GrupoPrivilegio'] as $grupoPrivilegio ){
-               
+            foreach($request['GrupoPrivilegio'] as $grupoPrivilegio ){          
                 GrupoPrivilegio::updateOrCreate(
                     ['Id' => $grupoPrivilegio['Id']], // Busca por el ID proporcionado
                     [
@@ -240,51 +238,37 @@ class GrupoController extends Controller
                         'GrupoId'=> $grupoEdit->Id,
                         'PrivilegioId' => $grupoPrivilegio['PrivilegioId']
                     ]
-                );
-               /* $grupoPrivilegioEdit = GrupoPrivilegio::find($grupoPrivilegio['Id']);
-                if (!$grupoPrivilegioEdit) {
-                    continue; // Opcional: Puede lanzar una excepción si se espera un GrupoPrivilegio específico.
-                }     
-                $grupoPrivilegioEdit->update([
-                    'Ver' => (isset($grupoPrivilegio['Ver']))?1:0,
-                    'Registrar' => (isset($grupoPrivilegio['Registrar']))?1:0,
-                    'Editar' => (isset($grupoPrivilegio['Editar']))?1:0,
-                    'Eliminar' => (isset($grupoPrivilegio['Eliminar']))?1:0
-                ]);*/
-                //$grupoPrivilegioEdit->save();                 
+                );               
             }
+
             //INICO::SECCION DE EDICION DE ACCESO A MOVIMIENTOS
-            $gruposMovimientosEliminar=GrupoMovimiento::where('GrupoId','=',$grupoEdit->Id)->pluck('Id');
-            if($gruposMovimientosEliminar){
-                GrupoMovimiento::whereIn('Id', $gruposMovimientosEliminar)->delete();
-            }
-            
-            foreach($request['GrupoMovimiento'] as $movimientoId){
-                $grupoMovimiento= new GrupoMovimiento();
-                $grupoMovimiento->fill([
-                    'GrupoId'=> $grupoEdit->Id,
-                    'MovimientoId' => $movimientoId
-                ]);
-                $grupoMovimiento->save();
+            // Eliminar los grupos de movimientos existentes para el grupo actual
+            GrupoMovimiento::where('GrupoId', $grupoEdit->Id)->delete();
+            if (isset($request['GrupoMovimiento'])) {
+                $grupoMovimientos = collect($request['GrupoMovimiento'])
+                                    ->map(function ($movimientoId) use ($grupoEdit) {
+                                        return [
+                                            'GrupoId' => $grupoEdit->Id,
+                                            'MovimientoId' => $movimientoId
+                                        ];
+                                    });            
+                GrupoMovimiento::insert($grupoMovimientos->all());
             }
             //FIN::SECCION DE EDICION DE ACCESO A MOVIMIENTOS
 
             //INICO::SECCION DE EDICION DE ACCESO A REALIZAR A GRUPOS UNA SOLICITUD 
-            $gruposAutorizadosEliminar=GrupoSolicitud::where('GrupoAutorizadoId','=',$grupoEdit->Id)->pluck('Id');
-            if($gruposAutorizadosEliminar){
-                GrupoSolicitud::whereIn('Id', $gruposAutorizadosEliminar)->delete();
-            }
-            
-            foreach($request['GrupoAut'] as $grupoAccedidoId){
-                $grupoSolicitud= new GrupoSolicitud();
-                $grupoSolicitud->fill([
-                    'GrupoAutorizadoId'=> $grupoEdit->Id,
-                    'GrupoAccedidoId' => $grupoAccedidoId
-                ]);
-                $grupoSolicitud->save();
+            GrupoSolicitud::where('GrupoAutorizadoId', $grupoEdit->Id)->delete();            
+            if (isset($request['GrupoAut'])) {
+                $grupoSolicitudes = collect($request['GrupoAut'])
+                                    ->map(function ($grupoAccedidoId) use ($grupoEdit) {
+                                            return [
+                                                'GrupoAutorizadoId' => $grupoEdit->Id,
+                                                'GrupoAccedidoId' => $grupoAccedidoId
+                                            ];
+                                    });            
+                GrupoSolicitud::insert($grupoSolicitudes->all());
             }
             //FIN::SECCION DE EDICION DE ACCESO A REALIZAR A GRUPOS UNA SOLICITUD 
-
             DB::commit();
             Log::info('Privilegios del grupo actualizados');
             return response()->json([

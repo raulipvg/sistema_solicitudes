@@ -71,6 +71,7 @@ $(document).ready(function() {
     }
 
     if(credenciales['MovimientoAtributo'].puedeRegistrar){
+
         // Evento al presionar el Boton de Registrar
         $("#addBtnMovimiento").on("click", function (e) {
             //Inicializacion
@@ -78,7 +79,7 @@ $(document).ready(function() {
             e.preventDefault();
             e.stopPropagation();
             $("#modal-titulo").empty().html("Registrar Movimiento");
-            $("input").val('').prop("disabled",false);
+            $("#NombreInput").val('').prop("disabled",false);
             $('.form-select').val("").trigger("change").prop("disabled",false);
             //$('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
 
@@ -169,7 +170,7 @@ $(document).ready(function() {
                             let form1= $("#FormularioMovimiento");
                             var fd = form1.serialize();
                             var data = formMap(fd);
-
+                            
                             $.ajax({
                                 type: 'POST',
                                 url: GuardarMovimiento,
@@ -224,19 +225,22 @@ $(document).ready(function() {
 
     if(credenciales['MovimientoAtributo'].puedeEditar){
         //Evento al presionar el Boton Editar
+        var tr;
+        var row;
         $("#tabla-movimiento tbody").on("click",'.editar', function (e) {
             e.preventDefault();
             e.stopPropagation();
             //Inicializacion
             $("#modal-titulo").empty().html("Editar Movimiento");
-            $("input").val('').prop("disabled",false);
+            $("#NombreInput").val('').prop("disabled",false);
             $('.form-select').val("").trigger("change").prop("disabled",false);
-
             $("#AddSubmitMov").hide();
             $("#EditSubmitMov").show();
             $("#IdInput").prop("disabled",false);
             $("#AlertaError").hide();
 
+            tr = e.target.closest('tr');
+            row = tablaMovimiento.row(tr);  
             validator.resetForm();
             actualizarValidSelect2();
 
@@ -265,7 +269,7 @@ $(document).ready(function() {
 
                         llenarSelect2(data.grupos, $('#GrupoIdInput') );
                         llenarSelect2(data.flujos, $('#FlujoIdInput') );
-                        
+                
                         $("#IdInput").val(data.Id);
                         $("#NombreInput").val(data.Nombre);
                         $('#GrupoIdInput').val(data.GrupoId).trigger("change");
@@ -310,13 +314,10 @@ $(document).ready(function() {
             
         });
 
-        var tr;
-        var row;
+        
         // Manejador al presionar el submit de Editar
         const submitEditButton = document.getElementById('EditSubmitMov');
         submitEditButton.addEventListener('click', function (e) {
-            tr = e.target.closest('tr');
-            row = tablaMovimiento.row(tr);
             e.preventDefault();
             e.stopPropagation();
             $("#AlertaError").hide();
@@ -382,13 +383,12 @@ $(document).ready(function() {
             e.stopPropagation();
 
             $("#modal-titulo").empty().html("Ver Movimiento");
-            $("input").val('').prop("disabled",true);
+            $("#NombreInput").val('').prop("disabled",true);
             $('.form-select').val("").trigger("change").prop("disabled",true);
             $("#AddSubmitMov").hide();
             $("#EditSubmitMov").hide();
             $("#IdInput").prop("disabled",false);
             $("#AlertaError").hide();
-
             validator.resetForm();
             actualizarValidSelect2();
 
@@ -414,8 +414,8 @@ $(document).ready(function() {
                         
                         data=data.data;
                         llenarSelect2(data.grupos, $('#GrupoIdInput') );
-                        llenarSelect2(data.flujos, $('#FlujoIdInput') );
-                        
+                        llenarSelect2(data.flujos, $('#FlujoIdInput') );                        
+
                         $("#IdInput").val(data.Id);
                         $("#NombreInput").val(data.Nombre);
                         $('#GrupoIdInput').val(data.GrupoId).trigger("change");
