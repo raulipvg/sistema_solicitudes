@@ -3,8 +3,9 @@ let tablaSolicitudes = $('#tabla-solicitudes').DataTable({
     "language": languageConfig,
     "dom":
         `
-        <'d-flex flex-md-row flex-column justify-content-md-end justify-content-center align-items-center'
+        <'d-flex flex-row justify-content-between align-items-center'
             <'#filtro'f>
+            <'#acciones.form-check form-check-sm form-check-custom form-check-solid'>	
         > 
         <'table-responsive'tr>
         <'d-flex flex-md-row flex-column justify-content-md-between'
@@ -15,12 +16,13 @@ let tablaSolicitudes = $('#tabla-solicitudes').DataTable({
     ,
     "pageLength": 25,
     "displayLength": 25,
-    "columnDefs": [
-        { targets: 6, responsivePriority: 3,searchable: false},
+    "columnDefs": [        
         { targets: 0, responsivePriority: 1 },   
         { targets: 1, responsivePriority: 2 },                  
         { targets: 2, responsivePriority: 3 },
-        { targets: 5, responsivePriority: 4 }
+        { targets: 5, responsivePriority: 4 },
+        { targets: 6, responsivePriority: 3, orderable:false, searchable: false},
+        { targets: 8, orderable:false }
     ],
     "responsive": true,
     "initComplete": function() {
@@ -34,6 +36,27 @@ let tablaSolicitudes = $('#tabla-solicitudes').DataTable({
                     </i>`;
         $('#tabla-solicitudes_filter label').prepend(icon);
         $('#tabla-solicitudes_filter input').addClass('ps-9');
+     
+        var acciones = `${credenciales.aprobador? 
+                                `<div class="btn-group btn-group-sm me-md-15 me-2 ms-2" role="group">
+                                    <button id="aceptar-seleccion" class="btn-light-success btn p-1"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Aprobar Seleccion">
+                                        <i class="ki-duotone ki-check-circle fs-2hx"> 
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                    </button>
+                                    <button id="rechazar-seleccion" class="btn-light-danger btn btn-light-danger p-1" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Rechazar Seleccion">
+                                        <i class="ki-duotone ki-cross-circle fs-2hx"> 
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                    </button>
+                                </div>
+                                <div class="pe-1">
+                                    <input id="select-all" class="form-check-input" type="checkbox" value="1"/>
+                                </div>`: `` }`;
+
+        $('#acciones').html(acciones);
     }
     //"scrollX": true
 });
@@ -110,6 +133,10 @@ const cargarDataActiva= function(){
                                         </button>
                                     </div>
                                 </div>`;
+
+                    var col8 = `${credenciales.aprobador && estaEnElArray?`<div class="form-check form-check-sm form-check-custom form-check-solid">
+                                    <input class="form-check-input" type="checkbox" value="1" />
+                                </div>`: ` `}`;
                         
                     var rowNode =  tablaSolicitudes.row.add( {
                                         "0": col0,
@@ -119,9 +146,11 @@ const cargarDataActiva= function(){
                                         "4": col4,
                                         "5": col5,
                                         "6": col6,
-                                        "7": data[key].Id
+                                        "7": data[key].Id,
+                                        "8": col8
                                     } ).node();
-                    $(rowNode).find('td:eq(0)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).attr('id','s'+data[key].Id );
+                    $(rowNode).find('td:eq(0)').addClass('col-2 min-w-175px p-1').attr;
                     $(rowNode).find('td:eq(1)').addClass('col-2 min-w-175px p-1');
                     $(rowNode).find('td:eq(2)').addClass('col-1 p-0 flujo').attr("abierto",0);
                     $(rowNode).find('td:eq(3)').addClass('col-2 min-w-175px p-1');
@@ -129,6 +158,7 @@ const cargarDataActiva= function(){
                     $(rowNode).find('td:eq(5)').addClass('col-1 min-w-100px p-1');
                     $(rowNode).find('td:eq(6)').addClass('col-2 text-end p-1');
                     $(rowNode).find('td:eq(7)').addClass('d-none');
+                    $(rowNode).find('td:eq(8)').addClass('p-1');
                     
                     cantActiva= cantActiva+1;
                 }
@@ -140,6 +170,9 @@ const cargarDataActiva= function(){
     }
 
 }();
+
+  
+
 
 KTUtil.onDOMContentLoaded((function() {
     bloquear();
@@ -205,4 +238,29 @@ KTUtil.onDOMContentLoaded((function() {
         
     });
 
+    $("#select-all").on('change', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var checkbox = $('#tabla-solicitudes tbody tr td:last-child input[type="checkbox"]');
+        if ($(this).is(':checked')) {
+            // Añade la clase deseada cuando el checkbox está seleccionado
+                checkbox.prop('checked',true);
+                checkbox.closest('tr').addClass("row-selected");
+        } else {
+            // Remueve la clase si el checkbox está deseleccionado
+                checkbox.prop('checked',false);
+                checkbox.closest('tr').removeClass("row-selected");
+        }
+    });
+
+    $('#tabla-solicitudes tbody').on('change','tr td:last-child input[type="checkbox"]',function(e){
+        var tr =$(this).closest('tr');
+        if ($(this).is(':checked')) {
+            tr.addClass("row-selected");
+        }else{
+            tr.removeClass("row-selected");
+        }
+    });
+    
+    
 }));

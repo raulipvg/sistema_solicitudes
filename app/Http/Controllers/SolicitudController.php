@@ -7,21 +7,21 @@ use App\Models\CentroDeCosto;
 use App\Models\Compuesta;
 use App\Models\ConsolidadoMe;
 use App\Models\Flujo;
-use App\Models\Grupo;
 use App\Models\HistorialSolicitud;
 use App\Models\Movimiento;
-use App\Models\Persona;
 use App\Models\Solicitud;
-use App\Models\Usuario;
+use App\Models\Storage;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Google\Cloud\Storage\StorageClient;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+
 
 use Illuminate\Support\Facades\Mail;
-use function Laravel\Prompts\select;
 
 class SolicitudController extends Controller
 {
@@ -106,8 +106,33 @@ class SolicitudController extends Controller
 
     public function RealizarSolicitud(Request $request){
         try{
-            $request = $request->input('data');
+            $rule = [
+                'file.*' =>[
+                    'required',
+                    'file',
+                    'mimes:doc,docx,txt,jpg,jpeg,xls,xlsx,pdf',
+                    'max:2048'
+                ]
+            ];
+
+            $msg = [
+                'file.*.required'=> 'Archivo Requerido',
+                'file.*.mimes'=> 'Solo doc,docx,txt,jpg,jpeg,xls,xlsx,pdf',
+                'file.*.max'=> 'Maximo 2MB',
+                'file.*'=> 'Error en la carga de Archivos'
+            ];
+            $validator = Validator::make($request->all(), $rule, $msg);
+
+            if ($validator->fails()) {
+                // Si hay errores, redireccionar de vuelta con los mensajes de error
+                throw new ValidationException($validator);
+            }
+
+            $file = $request->file('file');
+            $request = json_decode($request->input('data'), true);
             $userId = auth()->user()->Id;
+            //$url= $this->Upload($file);
+
             $request['solicitud']['UsuarioSolicitanteId'] = $userId;
             $request['solicitud']['ConsolidadoMesId'] = ConsolidadoMe::where('EstadoConsolidadoId','=', 1)->pluck('Id')->first();
             $solicitud = new Solicitud();
@@ -148,8 +173,8 @@ class SolicitudController extends Controller
                 $compuestas[] = [
                     'MovimientoAtributoId' => $compuesta['MovimientoAtributoId'],
                     'SolicitudId' => $solicitud->Id,
-                    'CostoReal' => $compuesta['CostoReal'] ?? null,
-                    'TipoMonedaId' => $compuesta['TipoMonedaId'] ?? null,
+                    'CostoReal' => $compuesta['CostoReal'] ?? 0,
+                    'TipoMonedaId' => $compuesta['TipoMonedaId'] ?? 1,
                     'Descripcion' => $compuesta['Descripcion'] ?? null,
                     'Cantidad' => $compuesta['Cantidad'] ?? 1,
                     'Fecha1' => isset($compuesta['Fecha1']) ? Carbon::createFromFormat('d-m-Y', $compuesta['Fecha1'])->format('Y-m-d') : null,
@@ -158,7 +183,6 @@ class SolicitudController extends Controller
                 // Agregar el objeto al arreglo de objetos a validar
                 //$compuestas[] = $obj;
             }
-
             
             // Insertar todas las Compuestas en un lote
             Compuesta::insert($compuestas);
@@ -201,6 +225,23 @@ class SolicitudController extends Controller
             unset($historial);
             unset($flujo);
 
+            if($file !=null){
+                $urls = $this->Upload($file,$solicitud->Id);
+                
+                if(!$urls){throw new Exception('Error en cargar archivos');}
+                
+                $storage= [];
+                foreach($urls as $url) {
+                    $storage[] = [
+                        'Url' => $url['URL'],
+                        'Nombre' => $url['Nombre'],
+                        'SolicitudId' => $solicitud->Id,
+                    ];
+                }            
+                // Insertar todas las Compuestas en un lote
+                Storage::insert($storage);
+            }
+
             $this->enviarCorreo($emails, $solicitud->Id,$movExiste->Nombre,1);
             
             DB::commit();
@@ -222,6 +263,40 @@ class SolicitudController extends Controller
         }
     }
 
+    public function Upload($files, $solicitudId){
+        if ($files) {
+            $result = [];
+            // Crear un nombre de carpeta único
+            $folderName = 'solicitud_'.$solicitudId.'_' . uniqid();
+    
+            foreach ($files as $file) {
+                // Obtener el nombre original del archivo
+                $fileName = $file->getClientOriginalName();
+                // Construir la ruta del archivo con la carpeta
+                $filePath = $folderName . '/' . $fileName;
+    
+                // Subir archivo a Google Cloud Storage
+                $storage = new StorageClient([
+                    'projectId' => env('GOOGLE_CLOUD_PROJECT_ID'),
+                    'keyFilePath' => env('GOOGLE_CLOUD_KEY_FILE')
+                ]);
+    
+                $bucket = $storage->bucket(env('GOOGLE_CLOUD_STORAGE_BUCKET'));
+                $bucket->upload(
+                                fopen($file->getPathname(), 'r'),
+                                ['name' => $filePath]
+                                );    
+                // Obtener la URL firmada para el archivo
+                //$url = $object->signedUrl(new \DateTime('tomorrow'));
+                // Agregar la URL al array de URLs
+                 // Agregar el nombre del archivo y la URL al resultado
+                $result[] = ['Nombre' => $fileName, 'URL' => $filePath];
+            }
+            return $result;
+        } 
+        return false;
+    }
+
     public function Aprobar(Request $request){
         try{
             $request = $request->input('data');
@@ -234,7 +309,7 @@ class SolicitudController extends Controller
             if (!$historialEdit) { throw new Exception('Historial no encontrado');}
             
             $semaforo = HistorialSolicitud::where('SolicitudId','=', $historialEdit->SolicitudId)
-                                        ->where('Id','>', $historialEdit->Id )->exists();
+                                            ->where('Id','>', $historialEdit->Id )->exists();
             if ($semaforo){ throw new Exception('Etapa ya gestionada, recargue la pagina');}
             
             $flujoExiste = Flujo::find($flujoId);
@@ -313,6 +388,105 @@ class SolicitudController extends Controller
         }
     }
 
+    public function AprobarSeleccion(Request $request){
+        try{
+            $request = $request->input('data');
+            if( !(isset($request) && count($request['solicitudes']) > 0)){
+                throw new Exception('Ninguna Solicitud Seleccionada');
+            }
+            $respuesta=[];
+            foreach($request['solicitudes'] as $key => $solicitud){
+                $historialId = $solicitud['b'];
+                $flujoId = $solicitud['c'];
+
+                ///BEGIN::VALIDACIONES
+                $historialEdit= HistorialSolicitud::find($historialId);
+                if (!$historialEdit) { continue;} //throw new Exception('Historial no encontrado');}
+                    
+                $semaforo = HistorialSolicitud::where('SolicitudId','=', $historialEdit->SolicitudId)
+                                                ->where('Id','>', $historialEdit->Id )->exists();
+                if ($semaforo){ continue;} //throw new Exception('Etapa ya gestionada, recargue la pagina');}
+                    
+                $flujoExiste = Flujo::find($flujoId);
+                if (!$flujoExiste) { continue; }//throw new Exception('Flujo no encontrado');}
+            
+                $estadoFlujoId= $historialEdit->EstadoFlujoId;
+                $ordenFlujo = $flujoExiste->orden_flujos;
+                $ordenFlujoEstadoExiste = $ordenFlujo->firstWhere('EstadoFlujoId', $estadoFlujoId);
+                if (!$ordenFlujoEstadoExiste){ continue; }//throw new Exception('No existe el estado en el flujo');}
+                ///END:VALIDACIONES
+                
+                try{
+                    $userId = auth()->user()->Id;
+                    // SI ES UNA ETAPA DEL FLUJO INICIAL O INTERMEDIA
+                    DB::beginTransaction();
+                    $flag=true;
+                    if($ordenFlujoEstadoExiste->Pivot < 2){
+                        $ordenFlujoNext= $ordenFlujo->firstWhere('Nivel', $ordenFlujoEstadoExiste->Nivel+1);
+        
+                        $historialEdit->update([
+                            'EstadoEtapaFlujoId' => 1,  //ETAPA APROBADA
+                            'UsuarioId'=> $userId 
+                        ]);
+                        
+                        $historial = new HistorialSolicitud();
+                        $historial->EstadoFlujoId = $ordenFlujoNext->estado_flujo->Id;
+                        $historial->EstadoEtapaFlujoId =3; //Pendiente
+                        $historial->SolicitudId = $historialEdit->SolicitudId;
+                        $historial->EstadoSolicitudId = 2; //En Curso
+                        $historial->save();
+                        $flag=true;
+        
+                        $mensaje = 'Solicitud #'.$historial->SolicitudId.' avanzó de etapa.';
+        
+                        $emails= $ordenFlujoNext->grupo->usuarios
+                                    ->where('Enabled', 1)
+                                    ->pluck('Email')
+                                    ->toArray();
+
+                        $mov= $historialEdit->solicitud
+                                            ->compuesta->first()
+                                            ->movimiento_atributo
+                                            ->movimiento->Nombre;        
+                    //SI ES UNA ETAPA FINAL DEL FLUJO
+                    }else{
+                        $historialEdit->update([
+                            'EstadoEtapaFlujoId' => 1,  //ETAPA APROBADA,
+                            'EstadoSolicitudId' => 3, // SOLICITUD TERMINADA
+                            'UsuarioId' => $userId 
+                        ]);
+                        $flag=false;
+                        $mensaje = 'Solicitud #'.$historialEdit->SolicitudId.' aprobada y terminada.';
+                    }                     
+                    $respuesta []= [
+                        'flag'=> $flag, //Pivot <2 o no
+                        'historialId'=> $flag? $historial->Id : null,
+                        'estadoSolicitudId'=>$flag? $historial->EstadoSolicitudId : null,
+                        'flujoNombre' => $flag? $ordenFlujoNext->estado_flujo->Nombre : null,
+                        'GrupoAprobadorId'=> $flag? $ordenFlujoNext->GrupoId : null,
+                        'solicitudId'=> $flag? $historial->SolicitudId: $historialEdit->SolicitudId
+                    ];
+                    DB::commit();
+                    Log::info($mensaje);
+                    //if(isset($emails)){ $this->enviarCorreo($emails, $historialEdit->SolicitudId,$mov,2);}
+                }catch(Exception $e){
+                    DB::rollback();
+                    Log::error('Error en el avance de la solicitud',[$e->getMessage()]);
+                    continue;
+                }
+            }           
+            return response()->json([
+                'success' => true,
+                'data' => $respuesta
+            ]);
+        }catch(Exception $e){
+            Log::error('Error en el avance de la solicitud',[$e->getMessage()]);
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage() 
+            ]);
+        }
+    }
     public function Rechazar(Request $request){
         try{
             $request = $request->input('data');
@@ -345,8 +519,9 @@ class SolicitudController extends Controller
                     'UsuarioId' => $userId 
                 ]);
         
-            DB::commit(); 
-            Log::info('Solicitud rechazada y terminada.');
+            DB::commit();
+            $mensaje = 'Solicitud #'.$historialEdit->SolicitudId.' rechazada y terminada.';
+            Log::info($mensaje);
             return response()->json([
                 'success' => true
             ]);
@@ -360,6 +535,69 @@ class SolicitudController extends Controller
         }
     }
 
+    public function RechazarSeleccion(Request $request){
+    
+        try{
+            $request = $request->input('data');
+            if( !(isset($request) && count($request['solicitudes']) > 0)){
+                throw new Exception('Ninguna Solicitud Seleccionada');
+            }
+            $respuesta=[];
+            foreach($request['solicitudes'] as $key => $solicitud){
+                $historialId = $solicitud['b'];
+                $flujoId = $solicitud['c'];
+
+                ///BEGIN::VALIDACIONES
+                $historialEdit= HistorialSolicitud::find($historialId);
+                if (!$historialEdit){ continue;}
+                $flujoExiste = Flujo::find($flujoId);
+                if (!$flujoExiste) { continue;}
+
+                $semaforo = HistorialSolicitud::where('SolicitudId','=', $historialEdit->SolicitudId)
+                                            ->where('Id','>', $historialEdit->Id )->exists();
+                if ($semaforo){ continue;}
+
+                $estadoFlujoId= $historialEdit->EstadoFlujoId;
+                $ordenFlujo = $flujoExiste->orden_flujos;
+                $ordenFlujoEstadoExiste = $ordenFlujo->firstWhere('EstadoFlujoId', $estadoFlujoId);
+                if (!$ordenFlujoEstadoExiste){ continue;}
+                ///END::VALIDACIONES
+                try{
+                    $userId = auth()->user()->Id;
+
+                    DB::beginTransaction();
+                    $historialEdit->update([
+                            'EstadoEtapaFlujoId' => 2,  //ETAPA Rechazada,
+                            'EstadoSolicitudId' => 3, // SOLICITUD TERMINADA
+                            'UsuarioId' => $userId 
+                        ]);
+                    $respuesta [] = [
+                        'solicitudId'=> $historialEdit->SolicitudId,
+                    ];
+                    DB::commit();
+                    $mensaje = 'Solicitud #'.$historialEdit->SolicitudId.' rechazada y terminada.';
+                    Log::info($mensaje);
+                }catch(Exception $e){
+                    DB::rollBack();
+                    Log::error('Error en rechazar la solicitud',[$e->getMessage()]);
+                    continue;
+                }
+            }
+            return response()->json([
+                'success' => true,
+                'data'=> $respuesta
+            ]);
+
+        }catch(Exception $e){
+            DB::rollBack();
+            Log::error('Error al rechazar solicitud',[$e->getMessage()]);
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage() 
+            ]);
+        }
+    
+    }
     public function VerTerminadas(){
         try{
             $user = auth()->user();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Atributo;
 use App\Models\Movimiento;
 use App\Models\Flujo;
 use App\Models\Grupo;
@@ -90,7 +91,7 @@ class MovimientoController extends Controller
         $request = $request->input('data');
 
         try{
-            $movimiento = Movimiento::select('Id','Nombre','GrupoId','FlujoId','Enabled')
+            $movimiento = Movimiento::select('Id','Nombre','GrupoId','FlujoId','Enabled','Adjunto')
                                     ->where('Id','=',$request)
                                     ->first();
 
@@ -115,6 +116,7 @@ class MovimientoController extends Controller
                     'GrupoId' => $movimiento->GrupoId,
                     'FlujoId' => $movimiento->FlujoId,
                     'Enabled' => $movimiento->Enabled,
+                    'Adjunto' => $movimiento->Adjunto,
                     'grupos' => $grupos,
                     'flujos' => $flujos
                 ]
@@ -165,7 +167,7 @@ class MovimientoController extends Controller
         try{
             $movimiento = new Movimiento();
             $movimiento ->validate($request);
-
+            $request['Adjunto'] = isset($request['Adjunto'])?$request['Adjunto']:0;
             DB::beginTransaction();
 
             $movimientoEdit = Movimiento::select('Id','Nombre','GrupoId','FlujoId','Enabled')

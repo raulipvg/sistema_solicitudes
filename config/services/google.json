@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "trusty-obelisk-418113",
+  "private_key_id": "f44129547b70f3afa0157bfba38cbfb6f3dd1854",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCtpofQthpuN+HM\nITaq6AYJVd95GeJJwzkWaz5A73wLqSHC6IrBQH0xKd+zkTfWZ3m0IazTVQhH06ec\nLyTVNL6JWusVDx22STLOGC9DEMUI7NTZlzYP+L4SlOJvxV2VW5Whz3pboenKXm9X\nDHC/XD4dLXFdyrwHLdUhDx7NAufczTtYqNnJERHJpN1tF7xxgqcu1gyjvfb00Y44\nv8M9zkuYDGTRWaOVF0oDCVCNLW1rAbGFxslwHXYciw19rCMc3aqzJZAJJtpXZ7Dv\nvhlKDJWYiU9I1A6pF5Pk7RjnW0CeMzlJZu7cenaOfKtp3Qto8TKoBp6sHECPCykU\naVzVg90BAgMBAAECggEAA/jqs5Hd3Qp41yfFmY9jF3a0HO/kVPwC994CS5+a2KSw\n47W4elsefgfbYN8EHirJ7j6ktqUj4ko/g99xdhHdv7RBa074JtfJ8mxb1Oq62iVa\nSWO30jHWTcQjgatr9I8mty/RCIx1tdoXDZCImf0LA/V6mdrZ1id0kBv5oDaWPZ8X\n1ZD884mGjmHxxqyj6KlJV0cF2kGME1p7BkWAHxihLWA6nV/pWcLu1WHZmsOljsLc\n6dkPOJwFreDXytUMlGhPO0MkO7vnpSqX2v/o08N9aji5CRoKScDmvR61ahDy9Mir\nWsTyiA+IX/6TEqW89eDnweGN2Oy+v82wkqOmtIvX0QKBgQDjJKrUx51F69d2Lmen\naKR2hvpEJRABrrTYQds7MnT3+rlXK4rByJNCShDbuTsMS1/zEjV17e9MYacINuMt\nAdfQv5TvDSmgt+9AZXU0s02rVQDPDO4pgzM+eCbEA2/aNow896B8iYEPw2Ow4bGG\n0bLR/RxWzxIJYFWGCjFJhhd8kQKBgQDDtiFikRNNLcVZvA+Icseruuknp/eNUeKL\noxwW0IL0sV9kaxgx/n/v4/hyrIXGY4hmKjsyzPabN2x4gk+b+/E4GigoMYfT09/J\nsU+zEjbq6SVlNZPir5ZnoOL4eSz6d3gA0rCBiqmrAcq0wp+NPKWWyApa6BzfkGTp\nBuo/GPxRcQKBgDnLI5g+LfsTdeABEKiczHPIBjd+gqMa87Kulvxp6y8JYU0XrBeA\nVE+ijsWJTMflCcXMFUQrRR7XHevOI2FZPbNEe72TSMs24a4t4nOFR7bXSvxjmtl/\nI3O6mIp5IWWRSX9dtjzZs7fyDBR+aHAYPPqG/0XrK/isxTX0s/O0JZexAoGADmos\nvVDIJigX4Asc7cTedgSXRad2cT81u2kxGXEUJCeoSgIlTxFapPWah/+y/rC4DCZS\nI+S6ySXk5F9cs7Vzx9kNWiCDy5NQaU+Y+ix+RQEVEwZGNS0Pm+Ras0hhirUf7peW\nDoSDCKhiILww+jscSyXCtX1hGwpMlGlA+ZLCitECgYBfsi6Rj4FcdsElrJTWFOes\nAf//2vsv8XHPbCC32kAw63Hm2+UJZMlYxOv3dSdJeX+eDiT8fUCAvfdBZd6yPwzS\n1/X299tbqpQ/QAjofG3BbcyXCQUA+gBnF80Pco/uqKmnZVGMtExHqWkdEmCCaPBW\nGxx7jArOU82v1GijKm0qdw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "ss-storage@trusty-obelisk-418113.iam.gserviceaccount.com",
+  "client_id": "114977546222401682892",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ss-storage%40trusty-obelisk-418113.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

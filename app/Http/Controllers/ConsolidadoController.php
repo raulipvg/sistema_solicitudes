@@ -120,7 +120,7 @@ class ConsolidadoController extends Controller
                                         ->join('tipo_moneda','tipo_moneda.Id','=', 'tipo_cambio.TipoMonedaId')       
                                         ->where('ConsolidadoId', $consolidadoId)
                                         ->get();
-                                
+                /* Consulta Antigua                
                 $querySolicitud = Solicitud::select('empresa.Id as EmpresaId', 'empresa.Nombre as EmpresaNombre',
                                                         'centro_de_costo.Id as CcId', 
                                                         'centro_de_costo.Nombre as CcNombre', 
@@ -143,6 +143,33 @@ class ConsolidadoController extends Controller
                                                 //->where('empresa.Id', $empresaId)
                                                 ->groupBy('empresa.Id', 'empresa.Nombre','centro_de_costo.Id','centro_de_costo.Nombre','atributo.Nombre', 'atributo.Id','consolidado_mes.Id')
                                                 ->orderBy('centro_de_costo.Nombre','asc');
+                    */
+                    $querySolicitud = Solicitud::select('empresa.Id as EmpresaId', 
+                                                'empresa.Nombre as EmpresaNombre',
+                                                'centro_de_costo.Id as CcId', 
+                                                'centro_de_costo.Nombre as CcNombre', 
+                                                'movimiento.Nombre as MovimientoNombre',
+                                                'movimiento.Id as MovimientoId',
+                                                'consolidado_mes.Id as ConsolidadoId',
+                                                DB::raw('CONCAT("[", GROUP_CONCAT(JSON_OBJECT("CostoReal", compuesta.CostoReal, "TipoMonedaId", compuesta.TipoMonedaId)), "]") as CostoMoneda'),
+                                                DB::raw('COUNT(DISTINCT CONCAT(solicitud.Id)) as Cantidad')
+                                                )
+                                        ->join('consolidado_mes', 'consolidado_mes.Id', '=', 'solicitud.ConsolidadoMesId')
+                                        ->join('centro_de_costo', 'centro_de_costo.Id', '=', 'solicitud.CentroCostoId')
+                                        ->join('empresa', 'empresa.Id', '=', 'centro_de_costo.EmpresaId')
+                                        ->join('historial_solicitud', 'historial_solicitud.SolicitudId','=','solicitud.Id')
+                                        ->join('compuesta', 'compuesta.SolicitudId','=','solicitud.Id')
+                                        ->join('movimiento_atributo', 'movimiento_atributo.Id','=','compuesta.MovimientoAtributoId')
+                                        ->join('movimiento', 'movimiento.Id','=','movimiento_atributo.MovimientoId')
+                                        ->where('historial_solicitud.EstadoEtapaFlujoId','=', 1)
+                                        ->where('historial_solicitud.EstadoSolicitudId','=', 3)
+                                        ->where('solicitud.ConsolidadoMesId', $consolidadoId)
+                                        //->where('empresa.Id', $empresaId)
+                                        ->groupBy('empresa.Id', 'empresa.Nombre',
+                                                'centro_de_costo.Id','centro_de_costo.Nombre',
+                                                'movimiento.Nombre', 'movimiento.Id',
+                                                'consolidado_mes.Id')
+                                        ->orderBy('centro_de_costo.Nombre','asc');
 
                     if($empresaId != null && $ccId ==null && $movimientoId ==null) {
                         $querySolicitud =$querySolicitud->where('empresa.Id', $empresaId)->get();                          
@@ -226,18 +253,17 @@ class ConsolidadoController extends Controller
         try{
             
             $ccId= $request['a']; 
-            $atributo = $request['b']; 
+            $movimientoId = $request['b']; 
             $consolidadoId = $request['c'];
-            $movId = $request['d'];
+            $movId = isset($request['d'])?$request['d']:null;
 
-            $querySolicitud = Solicitud::select( 'solicitud.Id as SolicitudId', 
-                                                'movimiento.Nombre as Movimiento',
-                                                'compuesta.Descripcion as Detalle',
-                                                'compuesta.CostoReal',
-                                                'compuesta.Cantidad',
+            $querySolicitud = Solicitud::select('atributo.Nombre as Atributo',
+                                                //'compuesta.Descripcion as Detalle',
                                                 'compuesta.TipoMonedaId',
-                                                DB::raw("DATE_FORMAT(compuesta.Fecha1, '%d/%m/%y') as Fecha1"),
-                                                DB::raw("DATE_FORMAT(compuesta.Fecha2, '%d/%m/%y') as Fecha2")
+                                                //DB::raw("DATE_FORMAT(compuesta.Fecha1, '%d/%m/%y') as Fecha1"),
+                                                //DB::raw("DATE_FORMAT(compuesta.Fecha2, '%d/%m/%y') as Fecha2"),
+                                                DB::raw('SUM(compuesta.Cantidad) as Cantidad'),
+                                                DB::raw('SUM(compuesta.CostoReal) as CostoReal')
                                                 ) 
                                     ->join('consolidado_mes', 'consolidado_mes.Id', '=', 'solicitud.ConsolidadoMesId')
                                     ->join('centro_de_costo', 'centro_de_costo.Id', '=', 'solicitud.CentroCostoId')
@@ -250,9 +276,15 @@ class ConsolidadoController extends Controller
                                     ->where('historial_solicitud.EstadoEtapaFlujoId','=', 1)
                                     ->where('historial_solicitud.EstadoSolicitudId','=', 3)
                                     ->where('solicitud.ConsolidadoMesId', $consolidadoId)
-                                    ->where('solicitud.CentroCostoId', '=', $ccId)
-                                    ->where('movimiento_atributo.AtributoId','=', $atributo)
-                                    ->orderBy('solicitud.Id','asc');
+                                    ->where('solicitud.CentroCostoId', $ccId)
+                                    ->where('movimiento_atributo.MovimientoId', $movimientoId)
+                                    ->groupBy('atributo.Nombre',
+                                                //'compuesta.Descripcion',
+                                                //'compuesta.CostoReal',
+                                                'compuesta.TipoMonedaId'
+                                                //'compuesta.Fecha1',
+                                                //'compuesta.Fecha2'
+                                            );
 
             if($movId == null){
                 $querySolicitud = $querySolicitud->get();
@@ -263,7 +295,7 @@ class ConsolidadoController extends Controller
             return response()->json([
                 'success' => true,
                 'data'=> $querySolicitud,
-                'message' => 'Empresa Guardada'
+                'message' => 'Detalles Asociados'
             ],201);
         }catch(Exception $e){
             return response()->json([
@@ -418,11 +450,17 @@ class ConsolidadoController extends Controller
     public function CerrarMes(Request $request){ 
         try{
             //Busca el consolidado abierto (EstadoConsolidadoId = 1)
-            $consolidado = ConsolidadoMe::where('EstadoConsolidadoId',1)
-                            ->first();
+            
+            $consolidado = ConsolidadoMe::select('consolidado_mes.Id','consolidado_mes.EstadoConsolidadoId', 
+                                        DB::raw("DATE_FORMAT(tipo_cambio.updated_at, '%d-%m-%Y') AS updated_at"))
+                                        ->where('consolidado_mes.EstadoConsolidadoId', 1)
+                                        ->leftJoin('tipo_cambio','tipo_cambio.ConsolidadoId','=','consolidado_mes.Id')
+                                        ->first();
             DB::beginTransaction();
             if( !$this->Calcular($consolidado) ){ throw new Exception('Error al Calcular');};
             
+            $consolidado = ConsolidadoMe::where('EstadoConsolidadoId',1)
+                            ->first();
                 //Cierra el mes cambiando de estado y agregando la fecha de término
             $consolidado->EstadoConsolidadoId = 0;
             $consolidado->FechaTermino = Carbon::now();
@@ -433,23 +471,29 @@ class ConsolidadoController extends Controller
             $nuevoConsolidadoMes->EstadoConsolidadoId = 1;
             $nuevoConsolidadoMes->created_at = Carbon::create($consolidado->created_at)->addMonth()->startOfMonth();
             $nuevoConsolidadoMes->save();
-            $time_start = microtime(true);
-            /*Consulta antigua 
+            //$time_start = microtime(true);
+            
             //Buscar Solicitudes Pendientes para pasarlas al siguiente consolidado
-            $solicitudesPendientes = Solicitud::select('solicitud.Id')
+           /* $solicitudesPendientes = Solicitud::select('solicitud.Id')
                                             ->join('historial_solicitud','historial_solicitud.SolicitudId','=','solicitud.Id')          
                                             ->where('solicitud.ConsolidadoMesId',$consolidado->Id)
                                             ->where('historial_solicitud.EstadoEtapaFlujoId','=', 3) //Etapada Pendiente
                                             ->orderBy('solicitud.Id','asc')
                                             ->pluck('solicitud.Id')->toArray();
+            */
+            $solicitudesPendientes = Solicitud::where('ConsolidadoMesId', $consolidado->Id)
+                                            ->join('historial_solicitud', 'historial_solicitud.SolicitudId', '=', 'solicitud.Id')
+                                            ->where('historial_solicitud.EstadoEtapaFlujoId', '=', 3) // Etapada Pendiente
+                                            ->select('solicitud.Id')
+                                            ->pluck('solicitud.Id');
 
             Solicitud::whereIn( 'Id', $solicitudesPendientes)
                             ->update([
                                 'ConsolidadoMesId' => $nuevoConsolidadoMes->Id
                             ]);  
-            */
+            
 
-            //* Consulta Optimizada
+            /* Consulta Optimizada
             // Actualizar las solicitudes pendientes en una sola consulta
             Solicitud::whereIn('Id', function ($query) use ($consolidado) {
                                 $query->select('solicitud.Id')
@@ -458,10 +502,10 @@ class ConsolidadoController extends Controller
                                     ->where('solicitud.ConsolidadoMesId', $consolidado->Id)
                                     ->where('historial_solicitud.EstadoEtapaFlujoId', '=', 3); // Etapada Pendiente
                             })->update(['ConsolidadoMesId' => $nuevoConsolidadoMes->Id]);             
+            */
             
-            
-            $time_end = microtime(true);
-            $time = $time_end - $time_start;               
+            //$time_end = microtime(true);
+            //$time = $time_end - $time_start;               
             Log::info('Mes cerrado');
             DB::commit();
             return response()->json([

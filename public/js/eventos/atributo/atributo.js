@@ -21,8 +21,8 @@ $(document).ready(function() {
                                     message: 'Entre 3 y 50 caracteres'
                                 },
                                 regexp: {
-                                    regexp: /^[a-z-ñáéíóú\s]+$/i,
-                                    message: 'Solo letras de la A-Z '
+                                    regexp: /^[a-z0-9-ñáéíóú\s]+$/i,
+                                    message: 'Solo letras y numeros '
                                 }
                             }
                         },

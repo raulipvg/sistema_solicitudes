@@ -88,15 +88,15 @@
 		const RechazarSolicitud = '{{ route("RechazarSolicitud") }}';
 		const VerTerminadas = '{{ route("VerTerminadas") }}';
 		const VerActivas = '{{ route("VerActivas") }}';
+		const AprobarSeleccion = '{{ route("AprobarSeleccion")}}';
+		const RechazarSeleccion = '{{ route("RechazarSeleccion") }}';
 
 		const solicitudeActivas = JSON.parse('{!! $solicitudes !!}');
 
 		const credenciales= {!! json_encode($credenciales) !!};
 		//console.log(msg.length)
 
-		//console.log( solicitudeActivas)
-		
-
+		//console.log( solicitudeActivas)	
     </script>    
      <!--begin::Datatables y Configuracion de la Tabla-->
 	<script src="{{ asset('js/datatables/datatables.bundle.js?id=9') }}"></script>

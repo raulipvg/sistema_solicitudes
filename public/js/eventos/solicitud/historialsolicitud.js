@@ -42,10 +42,12 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
 
     fecha = tempDiv.querySelector('.fs-7').textContent + ': ' +tempDiv.querySelector('.fw-bold').textContent;
     $('#RangoFecha').html(pill+fecha);
+    $('#modal-titulo-historialSolicitud').empty().html("Historial Solicitud #"+solicitudId);
     $('#tabla-atributos-solicitud tbody').empty();
-    $('#modal-titulo-historialSolicitud').empty().html("Historial Solicitud "+solicitudId);
     $('#ValorReal').empty();
     $('#lineaTiempo').empty();
+    $("#Respaldo").empty();
+    $("#RespaldoPadre").hide();
 
     $.ajax({
         type: 'POST',
@@ -63,10 +65,13 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
         success: function (data) {
             if(data.success){ 
                 data = data.data;
-                console.log(data);                               
-                $('#titulo-flujo').empty().html("Flujo: "+data.flujoNombre);     
-                //$('#ValorReal').html(pill+'Costo: $'+data.costoSolicitud.toLocaleString());
-                data.compuesta.forEach((atr)=>{
+                //console.log(data);                               
+                $('#titulo-flujo').empty().html("Flujo: "+data.query.FlujoNombre);
+                $('#Movimiento').text(data.query.MovimientoNombre);     
+                //$('#ValorReal').html(pill+'Costo: $'+data.query.costoSolicitud.toLocaleString());
+                data.query.Compuesta = JSON.parse(data.query.Compuesta);
+                //console.log(data.query.Compuesta);
+                data.query.Compuesta.forEach((atr)=>{
                     $('#tabla-atributos-solicitud tbody').append(`
                         <tr>
                             <td class="text-capitalize p-1"> ${atr.Nombre} </td>
@@ -77,6 +82,15 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
                         </tr>
                     `);
                 });
+                if(data.archivo.length > 0 ){
+                    data.archivo.forEach((item) => {
+                        menu = `<div class="menu-item px-3">
+                                    <a href="${item.Url}" target="_blank" class="menu-link px-3">${item.Nombre}</a>
+                                </div>`;
+                        $("#Respaldo").append(menu);
+                    });
+                    $("#RespaldoPadre").show();
+                }
 
                 estados = data.ordenFlujos;
                 footer = '';         

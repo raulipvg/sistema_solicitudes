@@ -373,6 +373,7 @@
 @push('Script')
     <script>
        const GuardarFlujo = "{{route('GuardarFlujo')}}";
+       const Flujo = "{{ route('Flujo')}} ";
     </script>
     <!--begin::Eventos de la pagina-->
     

@@ -66,7 +66,7 @@
                     </div>
                     <div class="row">
                         <div class="col rounded border mx-3 mb-2">
-                            <label class="form-label">Configuracion de Propiedades</label>
+                            <label class="form-label">Propiedades</label>
                             <div class="d-flex justify-content-between p-1">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" value="1" id="CheckMoneda" name="AtributoTipo[TipoId]"/>
@@ -85,7 +85,7 @@
                     </div>
                     <div class="row">
                         <div class="col rounded border mx-3">
-                            <label class="form-label">Configuracion de Fecha</label>
+                            <label class="form-label">Tiempo</label>
                             <div class="d-flex justify-content-between p-1">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" id="radioMes" name="AtributoTipo[TipoId]" value="4">

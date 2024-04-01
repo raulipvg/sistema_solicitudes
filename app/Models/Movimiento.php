@@ -19,6 +19,7 @@ use Illuminate\Validation\ValidationException;
  * @property int $Id
  * @property string $Nombre
  * @property int $Enabled
+ * @property string $Adjunto
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
  * @property int $FlujoId
@@ -50,6 +51,7 @@ class Movimiento extends Model
 		'FlujoId',
 		'GrupoId',
 		'Enabled',
+		'Adjunto'
 	];
 
 	public function flujo()

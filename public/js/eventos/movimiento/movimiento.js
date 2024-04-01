@@ -81,6 +81,7 @@ $(document).ready(function() {
             $("#modal-titulo").empty().html("Registrar Movimiento");
             $("#NombreInput").val('').prop("disabled",false);
             $('.form-select').val("").trigger("change").prop("disabled",false);
+            $("#CheckAdjunto").prop("checked",false).prop("disabled",false);
             //$('#EstadoIdInput').val("").trigger("change").prop("disabled",false);
 
             $("#AddSubmitMov").show();
@@ -104,7 +105,7 @@ $(document).ready(function() {
                     //console.log(data);
                     //blockUI.release();
                     if(data.success){
-                        var select = $('#GrupoIdInput');
+                        //var select = $('#GrupoIdInput');
                         llenarSelect2(data.grupos, $('#GrupoIdInput') );
                         llenarSelect2(data.flujos, $('#FlujoIdInput') );
                         
@@ -162,7 +163,6 @@ $(document).ready(function() {
             if (validator) {
                 validator.validate().then(function (status) {
                     actualizarValidSelect2();
-
                     //console.log('validated!');
                     //status
                     if (status == 'Valid') {
@@ -193,7 +193,7 @@ $(document).ready(function() {
                                         $('#registrar-movimiento').modal('toggle');
                                     }else{
                                         //console.log(data.error);
-                                            html = '<ul><li style="">'+data.message+'</li></ul>';
+                                        html = '<ul><li style="">'+data.message+'</li></ul>';
                                         $("#AlertaError").append(html);                                    
                                         $("#AlertaError").show();
                                     }
@@ -234,6 +234,7 @@ $(document).ready(function() {
             $("#modal-titulo").empty().html("Editar Movimiento");
             $("#NombreInput").val('').prop("disabled",false);
             $('.form-select').val("").trigger("change").prop("disabled",false);
+            $("#CheckAdjunto").prop("checked",false).prop("disabled",false);
             $("#AddSubmitMov").hide();
             $("#EditSubmitMov").show();
             $("#IdInput").prop("disabled",false);
@@ -244,10 +245,8 @@ $(document).ready(function() {
             validator.resetForm();
             actualizarValidSelect2();
 
-            let id = Number($(this).attr("info"));
-            
-
-            bloquear();
+            let id = Number($(this).attr("info"));     
+            //bloquear();
             $.ajax({
                 type: 'POST',
                 url: VerMovimiento,
@@ -275,6 +274,7 @@ $(document).ready(function() {
                         $('#GrupoIdInput').val(data.GrupoId).trigger("change");
                         $('#FlujoIdInput').val(data.FlujoId).trigger("change");
                         $('#EstadoIdInput').val(data.Enabled).trigger("change");
+                        (data.Adjunto ===1)?$('#CheckAdjunto').prop("checked",true):null;
                     }else{
                         Swal.fire({
                                 text: "Error de Carga",
@@ -389,6 +389,7 @@ $(document).ready(function() {
             $("#EditSubmitMov").hide();
             $("#IdInput").prop("disabled",false);
             $("#AlertaError").hide();
+            $("#CheckAdjunto").prop("checked",false).prop("disabled",true);
             validator.resetForm();
             actualizarValidSelect2();
 
@@ -421,6 +422,7 @@ $(document).ready(function() {
                         $('#GrupoIdInput').val(data.GrupoId).trigger("change");
                         $('#FlujoIdInput').val(data.FlujoId).trigger("change");
                         $('#EstadoIdInput').val(data.Enabled).trigger("change");
+                        (data.Adjunto ===1)?$('#CheckAdjunto').prop("checked",true):null;
                     }else{
                         Swal.fire({
                                 text: "Error de Carga",

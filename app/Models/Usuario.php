@@ -157,7 +157,8 @@ class Usuario extends Authenticatable
     public function movimientosPuedeVer(){
         $query =Usuario::select([
                                 'movimiento.Id',
-                                'movimiento.Nombre'
+                                'movimiento.Nombre',
+                                'movimiento.Adjunto',
                              ])
                             ->join('usuario_grupo','usuario_grupo.UsuarioId','=','usuario.Id')
                             ->join('grupo','grupo.Id','=','usuario_grupo.GrupoId')
@@ -167,7 +168,7 @@ class Usuario extends Authenticatable
                             ->where('usuario_grupo.Enabled','=', 1)                            
                             ->where('grupo.Enabled','=',1)
                             ->where('movimiento.Enabled','=',1)  
-                            ->groupBy('movimiento.Id', 'movimiento.Nombre')
+                            ->groupBy('movimiento.Id', 'movimiento.Nombre','movimiento.Adjunto')
                             ->get();
         return $query;
     }

@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-6">
                             <div class="form-floating fv-row">
                                 <select id="EstadoIdInput" name="Enabled" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="true">
                                     <option></option>
@@ -59,6 +59,14 @@
                                     <option value="0">Deshabilitado</option>
                                 </select>
                                 <label for="EstadoIdInput" class="form-label">Estado</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="p-1">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="CheckAdjunto" name="Adjunto"/>
+                                    <label class="form-check-label text-gray-600 fw-bold" for="CheckAdjunto">Archivo Adjunto</label>
+                                </div>
                             </div>
                         </div>
                     </div>

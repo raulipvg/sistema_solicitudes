@@ -44,7 +44,8 @@ $(document).ready(function() {
                     //console.log(JSON.parse(a));
                     miTablaDetalle.clear();
                     tipoCambioActual= data.tipoCambio;
-                    console.log(tipoCambioActual)
+                    //console.log(tipoCambioActual)
+                    //console.log(data.query)
                     cargarDataDetalle.init(data.query, data.tipoCambio)
                     ConsolidadoId = data.consolidado.Id;
                     MovId = Movimiento;

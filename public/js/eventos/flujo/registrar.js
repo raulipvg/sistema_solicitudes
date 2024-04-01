@@ -173,7 +173,6 @@ $(document).ready(function() {
                     contenedorDestino.innerHTML = ''; // Limpiamos el contenedor destino previo
                     contenedorDestino.appendChild(contenidoClonado);
 
-
                     stepper.goNext();
                 }
             }
@@ -227,7 +226,7 @@ $(document).ready(function() {
                         success: function (data) {
                             if(data.success){
                                 //console.log(data);
-                                location.reload();
+                                window.location.replace(Flujo);
                                 //cargarData.init(data.usuario);
                             }else{
                                 //console.log(data.error);

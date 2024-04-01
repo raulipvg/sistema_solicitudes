@@ -160,6 +160,9 @@ Route::group(['prefix'=> '/solicitud', 'middleware' => 'auth'], function () {
     Route::post('/rechazar', [SolicitudController::class,'Rechazar'])->name('RechazarSolicitud');
     Route::get('/verterminadas', [SolicitudController::class,'VerTerminadas'])->name('VerTerminadas');
     Route::get('/veractivas', [SolicitudController::class,'VerActivas'])->name('VerActivas');
+    Route::post('/aprobarseleccion', [SolicitudController::class,'AprobarSeleccion'])->name('AprobarSeleccion');
+    Route::post('/rechazarseleccion', [SolicitudController::class,'RechazarSeleccion'])->name('RechazarSeleccion');
+
 });
 
 Route::group(['prefix' => '/error'], function () {

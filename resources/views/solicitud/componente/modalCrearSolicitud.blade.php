@@ -53,12 +53,19 @@
                                 <select id="MovimientoInput" name="MovimientoId" class="form-select" data-control="select2" data-placeholder="Seleccione" data-hide-search="false" data-dropdown-parent="#crearSolicitud">
                                     <option></option>
                                     @foreach ( $movimientos as $movimiento )
-                                    <option value="{{ $movimiento->Id }}">{{ ucwords($movimiento->Nombre) }}</option>
+                                    <option value="{{ $movimiento->Id }}" data-adj="{{ $movimiento->Adjunto}}">{{ ucwords($movimiento->Nombre) }}</option>
                                     @endforeach
                                     
                                 </select>
                                 <label for="MovimientoInput" class="form-label">Movimiento</label>
                             </div>
+                        </div>
+                        <div id="ContenedorFile" class="col-md-6 mb-2">
+                            <div class="form-floating fv-row">
+                                <input id="file" class="form-control" type="file" name="file" accept=".doc, .docx, .jpg, .jpeg, .xls, .xlsx, .pdf" multiple> 
+                                <label for="file" class="form-label">Archivos</label>
+                            </div>
+
                         </div>
 
                     

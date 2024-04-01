@@ -97,55 +97,37 @@ $(document).ready(function() {
         //EVENTO SELECT2 PARA SELECCIONAR EL MOVIMIENTO Y APAREZCAN LOS MOVIMIENTOS ATRIBUTOS A SELECCIONAR
         $('#MovimientoInput').on('select2:select', function (e) {
             var data = e.params.data;
-            //var config =  data.element.getAttribute('data-config');
+            var adj =  data.element.getAttribute('data-adj');
             //console.log(data);
             //console.log(config);
             movId= data.id;
             $("#AlertaErrorSolicitud").hide();
 
-            //Configuracion de la Fecha
-            /*
-            if(config == 1){ //Año
-                fecha = flatpickr("#Fecha", {
-                    altInput: true,
-                    altFormat: "Y", // Formato de visualización solo para el año
-                    dateFormat: "Y", // Formato de fecha para el valor del campo, solo para el año
-                    mode: "single", // Cambia a modo "single" para mostrar solo un campo de fecha
-                    locale: "es",
-                    minDate: "2022",
-                    maxDate: "2024"
-                });
-                $("#contFecha").show();
+            if (validator.fields[`file`]) {
+                validator.removeField(`file`);
+            } 
+            if( adj ==1){
+                $("#ContenedorFile").show();
+                $("#file").prop("disabled",false);
 
-            }else if( config == 2){ //Mes
-                fecha = $("#Fecha").flatpickr({
-                    altInput: true,
-                    altFormat: "F, Y",
-                    dateFormat: "Y-m-d",
-                    mode: "single",
-                    locale: "es",
-                    minDate: fechaMinima,
-                    maxDate: fechaMaxima
-                });
-                var flatpickrInput = fecha.altInput;
-                flatpickrInput.setAttribute("name", "Fecha2");
-                $("#contFecha").show();
-
-            }else if( config == 3){ //Rango
-                fecha = $("#Fecha").flatpickr({
-                    altInput: true,
-                    altFormat: "j F, Y",
-                    dateFormat: "Y-m-d",
-                    mode: "range",
-                    locale: "es",
-                    minDate: fechaMinima,
-                    maxDate: fechaMaxima
-                });
-                var flatpickrInput = fecha.altInput;
-                flatpickrInput.setAttribute("name", "Fecha2");
-                $("#contFecha").show();
+                Validafile={
+                    validators: {
+                        notEmpty: {
+                            message: 'Seleccione Archivo'
+                        },
+                        file: {
+                            extension: 'jpg,jpeg,doc,docx,xls,xlsx,pdf',
+                            type: 'application/pdf,image/jpeg,image/jpg,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                            message: 'Archivo no válido, Máximo 5',
+                            maxFiles:5
+                        }
+                    }
+                }
+                validator.addField(`file`, Validafile);
+            }else{
+                $("#ContenedorFile").hide();
+                $("#file").prop("disabled",true);
             }
-            */
             $.ajax({
             type: 'POST',
             url: VerMovimientoAtributo,
@@ -573,6 +555,10 @@ $(document).ready(function() {
             $("#contenedor-movimiento").empty();
             $("#contenedor-movimiento-2").empty();
             $("#elegir-movimientos").hide();
+
+            $("#ContenedorFile").hide();
+            $("#file").prop("disabled",true);
+
         });
         //END::EVENTO
 
@@ -671,17 +657,25 @@ $(document).ready(function() {
                                 return;
                             }
                             //data.solicitud.CostoSolicitud = CostoSolicitud;
-
+                            var files = $('#file')[0].files;
                             //console.log(data)
+                            var formData = new FormData();
+                            for (var i = 0; i < files.length; i++) {
+                                var file = files[i];                    
+                                formData.append('file[]', file);
+                            }
+                            //formData.append('file', file);
+                            formData.append('_token', csrfToken);
+                            //formData.append('data', data);
+                            formData.append('data', JSON.stringify(data));
+
                             $.ajax({
                                 type: 'POST',
                                 url: RealizarSolicitud,
-                                data: {
-                                    _token: csrfToken,
-                                    data: data
-                                },
+                                data: formData,
                                 //content: "application/json; charset=utf-8",
-                                dataType: "json",
+                                processData: false,
+                                contentType: false,
                                 beforeSend: function() {
                                     //$("#contenedor-movimiento").empty();  
                                     bloquear();
@@ -697,7 +691,7 @@ $(document).ready(function() {
                                         toastr.success("Solicitud Realizada!");
                                     }else{
                                         Swal.fire({
-                                            text: "Error al realizar la solicitud",
+                                            html: `Error al realizar la solicitud: <br>${(data.message)??``}`,
                                             icon: "error",
                                             buttonsStyling: false,
                                             confirmButtonText: "OK",
