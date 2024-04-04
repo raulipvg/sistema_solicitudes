@@ -38,7 +38,7 @@ let tablaSolicitudes = $('#tabla-solicitudes').DataTable({
         $('#tabla-solicitudes_filter input').addClass('ps-9');
      
         var acciones = `${credenciales.aprobador? 
-                                `<div class="btn-group btn-group-sm me-md-15 me-2 ms-2" role="group">
+                                `<div class="btn-group btn-group-sm mx-2 ms-md-0 me-md-7" role="group">
                                     <button id="aceptar-seleccion" class="btn-light-success btn p-1"  data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Aprobar Seleccion">
                                         <i class="ki-duotone ki-check-circle fs-2hx"> 
                                             <span class="path1"></span>
@@ -134,7 +134,7 @@ const cargarDataActiva= function(){
                                     </div>
                                 </div>`;
 
-                    var col8 = `${credenciales.aprobador && estaEnElArray?`<div class="form-check form-check-sm form-check-custom form-check-solid">
+                    var col8 = `${credenciales.aprobador && estaEnElArray?`<div class="form-check form-check-sm form-check-custom form-check-solid justify-content-end">
                                     <input class="form-check-input" type="checkbox" value="1" />
                                 </div>`: ` `}`;
                         
@@ -150,13 +150,13 @@ const cargarDataActiva= function(){
                                         "8": col8
                                     } ).node();
                     $(rowNode).attr('id','s'+data[key].Id );
-                    $(rowNode).find('td:eq(0)').addClass('col-2 min-w-175px p-1').attr;
-                    $(rowNode).find('td:eq(1)').addClass('col-2 min-w-175px p-1');
-                    $(rowNode).find('td:eq(2)').addClass('col-1 p-0 flujo').attr("abierto",0);
-                    $(rowNode).find('td:eq(3)').addClass('col-2 min-w-175px p-1');
-                    $(rowNode).find('td:eq(4)').addClass('col-2 min-w-175px p-1');
-                    $(rowNode).find('td:eq(5)').addClass('col-1 min-w-100px p-1');
-                    $(rowNode).find('td:eq(6)').addClass('col-2 text-end p-1');
+                    $(rowNode).find('td:eq(0)').addClass('p-1').attr;
+                    $(rowNode).find('td:eq(1)').addClass('p-1');
+                    $(rowNode).find('td:eq(2)').addClass('p-0 flujo').attr("abierto",0);
+                    $(rowNode).find('td:eq(3)').addClass('p-1');
+                    $(rowNode).find('td:eq(4)').addClass('p-1');
+                    $(rowNode).find('td:eq(5)').addClass('p-1');
+                    $(rowNode).find('td:eq(6)').addClass('text-end p-0');
                     $(rowNode).find('td:eq(7)').addClass('d-none');
                     $(rowNode).find('td:eq(8)').addClass('p-1');
                     
