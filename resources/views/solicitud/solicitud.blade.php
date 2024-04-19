@@ -101,8 +101,8 @@
      <!--begin::Datatables y Configuracion de la Tabla-->
 	<script src="{{ asset('js/datatables/datatables.bundle.js?id=10') }}"></script>
     <script src="{{ asset('js/datatables/language/language_es.js?id=10') }}"></script>
-	<script src="{{ asset('js/datatables/contenido/solicitud_activa.js?id=10') }}"></script>
-	<script src="{{ asset('js/datatables/contenido/solicitud_terminada.js?id=10') }}"></script>
+	<script src="{{ asset('js/datatables/contenido/solicitud_activa.js?id=11') }}"></script>
+	<script src="{{ asset('js/datatables/contenido/solicitud_terminada.js?id=11') }}"></script>
 
 
     <!--end::Datatables y Configuracion de la Tabla-->
@@ -115,10 +115,10 @@
 	@if ($credenciales['realizar'])
 	<script src="{{ asset('js/flatpickr/es.js?id=9') }}"></script>
 
-	<script src="{{ asset('js/eventos/solicitud/crearsolicitud.js?id=10') }}"></script>
+	<script src="{{ asset('js/eventos/solicitud/crearsolicitud.js?id=11') }}"></script>
 	@endif
-	<script src="{{ asset('js/eventos/solicitud/historialsolicitud.js?id=10')}}"></script>
-    <script src="{{ asset('js/eventos/solicitud/verflujo.js?id=10')}}"></script>
+	<script src="{{ asset('js/eventos/solicitud/historialsolicitud.js?id=11')}}"></script>
+    <script src="{{ asset('js/eventos/solicitud/verflujo.js?id=11')}}"></script>
 
     <!--end::Eventos de la pagina-->
 	

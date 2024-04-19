@@ -27,12 +27,17 @@ function cargarHistorial(solicitudId,historialId,flujoId,f,tabla){
     var tempDiv = document.createElement('div');
     tempDiv.innerHTML = row.cell(row,tabla.column(5)).data();
 
+    cc =row.cell(row,tabla.column(4)).data();
+
     var pill = `<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
                     <span class="path1"></span>
                     <span class="path2"></span>
                 </i>`;
     solicitante = tempDiv.querySelector('.fs-7').textContent + ': ' +tempDiv.querySelector('span').textContent.toUpperCase();
     $('#Solicitante').html(pill+solicitante);
+
+    cc = $(cc).find('.text-capitalize').text();
+    $('#CentroCosto').text(cc);
     
     tempDiv.innerHTML = row.cell(row,tabla.column(0)).data();
     receptor = 'Solicitud para: ' +tempDiv.querySelector('span').textContent.toUpperCase().replace(/^[^\s]+/, '');

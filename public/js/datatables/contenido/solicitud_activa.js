@@ -150,13 +150,13 @@ const cargarDataActiva= function(){
                                         "8": col8
                                     } ).node();
                     $(rowNode).attr('id','s'+data[key].Id );
-                    $(rowNode).find('td:eq(0)').addClass('p-1').attr;
-                    $(rowNode).find('td:eq(1)').addClass('p-1');
-                    $(rowNode).find('td:eq(2)').addClass('p-0 flujo').attr("abierto",0);
-                    $(rowNode).find('td:eq(3)').addClass('p-1');
-                    $(rowNode).find('td:eq(4)').addClass('p-1');
-                    $(rowNode).find('td:eq(5)').addClass('p-1');
-                    $(rowNode).find('td:eq(6)').addClass('text-end p-0');
+                    $(rowNode).find('td:eq(0)').addClass('col-2 min-w-175px p-1').attr;
+                    $(rowNode).find('td:eq(1)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(2)').addClass('col-1 p-0 flujo').attr("abierto",0);
+                    $(rowNode).find('td:eq(3)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(4)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(5)').addClass('col-1 min-w-100px p-1');
+                    $(rowNode).find('td:eq(6)').addClass('col-2 text-end p-1');
                     $(rowNode).find('td:eq(7)').addClass('d-none');
                     $(rowNode).find('td:eq(8)').addClass('p-1');
                     

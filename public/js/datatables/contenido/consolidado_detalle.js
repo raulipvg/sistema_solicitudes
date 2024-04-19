@@ -232,7 +232,7 @@ const cargarDataDetalle= function(){
 
                     var rowNode =  miTablaDetalle.row.add( {
                                         "0": data[key].EmpresaNombre+' - '+data[key].CcNombre+','+data[key].CcId,
-                                        "1": data[key].MovimientoNombre,
+                                        "1": data[key].MovimientoNombre.toUpperCase(),
                                         "2": data[key].Cantidad,
                                         "3": html,
                                         "4": botonVerDetalle('Detalles Asociados',data[key].CcId,data[key].MovimientoId,data[key].ConsolidadoId)

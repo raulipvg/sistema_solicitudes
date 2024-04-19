@@ -33,6 +33,13 @@
 										<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
 											<span class="path1"></span>
 											<span class="path2"></span>
+										</i>Centro de Costo:<span id="CentroCosto" class="ps-1"> </span> 
+									</span>
+
+									<span class="d-flex align-items-center fs-7 fw-bold text-gray-500 mb-1 text-capitalize">
+										<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
+											<span class="path1"></span>
+											<span class="path2"></span>
 										</i>Movimiento:<span id="Movimiento" class="ps-1"> </span> 
 									</span>
 
@@ -54,6 +61,7 @@
 										<span class="path1"></span>
 										<span class="path2"></span>
 									</i>Solicitado por: </span>
+									
 									<div id="RespaldoPadre">
 										<span class="d-flex align-items-center fs-7 fw-bold text-gray-500 mb-1">
 											<i class="ki-duotone ki-right-square fs-6 text-gray-600 me-2">
@@ -71,14 +79,6 @@
 													</svg>
 												</span>
 											</a>
-											<div id="Respaldo" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-auto py-2" data-kt-menu="true" style="">
-												<div class="menu-item px-3">
-													<a href="#" target="_blank" class="menu-link px-3">Edit</a>
-												</div>
-												<div class="menu-item px-3">
-													<a href="#" target="_blank"class="menu-link px-3">Delete</a>
-												</div>
-											</div>
 										</span>
 									</div>
 							

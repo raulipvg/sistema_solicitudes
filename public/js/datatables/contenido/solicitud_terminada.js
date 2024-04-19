@@ -107,13 +107,13 @@ const cargarDataTerminada= function(){
                                         "6": col6,
                                         "7": data[key].FechaUpdated
                                     } ).node();
-                    $(rowNode).find('td:eq(0)').addClass('p-1');
-                    $(rowNode).find('td:eq(1)').addClass('p-1');
-                    $(rowNode).find('td:eq(2)').addClass('p-0 flujo').attr("abierto",0);
-                    $(rowNode).find('td:eq(3)').addClass('p-1');
-                    $(rowNode).find('td:eq(4)').addClass('p-1');
-                    $(rowNode).find('td:eq(5)').addClass('p-1');
-                    $(rowNode).find('td:eq(6)').addClass('text-end p-0');
+                    $(rowNode).find('td:eq(0)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(1)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(2)').addClass('col-1 p-0 flujo').attr("abierto",0);
+                    $(rowNode).find('td:eq(3)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(4)').addClass('col-2 min-w-175px p-1');
+                    $(rowNode).find('td:eq(5)').addClass('col-2 min-w-100px p-1');
+                    $(rowNode).find('td:eq(6)').addClass('col-1 text-end p-1');
                     $(rowNode).find('td:eq(7)').addClass('d-none');
                     
                     cantTerminada= cantTerminada+1;

@@ -27,7 +27,12 @@
                                 <select id="PersonaIdInput" name="PersonaId" class="form-select" data-control="select2" data-placeholder="Seleccione a la persona" data-hide-search="false" data-dropdown-parent="#crearSolicitud">
                                     <option></option>
                                     @foreach ( $personas as $persona )
-                                    <option value="{{ $persona->Id }}" info="{{$persona->CentroCostoId}}">{{ $persona->NombreCompleto }}</option>
+                                        @php
+                                            $part = explode('-', $persona->Rut);
+                                            $rutF = number_format($part[0], 0, ',', '.');
+                                            $rutF .= '-' . $part[1];
+                                        @endphp
+                                    <option value="{{ $persona->Id }}" info="{{$persona->CentroCostoId}}">{{ $persona->NombreCompleto }} - {{$rutF}}</option>
                                     @endforeach
                                     
                                 </select>
