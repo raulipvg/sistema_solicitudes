@@ -122,20 +122,11 @@ class Solicitud extends Model
 	}
 
 	public static function querySolicitudes(){
-		// SI variable condicional es < 3 Muestra Solicitudes activas
-		// SI variable condicional es = 3 Muestra Solicitudes terminadas 
-
-		// Modo 1, solo ver sus propias solicitudes
-		// Modo 2, ver sus solicitudes y todas aquellas que en que su grupo participe
-		// Modo 3, ver todas las solicitudes
-
-		// Aux = 0 -> Listar
-		// Aux > Get One
-
-		$solicitudes= Solicitud::select('solicitud.Id',DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"),
+		
+		$solicitudes= Solicitud::select('solicitud.Id',DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"), 'persona.Rut as RUT',
 																	'centro_de_costo.Nombre as CentroCosto',
 																	'solicitud.created_at as FechaCreado','historial_solicitud.EstadoSolicitudId',
-																	'estado_flujo.Nombre as EstadoFlujo', 'movimiento.Nombre as Movimiento',
+																	'estado_flujo.Nombre as EstadoFlujo', 'movimiento.Nombre as Movimiento', 'movimiento.Id as MovimientoIdd',
 																	'flujo.Nombre as NombreFlujo','flujo.Id as FlujoIdd','orden_flujo.GrupoId as GrupoAprobadorId',
 																	'historial_solicitud.Id as HistorialId', 'historial_solicitud.EstadoEtapaFlujoId',
 																	'historial_solicitud.updated_at as FechaUpdated',
@@ -167,8 +158,8 @@ class Solicitud extends Model
 															->join('flujo','flujo.Id','=','movimiento.FlujoId')
 															->join('orden_flujo','orden_flujo.FlujoId','=','flujo.Id')
 															->where('orden_flujo.EstadoFlujoId', '=', DB::raw('estado_flujo.Id'))
-															->groupBy('solicitud.Id', 'NombreCompleto', 'CentroCosto', 'FechaCreado', 'FechaUpdated', 'EstadoSolicitudId', 
-															'EstadoFlujo', 'Movimiento', 'NombreFlujo', 'HistorialId','FlujoIdd','UsuarioSolicitanteId','GrupoAprobadorId','EstadoEtapaFlujoId');
+															->groupBy('solicitud.Id', 'NombreCompleto','RUT', 'CentroCosto', 'FechaCreado', 'FechaUpdated', 'EstadoSolicitudId', 
+															'EstadoFlujo', 'Movimiento','MovimientoIdd', 'NombreFlujo', 'HistorialId','FlujoIdd','UsuarioSolicitanteId','GrupoAprobadorId','EstadoEtapaFlujoId');
 															//->get();
 															
 										
@@ -219,5 +210,64 @@ class Solicitud extends Model
 		$solicitudes = $solicitudes->where('solicitud.Id','=', $solicitudId)
 									->get();
 		return $solicitudes;
+	}
+
+	public static function getSolicitudId_paraEnviarCorreo(int $solicitudId){
+			// SI variable condicional es < 3 Muestra Solicitudes activas
+			// SI variable condicional es = 3 Muestra Solicitudes terminadas 
+	
+			// Modo 1, solo ver sus propias solicitudes
+			// Modo 2, ver sus solicitudes y todas aquellas que en que su grupo participe
+			// Modo 3, ver todas las solicitudes
+	
+			// Aux = 0 -> Listar
+			// Aux > Get One
+	
+			$solicitudes= Solicitud::select('solicitud.Id',DB::raw("CONCAT(persona.Nombre, ' ', persona.Apellido) AS NombreCompleto"), 'persona.Rut as RUT',
+																		'centro_de_costo.Nombre as CentroCosto','movimiento.Nombre as Movimiento','movimiento.Id as MovimientoIdd',
+																		DB::raw('CONCAT("[", GROUP_CONCAT(JSON_OBJECT(
+																												"Nombre", atributo.Nombre, 
+																												"Fecha1", compuesta.Fecha1,
+																												"Fecha2", compuesta.Fecha2
+																											)), "]") as Atributos'),
+																		DB::raw('(
+																			SELECT CONCAT(persona_solicitante.Nombre, " ", persona_solicitante.Apellido)
+																			FROM usuario
+																			JOIN persona AS persona_solicitante ON persona_solicitante.UsuarioId = usuario.Id
+																			WHERE usuario.Id = solicitud.UsuarioSolicitanteId
+																		) as NombreSolicitante'),																		
+																		'historial_solicitud.updated_at as FechaUpdated',
+																		'estado_flujo.Nombre as EstadoFlujo',
+
+																		)																		
+																->join('persona','persona.Id','=','solicitud.PersonaId')
+																->join('centro_de_costo','centro_de_costo.Id','=','solicitud.CentroCostoId')
+																->join('historial_solicitud', function ($join) {
+																	$join->on('historial_solicitud.SolicitudId', '=', 'solicitud.Id')
+																		->where('historial_solicitud.created_at', '=', DB::raw('(
+																							SELECT MAX(created_at) 
+																							FROM historial_solicitud 
+																							WHERE SolicitudId = solicitud.Id
+																							)'));
+																})
+																->join('estado_flujo','estado_flujo.Id','=','historial_solicitud.EstadoFlujoId')
+																//->where('historial_solicitud.EstadoSolicitudId','=', 1)
+																//->orWhere('historial_solicitud.EstadoSolicitudId','=', 2)
+																->join('compuesta','compuesta.SolicitudId','=','solicitud.Id')                                
+																->join('movimiento_atributo','movimiento_atributo.Id','=','compuesta.MovimientoAtributoId')
+																->join('movimiento','movimiento.Id','=','movimiento_atributo.MovimientoId')
+																->join('atributo','atributo.Id','=','movimiento_atributo.AtributoId')
+																->join('flujo','flujo.Id','=','movimiento.FlujoId')
+																->join('orden_flujo','orden_flujo.FlujoId','=','flujo.Id')
+																->where('orden_flujo.EstadoFlujoId', '=', DB::raw('estado_flujo.Id'))
+																->groupBy('solicitud.Id', 'NombreCompleto','RUT', 'CentroCosto', 
+																			'Movimiento', 'MovimientoIdd','FechaUpdated','EstadoFlujo','UsuarioSolicitanteId'
+																			)
+																->where('solicitud.Id','=', $solicitudId)
+																->get();
+																
+											
+			return $solicitudes;
+	
 	}
 }

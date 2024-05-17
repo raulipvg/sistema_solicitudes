@@ -11,6 +11,7 @@ use App\Models\HistorialSolicitud;
 use App\Models\Movimiento;
 use App\Models\Solicitud;
 use App\Models\Storage;
+use App\Models\Persona;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ use Illuminate\Validation\ValidationException;
 
 
 use Illuminate\Support\Facades\Mail;
+use stdClass;
 
 class SolicitudController extends Controller
 {
@@ -106,6 +108,7 @@ class SolicitudController extends Controller
 
     public function RealizarSolicitud(Request $request){
         try{
+            //VALIDACION DE ARCHIVOS
             $rule = [
                 'file.*' =>[
                     'required',
@@ -225,6 +228,7 @@ class SolicitudController extends Controller
             unset($historial);
             unset($flujo);
 
+            // Subir archivos a Google Cloud Storage
             if($file !=null){
                 $urls = $this->Upload($file,$solicitud->Id);
                 
@@ -238,16 +242,17 @@ class SolicitudController extends Controller
                         'SolicitudId' => $solicitud->Id,
                     ];
                 }            
-                // Insertar todas las Compuestas en un lote
+                // Insertar todos los archivos en un lote
                 Storage::insert($storage);
-            }
-
-            $this->enviarCorreo($emails, $solicitud->Id,$movExiste->Nombre,1);
-            
+            }        
             DB::commit();
             Log::info('Solicitud generada #'.$solicitud->Id);
 
+            //Obtener la solicitud con los datos actualizados
             $solicitud = Solicitud::getSolicitudesId($solicitud->Id);
+            
+            //Enviar Correo, Caso 1 - Nueva Solicitud
+            $this->enviarCorreo($emails, $solicitud,1);
                            
             return response()->json([
                 'success' => true,
@@ -351,8 +356,12 @@ class SolicitudController extends Controller
                                     ->compuesta->first()
                                     ->movimiento_atributo
                                     ->movimiento->Nombre;
-                
-                $this->enviarCorreo($emails, $historialEdit->SolicitudId,$mov,2);
+
+                //Obtener la solicitud con los datos actualizados para enviar correo
+                //$solicitud = Solicitud::getSolicitudesId($historialEdit->SolicitudId);
+                $solicitud = Solicitud::getSolicitudId_paraEnviarCorreo($historialEdit->SolicitudId);
+                //Enviar Correo, Caso 2 - Solicitud Etapa Aprobada y en Curso (Solicitud EN CURSO)
+                $this->enviarCorreo($emails, $solicitud,2);
                
 
             //SI ES UNA ETAPA FINAL DEL FLUJO
@@ -364,6 +373,30 @@ class SolicitudController extends Controller
                 ]);
                 $flag=false;
                 $mensaje = 'Solicitud aprobada y terminada.';
+
+                //Obtener la solicitud con los datos actualizados para enviar correo
+                $solicitud = Solicitud::getSolicitudId_paraEnviarCorreo($historialEdit->SolicitudId);
+                $movId = $solicitud->first()->MovimientoIdd;
+                $NombreAprobador = Persona::where('persona.UsuarioId', $userId)
+                                            ->selectRaw("CONCAT(persona.Nombre, ' ', persona.Apellido) as NombreCompleto")
+                                            ->first()->NombreCompleto;
+                $solicitud[0]->NombreAprobador = $NombreAprobador;
+                //Condicion:: si es el Movimiento Pn - Solicitudes Pases Epi
+                if(in_array($movId, [22,23,24])){                    
+                    $emails = Movimiento::where('Id', $movId)
+                                            ->pluck('Mail')
+                                            ->toArray();
+                                            
+                    //VERIFICA SI EXISTEN MAILS EN EL MOVIMIENTO
+                    if($emails[0] != null){
+                        $emails = json_decode($emails[0],true);
+                        //Enviar Correo, Caso 3 - Solicitud Terminada y Aprobada
+                        $this->enviarCorreo($emails['mail'], $solicitud,3);
+                    }
+                }                
+                //AGREGAR OTRAS CONDICIONES DE ENVIO DE CORREO SEGUN EL MOVIMIENTO ID
+
+                
             }
             
             DB::commit(); 
@@ -468,7 +501,6 @@ class SolicitudController extends Controller
                     ];
                     DB::commit();
                     Log::info($mensaje);
-                    //if(isset($emails)){ $this->enviarCorreo($emails, $historialEdit->SolicitudId,$mov,2);}
                 }catch(Exception $e){
                     DB::rollback();
                     Log::error('Error en el avance de la solicitud',[$e->getMessage()]);
@@ -673,12 +705,18 @@ class SolicitudController extends Controller
         return $solicitudes;
     }
    
-    public function enviarCorreo($emails, $solicitudId, $movimiento,$tipoMail){
-        //$destinatario = 'cado.rfmr@gmail.com';
+    public function enviarCorreo($emails, $solicitud, $tipoMail){
+        //$destinatario = 'raul.munoz@virginiogomez.cl';
+        $solicitud = json_decode(json_encode($solicitud));
+        if($tipoMail == 1){
+            $solicitud[0]->Atributos = explode(",", $solicitud[0]->Atributos);
+        }else{
+            $solicitud[0]->Atributos = json_decode($solicitud[0]->Atributos);
+        }
         try{
-            Mail::to($emails)->send(new Correo($solicitudId, $movimiento,$tipoMail));
+            Mail::to($emails)->send(new Correo($solicitud[0], $tipoMail));
         }catch(Exception $e){
-            Log::info('Error Envio Email Solicitud #'.$solicitudId);
+            Log::info('Error Envio Email Solicitud #'.$solicitud[0]->Id);
         }
     }
 }

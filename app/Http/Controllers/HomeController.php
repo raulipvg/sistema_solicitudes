@@ -11,5 +11,6 @@ class HomeController extends Controller
         return View('home.home');
         
     }
+
     
 }

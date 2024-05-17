@@ -207,3 +207,4 @@ Route::group(['prefix'=>'/login'], function(){
     Route::get('/google/callback', [LoginController::class, 'handleGoogleCallback']);
     Route::get('/logout', [LoginController::class, 'CerrarSesion'])->name('CerrarSesion');
 });
+
